@@ -2,10 +2,6 @@
 .include "common\\global_consts.asm"
 .include "common\\macro.asm"
 
-main_start:
-			di
-			RAM_DISK_OFF()
-
 ; CP/M BDOS function numbers
 PRINT   =     0x09       ; Print string
 SET_DMA_ADDR = 0x1A       ; Set DMA address
@@ -14,11 +10,32 @@ READ_FILE_SEQ = 0x14       ; Read file sequentially
 CLOSE_FILE = 0x10       ; Close file
 
 ; CP/M system addresses
-BDOS    =     0x0005       ; BDOS entry point
+BDOS    	= 0x0005       ; BDOS entry point
+
+FCB				= 0x005C
+FILE_NAME_ADDR	= FCB+1
+DMA_BUFFER		= 0x0080
+FCB_LEN			= DMA_BUFFER - FCB
+FILE_NAME_LEN	= 8+3
+
+; program consts
+DISK_NUM		= 0
+
+main_start:
+			di
+			RAM_DISK_OFF()
+			;lxi h, 0
+			;dad sp
+			;shld os_stack_addr
+			;lxi sp, STACK_MAIN_PROGRAM_ADDR
+;
+; Main program
 
 START:
 	lxi h, bin_data
 	shld bin_data_addr
+
+	call set_file_name
 
 
 	; Set DMA buffer address
@@ -31,7 +48,7 @@ START:
 	mvi c, OPEN_FILE     ; BDOS function 0x0F: Open File
 	call BDOS     ; Call BDOS
 	cpi 0xFF        ; Check if file was opened successfully (0xFF = error)
-	jz error   ; Handle file open error
+	jz error_file_open   ; Handle file open error
 
 READ_LOOP:
 	; Read a record from the file
@@ -44,6 +61,7 @@ READ_LOOP:
 	; Process the data in DMA_BUFFER (128 bytes)
 	; (Add your code here to handle the data)
 	call check_file_128
+	jnz error_invalid_read_data
 
 	jmp READ_LOOP   ; Read the next record
 
@@ -54,8 +72,8 @@ READ_DONE:
 	call BDOS     ; Call BDOS
 	jmp done
 
-error:  
-			lxi     d,errmsg
+error_file_open:  
+			lxi     d, errmsg_file_open
 			mvi     c,PRINT
 			call    BDOS
 			jmp program_exit
@@ -80,7 +98,7 @@ check_file_128:
 @loop:		mov b, m
 			ldax d
 			cmp b
-			jnz error_invalid_read_data
+			rnz
 			inx h
 			inx d
 			dcr c
@@ -90,15 +108,61 @@ check_file_128:
 bin_data_addr:
 			.word bin_data
 
+set_file_name:
+			lxi h, FCB
+			lxi b, DMA_BUFFER - FCB
+			call erase_data
+
+			mvi a, DISK_NUM
+			sta FCB
+			lxi h, file_name
+			lxi d, FCB+1 ; file name addr
+			mvi c, FILE_NAME_LEN
+			call copy_data
+			ret
+
+copy_data:
+			mov a, m
+			stax d
+			inx h
+			inx d
+			dcr c
+			jnz copy_data
+			ret
+
+erase_data:
+			xra a
+@loop:
+			mov m, a
+			inx h
+			dcx b
+			mov a, b
+			cmp c
+			jnz @loop
+			ret
+
+
 program_exit:
 			; Exit to CP/M
-			mvi c, 0			; BDOS Terminate program function
-			call 0x0005			
+			;mvi c, 0			; BDOS Terminate program function
+			;call BDOS			
+			;lhld os_stack_addr
+			;sphl
+			ret
 
-errmsg:		.byte "Error opening file$"
+errmsg_file_open:		.byte "Error opening file$"
 donemsg:	.byte "File read complete$"
 errmsg_invalid_read_data:	.byte "Invalid read data$"
 
+file_name:
+			.byte "DATA60K "   ; 8-character file name, space-padded
+			.byte "BIN"			; 3-character extension, space-padded
+
+os_stack_addr:
+			.word 0x0000
+
+/*
+.align 1024
 
 ; Define the File Control Block (FCB)
 FCB:
@@ -109,23 +173,32 @@ FCB:
 								; You can rewind a file by setting EX, RC, S2 and CR to 0.
 @S1:		.byte 0				; Reserved.   
 @S2:		.byte 0				; Reserved. Extent high byte. The CP/M Plus source code refers to this use of the S2 byte as 'module number'.
-@RC:		.byte 0				; Set this to 0 when opening a file and then leave it to CP/M.
-@AL:		.storage 0x10		; Image of the second half of the directory entry,
+@RC:		.byte 0				; FILE'S RECORD COUNT (0 TO 128). Set this to 0 when opening a file and then leave it to CP/M.
+								; when file's opened, CP/M will set it to the number of records (128*RC) in the file.
+@AL:		.storage 0x10		; Image of the second half of the directory entry, which
             					; containing the file's allocation (which disc blocks it owns).
 @CR:		.byte 0				; Current record within extent. It is usually best to set 
             					; this to 0 immediately after a file has been opened and 
             					; then ignore it.
-@Rn:		.byte 0, 0			; Random access record number (not CP/M 1). A 16-bit 
-            					; value in CP/M 2 (with R2 used for overflow); an 18-bit
-            					; value in CP/M 3.
+@Rn:		.byte 0, 0, 0		; Not used in CP/M 1.4. Reserved for future use.
 
+.align 16
 DMA_BUFFER:
 	.storage 128          ; DMA buffer for reading data (128 bytes)
-
+*/
 bin_data:
-.generate "bouncewave", $00, $ff, $400, 1
+.generate "bouncewave", $00, $ff, $1000, 1
+.generate "bouncewave", $00, $7f, $1000, 1
+.generate "bouncewave", $00, $4f, $1000, 1
+.generate "bouncewave", $00, $2f, $1000, 1
 
+.generate "bouncewave", $00, $ff, $1000, 1
+.generate "bouncewave", $00, $7f, $1000, 1
+.generate "bouncewave", $00, $4f, $1000, 1
+.generate "bouncewave", $00, $2f, $1000, 1
 
+.generate "bouncewave", $00, $ff, $1000, 1
+.generate "bouncewave", $00, $7f, $1000, 1
 
 
 /*
