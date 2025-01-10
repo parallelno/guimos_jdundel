@@ -1,0 +1,15 @@
+release/
+rom/
+generated/
+temp/
+__pycache__/
+
+# v06c
+.saved.fdd
+
+# retroassembler
+retroassembler
+
+# Devector
+imgui.ini
+ramDisks.bin

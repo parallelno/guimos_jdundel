@@ -97,7 +97,7 @@ def export(source_j_path):
 	
 	rom_name = os.path.basename(os.getcwd())
 	bin_path = rom_dir + rom_name + build.EXT_BIN
-	rom_path = rom_dir + rom_name + build.EXT_ROM	
+	rom_path = rom_dir + rom_name + build.EXT_ROM
 	
 	common.delete_file(bin_path)
 	common.delete_file(rom_path)
@@ -112,16 +112,13 @@ def export(source_j_path):
 	labels.update(main_asm_labels)
 	build.store_labels(labels, labels_path)
 	
-	common.run_command(f"ren {bin_path} {rom_name + build.EXT_ROM}")    
+	common.run_command(f"ren {bin_path} {rom_name + build.EXT_ROM}")
 
 	build.printc(f";===========================================================================", build.TextColor.GREEN)
 	build.printc(f";", build.TextColor.GREEN)
 	build.printc(f"; ram-disk data export: Success.", build.TextColor.GREEN)
-	build.printc(f"; start the game: {rom_path}", build.TextColor.GREEN)
 	build.printc(f";", build.TextColor.GREEN)
 	build.printc(f";===========================================================================", build.TextColor.GREEN)
-
-	common.run_command(f"{build.emulator_path} {rom_path}", "", rom_path)
 
 def export_localization_symbol(override_j):
 

@@ -2,7 +2,7 @@
 
 import os
 import utils.build as build
-from export.fddimage import Filesystem  # Assuming fddimage.py contains the Filesystem class
+from fddutil_python.src.fddimage import Filesystem
 
 def export(input_files = [], output_fdd = 'bin\\out.fdd', basefdd_path = 'scripts\\basefdd\\os-t34.fdd'):
     
