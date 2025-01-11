@@ -43,7 +43,7 @@ common.rename_file(exe_bin_path, exe_com_path, True)
 export_fdd.export(
     input_files=[
         exe_com_path, 
-        temp_bin_path
+        # temp_bin_path
         ],
     basefdd_path = "assets\\basefdd\\os-t34.fdd",
     output_fdd = output_fdd)

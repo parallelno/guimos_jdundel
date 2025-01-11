@@ -2,24 +2,35 @@
 .include "common\\global_consts.asm"
 .include "common\\macro.asm"
 
-; CP/M BDOS function numbers
-PRINT   =     0x09       ; Print string
-SET_DMA_ADDR = 0x1A       ; Set DMA address
-OPEN_FILE = 0x0F       ; Open file
-READ_FILE_SEQ = 0x14       ; Read file sequentially
-CLOSE_FILE = 0x10       ; Close file
+; CP/M CPM_BDOS function numbers
+CPM_SUB_PRINT			= 09 ; 0x09 Print string terminated by '$'
+CPM_SUB_F_DMAOFF		= 26 ; 0x1A Set the address of	a custom I/O file buffer 128 byte long
+CPM_SUB_F_OPEN			= 15 ; 0x0F Open file
+CPM_SUB_F_READ			= 20 ; 0x14 Read file sequentially
+CPM_SUB_F_WRITE			= 21 ; 0x15 Save file sequentially
+CPM_SUB_F_CLOSE			= 16 ; 0x10 Close file
+CPM_SUB_F_MAKE			= 22 ; 0x16 Make File
+CPM_SUB_F_DELETE		= 19 ; 0x13 Delete file
+CPM_SUB_DRV_ALLRESET	= 13 ; 0x0D Reset all drives
 
 ; CP/M system addresses
-BDOS    	= 0x0005       ; BDOS entry point
+CPM_BDOS    	= 0x0005       ; CPM_BDOS entry point
 
-FCB				= 0x005C
-FILE_NAME_ADDR	= FCB+1
-DMA_BUFFER		= 0x0080
-FCB_LEN			= DMA_BUFFER - FCB
-FILE_NAME_LEN	= 8+3
+; CP/M system constants
+CPM_FCB				= 0x005C
+FILE_NAME_ADDR		= CPM_FCB+1
+CMP_DMA_BUFFER		= 0x0080
+CMP_DMA_BUFFER_LEN	= 128
+CPM_FCB_LEN			= CMP_DMA_BUFFER - CPM_FCB
+FILE_NAME_LEN		= 8+3
+CPM_ERROR			= 0xFF
+CPM_SUCCESS			= 0x00
+
 
 ; program consts
-DISK_NUM		= 0
+DISK_CURRENT	= 0 ; 0=default, 1=A:, 2=B:, etc.
+DISK_A			= 1
+DISK_B			= 2
 
 main_start:
 			di
@@ -32,69 +43,145 @@ main_start:
 ; Main program
 
 START:
-	lxi h, bin_data
-	shld bin_data_addr
 
-	call set_file_name
+			call save_file
 
+;=======================================================
+; Read file
+;=======================================================
 
-	; Set DMA buffer address
-	lxi d, DMA_BUFFER
-	mvi c, SET_DMA_ADDR     ; BDOS function 0x1A: Set DMA Address
-	call BDOS     ; Call BDOS
+load_file:
+			lxi h, bin_data
+			shld bin_data_ptr
 
-	; Open the file
-	lxi d, FCB
-	mvi c, OPEN_FILE     ; BDOS function 0x0F: Open File
-	call BDOS     ; Call BDOS
-	cpi 0xFF        ; Check if file was opened successfully (0xFF = error)
-	jz error_file_open   ; Handle file open error
+			call set_file_name
+		/*
+			; commented because it uses the system DMA buffer
 
-READ_LOOP:
-	; Read a record from the file
-	lxi d, FCB
-	mvi c, READ_FILE_SEQ     ; BDOS function 0x14: Sequential Read
-	call BDOS     ; Call BDOS
-	cpi 0x00        ; Check if read was successful (0x00 = success)
-	jnz READ_DONE   ; If not, end of file or error
+			; Set DMA buffer address
+			mvi c, CPM_SUB_F_DMAOFF     ; CPM_BDOS function 0x1A: Set DMA Address			
+			lxi d, CMP_DMA_BUFFER
+			call CPM_BDOS     ; Call CPM_BDOS
+		*/
+			; Open the file
+			mvi c, CPM_SUB_F_OPEN     ; CPM_BDOS function 0x0F: Open File
+			lxi d, CPM_FCB			
+			call CPM_BDOS     ; Call CPM_BDOS
+			cpi CPM_ERROR        ; Check if file was opened successfully (0xFF = error)
+			jz error_file_open   ; Handle file open error
 
-	; Process the data in DMA_BUFFER (128 bytes)
-	; (Add your code here to handle the data)
-	call check_file_128
-	jnz error_invalid_read_data
+@loop:
+			; Read a record from the file
+			mvi c, CPM_SUB_F_READ     ; CPM_BDOS function 0x14: Sequential Read
+			lxi d, CPM_FCB			
+			call CPM_BDOS     ; Call CPM_BDOS
+			cpi CPM_SUCCESS        ; Check if read was successful (0x00 = success)
+			jnz @done   ; If not, end of file or error
 
-	jmp READ_LOOP   ; Read the next record
+			; Process the data in CMP_DMA_BUFFER (128 bytes)
+			; (Add your code here to handle the data)
+			call check_file_128
+			jnz error_invalid_read_data
 
-READ_DONE:
-	; Close the file
-	lxi d, FCB
-	mvi c, CLOSE_FILE     ; BDOS function 0x10: Close File
-	call BDOS     ; Call BDOS
-	jmp done
+			jmp @loop   ; Read the next record
 
-error_file_open:  
-			lxi     d, errmsg_file_open
-			mvi     c,PRINT
-			call    BDOS
+@done:
+			; Close the file
+			mvi c, CPM_SUB_F_CLOSE     ; CPM_BDOS function 0x10: Close File			
+			lxi d, CPM_FCB
+			call CPM_BDOS     ; Call CPM_BDOS
+	
+			mvi c, CPM_SUB_PRINT
+			lxi d, donemsg
+			call CPM_BDOS
 			jmp program_exit
 
-error_invalid_read_data:
-			lxi     d,errmsg_invalid_read_data
-			mvi     c,PRINT
-			call    BDOS
-			jmp program_exit
+;=======================================================
+; Save file
+;=======================================================
 
-done:   
-			lxi     d,donemsg
-			mvi     c,PRINT
-			call    BDOS
-			jmp program_exit
+save_file:
+			lxi h, bin_data
+			shld bin_data_ptr
 
+			lxi h, SAVE_FILE_LEN
+			shld save_file_len_ptr
+
+			call set_file_name2
+
+			; init
+			mvi c, CPM_SUB_DRV_ALLRESET
+			call CPM_BDOS
+
+			/*
+			; delete the saving file if exists
+			mvi c, CPM_SUB_F_DELETE
+			lxi d, CPM_FCB
+			call CPM_BDOS
+			cpi CPM_ERROR
+			jz error_file_deleted
+			*/
+			
+			; Create the file
+			mvi c, CPM_SUB_F_MAKE
+			lxi d, CPM_FCB			
+			call CPM_BDOS
+			cpi CPM_ERROR		; Check if file was created successfully
+			jz error_file_make	; Handle file creation error
+
+			; Open file for writing
+			mvi c, CPM_SUB_F_OPEN
+			lxi d, CPM_FCB			
+			call CPM_BDOS
+			cpi CPM_ERROR
+			lxi d, errmsg_file_open_to_save
+			jz exit_w_error
+
+			; Write data to the file
+@loop:
+			; Fill up the DMA buffer with data to write
+			lhld bin_data_ptr
+			lxi d, CMP_DMA_BUFFER
+			mvi c, 128
+			call copy_data
+			shld bin_data_ptr
+
+			; Write a record to the file
+			mvi c, CPM_SUB_F_WRITE
+			lxi d, CPM_FCB			
+			call CPM_BDOS
+			cpi CPM_SUCCESS
+			lxi d, errmsg_file_save
+			jnz exit_w_error
+
+			; check if all data is written
+			lhld save_file_len_ptr
+			dcx h
+			shld save_file_len_ptr
+			mov a, l
+			ora h
+			jnz @loop
+
+@done:
+			; Close the file
+			mvi c, CPM_SUB_F_CLOSE     ; CPM_BDOS function 0x10: Close File
+			lxi d, CPM_FCB			
+			call CPM_BDOS
+
+			; Exit program
+			mvi c, CPM_SUB_PRINT
+			lxi d, msg_file_saved
+			call CPM_BDOS
+			ret
+
+;=======================================================
+; Subroutines
+;=======================================================
 
 check_file_128:
 			mvi c, 128
-			lhld bin_data_addr
-			lxi d, DMA_BUFFER
+			lhld bin_data_ptr
+			lxi d, CMP_DMA_BUFFER
 @loop:		mov b, m
 			ldax d
 			cmp b
@@ -103,20 +190,31 @@ check_file_128:
 			inx d
 			dcr c
 			jnz @loop
-			shld bin_data_addr
+			shld bin_data_ptr
 			ret			
-bin_data_addr:
-			.word bin_data
 
 set_file_name:
-			lxi h, FCB
-			lxi b, DMA_BUFFER - FCB
+			lxi h, CPM_FCB
+			lxi b, CMP_DMA_BUFFER - CPM_FCB
 			call erase_data
 
-			mvi a, DISK_NUM
-			sta FCB
-			lxi h, file_name
-			lxi d, FCB+1 ; file name addr
+			mvi a, DISK_CURRENT
+			sta CPM_FCB
+			lxi h, file_name2
+			lxi d, CPM_FCB+1 ; file name addr
+			mvi c, FILE_NAME_LEN
+			call copy_data
+			ret
+
+set_file_name2:
+			lxi h, CPM_FCB
+			lxi b, CMP_DMA_BUFFER - CPM_FCB
+			call erase_data
+
+			mvi a, DISK_CURRENT
+			sta CPM_FCB
+			lxi h, file_name2
+			lxi d, CPM_FCB+1 ; file name addr
 			mvi c, FILE_NAME_LEN
 			call copy_data
 			ret
@@ -141,190 +239,107 @@ erase_data:
 			jnz @loop
 			ret
 
-
 program_exit:
 			; Exit to CP/M
-			;mvi c, 0			; BDOS Terminate program function
-			;call BDOS			
+			;mvi c, 0			; CPM_BDOS Terminate program function
+			;call CPM_BDOS			
 			;lhld os_stack_addr
 			;sphl
-			ret
+			
+			;ret
+			jmp 0
 
-errmsg_file_open:		.byte "Error opening file$"
-donemsg:	.byte "File read complete$"
-errmsg_invalid_read_data:	.byte "Invalid read data$"
+;=======================================================
+; Error handling
+;=======================================================
 
-file_name:
-			.byte "DATA60K "   ; 8-character file name, space-padded
-			.byte "BIN"			; 3-character extension, space-padded
+error_file_open:
+			lxi d, errmsg_file_open
+			jmp exit_w_error
+
+error_invalid_read_data:
+			lxi d, errmsg_invalid_read_data
+			jmp exit_w_error
+
+error_file_make:  
+			lxi d, errmsg_file_make
+			jmp exit_w_error
+
+error_file_deleted:
+			lxi d, errmsg_delete_file
+			jmp exit_w_error
+
+exit_w_error:
+			mvi c, CPM_SUB_PRINT
+			call CPM_BDOS
+			jmp program_exit
+
+errmsg_file_open:			.byte "Error opening file\n$"
+donemsg:					.byte "File read complete\n$"
+errmsg_invalid_read_data:	.byte "Invalid read data\n$"
+
+errmsg_file_make:			.byte "NO DIRECTORY SPACE\n$"
+errmsg_invalid_save_data:	.byte "Invalid save data\n$"
+
+errmsg_delete_file:			.byte "Error deleting file\n$"
+
+errmsg_file_open_to_save:	.byte "Error opening file for saving\n$"
+errmsg_file_save:	.byte "Error saving file\n$"
+
+errmsg:				.byte "Error\n$"
+msg_file_saved:		.byte "File saved\n$"
+
+
+
+// file_name:
+// 			.byte "DATA60K "   ; 8-character file name, space-padded
+// 			.byte "BIN"			; 3-character extension, space-padded
+
+file_name2:
+			.byte "DATA    "   ; 8-character file name, space-padded
+			.byte "BIN"			; 3-character extension, space-padded			
 
 os_stack_addr:
 			.word 0x0000
+bin_data_ptr:
+			.word bin_data
+
+
 
 /*
 .align 1024
 
-; Define the File Control Block (FCB)
-FCB:
+; Define the File Control Block (CPM_FCB)
+CPM_FCB:
 			.byte 0				; Drive (0 = default, 1 = A:, 2 = B:, etc.)
 			.byte "DATA60K "	; 8-character file name, space-padded
 			.byte "BIN"			; 3-character extension, space-padded
 @EX:		.byte 0				; Current extent. Set this to 0 when opening a file and then leave it to CP/M. 
 								; You can rewind a file by setting EX, RC, S2 and CR to 0.
-@S1:		.byte 0				; Reserved.   
-@S2:		.byte 0				; Reserved. Extent high byte. The CP/M Plus source code refers to this use of the S2 byte as 'module number'.
+@S1:		.byte 0				; Reserved.
+@S2:		.byte 0				; Reserved. Extent high byte. RDS increments it by 1 after loading following 16k bytes or RECORD_COUNT*DMA_BUFFER_LEN or 128*128=16384).
+								; I assume RECORD_COUNT*DMA_BUFFER_LEN is an extent size.
 @RC:		.byte 0				; FILE'S RECORD COUNT (0 TO 128). Set this to 0 when opening a file and then leave it to CP/M.
 								; when file's opened, CP/M will set it to the number of records (128*RC) in the file.
 @AL:		.storage 0x10		; Image of the second half of the directory entry, which
-            					; containing the file's allocation (which disc blocks it owns).
+								; containing the file's allocation (which disc blocks it owns).
 @CR:		.byte 0				; Current record within extent. It is usually best to set 
-            					; this to 0 immediately after a file has been opened and 
-            					; then ignore it.
+								; this to 0 immediately after a file has been opened and 
+								; then ignore it.
 @Rn:		.byte 0, 0, 0		; Not used in CP/M 1.4. Reserved for future use.
 
 .align 16
-DMA_BUFFER:
+CMP_DMA_BUFFER:
 	.storage 128          ; DMA buffer for reading data (128 bytes)
 */
 bin_data:
-.generate "bouncewave", $00, $ff, $1000, 1
-.generate "bouncewave", $00, $7f, $1000, 1
-.generate "bouncewave", $00, $4f, $1000, 1
-.generate "bouncewave", $00, $2f, $1000, 1
+.include "data.asm"
+bin_data_end:
+.align 128 ; allighed to the DMA buffer length for writing a file
 
-.generate "bouncewave", $00, $ff, $1000, 1
-.generate "bouncewave", $00, $7f, $1000, 1
-.generate "bouncewave", $00, $4f, $1000, 1
-.generate "bouncewave", $00, $2f, $1000, 1
+SAVE_FILE_LEN = (bin_data_end - bin_data) / 128
 
-.generate "bouncewave", $00, $ff, $1000, 1
-.generate "bouncewave", $00, $7f, $1000, 1
+save_file_len_ptr: // length of the data to save in records (128 bytes)
+			.word SAVE_FILE_LEN
 
-
-/*
-; File loading routine for CP/M using 8080 assembly
-			; Input: Filename in FCB at memory location 005Ch
-			; Output: File contents loaded to buffer
-
-			; CP/M BDOS function numbers
-			OPEN    =     15      ; Open file
-			READ    =     20      ; Read next record
-			PRINT   =     9       ; Print string
-
-			; CP/M system addresses
-			BDOS    =     5       ; BDOS entry point
-			;FCB     =     fcb ;0x05C    ; Default File Control Block
-			DMA     =     0x080    ; Default DMA address
-
-start:  
-			; Set up DMA address
-			lxi     d,buffer        ; Load buffer address into DE
-			mvi     c,26           ; BDOS function 26 (Set DMA Address)
-			call    BDOS
-
-			; Open the file
-			lxi     d,FCB          ; Load FCB address into DE
-			mvi     c,OPEN         ; BDOS function 15 (Open File)
-			call    BDOS
-			cpi     255           ; Check if open failed
-			jz      error
-
-			; Read loop
-readloop:
-			lxi     d,FCB          ; Load FCB address into DE
-			mvi     c,READ         ; BDOS function 20 (Read Record)
-			call    BDOS
-			ora     a              ; Check for end of file
-			jnz     done           ; If not zero, we're done
-			
-			; Process the record here
-			; ... (add your processing code)
-			
-			jmp     readloop       ; Continue reading
-
-error:  
-			lxi     d,errmsg
-			mvi     c,PRINT
-			call    BDOS
-			jmp program_exit
-
-done:   
-			lxi     d,donemsg
-			mvi     c,PRINT
-			call    BDOS
-			jmp program_exit
-
-program_exit:
-			; Exit to CP/M
-			mvi c, 0			; BDOS Terminate program function
-			call 0x0005			
-
-errmsg:		.byte "Error opening file$"
-donemsg:	.byte "File read complete$"
-
-
-FCB:		.byte 0			  ; Drive code (0 = default)
-			.byte "DATA60K "   ; 8-character file name, space-padded
-			.byte "BIN"			; 3-character extension, space-padded
-			.byte 0			  ; Extent number
-			.byte 0, 0			 ; S1, S2 (reserved)
-			.byte 0			  ; Record count		
-
-buffer:
-			.storage 0x6000, 0 ; Disk allocation map
-*/
-
-
-
-/*
-fcb:		.byte 0			  ; Drive code (0 = default)
-			.byte "DATA60K "   ; 8-character file name, space-padded
-			.byte "BIN"			; 3-character extension, space-padded
-			.byte 0			  ; Extent number
-			.byte 0, 0			 ; S1, S2 (reserved)
-			.byte 0			  ; Record count
-buffer:			
-			.storage 0x200, 0 ; Disk allocation map
-
-start:
-			; Open the file
-			lxi d, fcb   ; DE points to the File Control Block (FCB)
-			mvi c, 0x15			; BDOS Open File function
-			call 0x0005			; Call BDOS
-			cpi 0x0FF			; Check if file not found
-			jz file_not_found
-
-			; Read the file
-read_loop:
-			lxi d, fcb   ; DE points to the FCB
-			mvi c, 0x20			; BDOS Read Sequential function
-			call 0x0005			; Call BDOS
-			cpi 1			   ; Check for EOF
-			jz file_done
-			cpi 2			   ; Check for disk error
-			jz disk_error
-			jmp read_loop     ; Continue reading
-
-file_done:
-			; Close the file
-			lxi d, fcb   ; DE points to the FCB
-			mvi c, 0x16			; BDOS Close File function
-			call 0x0005			; Call BDOS
-			jmp program_exit
-
-file_not_found:
-			; Handle file not found
-			; (Add your error handling code here)
-			jmp program_exit
-
-disk_error:
-			; Handle disk error
-			; (Add your error handling code here)
-			jmp program_exit
-
-program_exit:
-			; Exit to CP/M
-			mvi c, 0			; BDOS Terminate program function
-			call 0x0005
-*/
 .include "common\\global_vars.asm"
