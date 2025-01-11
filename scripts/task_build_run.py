@@ -48,7 +48,8 @@ export_fdd.export(
     input_files=[
         exe_com_path, 
         # temp_bin_path,
-        temp_bin_path3
+        temp_bin_path3,
+        "build\\bin\\autoexec.bat",
         ],
     basefdd_path = "assets\\basefdd\\rds308.fdd",
     output_fdd = output_fdd)
