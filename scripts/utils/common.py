@@ -74,11 +74,15 @@ def delete_file(path):
 	if os.path.isfile(f"{path}"):
 		os.remove(f"{path}")
 
-def rename_file(path, new_name, delete_old = False):
+def rename_file(path, new_path, delete_old = False):
 	if os.path.isfile(f"{path}"):
+		if os.path.isfile(f"{new_path}"):
+			delete_file(new_path)
+		
+		os.rename(f"{path}", f"{new_path}")
+		
 		if delete_old:
-			delete_file(new_name)
-		os.rename(f"{path}", f"{new_name}")
+			delete_file(path)		
 	else:
 		build.exit_error(f"rename_file ERROR: file doesn't exist: {path}")
 

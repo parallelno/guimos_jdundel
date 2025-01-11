@@ -23,11 +23,15 @@ print("\n")
 #///////////////////////////////////////////////////////////////////////////////
 output_fdd = f"bin\\{game_name}" + build.EXT_FDD
 
-temp_name = "data60k"
+temp_name = "data"
 temp_asm_path = "src\\" + temp_name + build.EXT_ASM
 temp_bin_path = "build\\bin\\" + temp_name + build.EXT_BIN
+temp_bin_path2 = "build\\bin\\" + "DEL" + build.EXT_BIN
+temp_bin_path3 = "build\\bin\\" + "DEL."
 
 build.compile_asm(temp_asm_path, temp_bin_path)
+build.compile_asm(temp_asm_path, temp_bin_path2)
+common.rename_file(temp_bin_path2, temp_bin_path3, True)
 
 #///////////////////////////////////////////////////////////////////////////////
 exe_name = "main"
@@ -43,9 +47,10 @@ common.rename_file(exe_bin_path, exe_com_path, True)
 export_fdd.export(
     input_files=[
         exe_com_path, 
-        # temp_bin_path
+        # temp_bin_path,
+        temp_bin_path3
         ],
-    basefdd_path = "assets\\basefdd\\os-t34.fdd",
+    basefdd_path = "assets\\basefdd\\rds308.fdd",
     output_fdd = output_fdd)
 
 #///////////////////////////////////////////////////////////////////////////////

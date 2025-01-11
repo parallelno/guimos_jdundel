@@ -11,7 +11,10 @@ CPM_SUB_F_WRITE			= 21 ; 0x15 Save file sequentially
 CPM_SUB_F_CLOSE			= 16 ; 0x10 Close file
 CPM_SUB_F_MAKE			= 22 ; 0x16 Make File
 CPM_SUB_F_DELETE		= 19 ; 0x13 Delete file
-CPM_SUB_DRV_ALLRESET	= 13 ; 0x0D Reset all drives
+;CPM_SUB_DRV_ALLRESET	= 13 ; 0x0D Reset all drives
+CPM_SUB_F_SFIRST		= 17 ; 0x11 Search for first file
+CPM_SUB_DRV_GET			= 25 ; 0x19 Get current drive
+CPM_SUB_DRV_SET			= 14 ; 0x0E Set current drive
 
 ; CP/M system addresses
 CPM_BDOS    	= 0x0005       ; CPM_BDOS entry point
@@ -28,7 +31,7 @@ CPM_SUCCESS			= 0x00
 
 
 ; program consts
-DISK_CURRENT	= 0 ; 0=default, 1=A:, 2=B:, etc.
+DISK_CURRENT	= 0 ; 0=currently used, 1=A:, 2=B:, etc.
 DISK_A			= 1
 DISK_B			= 2
 
@@ -44,6 +47,7 @@ main_start:
 
 START:
 
+			call del_file
 			call save_file
 
 ;=======================================================
@@ -54,6 +58,7 @@ load_file:
 			lxi h, bin_data
 			shld bin_data_ptr
 
+			lxi h, file_name2
 			call set_file_name
 		/*
 			; commented because it uses the system DMA buffer
@@ -96,6 +101,34 @@ load_file:
 			call CPM_BDOS
 			jmp program_exit
 
+
+;=======================================================
+; Delete file
+;=======================================================
+del_file:
+			lxi h, file_name3
+			call set_file_name
+
+			; init
+			// mvi c, CPM_SUB_DRV_ALLRESET
+			// call CPM_BDOS
+
+			mvi c, CPM_SUB_F_SFIRST
+			lxi d, CPM_FCB
+			call CPM_BDOS
+			cpi CPM_ERROR
+			lxi d, errmsg_search_file
+			jz exit_w_error
+
+			; delete the file
+			mvi c, CPM_SUB_F_DELETE
+			lxi d, CPM_FCB
+			call CPM_BDOS
+			cpi CPM_ERROR
+			lxi d, errmsg_delete_file
+			jz exit_w_error
+			ret
+
 ;=======================================================
 ; Save file
 ;=======================================================
@@ -107,20 +140,13 @@ save_file:
 			lxi h, SAVE_FILE_LEN
 			shld save_file_len_ptr
 
-			call set_file_name2
+			lxi h, file_name2
+			call set_file_name
 
-			; init
-			mvi c, CPM_SUB_DRV_ALLRESET
-			call CPM_BDOS
+			// ; init
+			// mvi c, CPM_SUB_DRV_ALLRESET
+			// call CPM_BDOS
 
-			/*
-			; delete the saving file if exists
-			mvi c, CPM_SUB_F_DELETE
-			lxi d, CPM_FCB
-			call CPM_BDOS
-			cpi CPM_ERROR
-			jz error_file_deleted
-			*/
 			
 			; Create the file
 			mvi c, CPM_SUB_F_MAKE
@@ -193,32 +219,28 @@ check_file_128:
 			shld bin_data_ptr
 			ret			
 
+; in:
+;	hl - ptr tp the file name (8+3 bytes)
 set_file_name:
-			lxi h, CPM_FCB
-			lxi b, CMP_DMA_BUFFER - CPM_FCB
-			call erase_data
-
-			mvi a, DISK_CURRENT
-			sta CPM_FCB
-			lxi h, file_name2
+			; Set the file name
 			lxi d, CPM_FCB+1 ; file name addr
 			mvi c, FILE_NAME_LEN
 			call copy_data
-			ret
 
-set_file_name2:
-			lxi h, CPM_FCB
-			lxi b, CMP_DMA_BUFFER - CPM_FCB
-			call erase_data
-
+			; Set the disk drive number
 			mvi a, DISK_CURRENT
 			sta CPM_FCB
-			lxi h, file_name2
-			lxi d, CPM_FCB+1 ; file name addr
-			mvi c, FILE_NAME_LEN
-			call copy_data
+
+			; Erase the rest of the FCB
+			lxi h, CPM_FCB + FILE_NAME_LEN + 1
+			lxi b, CMP_DMA_BUFFER - (CPM_FCB + FILE_NAME_LEN + 1)
+			call erase_data
 			ret
 
+; in:
+;	hl - source data ptr
+;	de - destination data ptr
+;	c - number of bytes to copy
 copy_data:
 			mov a, m
 			stax d
@@ -228,16 +250,32 @@ copy_data:
 			jnz copy_data
 			ret
 
+; erase_data:
+; in:
+;	hl - ptr to the memory to erase
+;	bc - number of bytes to erase
+; out:
+;	hl - ptr to the end of erased memory
 erase_data:
-			xra a
+			mvi e, 0
 @loop:
-			mov m, a
+			mov m, e
 			inx h
 			dcx b
 			mov a, b
-			cmp c
+			ora c
 			jnz @loop
 			ret
+
+			dad d
+			rnc
+			stax d
+			inx d
+			jmp @loop
+			
+
+
+
 
 program_exit:
 			; Exit to CP/M
@@ -265,10 +303,6 @@ error_file_make:
 			lxi d, errmsg_file_make
 			jmp exit_w_error
 
-error_file_deleted:
-			lxi d, errmsg_delete_file
-			jmp exit_w_error
-
 exit_w_error:
 			mvi c, CPM_SUB_PRINT
 			call CPM_BDOS
@@ -282,6 +316,7 @@ errmsg_file_make:			.byte "NO DIRECTORY SPACE\n$"
 errmsg_invalid_save_data:	.byte "Invalid save data\n$"
 
 errmsg_delete_file:			.byte "Error deleting file\n$"
+errmsg_search_file:			.byte "Error searching for file\n$"
 
 errmsg_file_open_to_save:	.byte "Error opening file for saving\n$"
 errmsg_file_save:	.byte "Error saving file\n$"
@@ -291,12 +326,12 @@ msg_file_saved:		.byte "File saved\n$"
 
 
 
-// file_name:
-// 			.byte "DATA60K "   ; 8-character file name, space-padded
-// 			.byte "BIN"			; 3-character extension, space-padded
+file_name3:
+			.byte "DEL     "	; 8-character file name, space-padded
+			.byte "   "			; 3-character extension, space-padded
 
 file_name2:
-			.byte "DATA    "   ; 8-character file name, space-padded
+			.byte "DATA    "	; 8-character file name, space-padded
 			.byte "BIN"			; 3-character extension, space-padded			
 
 os_stack_addr:
@@ -333,7 +368,7 @@ CMP_DMA_BUFFER:
 	.storage 128          ; DMA buffer for reading data (128 bytes)
 */
 bin_data:
-.include "data.asm"
+.include "data_.asm"
 bin_data_end:
 .align 128 ; allighed to the DMA buffer length for writing a file
 
