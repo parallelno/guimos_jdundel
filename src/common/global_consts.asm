@@ -1,16 +1,6 @@
-	; this line for VSCode proper formating
-
-; prefixes
-; ADDR - address
-; BUF - buffer
-; INT - interruption
-; SCR - screen buffer
-; MEM - memory
-; LEN - length
-; SEC - second
-; SEG - segment (a ram-disk is split into four 64K banks. each bank is split into two 32K segments.)
-; RES - result
-; PTR - pointer
+;=======================================================
+; GLOBLAL CONSTANTS not related to any specific game
+;=======================================================
 
 ; interuptions per sec
 INTS_PER_SEC			= 50
@@ -40,22 +30,6 @@ TEMP_WORD	= $0000
 TEMP_ADDR	= $0000
 NULL		= $0
 NULL_PTR	= $0
-/*
-REG_NONE	= 0
-REG_A		= 1
-REG_B		= 2
-REG_C		= 3
-REG_D		= 4
-REG_E		= 5
-REG_H		= 6
-REG_L		= 7
-REG_BC		= 8
-REG_DE		= 9
-REG_HL		= 10
-REG_PSW		= 11
-REG_PC		= 12
-REG_SP		= 13
-*/
 
 ; screen buffer
 SCR_VERTICAL_OFFSET_DEFAULT = 255

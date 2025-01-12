@@ -1,10 +1,6 @@
 {
-    "workbench.colorTheme": "Retro Assembler Dark",
     "explorer.confirmDragAndDrop": false,
     "python.languageServer": "Pylance",
-    "workbench.editorAssociations": {
-        "*.ipynb": "jupyter.notebook.ipynb"
-    },
     "explorer.confirmDelete": false,
     "git.confirmSync": false,
     "git.enableSmartCommit": true,
@@ -22,15 +18,33 @@
     "editor.tokenColorCustomizations": {
         "textMateRules": [
             {
-                "scope": "keyword.globallabel",
+                "scope": "keyword.globallabel.retroasm_8080",
                 "settings": {
                     "foreground": "#d0c443"
                 }
             },
             {
-                "scope": "keyword.constantslabel",
+                "scope": "keyword.constantslabel.retroasm_8080",
                 "settings": {
                     "foreground": "#8be0e9"
+                }
+            },
+            {
+                "scope": "keyword.locallabel.retroasm_8080",
+                "settings": {
+                    "foreground": "#af6e06"
+                }
+            },
+            {
+                "scope": "comment.block.retroasm_8080",
+                "settings": {
+                    "foreground": "#728944"
+                }
+            },
+            {
+                "scope": "comment.line.retroasm_8080",
+                "settings": {
+                    "foreground": "#767676"
                 }
             }
         ]

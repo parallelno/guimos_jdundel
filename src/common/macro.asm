@@ -1,3 +1,7 @@
+;=======================================================
+; Macros
+;=======================================================
+
 .macro HLT_(i)
 		.loop i
 			hlt
@@ -349,7 +353,7 @@ BY_HL_FROM_DE	= 4
 		lxi d, $ffff - val + 1
 .endmacro
 
-; to replace xra a with a meaningful macro
+; to replace xra a with a meaningful macro + constant
 .macro A_TO_ZERO(int8_const, useXRA = true)
 		.if int8_const != 0
 			.error "A_TO_ZERO macros was used with a non-zero constant = ", int8_const
