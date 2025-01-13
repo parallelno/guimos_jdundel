@@ -17,7 +17,8 @@ CPM_SUB_DRV_GET			= 25 ; 0x19 Get current drive
 CPM_SUB_DRV_SET			= 14 ; 0x0E Set current drive
 
 ; CPM_BDOS entry point
-CPM_BDOS    	= 0x0005
+CPM_BDOS    	= 0x0005 ; system call
+CPM_EXIT		= 0x0000 ; exit to the system
 
 ; CP/M system constants
 CPM_FCB				= 0x005C

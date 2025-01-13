@@ -1,6 +1,8 @@
-.include "os_consts.asm"
+.include "v6/v6_os_consts.asm"
+.include "v6/v6_os_macro.asm"
 ;=======================================================
 ; RDS (based on CP/M 2.2 and MicroDos 3) library
+; Docs:
 ; https://github.com/ImproverX/RDS/blob/master/manuals/rds-rpro.txt
 ; https://www.seasip.info/Cpm/bdos.html
 ; https://www.seasip.info/Cpm/fcb.html
@@ -9,66 +11,102 @@
 ; https://zxpress.ru/book_articles.php?id=2318
 ;=======================================================
 
-os_init:
-			; init RDS mode 1
-			lxi sp, 0
+;=======================================================
+; OS init. Should be called first in the application
+; in:
+;	hl - reboot_addr
+;	de - interruption_addr
+;=======================================================
+v6_os_init:
+			shld @set_reboot+1
+			xchg
+			shld @set_int+1
+
+.if v6_debug_mode == DEBUG_ON
+			jmp @print
+@text:
+			.byte "v6_os_init is executing$"
+@print:
+			SYS_CALL(CPM_SUB_PRINT, @text)
+.endif
+
 			di
+			lxi sp, 0 ; TODO: check if it's required for call 5
 			; map 0x0A000-0xDFFF range to the Screen buffer
 			A_TO_ZERO(RDS_SCR_MODE_ON)
 			sta RDS_SCR_MODE
 			; enable the RDS mode 1
 			mvi a, RDS_MODE_1
 			sta RDS_MODE
-			mvi c, RDS_SUB_SCR_MODE
-			call OS_CALL
-
+			SYS_CALL(RDS_SUB_SCR_MODE)
+			; temporaly store the system fdd disk num
 			lda RDS_DISK
 			sta os_disk_tmp
 
-			di
 			RAM_DISK_OFF()
-			;lxi h, 0
-			;dad sp
-			;shld os_stack_addr
-			;lxi sp, STACK_MAIN_PROGRAM_ADDR
-;
-; Main program
 
-START:
+			; set the reboot & interrupt routine vectors
+@set_reboot:			
+			lxi h, TEMP_ADDR
+			shld RESTART_ADDR + 1
+@set_int:
+			lxi h, TEMP_ADDR
+			shld INT_ADDR + 1
+			lxi sp, STACK_MAIN_PROGRAM_ADDR
+			ei
+			ret
 
-			call del_file
-			call save_file
+;=======================================================
+; Return to OS. Should be called last in the application
+;=======================================================
+v6_os_exit:
+			di
+			mvi a, RDS_MODE_0
+			sta RDS_MODE
+			SYS_CALL(RDS_SUB_SCR_MODE)
+
+			ei
+			; restore the system fdd disk num
+			lda os_disk_tmp
+			sta RDS_DISK
+			jmp CPM_EXIT
 
 ;=======================================================
 ; Read file
 ;=======================================================
+bin_data:  // temporally added.
+bin_data_ptr: // temporally added.
+file_name:  // temporally added.
+			.byte "FILENAME"
+			.byte "EXT"
+
+SAVE_FILE_LEN = 0x100 // temporally added.
+save_file_len_ptr: // temporally added.
+			.word 0
+
 
 load_file:
 			lxi h, bin_data
 			shld bin_data_ptr
 
-			lxi h, file_name2
+			lxi h, file_name
 			call set_file_name
 		/*
 			; commented because it uses the system DMA buffer
 
 			; Set DMA buffer address
-			mvi c, CPM_SUB_F_DMAOFF     ; CPM_BDOS function 0x1A: Set DMA Address			
+			mvi c, CPM_SUB_F_DMAOFF     ; CPM_BDOS function 0x1A: Set DMA Address
 			lxi d, CMP_DMA_BUFFER
 			call CPM_BDOS     ; Call CPM_BDOS
 		*/
 			; Open the file
-			mvi c, CPM_SUB_F_OPEN     ; CPM_BDOS function 0x0F: Open File
-			lxi d, CPM_FCB			
-			call CPM_BDOS     ; Call CPM_BDOS
+			SYS_CALL(CPM_SUB_F_OPEN, CPM_FCB)
 			cpi CPM_ERROR        ; Check if file was opened successfully (0xFF = error)
 			jz error_file_open   ; Handle file open error
 
 @loop:
 			; Read a record from the file
-			mvi c, CPM_SUB_F_READ     ; CPM_BDOS function 0x14: Sequential Read
-			lxi d, CPM_FCB			
-			call CPM_BDOS     ; Call CPM_BDOS
+			SYS_CALL(CPM_SUB_F_READ, CPM_FCB)
 			cpi CPM_SUCCESS        ; Check if read was successful (0x00 = success)
 			jnz @done   ; If not, end of file or error
 
@@ -81,38 +119,28 @@ load_file:
 
 @done:
 			; Close the file
-			mvi c, CPM_SUB_F_CLOSE     ; CPM_BDOS function 0x10: Close File			
-			lxi d, CPM_FCB
-			call CPM_BDOS     ; Call CPM_BDOS
-	
+			SYS_CALL(CPM_SUB_F_CLOSE, CPM_FCB)
+
 			mvi c, CPM_SUB_PRINT
 			lxi d, donemsg
 			call CPM_BDOS
-			jmp program_exit
+			jmp v6_os_exit
 
 
 ;=======================================================
 ; Delete file
 ;=======================================================
 del_file:
-			lxi h, file_name3
+			lxi h, file_name
 			call set_file_name
 
-			; init
-			// mvi c, CPM_SUB_DRV_ALLRESET
-			// call CPM_BDOS
-
-			mvi c, CPM_SUB_F_SFIRST
-			lxi d, CPM_FCB
-			call CPM_BDOS
+			SYS_CALL(CPM_SUB_F_SFIRST, CPM_FCB)
 			cpi CPM_ERROR
 			lxi d, errmsg_search_file
 			jz exit_w_error
 
 			; delete the file
-			mvi c, CPM_SUB_F_DELETE
-			lxi d, CPM_FCB
-			call CPM_BDOS
+			SYS_CALL(CPM_SUB_F_DELETE, CPM_FCB)
 			cpi CPM_ERROR
 			lxi d, errmsg_delete_file
 			jz exit_w_error
@@ -129,25 +157,16 @@ save_file:
 			lxi h, SAVE_FILE_LEN
 			shld save_file_len_ptr
 
-			lxi h, file_name2
+			lxi h, file_name
 			call set_file_name
 
-			// ; init
-			// mvi c, CPM_SUB_DRV_ALLRESET
-			// call CPM_BDOS
-
-			
 			; Create the file
-			mvi c, CPM_SUB_F_MAKE
-			lxi d, CPM_FCB			
-			call CPM_BDOS
+			SYS_CALL(CPM_SUB_F_MAKE, CPM_FCB)
 			cpi CPM_ERROR		; Check if file was created successfully
 			jz error_file_make	; Handle file creation error
 
 			; Open file for writing
-			mvi c, CPM_SUB_F_OPEN
-			lxi d, CPM_FCB			
-			call CPM_BDOS
+			SYS_CALL(CPM_SUB_F_OPEN, CPM_FCB)
 			cpi CPM_ERROR
 			lxi d, errmsg_file_open_to_save
 			jz exit_w_error
@@ -162,9 +181,7 @@ save_file:
 			shld bin_data_ptr
 
 			; Write a record to the file
-			mvi c, CPM_SUB_F_WRITE
-			lxi d, CPM_FCB			
-			call CPM_BDOS
+			SYS_CALL(CPM_SUB_F_WRITE, CPM_FCB)
 			cpi CPM_SUCCESS
 			lxi d, errmsg_file_save
 			jnz exit_w_error
@@ -179,14 +196,10 @@ save_file:
 
 @done:
 			; Close the file
-			mvi c, CPM_SUB_F_CLOSE     ; CPM_BDOS function 0x10: Close File
-			lxi d, CPM_FCB			
-			call CPM_BDOS
+			SYS_CALL(CPM_SUB_F_CLOSE, CPM_FCB)
 
 			; Exit program
-			mvi c, CPM_SUB_PRINT
-			lxi d, msg_file_saved
-			call CPM_BDOS
+			SYS_CALL(CPM_SUB_PRINT, msg_file_saved)
 			ret
 
 ;=======================================================
@@ -206,7 +219,7 @@ check_file_128:
 			dcr c
 			jnz @loop
 			shld bin_data_ptr
-			ret			
+			ret
 
 ; in:
 ;	hl - ptr tp the file name (8+3 bytes)
@@ -257,44 +270,6 @@ erase_data:
 			ret			; total: 48 cc
 						; bytes: 11
 
-/*
-; experiments with the erase_data routine
-
-			xra a
-			lxi d, -1
-@loop:			
-			dad d		; 12
-			rnc			; 8
-			stax b		; 8
-			inx b		; 8
-			jmp @loop	; 12
-						; total: 48
-						; bytes: 11
-			
-			xra a
-			lxi d, -1
-@loop:			
-			dad d		; 12
-			rnc			; 8
-			stax b		; 8
-			inx b		; 8
-			jmp @loop	; 12
-						; total: 48
-						; bytes: 11
-*/
-
-
-
-program_exit:
-			; Exit to CP/M
-			;mvi c, 0			; CPM_BDOS Terminate program function
-			;call CPM_BDOS			
-			;lhld os_stack_addr
-			;sphl
-			
-			;ret
-			jmp 0
-
 ;=======================================================
 ; Error handling
 ;=======================================================
@@ -307,17 +282,15 @@ error_invalid_read_data:
 			lxi d, errmsg_invalid_read_data
 			jmp exit_w_error
 
-error_file_make:  
+error_file_make:
 			lxi d, errmsg_file_make
 			jmp exit_w_error
 
 exit_w_error:
-			mvi c, CPM_SUB_PRINT
-			call CPM_BDOS
-			jmp program_exit
+			SYS_CALL(CPM_SUB_PRINT)
+			jmp 0
 
 errmsg_file_open:			.byte "Error opening file\n$"
-donemsg:					.byte "File read complete\n$"
 errmsg_invalid_read_data:	.byte "Invalid read data\n$"
 
 errmsg_file_make:			.byte "NO DIRECTORY SPACE\n$"
@@ -333,46 +306,4 @@ errmsg_file_save:	.byte "Error saving file\n$"
 errmsg:				.byte "Error\n$"
 msg_file_saved:		.byte "File saved\n$"
 
-
-
-file_name3:
-			.byte "DEL     "	; 8-character file name, space-padded
-			.byte "   "			; 3-character extension, space-padded
-
-file_name2:
-			.byte "DATA    "	; 8-character file name, space-padded
-			.byte "BIN"			; 3-character extension, space-padded			
-
-os_stack_addr:
-			.word 0x0000
-bin_data_ptr:
-			.word bin_data
-
-
-
-/*
-.align 1024
-
-; Define the File Control Block (CPM_FCB)
-CPM_FCB:
-			.byte 0				; Drive (0 = default, 1 = A:, 2 = B:, etc.)
-			.byte "DATA60K "	; 8-character file name, space-padded
-			.byte "BIN"			; 3-character extension, space-padded
-@EX:		.byte 0				; Current extent. Set this to 0 when opening a file and then leave it to CP/M. 
-								; You can rewind a file by setting EX, RC, S2 and CR to 0.
-@S1:		.byte 0				; Reserved.
-@S2:		.byte 0				; Reserved. Extent high byte. RDS increments it by 1 after loading following 16k bytes or RECORD_COUNT*DMA_BUFFER_LEN or 128*128=16384).
-								; I assume RECORD_COUNT*DMA_BUFFER_LEN is an extent size.
-@RC:		.byte 0				; FILE'S RECORD COUNT (0 TO 128). Set this to 0 when opening a file and then leave it to CP/M.
-								; when file's opened, CP/M will set it to the number of records (128*RC) in the file.
-@AL:		.storage 0x10		; Image of the second half of the directory entry, which
-								; containing the file's allocation (which disc blocks it owns).
-@CR:		.byte 0				; Current record within extent. It is usually best to set 
-								; this to 0 immediately after a file has been opened and 
-								; then ignore it.
-@Rn:		.byte 0, 0, 0		; Not used in CP/M 1.4. Reserved for future use.
-
-.align 16
-CMP_DMA_BUFFER:
-	.storage 128          ; DMA buffer for reading data (128 bytes)
-*/
+donemsg:			.byte "Done\n$"

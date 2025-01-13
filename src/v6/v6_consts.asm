@@ -1,7 +1,3 @@
-;=======================================================
-; GLOBLAL CONSTANTS not related to any specific game
-;=======================================================
-
 ; interuptions per sec
 INTS_PER_SEC			= 50
 
@@ -89,3 +85,24 @@ OPCODE_POP_B = $c1
 OPCODE_STC	= $37
 OPCODE_INX_D = $13
 OPCODE_LXI_H = $21
+
+;=============================================================================
+;
+
+
+;=======================================================
+; Runtime Data Buffer
+;=======================================================
+BUFFERS_END_ADDR	= STACK_MIN_ADDR
+
+
+;=======================================================
+; Debug related
+;=======================================================
+
+; FPS counter screen addr
+FPS_SCR_ADDR = $bdfb - 16
+
+DEBUG_ON = 1
+DEBUG_OFF = 0
+v6_debug_mode .var DEBUG_OFF
