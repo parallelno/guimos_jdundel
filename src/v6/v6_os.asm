@@ -18,17 +18,17 @@
 ;	de - interruption_addr
 ;=======================================================
 v6_os_init:
-			shld @set_reboot+1
-			xchg
-			shld @set_int+1
-
 .if v6_debug_mode == DEBUG_ON
 			jmp @print
 @text:
-			.byte "v6_os_init is executing$"
+			.byte "Debug mode is on$"
 @print:
 			SYS_CALL(CPM_SUB_PRINT, @text)
 .endif
+
+			shld @set_reboot+1
+			xchg
+			shld @set_int+1
 
 			di
 			lxi sp, 0 ; TODO: check if it's required for call 5
