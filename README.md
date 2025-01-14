@@ -1,5 +1,19 @@
 # Guimos Jdundel
 
+### Table of Contents
+1. [Description](#description)
+2. [Screenshots](#screenshots)
+3. [Play](#play)
+4. [Build](#build)
+5. [Documentation](#documentation)
+   1. [Prehistory](#prehistory)
+   2. [Intro](#intro)
+   3. [Debug Mode](#debug-mode)
+   4. [Folder Structure](#folder-structure)
+   5. [Troubleshooting](#troubleshooting)
+   6. [Naming Conventions](#naming-conventions)
+      1. [Prefixes](#prefixes)
+
 ## 📝 Description
 
 Oh, no! Your best buddy is GONE! No chill, no waiting — kickstart the daring 
