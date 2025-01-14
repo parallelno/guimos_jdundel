@@ -30,12 +30,16 @@ Grab your legendary spoon, buckle up, and get ready for a frosty, wacky ride!
 The journey’s gonna be wild!😊
 
 ## Screenshots
-![Game Screenshot 3 (Russian)](docs/images/main_menu_eng.png "English Version")
-![Game Screenshot 1](docs/images/game01_eng.png "Gameplay Example")
-![Game Screenshot 2](docs/images/game02_eng.png "Gameplay Example")
-![Game Screenshot 3 (Russian)](docs/images/main_menu_rus.png "Русская Версия")
-![Game Screenshot 2](docs/images/game03_rus.png "Пример Игры")
-![Game Screenshot 2](docs/images/game04_rus.png "Пример Игры")
+![Game Screenshot 1](docs/images/main_menu_eng.png "English Version")
+![Game Screenshot 2](docs/images/game01_eng.png "Gameplay Example")
+![Game Screenshot 3](docs/images/game02_eng.png "Gameplay Example")
+![Game Screenshot 4](docs/images/main_menu_rus.png "Русская Версия")
+![Game Screenshot 5](docs/images/game03_rus.png "Пример Игры")
+![Game Screenshot 6](docs/images/game04_rus.png "Пример Игры")
+
+## Video 
+[![Watch the demo](docs/images/VIDEO_ID/youtube_01.png)](https://www.youtube.com/watch?v=WMzj-VmqIDg)
+
 
 ## 🕹️ Play
 * Run `game.bat` to start the game.
