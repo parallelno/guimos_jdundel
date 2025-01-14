@@ -39,6 +39,7 @@ The journey’s gonna be wild!😊
 <img src="docs/images/game04_rus.png" alt="Пример Игры" width="300" />
 </p>
 
+
 ## Video 
 [![Watch the demo](docs/images/youtube_01.png)](https://www.youtube.com/watch?v=WMzj-VmqIDg)
 
@@ -53,16 +54,28 @@ The journey’s gonna be wild!😊
 ## 📄 Documentation
 
 ### Prehistory
-This game was built for the [`Soviet Retro PC Vector 06c`](https://en.wikipedia.org/wiki/Vector-06C), which was my first computer. It inspired me and set me on an endless journey into the game development industry. Sweet dreams, old friend. I'll remember you forever!
+This game was built for the Soviet retro PC [`Vector 06c`](https://en.wikipedia.org/wiki/Vector-06C), which was my first computer. It inspired me and set me on an endless journey into the game development industry. Sweet dreams, old friend. I'll remember you forever!
 
-Creating this game was a massive effort on my part. The lack of documentation, a small community of enthusiasts, and my inexperienced hands made the process complex and slow. Just the demo alone took me two years to complete. But I regret no second! It was a fun learning project! During this time, I learned a great deal about the architecture of this little boy. I'm still amazed by how incredibly clever the engineers and architects of that era were who built up the concrete of the current tech era—the fathers of Intel. 
-After releasing the demo, I spent another year just to build my own emulator called [`Devector`](https://github.com/parallelno/Devector) with advanced debugging capabilities, which I believe can significantly speed up the development process and help me finish the final product. Fingers crossed!
+Creating this game was a tremendous effort. It started as a benchmark and then evolved into a game project. The lack of documentation, a small community of enthusiasts, and my twisted hands made the process complex and slow. Just the demo alone took me two years to complete. But I regret no second! It was a fun learning project! During this time, I learned a great deal about computer low-level architecture, practiced various programming languages like Assembly, Python, C++, and C#, built systems like Cmake, made one mine in Python, tried tons of different UI frameworks like Winforms, WPF, UWP, Dart, ImGui, databases, finally learned and integrated cross-platform development and testing.
+
+During the demo development, I suffered from the rudimentary debugging tools available around for this computer. I spent several months adding debugging to [`v06x`](https://github.com/svofski/vector06sdl) the emulator I used back then.
+
+After releasing the demo, I concluded I needed more dev tooling and spent another year building my own emulator [`Devector`](https://github.com/parallelno/Devector). It has advanced debugging features and must significantly speed up my development process and help me finish the final product. Fingers crossed!
 
 ### Intro
-The project is divided into two parts: the sprite engine, called V6, and the game built with it as a demonstration of the engine's capabilities. The goal was to reuse the game logic and utilities as simply as possible while exploring and documenting the features of the Vector 06c wherever they existed. This includes the fastest sprite rendering, advanced font techniques, AY music, multichannel sound effects, the RAM disk, FDD, I/O OS support, all enhanced with an intuitive yet powerful build system.
+This project is divided into two key components: the game and the sprite engine, called V6. The engine's goal is to make life easier for retro gaming enthusiasts. Key features include:
+
+* Ultra-fast multicolor sprite rendering.
+* Advanced font rendering techniques.
+* AY music and multichannel sound effects.
+* up to 8 RAM disks support, FDDs, and I/O OS functionality.
+* A powerful yet intuitive build system to simplify workflows.
+
+I hope it inspires more devs to dive into the retrocomputing world.
 
 ### Debug Mode
 * To enable debug mode, uncomment the line `v6_debug_mode == DEBUG_ON` in the `v6_debug.asm`
+
 
 ### 📁 Folder Structure
 ```plaintext
