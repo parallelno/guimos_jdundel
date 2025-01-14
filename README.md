@@ -38,7 +38,7 @@ The journey’s gonna be wild!😊
 ![Game Screenshot 6](docs/images/game04_rus.png "Пример Игры")
 
 ## Video 
-[![Watch the demo](docs/images/VIDEO_ID/youtube_01.png)](https://www.youtube.com/watch?v=WMzj-VmqIDg)
+[![Watch the demo](docs/images/youtube_01.png)](https://www.youtube.com/watch?v=WMzj-VmqIDg)
 
 
 ## 🕹️ Play
