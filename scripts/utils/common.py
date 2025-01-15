@@ -1,5 +1,6 @@
 import os
 import json
+import shutil
 import utils.build as build
 
 def combine_bits_to_bytes(_bits):
@@ -60,6 +61,26 @@ def bin_to_asm(path, out_path):
 		
 		with open(out_path, "w") as fw:
 			fw.write(txt)
+
+def CheckJsonField(source_j, field_name, comment = "", field_value = "", exit = True):
+	if field_name not in source_j:
+		if exit: build.exit_error(comment)
+		else: return False
+	elif field_value != "" and source_j[field_name] != field_value:
+		if exit: build.exit_error(comment)
+		else: return False
+	return True
+
+def CheckPath(path, comment = "", exit = True):
+	if not os.path.isfile(path):
+		if exit:
+			build.exit_error(f"ERROR: {comment}. invalid path: {path}")
+		else:
+			build.printc(f"ERROR: {comment}. invalid path: {path}", build.TextColor.RED)
+
+def DeleteDir(dir):
+	if os.path.isdir(dir):
+		shutil.rmtree(dir)
 
 def run_command(command, comment = "", check_path = ""):
 	if comment != "" : 

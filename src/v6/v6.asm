@@ -3,7 +3,7 @@ jmp main_init
 
 .include "v6/v6_macro.asm"
 .include "v6/v6_consts.asm"
-.include "v6/v6_debug.asm" ; has to be included after v6_consts.asm
+.include "build/args.asm" ; has to be included after v6_consts.asm
 .include "v6/v6_os.asm"
 .include "v6/v6_utils.asm"
 .include "v6/v6_controls.asm"

@@ -1,0 +1,52 @@
+{
+	"game_name" : "guimos_jdundel",
+	"com_filename" : "gj",
+	"asset_type" : "config",
+	"args" : [
+		"DEBUG = DEBUG_ON"
+	],
+	"dependencies" :
+	{
+		"asset_types": {
+			"sprite" : "./scripts/export_sprite.py",
+			"back" : "./scripts/export_back.py",
+			"decal" : "./scripts/export_decal.py",
+			"level_data" : "./scripts/export_level.py",
+			"level_gfx" : "./scripts/export_level.py",
+			"music" : "./scripts/export_music.py",
+			"font" : "./scripts/export_font.py",
+			"font_rd" : "./scripts/export_font.py",
+			"image" : "./scripts/export_image.py",
+			"tiled_img_data" : "./scripts/export_tiled_img.py",
+			"tiled_img_gfx" : "./scripts/export_tiled_img.py",
+			"text" : "./scripts/export_text.py"
+		},
+		"global" : [
+			"./source/data/config.json",
+			"./scripts/export_config.py",
+			"./scripts/export_data_asm.py",
+			"./scripts/export_data_init.py",
+			"./scripts/export_segment.py",
+			"./scripts/task_build_run.py",
+			"./scripts/build.py",
+			"./scripts/common.py",
+			"./scripts/common_gfx.py"
+		]
+	},
+	"export_dir" :
+	{
+		"code" : "code/",
+		"bin" : "bin/"
+	},
+	"assembler_path" : "./tools/retroassembler/retroassembler.exe -C=8080 -c",
+	"assembler_labels_cmd" : " -x",
+	"emulator_path" : "..\\devector\\bin\\devector.exe",
+	"build_db_path" : "./build/build.db",
+	"localization_id" : "1",
+	"localization_const" : "LOCALIZATION",
+	"main_asm_path" : "./src/main.asm",
+	"basefdd_path" : "./assets/basefdd/rds308.fdd",
+	"fdd_files" : [
+		"./assets/fdd_files/autoexec.bat"
+	]
+}

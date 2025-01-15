@@ -61,8 +61,12 @@ After releasing the demo, I spent another year just to build my own emulator wit
 ### Intro
 The project is divided into two parts: the sprite engine, called V6, and the game built with it as a demonstration of the engine's capabilities. The goal was to reuse the game logic and utilities as simply as possible while exploring and documenting the features of the Vector 06c wherever they existed. This includes the fastest sprite rendering, advanced font techniques, AY music, multichannel sound effects, the RAM disk, FDD, I/O OS support, all enhanced with an intuitive yet powerful build system.
 
-### Debug Mode
-* To enable debug mode, uncomment the line `v6_debug_mode == DEBUG_ON` in the `v6_debug.asm`
+### Provide compilation arguments to the assembly
+All arguments are strings defined in the list "args" in the .vscode/launch.json file
+
+For example you want to define a constant DEBUG with value DEBUG_ON if for some builds.
+To do it, add a string "DEBUG = DEBUG_ON" to the "args" list in the .vscode/launch.json file.
+
 
 ### 📁 Folder Structure
 ```plaintext

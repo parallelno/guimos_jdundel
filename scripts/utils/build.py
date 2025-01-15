@@ -31,7 +31,7 @@ ASSET_TYPE_DECAL		= "decal"
 ASSET_TYPE_IMAGE		= "image"
 ASSET_TYPE_MUSIC		= "music"
 ASSET_TYPE_CODE			= "code"
-ASSET_TYPE_DATA 		= "data"
+ASSET_TYPE_CONFIG 		= "config"
 
 LABEL_POSTFIX_ASSET_START	= "_rd_data_start"
 LABEL_POSTFIX_ASSET_END		= "_rd_data_end"
@@ -49,6 +49,7 @@ EXT_ROM			= ".rom"
 EXT_COM			= ".com"
 EXT_FDD			= ".fdd"
 EXT_YM			= ".ym"
+EXT_JSON		= ".json"
 
 PACKER_ZX0				= 0
 PACKER_ZX0_SALVADORE	= 1
@@ -62,24 +63,27 @@ _LINE_BREAK_	= "_LINE_BREAK_"
 _PARAG_BREAK_	= "_PARAG_BREAK_"
 _EOD_			= "_EOD_"
 
+# global consts
+BUILD_PATH = "./build/"
+
 # global vars
-build_db_path = "generated\\build.db"
-assembler_path = "..\\..\\retroassembler\\retroassembler.exe -C=8080 -c"
-emulator_path = "..\\..\\Emu80\\Emu80qt.exe"
+build_db_path = "./build/build.db"
+assembler_path = "../retroassembler/retroassembler.exe -C=8080 -c"
+emulator_path = "../devector/bin/devector.exe"
+debug_mode = False
+build_name = "release"
+build_subfolder = BUILD_PATH + build_name + "/"
 
 assembler_labels_cmd = " -x"
 
-zx0_path = "tools\\zx0 -c"
-zx0salvadore_path = "tools\\zx0salvador.exe -v -classic"
-upkr_path = "tools\\upkr.exe --z80"
+zx0_path = "./tools/zx0 -c"
+zx0salvadore_path = "./tools/zx0salvador.exe -v -classic"
+upkr_path = "./tools/upkr.exe --z80"
 
 packer_path 	= ""
 packer_ext		= ""
 packer_bin_ext	= ""
-
 # end global vars
-
-BIN_DIR = "bin\\"
 
 # ANSI escape codes for text color
 class TextColor:
@@ -104,6 +108,16 @@ def exit_error(text, comment = ""):
 	if comment != "":
 		printc(f"additional details: {comment}", TextColor.GRAY)
 	exit(1)
+
+def set_debug(debug):
+	global debug_mode
+	debug_mode = debug
+
+def set_build_subfolder(name):
+	global build_name
+	build_name = name
+	global build_subfolder
+	build_subfolder = BUILD_PATH + build_name + "/"
 
 def set_assembler_path(path):
 	global assembler_path
@@ -214,7 +228,7 @@ def store_labels(labels, path):
 	with open(path, "w") as file:
 		file.write(labels_txt)
 
-def export_labels(path, externals_only = False, save_output = True):
+def export_labels(path, externals_only = False, out_path = None):
 	with open(path, "rb") as file:
 		lines = file.readlines()
 
@@ -257,8 +271,8 @@ def export_labels(path, externals_only = False, save_output = True):
 			get_comments_lines = True
 		if line.find("*******************") != -1:
 			get_comments_lines = False
-	if save_output:
-		with open(path, "w") as file:
+	if out_path:
+		with open(out_path, "w") as file:
 			file.write(labels)
 	
 	return label_pairs, comments
@@ -311,7 +325,8 @@ def compile_asm(source_path, bin_path, labels_path = ""):
 	print(f"build: Compilation {source_path} to {bin_path}")
 
 	if len(labels_path) > 0:
-		common.run_command(f"{assembler_path} {assembler_labels_cmd} {source_path} {bin_path} >{labels_path}")	
+		cmd = f"{assembler_path} {assembler_labels_cmd} {source_path} {bin_path} >{labels_path}"
+		common.run_command(cmd)
 		print(TextColor.RESET)
 
 		if not os.path.exists(bin_path):
