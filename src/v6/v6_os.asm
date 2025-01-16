@@ -18,7 +18,7 @@
 ;	de - interruption_addr
 ;=======================================================
 v6_os_init:
-.if v6_debug_mode == DEBUG_ON
+.if DEBUG
 			jmp @print
 @text:
 			.byte "Debug mode is on$"

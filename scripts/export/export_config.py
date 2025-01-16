@@ -59,12 +59,9 @@ def export(source_j_path):
 	segments_info = []
 	ram_disk_data_asm_force_export = global_force_export
 
-	is_localization_setup = "localization_id" in source_j
-	localization_id = 0 if not is_localization_setup else int(source_j["localization_id"])
-
 	# export args
 	path = build.BUILD_PATH + "args" + build.EXT_ASM
-	export_args(source_j, path, localization_id)
+	export_args(source_j, path)
 
 	'''
 	# export all segments into bin files, then zip them, then split them into chunks (files <= 24KB)
@@ -142,16 +139,21 @@ def export(source_j_path):
 	_, comments = build.export_labels(raw_labels_path, False, exported_labels_path)
 	build.printc(comments, build.TextColor.YELLOW)
 
-	fdd_path = build.build_subfolder + source_j['game_name'] + build.EXT_FDD
-	com_filename = build.build_subfolder[2:] + \
+	# make a rom file
+	max_chars = 8
+	com_filename = (source_j['com_filename'][:max_chars] + build.EXT_COM).upper()
+	com_path = build.build_subfolder[2:] + \
 		build_bin_dir + \
-		source_j['com_filename'] + build.EXT_COM
+		com_filename
+	common.rename_file(bin_path, com_path, True)
 
-	fdd_files = source_j['fdd_files']
-	fdd_files.append(com_filename)
+	# export autoexec
+	autoexec_path = build.build_subfolder + build_bin_dir + 'autoexec' + build.EXT_BAT
+	export_autoexec(com_filename, autoexec_path)
 
-	common.rename_file(bin_path, com_filename, True)
-
+	# export fdd
+	fdd_files = [autoexec_path, com_path]
+	fdd_path = build.build_subfolder + source_j['game_name'] + build.EXT_FDD
 	export_fdd.export(
 		input_files = fdd_files,
 		basefdd_path = source_j["basefdd_path"],
@@ -180,7 +182,7 @@ def export_ram_data_labels(build_code_dir, segments_info, main_asm_labels):
 	with open(path, "w") as file:
 		file.write(asm)
 
-def export_args(source_j, output_path, localization_id):
+def export_args(source_j, output_path):
 	
 	# delete output file if it exists
 	if os.path.exists(output_path):
@@ -189,5 +191,13 @@ def export_args(source_j, output_path, localization_id):
 	with open(output_path, 'w') as f:
 		for str in source_j["args"]:
 			f.write(str + "\n")
+			
 
-		f.write(f"{source_j["localization_const"]} = {localization_id}")
+def export_autoexec(com_filename, autoexec_path):
+	# delete output file if it exists
+	if os.path.exists(autoexec_path):
+		os.remove(autoexec_path)
+
+	with open(autoexec_path, 'w') as f:
+		f.write("A:\n")
+		f.write(com_filename + "\n")

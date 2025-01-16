@@ -1,10 +1,10 @@
 Retro Assembler V2022.1 -- Crafted by Peter Tihanyi with 8-Bit Love
 (C) 2017-2025 Engine Designs in West Virginia, USA
 
-Pre-processing the source code file... 1100 lines of code loaded.
+Pre-processing the source code file... 1097 lines of code loaded.
 Compiling, 1st pass... (Processing)
 Compiling, 2nd pass... (Finalizing)
-Success. Size: 1824 bytes ($0720) in 0.215s
+Success. Size: 1824 bytes ($0720) in 0.216s
 
 *******************
 * Labels & Values *
@@ -86,10 +86,7 @@ OPCODE_INX_D                    = $13
 OPCODE_LXI_H                    = $21
 BUFFERS_END_ADDR                = $7f00
 FPS_SCR_ADDR                    = $bdeb
-DEBUG_ON                        = $01
-DEBUG_OFF                       = $00
-v6_debug_mode                   = $00
-DEBUG                           = $01
+DEBUG                           = $00
 LOCALIZATION                    = $01
 CPM_SUB_PRINT                   = $09
 CPM_SUB_F_DMAOFF                = $1a

@@ -50,6 +50,7 @@ EXT_COM			= ".com"
 EXT_FDD			= ".fdd"
 EXT_YM			= ".ym"
 EXT_JSON		= ".json"
+EXT_BAT			= ".bat"
 
 PACKER_ZX0				= 0
 PACKER_ZX0_SALVADORE	= 1

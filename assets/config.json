@@ -3,7 +3,7 @@
 	"com_filename" : "gj",
 	"asset_type" : "config",
 	"args" : [
-		"DEBUG = DEBUG_ON"
+		"DEBUG = 1"
 	],
 	"dependencies" :
 	{
@@ -42,11 +42,6 @@
 	"assembler_labels_cmd" : " -x",
 	"emulator_path" : "..\\devector\\bin\\devector.exe",
 	"build_db_path" : "./build/build.db",
-	"localization_id" : "1",
-	"localization_const" : "LOCALIZATION",
 	"main_asm_path" : "./src/main.asm",
-	"basefdd_path" : "./assets/basefdd/rds308.fdd",
-	"fdd_files" : [
-		"./assets/fdd_files/autoexec.bat"
-	]
+	"basefdd_path" : "./assets/basefdd/rds308.fdd"
 }

@@ -102,7 +102,3 @@ BUFFERS_END_ADDR	= STACK_MIN_ADDR
 
 ; FPS counter screen addr
 FPS_SCR_ADDR = $bdfb - 16
-
-DEBUG_ON = 1
-DEBUG_OFF = 0
-v6_debug_mode .var DEBUG_OFF
