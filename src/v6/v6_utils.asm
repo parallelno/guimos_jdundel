@@ -1,7 +1,7 @@
 .include "v6/v6_rnd.asm"
 .include "v6/v6_utils_unpacker.asm"
 
-; sharetable chunk of code to restore SP
+; shared chunk of code to restore SP
 ; and dismount the ram-disk
 ; cc = 56
 restore_sp:
@@ -10,13 +10,13 @@ restore_sp:
 			ret
 			
 
-; clear a memory buffer
+; clears a memory buffer
 ; input:
 ; hl - addr to clear
 ; bc - length
 ; use:
 ; a
-clear_mem:
+mem_erase:
 @loop:
 			A_TO_ZERO(NULL)
 			mov m, a
@@ -27,18 +27,18 @@ clear_mem:
 			jnz @loop
 			ret		
 
-; fill up an aligned memory buffer with a byte.
-; a buffer has to be stored in one $100 block of memory
-; buffer len <=256
+; Fills a short, aligned memory buffer.
+; The buffer length is <= 256 bytes.
+; The buffer is aligned to a $100 (256-byte) memory block.
 ; input:
 ; hl - addr to clear
 ; a - the next addr (a low byte of address) after a buffer
-; c - filler, if fill_mem_short is called
+; c - filler, if mem_fill_short is called
 ; use:
 ; a
-clear_mem_short:
+mem_erase_short:
 			mvi c, 0
-fill_mem_short:
+mem_fill_short:
 @loop:		mov m, c
 			inr l
 			cmp l
@@ -52,7 +52,7 @@ fill_mem_short:
 ; bc - length
 ; use:
 ; a
-copy_mem:
+mem_copy:
 @loop:		mov a, m
 			stax d
 			inx h
@@ -67,9 +67,9 @@ copy_mem:
 ; clear a memory buffer using stack operations
 ; can be used to clear ram-disk memory as well
 ; input:
-; bc - the last addr of a erased buffer + 1
+; bc - the last addr of an erased buffer + 1
 ; de - length/32 - 1
-; a - ram disk activation command
+; a - ram-disk activation command
 ; 		a = 0 to clear the main memory
 ; use:
 ; hl
@@ -78,29 +78,29 @@ copy_mem:
 		.if disable_int
 			di
 		.endif
-			call clear_mem_sp
+			call mem_erase_sp
 		.if disable_int
 			ei
 		.endif			
 .endmacro
 
-clear_mem_sp:
+mem_erase_sp:
 			lxi h, $0000
 			dad sp
-			shld clear_mem_sp_restoreSP + 1
+			shld mem_erase_sp_restore_sp + 1
 			mov h, b
 			mov l, c
 			RAM_DISK_ON_BANK()
-clear_mem_sp_filler:
+mem_erase_sp_filler:
 			lxi b, $0000
 			sphl
 			mvi a, $ff
-clear_mem_sp_loop:
+mem_erase_sp_loop:
 			PUSH_B(16)
 			dcx d
 			cmp d
-			jnz clear_mem_sp_loop
-clear_mem_sp_restoreSP:
+			jnz mem_erase_sp_loop
+mem_erase_sp_restore_sp:
 			lxi sp, TEMP_WORD
 			RAM_DISK_OFF()
 			ret
@@ -113,54 +113,52 @@ clear_mem_sp_restoreSP:
 ; de - length/32 - 1
 ; a - ram disk activation command
 ; 		a = 0 to clear the main memory
-fill_mem_sp:
-			shld clear_mem_sp_filler + 1
-			call clear_mem_sp
+mem_fill_sp:
+			shld mem_erase_sp_filler + 1
+			call mem_erase_sp
 			lxi h, 0
-			shld clear_mem_sp_filler + 1
+			shld mem_erase_sp_filler + 1
 			ret
-/*		
-; clear a memory buffer using stack operations
-; can be used to clear ram-disk memory as well
+
+; clear the ram-disk using sp
+; disables interruptions
 ; input:
-; bc - the last addr of a erased buffer + 1
-; de - length/32 - 1
-; a - ram disk activation command
-; 		a = 0 to clear the main memory
-clear_ram_disk:
+.function clear_ram_disk()
+			di
 			lxi b, $0000
 			lxi d, $10000/32 - 1
 			mvi a, RAM_DISK_S0
 			push b
 			push d
-			CLEAR_MEM_SP(false)
+			CLEAR_MEM_SP(true)
 			pop d
 			pop b
 
 			mvi a, RAM_DISK_S1
 			push b
 			push d
-			CLEAR_MEM_SP(false)
+			CLEAR_MEM_SP(true)
 			pop d
 			pop b
 
 			mvi a, RAM_DISK_S2
 			push b
 			push d
-			CLEAR_MEM_SP(false)
+			CLEAR_MEM_SP(true)
 			pop d
 			pop b
 
 			mvi a, RAM_DISK_S3
-			CLEAR_MEM_SP(false)
-			ret
-*/
+			CLEAR_MEM_SP(true)
+			//ret ; commented out because .endf is replaced with ret
+.endf
+
 ; erase a block in the screen buff
 ; in:
 ; hl - scr_addr
 ; b - width/8
 ; c - height
-erase_screen_block:
+screen_erase_block:
 			mov a, c
 			add l
 			mov c, l

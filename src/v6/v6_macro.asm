@@ -432,47 +432,47 @@ BY_HL_FROM_DE	= 4
 
 ;================================== ALL RAM_DISK_* macros has to be placed BEFORE lxi sp, *, and sphl! ;==================================
 ; restore the ram-disk mode
-.macro RAM_DISK_RESTORE()
+.macro RAM_DISK_RESTORE(ram_disk_port = RAM_DISK_PORT)
 			lda ram_disk_mode
-			out $10
+			out ram_disk_port
 .endmacro
 ; mount the ram-disk w/o storing mode
-.macro RAM_DISK_ON_NO_RESTORE(command)
+.macro RAM_DISK_ON_NO_RESTORE(command, ram_disk_port = RAM_DISK_PORT)
 			mvi a, <command
-			out $10
+			out ram_disk_port
 .endmacro
 ; mount the ram-disk
 ; command is a ram disk activation command
-.macro RAM_DISK_ON(command)
+.macro RAM_DISK_ON(command, ram_disk_port = RAM_DISK_PORT)
 			mvi a, <command
 			sta ram_disk_mode
-			out $10
+			out ram_disk_port
 .endmacro
 ; mount the ram-disk
 ; a - ram disk activation command
 ; 28
-.macro RAM_DISK_ON_BANK()
+.macro RAM_DISK_ON_BANK(ram_disk_port = RAM_DISK_PORT)
 			sta ram_disk_mode
-			out $10
+			out ram_disk_port
 .endmacro
 
-.macro RAM_DISK_ON_BANK_NO_RESTORE()
-			out $10
+.macro RAM_DISK_ON_BANK_NO_RESTORE(ram_disk_port = RAM_DISK_PORT)
+			out ram_disk_port
 .endmacro
 
 ; dismount the ram-disk
 ; has to be in the main program only and be placed after lxi sp, ADDR or sphl
 ; cc 32
-.macro RAM_DISK_OFF(useXRA = true)
+.macro RAM_DISK_OFF(useXRA = true, ram_disk_port = RAM_DISK_PORT)
 			A_TO_ZERO(RAM_DISK_OFF_CMD, useXRA)
 			sta ram_disk_mode
-			out $10
+			out ram_disk_port
 .endmacro
 ; dismount the ram-disk w/o storing mode
 ; should be used inside the interruption call or with disabled interruptions
-.macro RAM_DISK_OFF_NO_RESTORE(useXRA = true)
+.macro RAM_DISK_OFF_NO_RESTORE(useXRA = true, ram_disk_port = RAM_DISK_PORT)
 			A_TO_ZERO(RAM_DISK_OFF_CMD, useXRA)
-			out $10
+			out ram_disk_port
 .endmacro
 ;==================================================================================================
 .macro CALL_RAM_DISK_FUNC(func_addr, _command, disable_int = false, useXRA = true)

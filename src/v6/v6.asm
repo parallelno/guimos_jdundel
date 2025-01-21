@@ -1,5 +1,5 @@
 .org	$100
-jmp main_init
+jmp v6_main_init
 
 .include "v6/v6_macro.asm"
 .include "v6/v6_consts.asm"
@@ -10,13 +10,17 @@ jmp main_init
 .include "v6/v6_interruption.asm"
 .include "v6/v6_mono_text.asm"
 
-main_init:
-			lxi h, @reboot
+v6_main_init:
+			lxi h, v6_main_reboot
 			lxi d, interruption
 			call v6_os_init
-@reboot:
+v6_main_reboot:
+.if DEBUG
+			;clear_ram_disk()
+.endif
+			
 			call v6_init
-			call game_init
+			call main_start
 			call v6_os_exit
 
 ; TODO: use .function to not worry about unused funcs

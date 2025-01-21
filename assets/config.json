@@ -7,7 +7,7 @@
 	],
 	"dependencies" :
 	{
-		"asset_types": {
+		"exporters": {
 			"sprite" : "./scripts/export_sprite.py",
 			"back" : "./scripts/export_back.py",
 			"decal" : "./scripts/export_decal.py",
@@ -21,8 +21,8 @@
 			"tiled_img_gfx" : "./scripts/export_tiled_img.py",
 			"text" : "./scripts/export_text.py"
 		},
-		"global" : [
-			"./source/data/config.json",
+		"scripts" : [
+			"./assets/config.json",
 			"./scripts/export_config.py",
 			"./scripts/export_data_asm.py",
 			"./scripts/export_data_init.py",
@@ -40,8 +40,12 @@
 	},
 	"assembler_path" : "./tools/retroassembler/retroassembler.exe -C=8080 -c",
 	"assembler_labels_cmd" : " -x",
-	"emulator_path" : "..\\devector\\bin\\devector.exe",
+	"emulator_path" : "../devector/bin/devector.exe",
 	"build_db_path" : "./build/build.db",
 	"main_asm_path" : "./src/main.asm",
-	"basefdd_path" : "./assets/basefdd/rds308.fdd"
+	"basefdd_path" : "./assets/basefdd/rds308.fdd",
+	"export_files" :
+	[
+		"assets/fonts/eng/font.json"
+	]
 }

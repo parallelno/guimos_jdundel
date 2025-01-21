@@ -108,7 +108,7 @@ def exit_error(text, comment = ""):
 	printc("Stop export", TextColor.RED)
 	if comment != "":
 		printc(f"additional details: {comment}", TextColor.GRAY)
-	exit(1)
+	exit(0)
 
 def set_debug(debug):
 	global debug_mode
@@ -355,3 +355,7 @@ def compile_asm(source_path, bin_path, labels_path = ""):
 			exit_error(f"ERROR: the source path is invalid, path: {source_path}")
 		elif not os.path.exists(bin_path):
 			exit_error(f"ERROR: compilation error, path: {bin_path}")
+
+CPM_FILENAME_LEN = 8
+def get_cpm_filename(filename, ext = EXT_BIN):	
+	return (filename[:CPM_FILENAME_LEN] + ext).upper()

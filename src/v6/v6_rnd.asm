@@ -6,7 +6,7 @@
 ; hl - 16-bit pseudo-random number
 ; a = h
 ; cc - 116
-; TODO: optimization. try to use faster rnd.
+; TODO: optimization. check if the faster rnd solutions gives good enough result.
 random:
 			lxi h, 1       ; seed must not be 0
 			mov a, h

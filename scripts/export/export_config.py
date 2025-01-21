@@ -3,9 +3,7 @@ import json
 
 import utils.build as build
 import utils.common as common
-from export import export_segment
-from export import export_data_asm
-from export import export_data_init
+from export import export_font
 from export import export_sprite
 from export import export_fdd
 
@@ -37,32 +35,54 @@ def export(source_j_path):
 	build.set_emulator_path(source_j["emulator_path"])
 	build.build_db_init(source_j["build_db_path"])
 
-	# check dependencies
-	dependency_paths_j = source_j["dependencies"]
-	global_force_export = False
-	for path in dependency_paths_j["global"]:
-		global_force_export |= build.is_file_updated(path)
-
-	asset_types_dependencies = dependency_paths_j["asset_types"]
-	asset_types_force_export = {}
-	for asset_type in asset_types_dependencies:
-		asset_types_force_export[asset_type] = global_force_export | build.is_file_updated(asset_types_dependencies[asset_type])
-
-	build_code_dir = source_j["export_dir"]["code"]
-	build_bin_dir = source_j["export_dir"]["bin"]
-	
-	# make directories
+	# make necessary directories
+	build_code_dir = build.build_subfolder[2:] + source_j["export_dir"]["code"]
+	build_bin_dir = build.build_subfolder[2:] + source_j["export_dir"]["bin"]
 	os.makedirs(os.path.dirname(build.build_subfolder), exist_ok=True)	
-	os.makedirs(os.path.dirname(build.build_subfolder + build_code_dir), exist_ok=True)
-	os.makedirs(os.path.dirname(build.build_subfolder + build_bin_dir), exist_ok=True)
-
-	segments_info = []
-	ram_disk_data_asm_force_export = global_force_export
+	os.makedirs(os.path.dirname(build_code_dir), exist_ok=True)
+	os.makedirs(os.path.dirname(build_bin_dir), exist_ok=True)
 
 	# export args
 	path = build.BUILD_PATH + "args" + build.EXT_ASM
 	export_args(source_j, path)
 
+	# check dependencies
+	dependency_paths_j = source_j["dependencies"]
+	global_force_export = False
+	for path in dependency_paths_j["scripts"]:
+		global_force_export |= build.is_file_updated(path)
+	asset_types_dependencies = dependency_paths_j["exporters"]
+	asset_types_force_export = {}
+	for asset_type in asset_types_dependencies:
+		asset_types_force_export[asset_type] = global_force_export | build.is_file_updated(asset_types_dependencies[asset_type])
+
+	fdd_files = []
+	# export assets
+	for path in source_j["export_files"]:
+		if not os.path.exists(path):
+			build.exit_error(f'export_config ERROR: file not found: {path}')
+
+		with open(path, "rb") as file:
+			asset_j = json.load(file)
+
+		asset_type = asset_j["asset_type"]
+		export_dir = build.build_subfolder + asset_type + "/"
+		force_export = asset_types_force_export[asset_type]
+
+		bin_gfx_path = None
+		match asset_type:
+			case build.ASSET_TYPE_FONT:
+				bin_gfx_path = export_font.export_if_updated(
+						path,
+						export_dir,
+						build_bin_dir,
+						force_export)
+			
+		if bin_gfx_path:
+			fdd_files.append(bin_gfx_path)
+
+			# ===============================================================================
+ 
 	'''
 	# export all segments into bin files, then zip them, then split them into chunks (files <= 24KB)
 	for bank_j in source_j["banks"]:
@@ -72,7 +92,7 @@ def export(source_j_path):
 			seg_id += 1
 			exported, segment_info = export_segment.export(
 				bank_id, seg_id, segment_j, source_j["includes"]["segment"],
-				global_force_export, asset_types_force_export,
+				force_export, asset_types_force_export,
 				build_code_dir, build_bin_dir, localization_id)
 
 			ram_disk_data_asm_force_export |= exported
@@ -127,33 +147,33 @@ def export(source_j_path):
 	'''
 	# processing main.asm
 	main_asm_path = source_j["main_asm_path"]
-	bin_path = build.build_subfolder[2:] + build_bin_dir + \
-		common.path_to_basename(main_asm_path) + \
-		build.EXT_BIN
+	# bin_path = build.build_subfolder[2:] + build_bin_dir + \
+	# 	common.path_to_basename(main_asm_path) + \
+	# 	build.EXT_BIN
+	
+	com_filename = build.get_cpm_filename(source_j['com_filename'], build.EXT_COM)
+	com_path = build_bin_dir + \
+		com_filename
+	bin_path = common.rename_extention(com_path, build.EXT_BIN)
 	common.delete_file(bin_path)
 
 	# compile the main.asm
-	raw_labels_path = build.build_subfolder + build_bin_dir + build.DEBUG_FILE_NAME
-	exported_labels_path = build.build_subfolder + source_j['game_name'] + build.EXT_JSON
-	build.compile_asm(main_asm_path, bin_path, raw_labels_path)
+	raw_labels_path = build_bin_dir + build.DEBUG_FILE_NAME
+	build.compile_asm(main_asm_path, bin_path)
+	exported_labels_path = common.rename_extention(com_path, build.EXT_JSON)
 	_, comments = build.export_labels(raw_labels_path, False, exported_labels_path)
 	build.printc(comments, build.TextColor.YELLOW)
 
-	# make a rom file
-	max_chars = 8
-	com_filename = (source_j['com_filename'][:max_chars] + build.EXT_COM).upper()
-	com_path = build.build_subfolder[2:] + \
-		build_bin_dir + \
-		com_filename
+	# make a com file
 	common.rename_file(bin_path, com_path, True)
 
 	# export autoexec
-	autoexec_path = build.build_subfolder + build_bin_dir + 'autoexec' + build.EXT_BAT
+	autoexec_path = build_bin_dir + build.get_cpm_filename('autoexec', build.EXT_BAT)
 	export_autoexec(com_filename, autoexec_path)
 
 	# export fdd
-	fdd_files = [autoexec_path, com_path]
-	fdd_path = build.build_subfolder + source_j['game_name'] + build.EXT_FDD
+	fdd_files += [autoexec_path, com_path]
+	fdd_path = common.rename_extention(com_path, build.EXT_FDD)
 	export_fdd.export(
 		input_files = fdd_files,
 		basefdd_path = source_j["basefdd_path"],
@@ -191,7 +211,7 @@ def export_args(source_j, output_path):
 	with open(output_path, 'w') as f:
 		for str in source_j["args"]:
 			f.write(str + "\n")
-			
+
 
 def export_autoexec(com_filename, autoexec_path):
 	# delete output file if it exists

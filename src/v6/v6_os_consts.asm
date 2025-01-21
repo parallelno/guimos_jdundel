@@ -27,8 +27,11 @@ CMP_DMA_BUFFER		= 0x0080
 CMP_DMA_BUFFER_LEN	= 128
 CPM_FCB_LEN			= CMP_DMA_BUFFER - CPM_FCB
 FILE_NAME_LEN		= 8+3
-CPM_ERROR			= 0xFF
-CPM_SUCCESS			= 0x00
+; errors
+CPM_MSG_ERROR			= 0xFF
+CPM_MSG_SUCCESS			= 0x00
+CPM_MSG_EOF				= 0x01 ; the end of file
+CPM_MSG_INVALID_FCB		= 0x09
 
 ; RDS system addresses
 RDS_DISK			= 0x0004 ; Contains the disk number. 0=currently used, 1=A:, 2=B:, etc.
@@ -48,6 +51,8 @@ RDS_SUB_SCR_MODE	= 0x0 ; Call to set the RDS mode
 DISK_CURRENT	= 0 ; 0=currently used, 1=A:, 2=B:, etc.
 DISK_A			= 1
 DISK_B			= 2
+
+V6_OS_LOAD_STORE_META = 0
 
 /*
 ;=======================================================

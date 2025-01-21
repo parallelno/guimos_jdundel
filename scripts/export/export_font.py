@@ -4,7 +4,93 @@ from PIL import Image
 import json
 import utils.common as common
 import utils.build as build
- 
+
+def export_if_updated(asset_j_path, export_asm_dir, export_bin_dir, force_export):
+	source_name = common.path_to_basename(asset_j_path)
+
+	asm_gfx_ptrs_path = export_asm_dir + source_name + "_gfx_ptrs" + build.EXT_ASM
+	asm_gfx_path = export_asm_dir + source_name + "_gfx" + build.EXT_ASM
+	bin_gfx_path = export_bin_dir + build.get_cpm_filename(source_name)
+
+	if force_export or is_source_updated(asset_j_path):
+		bin_gfx_path = export_asm(asset_j_path, asm_gfx_ptrs_path, asm_gfx_path, bin_gfx_path)
+
+		print(f"export_font: {asset_j_path} got exported.")
+		return bin_gfx_path
+	
+	return None
+
+
+def is_source_updated(asset_j_path):
+	with open(asset_j_path, "rb") as file:
+		source_j = json.load(file)
+	
+	source_dir = str(Path(asset_j_path).parent) + "/"
+	path_png = source_dir + source_j["path_png"]
+
+	if build.is_file_updated(asset_j_path) | build.is_file_updated(path_png):
+		return True
+	return False
+
+def export_asm(asset_j_path, asm_gfx_ptrs_path, asm_gfx_path, bin_gfx_path):
+
+	with open(asset_j_path, "rb") as file:
+		source_j = json.load(file)
+
+	if "asset_type" not in source_j or source_j["asset_type"] != build.ASSET_TYPE_FONT :
+		build.exit_error(f'export_font ERROR: asset_type != "{build.ASSET_TYPE_FONT}", path: {asset_j_path}')
+
+	source_name = common.path_to_basename(asset_j_path)
+	source_dir = str(Path(asset_j_path).parent) + "/"
+	path_png = source_dir + source_j["path_png"]
+	image = Image.open(path_png)
+
+	asm = "; " + asset_j_path + "\n"
+	asm_gfx = ""
+	# TODO: define the correct RAM_DISK_S and RAM_DISK_M
+	#asm_gfx += asm + f"__RAM_DISK_S_{source_name.upper()} = RAM_DISK_S" + "\n"
+	#asm_gfx += asm + f"__RAM_DISK_M_{source_name.upper()} = RAM_DISK_M" + "\n"
+	asm_gfx_, gfx_ptrs = gfx_to_asm("__" + source_name, source_j, image)
+	asm_gfx += asm_gfx_
+
+	asm_gfx_ptrs = gfx_ptrs_to_asm(source_name, source_j, gfx_ptrs)
+
+	# save the asm gfx
+	asm_gfx_dir = str(Path(asm_gfx_path).parent) + "/"
+	if not os.path.exists(asm_gfx_dir):
+		os.mkdir(asm_gfx_dir)
+	with open(asm_gfx_path, "w") as file:
+		file.write(asm_gfx)
+	
+	# compile and save the gfx bin files
+	build.compile_asm(asm_gfx_path, bin_gfx_path)
+	file_len = os.path.getsize(bin_gfx_path)
+	last_record_len = file_len & 0x7f
+
+	# add the last record len to the asm gfx ptrs
+	asm_gfx_ptrs += "\n"
+	asm_gfx_ptrs += f"{source_name.upper()}_FILE_LEN = {file_len}\n"
+	asm_gfx_ptrs += f"{source_name.upper()}_LAST_RECORD_LEN = {last_record_len}\n"
+	# add the filename to the asm gfx ptrs
+	cmp_filename = os.path.basename(bin_gfx_path).split(".")
+	cmp_filename_wo_ext_len = len(cmp_filename[0])
+	asm_gfx_ptrs += f'{source_name.upper()}_filename\n'
+	asm_gfx_ptrs += f'			.byte "{cmp_filename[0]}" ; filename\n'
+	if cmp_filename_wo_ext_len < build.CPM_FILENAME_LEN:
+		filename_white_chars = " " * (build.CPM_FILENAME_LEN - len(cmp_filename[0]))
+		asm_gfx_ptrs += f'			.byte "{filename_white_chars}" ; filename white chars\n'
+	asm_gfx_ptrs += f'			.byte "{cmp_filename[1]}" ; extension\n'
+
+	# save the asm gfx ptrs
+	asm_gfx_ptrs_dir = str(Path(asm_gfx_ptrs_path).parent) + "/"	
+	if not os.path.exists(asm_gfx_ptrs_dir):
+		os.mkdir(asm_gfx_ptrs_dir)
+	with open(asm_gfx_ptrs_path, "w") as file:
+		file.write(asm_gfx_ptrs)
+
+	return bin_gfx_path
+
+
 def gfx_to_asm(label_prefix, source_j, image):
 	gfx_ptrs = {}
 	gfx_j = source_j["gfx"]
@@ -69,7 +155,7 @@ def get_char_label_postfix(char_name):
 		adjusted_char = f"{chr(adjusted_code_point)}{offset}"
 	return adjusted_char
 
-def gfx_ptrs_to_asm(label_prefix, source_j, font_gfx_ptrs_rd = False, gfx_ptrs = None):
+def gfx_ptrs_to_asm(label_prefix, source_j, gfx_ptrs = None, font_gfx_ptrs_rd = True):
 	asm = ""
 	if font_gfx_ptrs_rd:
 		label_access_prefix = ""
@@ -77,11 +163,10 @@ def gfx_ptrs_to_asm(label_prefix, source_j, font_gfx_ptrs_rd = False, gfx_ptrs =
 		label_access_prefix = "__"
 
 	# if font_gfx_ptrs_rd == True, then add list of labels with relatives addresses
-	if font_gfx_ptrs_rd:
-		asm += "; relative label addresses. to global addr add __font_rus_gfx\n"
-		for char_name in gfx_ptrs:
-			adjusted_char = get_char_label_postfix(char_name) 
-			asm += f"{label_prefix}_{adjusted_char} = {gfx_ptrs[char_name]}\n"
+	asm += "; relative labels. to make it global call __text_ex_rd_init\n"
+	for char_name in gfx_ptrs:
+		adjusted_char = get_char_label_postfix(char_name) 
+		asm += f"{label_prefix}_{adjusted_char} = {gfx_ptrs[char_name]}\n"
 
 	asm += f"{label_prefix}_gfx_ptrs:\n"
 
@@ -100,68 +185,3 @@ def gfx_ptrs_to_asm(label_prefix, source_j, font_gfx_ptrs_rd = False, gfx_ptrs =
 	asm +="\n"
 
 	return asm
-
-def export(source_j_path, asm_gfx_ptrs_path, asm_gfx_path, font_gfx_ptrs_rd = False):
-	source_name = common.path_to_basename(source_j_path)
-	source_dir = str(Path(source_j_path).parent) + "\\"
-	asm_gfx_ptrs_dir = str(Path(asm_gfx_ptrs_path).parent) + "\\"
-	asm_gfx_dir = str(Path(asm_gfx_path).parent) + "\\"
-
-	with open(source_j_path, "rb") as file:
-		source_j = json.load(file)
-
-	if "asset_type" not in source_j or source_j["asset_type"] != build.ASSET_TYPE_FONT :
-		build.exit_error(f'export_font ERROR: asset_type != "{build.ASSET_TYPE_FONT}", path: {source_j_path}')
-
-	path_png = source_dir + source_j["path_png"]
-	image = Image.open(path_png)
-
-	asm = "; " + source_j_path + "\n"
-	asm_gfx = asm + f"__RAM_DISK_S_{source_name.upper()} = RAM_DISK_S" + "\n"
-	asm_gfx += asm + f"__RAM_DISK_M_{source_name.upper()} = RAM_DISK_M" + "\n"
-	asm_gfx_, gfx_ptrs = gfx_to_asm("__" + source_name, source_j, image)
-	asm_gfx += asm_gfx_
-
-	asm_gfx_ptrs = gfx_ptrs_to_asm(source_name, source_j, font_gfx_ptrs_rd, gfx_ptrs)
-
-	# save asm
-	if not os.path.exists(asm_gfx_ptrs_dir):
-		os.mkdir(asm_gfx_ptrs_dir)
-
-	with open(asm_gfx_ptrs_path, "w") as file:
-		file.write(asm_gfx_ptrs)
-
-	if not os.path.exists(asm_gfx_dir):
-		os.mkdir(asm_gfx_dir)
-
-	with open(asm_gfx_path, "w") as file:
-		file.write(asm_gfx)
-
-def export_if_updated(source_path, generated_dir, force_export, font_gfx_ptrs_rd = False):
-	source_name = common.path_to_basename(source_path)
-
-	gfx_ptrs_path = generated_dir + source_name + "_gfx_ptrs" + build.EXT_ASM
-	gfx_path = generated_dir + source_name + "_gfx" + build.EXT_ASM
-
-	export_paths = {"ram" : gfx_ptrs_path, "ram_disk" : gfx_path }
-
-	if force_export or is_source_updated(source_path):
-		export(source_path,	gfx_ptrs_path, gfx_path, font_gfx_ptrs_rd)
-
-		print(f"export_font: {source_path} got exported.")
-		return True, export_paths
-	else:
-		return False, export_paths
-
-def is_source_updated(source_j_path):
-	with open(source_j_path, "rb") as file:
-		source_j = json.load(file)
-	
-	source_dir = str(Path(source_j_path).parent) + "\\"
-	path_png = source_dir + source_j["path_png"]
-
-	if build.is_file_updated(source_j_path) | build.is_file_updated(path_png):
-		return True
-	return False
-
-

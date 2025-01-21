@@ -1,4 +1,6 @@
 .setting "ShowLocalLabelsAfterCompiling", true
+.setting "Debug", true
+//.setting "OmitUnusedFunctions", true
 
 .include "v6/v6.asm" ; This mast be included before any other code
 .include "game/game.asm"

@@ -19,6 +19,9 @@ def path_to_basename(path):
 	name = os.path.basename(path_wo_ext)
 	return name
 
+def rename_extention(path, ext):
+	return os.path.splitext(path)[0] + ext
+
 def is_bytes_zeros(bytes):
 	for byte in bytes: 
 		if byte != 0 : return False

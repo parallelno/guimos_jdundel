@@ -2,7 +2,7 @@
 .include "v6/v6_os_macro.asm"
 ;=======================================================
 ; RDS (based on CP/M 2.2 and MicroDos 3) library
-; Docs:
+; Refs:
 ; https://github.com/ImproverX/RDS/blob/master/manuals/rds-rpro.txt
 ; https://www.seasip.info/Cpm/bdos.html
 ; https://www.seasip.info/Cpm/fcb.html
@@ -11,6 +11,28 @@
 ; https://zxpress.ru/book_articles.php?id=2318
 ;=======================================================
 
+
+v6_os_errmsg_file_open:			.byte "Error opening file\n$"
+v6_cpm_errmsg_hardware:			.byte "Hardware error\n$"
+v6_cpm_errmsg_invalid_fcb:		.byte "Invalid FCB\n$"
+/*
+errmsg_invalid_read_data:	.byte "Invalid read data\n$"
+
+errmsg_file_make:			.byte "NO DIRECTORY SPACE\n$"
+errmsg_invalid_save_data:	.byte "Invalid save data\n$"
+
+errmsg_delete_file:			.byte "Error deleting file\n$"
+errmsg_search_file:			.byte "Error searching for file\n$"
+errmsg_open_del_file:		.byte "Error open DEL file\n$"
+
+errmsg_file_open_to_save:	.byte "Error opening file for saving\n$"
+errmsg_file_save:	.byte "Error saving file\n$"
+
+errmsg:				.byte "Error\n$"
+msg_file_saved:		.byte "File saved\n$"
+
+donemsg:			.byte "Done\n$"
+*/
 ;=======================================================
 ; OS init. Should be called first in the application
 ; in:
@@ -18,6 +40,8 @@
 ;	de - interruption_addr
 ;=======================================================
 v6_os_init:
+            pop h
+			shld @return+1
 .if DEBUG
 			jmp @print
 @text:
@@ -41,9 +65,9 @@ v6_os_init:
 			SYS_CALL(RDS_SUB_SCR_MODE)
 			; temporaly store the system fdd disk num
 			lda RDS_DISK
-			sta os_disk_tmp
+			sta os_disk
 
-			RAM_DISK_OFF()
+			RAM_DISK_OFF(RAM_DISK0_PORT) ; because the OS uses ram_disk0
 
 			; set the reboot & interrupt routine vectors
 @set_reboot:			
@@ -54,79 +78,91 @@ v6_os_init:
 			shld INT_ADDR + 1
 			lxi sp, STACK_MAIN_PROGRAM_ADDR
 			ei
-			ret
-
-;=======================================================
-; Return to OS. Should be called last in the application
-;=======================================================
-v6_os_exit:
-			di
-			mvi a, RDS_MODE_0
-			sta RDS_MODE
-			SYS_CALL(RDS_SUB_SCR_MODE)
-
-			ei
-			; restore the system fdd disk num
-			lda os_disk_tmp
-			sta RDS_DISK
-			jmp CPM_EXIT
+@return:
+			lxi h, TEMP_ADDR
+			pchl
 
 ;=======================================================
 ; Read file
 ;=======================================================
-bin_data:  // temporally added.
-bin_data_ptr: // temporally added.
-file_name:  // temporally added.
-			.byte "FILENAME"
-			.byte "EXT"
 
-SAVE_FILE_LEN = 0x100 // temporally added.
-save_file_len_ptr: // temporally added.
-			.word 0
-
+; in:
+; os_file_data_ptr - points to a loded file data
+; hl - filename ptr
+; a - the len of the last record (<128)
+; c - the num of full records (128 byte long)
+; out:
+; os_file_data_ptr - points to next byte after loaded file
+.macro LOAD_FILE(filenamePtr, file_len)
+			mvi a, file_len & (CMP_DMA_BUFFER_LEN - 1)
+			mvi c, file_len >> 7
+			lxi h, filenamePtr
+			call load_file
+.endmacro
 
 load_file:
-			lxi h, bin_data
-			shld bin_data_ptr
-
-			lxi h, file_name
+			sta @copy_last_record+1
+			mov a, c
+			sta @check_rec_num+1
 			call set_file_name
-		/*
-			; commented because it uses the system DMA buffer
 
-			; Set DMA buffer address
-			mvi c, CPM_SUB_F_DMAOFF     ; CPM_BDOS function 0x1A: Set DMA Address
-			lxi d, CMP_DMA_BUFFER
-			call CPM_BDOS     ; Call CPM_BDOS
-		*/
 			; Open the file
 			SYS_CALL(CPM_SUB_F_OPEN, CPM_FCB)
-			cpi CPM_ERROR        ; Check if file was opened successfully (0xFF = error)
-			jz error_file_open   ; Handle file open error
+			cpi CPM_MSG_ERROR
+			jz v6_os_error_file_open
 
 @loop:
-			; Read a record from the file
+			; Read the record from the file
 			SYS_CALL(CPM_SUB_F_READ, CPM_FCB)
-			cpi CPM_SUCCESS        ; Check if read was successful (0x00 = success)
-			jnz @done   ; If not, end of file or error
+			cpi CPM_MSG_ERROR
+			jz v6_os_error_hardware
+			cpi CPM_MSG_INVALID_FCB
+			jz v6_os_error_invalid_fcb
+			cpi CPM_MSG_EOF
+			jz @close_file
 
-			; Process the data in CMP_DMA_BUFFER (128 bytes)
-			; (Add your code here to handle the data)
-			call check_file_128
-			jnz error_invalid_read_data
+@check_rec_num:
+			mvi a, TEMP_BYTE
+			ora a
+			jz @copy_last_record
+			dcr a
+			sta @check_rec_num+1
 
-			jmp @loop   ; Read the next record
+			; copy CMP_DMA_BUFFER_LEN bytes, then continue loading
+			lhld os_file_data_ptr
+			lxi d, CMP_DMA_BUFFER_LEN
+			xchg
+			dad d
+			shld os_file_data_ptr
+			lxi h, CMP_DMA_BUFFER
+			lxi b, CMP_DMA_BUFFER_LEN
+			call mem_copy
+			jmp @loop
 
-@done:
+@copy_last_record:
+			lxi d, TEMP_WORD ; the length of the last record (<128) 
+			; check if the len is 0
+			A_TO_ZERO(0)
+			ora e
+			jz @close_file
+			push d
+			; advance os_file_data_ptr to += the length of the last record
+			lhld os_file_data_ptr
+			xchg
+			dad d
+			shld os_file_data_ptr
+			
+			lxi h, CMP_DMA_BUFFER
+			pop b
+			; hl - CMP_DMA_BUFFER
+			; de - os_file_data_ptr before advance
+			; bc - the length of the last record
+			call mem_copy
+@close_file:
 			; Close the file
 			SYS_CALL(CPM_SUB_F_CLOSE, CPM_FCB)
-
-			mvi c, CPM_SUB_PRINT
-			lxi d, donemsg
-			call CPM_BDOS
-			jmp v6_os_exit
-
-
+			ret
+/*
 ;=======================================================
 ; Delete file
 ;=======================================================
@@ -201,33 +237,15 @@ save_file:
 			; Exit program
 			SYS_CALL(CPM_SUB_PRINT, msg_file_saved)
 			ret
-
-;=======================================================
-; Subroutines
-;=======================================================
-
-check_file_128:
-			mvi c, 128
-			lhld bin_data_ptr
-			lxi d, CMP_DMA_BUFFER
-@loop:		mov b, m
-			ldax d
-			cmp b
-			rnz
-			inx h
-			inx d
-			dcr c
-			jnz @loop
-			shld bin_data_ptr
-			ret
+*/
 
 ; in:
-;	hl - ptr tp the file name (8+3 bytes)
+;	hl - ptr to a filename (8 bytes name, 3 bytes extention)
 set_file_name:
-			; Set the file name
+			; Set the filename
 			lxi d, CPM_FCB+1 ; file name addr
-			mvi c, FILE_NAME_LEN
-			call copy_data
+			lxi b, FILE_NAME_LEN
+			call mem_copy
 
 			; Set the disk drive number
 			mvi a, DISK_CURRENT
@@ -235,75 +253,45 @@ set_file_name:
 
 			; Erase the rest of the FCB
 			lxi h, CPM_FCB + FILE_NAME_LEN + 1
-			lxi b, CMP_DMA_BUFFER - (CPM_FCB + FILE_NAME_LEN + 1)
-			call erase_data
+			mvi c, <(CMP_DMA_BUFFER - (CPM_FCB + FILE_NAME_LEN + 1))
+			call mem_erase_short
 			ret
-
-; in:
-;	hl - source data ptr
-;	de - destination data ptr
-;	c - number of bytes to copy
-copy_data:
-			mov a, m
-			stax d
-			inx h
-			inx d
-			dcr c
-			jnz copy_data
-			ret
-
-; erase_data:
-; in:
-;	hl - ptr to the memory to erase
-;	bc - number of bytes to erase
-; out:
-;	hl - ptr to the end of erased memory
-erase_data:
-			mvi e, 0
-@loop:
-			mov m, e	; 8
-			inx h		; 8
-			dcx b		; 8
-			mov a, b	; 8
-			ora c		; 4
-			jnz @loop	; 12
-			ret			; total: 48 cc
-						; bytes: 11
 
 ;=======================================================
 ; Error handling
 ;=======================================================
 
-error_file_open:
-			lxi d, errmsg_file_open
-			jmp exit_w_error
+v6_os_error_file_open:
+			lxi d, v6_os_errmsg_file_open
+			jmp v6_os_exit
 
-error_invalid_read_data:
+v6_os_error_hardware:
+			lxi d, v6_cpm_errmsg_hardware
+			jmp v6_os_exit
+
+v6_os_error_invalid_fcb:
+			lxi b, v6_cpm_errmsg_invalid_fcb
+			jmp v6_os_exit
+/*
+v6_os_error_invalid_read_data:
 			lxi d, errmsg_invalid_read_data
-			jmp exit_w_error
+			jmp v6_os_exit
 
-error_file_make:
+v6_os_error_file_make:
 			lxi d, errmsg_file_make
-			jmp exit_w_error
+			jmp v6_os_exit
+*/
+;=======================================================
+; Return to OS. Should be called last in the application
+;=======================================================
+v6_os_exit:
+			di
+			mvi a, RDS_MODE_0
+			sta RDS_MODE
+			SYS_CALL(RDS_SUB_SCR_MODE)
 
-exit_w_error:
-			SYS_CALL(CPM_SUB_PRINT)
-			jmp 0
-
-errmsg_file_open:			.byte "Error opening file\n$"
-errmsg_invalid_read_data:	.byte "Invalid read data\n$"
-
-errmsg_file_make:			.byte "NO DIRECTORY SPACE\n$"
-errmsg_invalid_save_data:	.byte "Invalid save data\n$"
-
-errmsg_delete_file:			.byte "Error deleting file\n$"
-errmsg_search_file:			.byte "Error searching for file\n$"
-errmsg_open_del_file:		.byte "Error open DEL file\n$"
-
-errmsg_file_open_to_save:	.byte "Error opening file for saving\n$"
-errmsg_file_save:	.byte "Error saving file\n$"
-
-errmsg:				.byte "Error\n$"
-msg_file_saved:		.byte "File saved\n$"
-
-donemsg:			.byte "Done\n$"
+			ei
+			; restore the system fdd disk num
+			lda os_disk
+			sta RDS_DISK
+			jmp CPM_EXIT

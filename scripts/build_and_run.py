@@ -31,5 +31,5 @@ if (args.config_path):
 	build.printc(f"; start the game: {fdd_path}", build.TextColor.GREEN)
 	print("\n")
 
-	common.run_command(f"{build.emulator_path} -path {fdd_path}", "", fdd_path)
+	common.run_command(f"{build.emulator_path.replace("/", "\\")} -path {fdd_path}", "", fdd_path)
 
