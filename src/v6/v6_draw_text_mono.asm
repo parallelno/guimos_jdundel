@@ -1,3 +1,6 @@
+; The monospaced text render procedure and the font data
+
+
 ; draw an FPS counter every second on the screen at FPS_SCR_ADDR addr
 ; works only in the interruption func and in the
 ; main program when the ram-disk is dismount
@@ -5,7 +8,7 @@
 ; A - fps
 ; uses:
 ; BC, DE, HL
-draw_fps:
+.function draw_fps()
 			lhld draw_text_restore_sp+1
 			shld @tmp_restore_sp
 			;lxi h, @fps_text
@@ -25,7 +28,7 @@ draw_fps:
 			.byte $30, $30, $30, 0
 @tmp_restore_sp:
 			.word TEMP_ADDR
-
+.endf
 
 /*
 ; 8-bit integer to ASCII (hex)
@@ -60,13 +63,14 @@ int_to_ascii_hex:
 			mov m, a
 			ret
 */
+
 ; 8-bit integer to ASCII (decimal)
 ; in: 
 ; hl - number to convert
 ; de - location of ASCII string (3 bytes buffer)
 ; use:
 ; bc, a
-int16_to_ascii_dec:
+.function int16_to_ascii_dec()
 			LXI_B( -10000)
 			call int8_to_ascii_dec_decr
 			lxi b, 10000
@@ -93,8 +97,8 @@ int8_to_ascii_dec_decr:
 			jc @loop
 			stax d
 			inx	d
-			ret
-
+			;ret ; because of .endif
+.endf
 
 ; draw int8 as an acii text
 ; in:
@@ -203,9 +207,8 @@ draw_text_restore_sp:
 	.endloop
 .endmacro
 
-
 test_font:
-/*
+.if TEXT_MONOSPACED_CHARS
 			; space ($00)
 			.byte 0,0,0,0
 			.byte 0,0,0,0
@@ -265,7 +268,7 @@ test_font:
 			.byte 0	
 			; rest of the alphabet
 			.storage 8*$29, 0
-*/
+.endif
 			; 0 ($30)
 			.byte %01111100
 			.byte %10000110
@@ -355,15 +358,4 @@ test_font:
 			.byte %00000100
 			.byte %00001000
 			.byte %01110000
-			.byte 0	
-/*
-			; heart ($3A)
-			.byte %0110110
-			.byte %1111101
-			.byte %1111101
-			.byte %1111111
-			.byte %0111110
-			.byte %0011100
-			.byte %0001000
-			.byte 0				
-*/
+			.byte 0

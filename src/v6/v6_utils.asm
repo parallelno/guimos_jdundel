@@ -74,7 +74,7 @@ mem_copy:
 ; use:
 ; hl
 
-.macro CLEAR_MEM_SP(disable_int)
+.macro MEM_ERASE_SP(disable_int)
 		.if disable_int
 			di
 		.endif
@@ -120,7 +120,7 @@ mem_fill_sp:
 			shld mem_erase_sp_filler + 1
 			ret
 
-; clear the ram-disk using sp
+; clear the ram-disk using sp operations
 ; disables interruptions
 ; input:
 .function clear_ram_disk()
@@ -130,26 +130,26 @@ mem_fill_sp:
 			mvi a, RAM_DISK_S0
 			push b
 			push d
-			CLEAR_MEM_SP(true)
+			MEM_ERASE_SP(true)
 			pop d
 			pop b
 
 			mvi a, RAM_DISK_S1
 			push b
 			push d
-			CLEAR_MEM_SP(true)
+			MEM_ERASE_SP(true)
 			pop d
 			pop b
 
 			mvi a, RAM_DISK_S2
 			push b
 			push d
-			CLEAR_MEM_SP(true)
+			MEM_ERASE_SP(true)
 			pop d
 			pop b
 
 			mvi a, RAM_DISK_S3
-			CLEAR_MEM_SP(true)
+			MEM_ERASE_SP(true)
 			//ret ; commented out because .endf is replaced with ret
 .endf
 
@@ -176,18 +176,19 @@ screen_erase_block:
 			ret
 
 
-;copy the pallete from a ram-disk, then requet for using it
+; Copy the pallete from a ram-disk, then request for using it
 ; in:
 ; de - ram-disk palette addr
 ; h - ram-disk activation command
-copy_palette_request_update:
+.function copy_palette_request_update()
 			lxi b, palette
 			COPY_FROM_RAM_DISK(PALETTE_COLORS)
 			lxi h, palette_update_request
 			mvi m, PALETTE_UPD_REQ_YES
-			ret
+			;ret
+.endf
 
-; Set palette
+; Set the palette
 ; input: hl - the addr of the last item in the palette
 ; use: hl, b, a
 set_palette:
@@ -358,14 +359,11 @@ copy_to_ram_disk32_end:
 ; de - data addr in the ram-disk
 ; bc - destination addr
 
-; ? check if it is more efficient to copy a data stored
-; in $8000 and higher with a direct access via mov
-; research:
+; performance related details:
 ; using stack ops to copy data adds 128 cc overhead
 ; replacing pop with mov_(2), inx_(2), adds 8 cc per byte overhead
 ; that said, copying with pop becomes efficient if a copy len > 16
-; it is very often case. No need a direct access via mov
-copy_from_ram_disk:
+.function copy_from_ram_disk()
 			; store sp
 			push h
 			lxi h, $0002
@@ -388,7 +386,10 @@ copy_from_ram_disk:
 			dcr e
 			jnz @loop
 			jmp restore_sp
+.endf
 
 ; empty func
-empty_func:
-			ret
+; used as a placeholder for empty callbacks
+.function empty_func()
+			;ret ; commented because of .endf
+.endf

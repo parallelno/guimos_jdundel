@@ -40,6 +40,11 @@ donemsg:			.byte "Done\n$"
 ;	de - interruption_addr
 ;=======================================================
 v6_os_init:
+			shld @set_reboot+1
+			xchg
+			shld @set_int+1
+
+			; take from the stack the return addr
             pop h
 			shld @return+1
 .if DEBUG
@@ -49,10 +54,6 @@ v6_os_init:
 @print:
 			SYS_CALL(CPM_SUB_PRINT, @text)
 .endif
-
-			shld @set_reboot+1
-			xchg
-			shld @set_int+1
 
 			di
 			lxi sp, 0 ; TODO: check if it's required for call 5
@@ -67,7 +68,11 @@ v6_os_init:
 			lda RDS_DISK
 			sta os_disk
 
-			RAM_DISK_OFF(RAM_DISK0_PORT) ; because the OS uses ram_disk0
+			RAM_DISK_OFF(RAM_DISK0_PORT)	; disable the ram-disk 0 because the OS uses it
+			RAM_DISK_OFF()					; disable the ram-disk 1 because the game uses it
+			mvi a, OPCODE_JMP
+			sta RESTART_ADDR
+			sta INT_ADDR
 
 			; set the reboot & interrupt routine vectors
 @set_reboot:			

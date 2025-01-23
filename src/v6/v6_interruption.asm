@@ -75,6 +75,7 @@ palette_update_request_:
 			lxi h, game_updates_required
 			inr m
 @skip_update:
+.if DRAW_FPS			
 			; fps update
 			lxi h, ints_per_sec_counter
 			dcr m
@@ -92,7 +93,11 @@ interruption_fps:
 			call draw_fps
 			lxi h, ints_per_sec_counter
 			mvi m, INTS_PER_SEC
-interruption_no_fps_update:				
+interruption_no_fps_update:
+; a lopped counter increased every game draw call
+game_draws_counter = interruption_fps + 1
+.endif
+
 ;======================================================================================================================			
 ;
 ;			; interruption main logic end
@@ -118,6 +123,5 @@ interruption_return:
 ints_per_sec_counter:
 			.byte INTS_PER_SEC
 
-; a lopped counter increased every game draw call
-game_draws_counter = interruption_fps + 1
+
 palette_update_request = palette_update_request_ + 1

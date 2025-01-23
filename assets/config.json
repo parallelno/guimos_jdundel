@@ -3,7 +3,9 @@
 	"com_filename" : "gj",
 	"asset_type" : "config",
 	"args" : [
-		"DEBUG = 1"
+		"DEBUG = 1",
+		"TEXT_MONOSPACED_CHARS = 0",
+		"DRAW_FPS = 0"
 	],
 	"dependencies" :
 	{
