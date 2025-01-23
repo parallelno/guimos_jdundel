@@ -20,9 +20,13 @@ os_file_data_ptr:
 
 ;=============================================================================
 ;
-; global states 2
-;
-; palette
+; global states
+
+; palette are a 16 byte buffer
+; each color is a byte coded as BBGGGRRR
+;	BB - 2 bit blue color
+;	GGG - 3 bit green color
+;	RRR - 3 bit red color
 palette:
 			.storage PALETTE_COLORS
 border_color_idx:

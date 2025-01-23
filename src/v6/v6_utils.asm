@@ -291,7 +291,6 @@ get_word_from_ram_disk:
 			lxi sp, TEMP_ADDR
 			RAM_DISK_OFF()
 			ret
-get_word_from_ram_disk_end:
 
 /*
 ; a special version of a func above for accessing addr $8000 and higher
@@ -350,7 +349,6 @@ copy_to_ram_disk32:
 			call copy_from_ram_disk
 		.endif
 .endmacro
-copy_to_ram_disk32_end:
 
 ; Copy data (max 510) from the ram-disk to ram w/o blocking interruptions
 ; input:

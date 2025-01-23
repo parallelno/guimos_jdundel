@@ -33,7 +33,6 @@ copy_to_ram_disk:
 			lxi sp, TEMP_ADDR
 			RAM_DISK_OFF_NO_RESTORE()
 			ret
-copy_to_ram_disk_end:
 
 .macro COPY_TO_RAM_DISK(count)
 		.loop count
