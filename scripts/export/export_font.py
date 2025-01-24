@@ -8,8 +8,8 @@ import utils.build as build
 def export_if_updated(asset_j_path, export_asm_dir, export_bin_dir, force_export):
 	source_name = common.path_to_basename(asset_j_path)
 
-	asm_gfx_ptrs_path = export_asm_dir + source_name + "_gfx_ptrs" + build.EXT_ASM
-	asm_gfx_path = export_asm_dir + source_name + "_gfx" + build.EXT_ASM
+	asm_gfx_ptrs_path = export_asm_dir + source_name + "_meta" + build.EXT_ASM
+	asm_gfx_path = export_asm_dir + source_name + "_data" + build.EXT_ASM
 	bin_gfx_path = export_bin_dir + build.get_cpm_filename(source_name)
 
 	if force_export or is_source_updated(asset_j_path):
@@ -45,13 +45,7 @@ def export_asm(asset_j_path, asm_gfx_ptrs_path, asm_gfx_path, bin_gfx_path):
 	path_png = source_dir + source_j["path_png"]
 	image = Image.open(path_png)
 
-	asm = "; " + asset_j_path + "\n"
-	asm_gfx = ""
-	# TODO: define the correct RAM_DISK_S and RAM_DISK_M
-	#asm_gfx += asm + f"__RAM_DISK_S_{source_name.upper()} = RAM_DISK_S" + "\n"
-	#asm_gfx += asm + f"__RAM_DISK_M_{source_name.upper()} = RAM_DISK_M" + "\n"
-	asm_gfx_, gfx_ptrs = gfx_to_asm("__" + source_name, source_j, image)
-	asm_gfx += asm_gfx_
+	asm_gfx, gfx_ptrs = gfx_to_asm("__" + source_name, source_j, image)
 
 	asm_gfx_ptrs = gfx_ptrs_to_asm(source_name, source_j, gfx_ptrs)
 
@@ -63,30 +57,7 @@ def export_asm(asset_j_path, asm_gfx_ptrs_path, asm_gfx_path, bin_gfx_path):
 		file.write(asm_gfx)
 	
 	# compile and save the gfx bin files
-	build.compile_asm(asm_gfx_path, bin_gfx_path)
-	file_len = os.path.getsize(bin_gfx_path)
-	last_record_len = file_len & 0x7f
-
-	# add the last record len to the asm gfx ptrs
-	asm_gfx_ptrs += "\n"
-	asm_gfx_ptrs += f"{source_name.upper()}_FILE_LEN = {file_len}\n"
-	asm_gfx_ptrs += f"{source_name.upper()}_LAST_RECORD_LEN = {last_record_len}\n"
-	# add the filename to the asm gfx ptrs
-	cmp_filename = os.path.basename(bin_gfx_path).split(".")
-	cmp_filename_wo_ext_len = len(cmp_filename[0])
-	asm_gfx_ptrs += f'{source_name.upper()}_filename\n'
-	asm_gfx_ptrs += f'			.byte "{cmp_filename[0]}" ; filename\n'
-	if cmp_filename_wo_ext_len < build.CPM_FILENAME_LEN:
-		filename_white_chars = " " * (build.CPM_FILENAME_LEN - len(cmp_filename[0]))
-		asm_gfx_ptrs += f'			.byte "{filename_white_chars}" ; filename white chars\n'
-	asm_gfx_ptrs += f'			.byte "{cmp_filename[1]}" ; extension\n'
-
-	# save the asm gfx ptrs
-	asm_gfx_ptrs_dir = str(Path(asm_gfx_ptrs_path).parent) + "/"	
-	if not os.path.exists(asm_gfx_ptrs_dir):
-		os.mkdir(asm_gfx_ptrs_dir)
-	with open(asm_gfx_ptrs_path, "w") as file:
-		file.write(asm_gfx_ptrs)
+	build.export_fdd_file(asm_gfx_ptrs_path, asm_gfx_path, bin_gfx_path, asm_gfx_ptrs)
 
 	return bin_gfx_path
 

@@ -1,11 +1,92 @@
 import struct
 import sys
 import os
+import json
 from pathlib import Path
 import utils.common as common
 import utils.build as build
 import lhafile
 import io
+
+
+def export_if_updated(asset_j_path, export_asm_dir, export_bin_dir, force_export):
+	source_name = common.path_to_basename(asset_j_path)
+
+	# linked to the main program
+	asm_meta_path = export_asm_dir + source_name + "_meta" + build.EXT_ASM
+	# exported into the fdd file
+	asm_data_path = export_asm_dir + source_name + "_data" + build.EXT_ASM
+	bin_path = export_bin_dir + build.get_cpm_filename(source_name)
+
+	if force_export or is_source_updated(asset_j_path):
+		bin_path = export_asm(asset_j_path, asm_meta_path, asm_data_path, bin_path)
+
+		print(f"export_music: {asset_j_path} got exported.")
+		return bin_path
+	
+	return None
+
+def is_source_updated(asset_j_path):
+	with open(asset_j_path, "rb") as file:
+		source_j = json.load(file)
+	
+	source_dir = str(Path(asset_j_path).parent) + "/"
+	path_ym = source_dir + source_j["path_ym"]
+
+	if build.is_file_updated(asset_j_path) | build.is_file_updated(path_ym):
+		return True
+	return False
+
+def export_asm(asset_j_path, asm_meta_path, asm_data_path, bin_path, clean_tmp = True):
+
+	# create a folder
+	export_dir = str(Path(asm_meta_path).parent) + "/"
+	if not os.path.exists(export_dir):
+		os.mkdir(export_dir)
+
+	try:
+		with open(asset_j_path, "rb") as file:
+			source_j = json.load(file)
+
+			source_dir = str(Path(asset_j_path).parent) + "/"
+			song_path = source_dir + source_j["path_ym"]
+
+		[reg_data, comment1, comment2, comment3] = readym(song_path)
+	except:
+		build.exit_error(f'export_music ERROR: reading file: {song_path}')
+
+	# save the asm
+	source_name = os.path.splitext(asset_j_path)[0]
+	with open(asm_data_path, "w") as file_inc:
+		# task stacks
+		# song's credits
+		file_inc.write(f'; {comment1}\n; {comment2}\n; {comment3}\n')
+		# reg_data ptrs. 
+		file_inc.write(f'gcplayer_ay_reg_data_ptrs: .word ')
+		for i, _ in enumerate(reg_data[0:14]):
+			file_inc.write(f'ay_reg_data{i:02d}, ')
+		file_inc.write(f'\n')
+
+		for i, c in enumerate(reg_data[0:14]):
+			bin_file = f"source_name{i:02d}{build.EXT_BIN}"
+			zx0File = f"source_name{i:02d}{build.packer_ext}"
+			with open(bin_file, "wb") as f:
+				f.write(c)
+			
+			common.delete_file(zx0File)
+			common.run_command(f"{build.packer_path.replace('/', '\\')} -w 256 {bin_file} {zx0File}")
+
+			with open(zx0File, "rb") as f:
+				dbname = f"ay_reg_data{i:02d}"
+				data = f.read()
+				file_inc.write(f'{dbname}: .byte ' + ",".join("$%02x" % x for x in data) + "\n")
+			if clean_tmp:
+				print("export_music: clean up tmp resources")
+				common.delete_file(bin_file)
+				common.delete_file(zx0File)
+
+	# save the bin
+	build.export_fdd_file(asm_meta_path, asm_data_path, bin_path)
 
 
 def chunker(seq, size):
@@ -60,66 +141,9 @@ def readym(filename):
 		#decimated = complete[::2]
 		#decimated = [x if x != 255 else y for x, y in chu]
 		decimated = complete
-		#print(f'export_music: complete[{i}]=', complete)
-		#print(f'export_music: decimated[{i}]=', decimated)
 		decbytes = bytes(decimated)
 		regs.append(decbytes)  ## brutal decimator
 
 	f.close()
 
 	return [regs, comment1, comment2, comment3]
-
-#=====================================================
-def export_if_updated(source_path, generated_dir, force_export):
-	source_name = common.path_to_basename(source_path)
-
-	export_paths = {"ram_disk" : generated_dir + source_name + build.EXT_ASM }
-
-	if force_export or build.is_file_updated(source_path):
-		export( source_path, export_paths["ram_disk"])
-			
-		print(f"export_music: {source_path} got exported.")		
-		return True, export_paths
-	else:
-		return False, export_paths
-
-def export(source_path, export_path, clean_tmp = True):
-
-	source_name = os.path.splitext(source_path)[0]
-	export_dir = str(Path(export_path).parent) + "\\"
-	if not os.path.exists(export_dir):
-		os.mkdir(export_dir)
-
-	try:
-		[reg_data, comment1, comment2, comment3] = readym(source_path)
-	except:
-		sys.stderr.write(f'export_music: error reading f{source_path}\n')
-		exit(1)
-
-	with open(export_path, "w") as file_inc:
-		# task stacks
-		# song's credits
-		file_inc.write(f'; {comment1}\n; {comment2}\n; {comment3}\n')
-		# reg_data ptrs. 
-		file_inc.write(f'gcplayer_ay_reg_data_ptrs: .word ')
-		for i, _ in enumerate(reg_data[0:14]):
-			file_inc.write(f'ay_reg_data{i:02d}, ')
-		file_inc.write(f'\n')
-
-		for i, c in enumerate(reg_data[0:14]):
-			bin_file = f"source_name{i:02d}{build.EXT_BIN}"
-			zx0File = f"source_name{i:02d}{build.EXT_ZX0}"
-			with open(bin_file, "wb") as f:
-				f.write(c)
-			
-			common.delete_file(zx0File)
-			common.run_command(f"{build.zx0salvadore_path} -w 256 {bin_file} {zx0File}")
-
-			with open(zx0File, "rb") as f:
-				dbname = f"ay_reg_data{i:02d}"
-				data = f.read()
-				file_inc.write(f'{dbname}: .byte ' + ",".join("$%02x" % x for x in data) + "\n")
-			if clean_tmp:
-				print("export_music: clean up tmp resources")
-				common.delete_file(bin_file)
-				common.delete_file(zx0File)

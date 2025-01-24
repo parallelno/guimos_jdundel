@@ -9,11 +9,12 @@ main_start:
 			mvi h, 0
 			copy_palette_request_update()
 
+
 			; init the files data ptr
-			lxi h, 0x6000
+			lxi h, SCR_ADDR
 			shld os_file_data_ptr
 			; load the font
-			LOAD_FILE(FONT_filename, FONT_FILE_LEN)
+			LOAD_FILE(FONT_META_filename, FONT_META_FILE_LEN)
 			
 			lxi b, 0x6000
 			text_ex_rd_init()
@@ -23,8 +24,14 @@ main_start:
 			lxi b, (0)<<8 | 100
 			CALL_RAM_DISK_FUNC(text_ex_rd_scr1, 0)
 
-			jmp *
+			jmp main_loop
 			ret
+
+
+main_loop:
+
+
+			jmp main_loop
 
 __text_main_menu_settings:
 			TEXT("START GAME", _LINE_BREAK_)

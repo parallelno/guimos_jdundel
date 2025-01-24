@@ -1,6 +1,7 @@
 import os
 import sqlite3
 import utils.common as common
+from pathlib import Path
 
 SEGMENT_0000_7F00_ADDR = 0x0000
 SEGMENT_8000_0000_ADDR = 0x8000
@@ -65,7 +66,7 @@ _PARAG_BREAK_	= "_PARAG_BREAK_"
 _EOD_			= "_EOD_"
 
 # global consts
-BUILD_PATH = "./build/"
+BUILD_PATH = "build/"
 
 # global vars
 build_db_path = "./build/build.db"
@@ -77,9 +78,9 @@ build_subfolder = BUILD_PATH + build_name + "/"
 
 assembler_labels_cmd = " -x"
 
-zx0_path = "./tools/zx0 -c"
-zx0salvadore_path = "./tools/zx0salvador.exe -v -classic"
-upkr_path = "./tools/upkr.exe --z80"
+zx0_path = "tools/zx0 -c"
+zx0salvadore_path = "tools/zx0salvador.exe -v -classic"
+upkr_path = "tools/upkr.exe --z80"
 
 packer_path 	= ""
 packer_ext		= ""
@@ -128,24 +129,25 @@ def set_assembler_labels_cmd(cmd):
 	global assembler_labels_cmd
 	assembler_labels_cmd = cmd
 
-def set_packer(packer):
+def set_packer(_packer, _packer_path):
 	global packer_path
+	global packer
 	global packer_ext
 	global packer_bin_ext
-	if packer == PACKER_ZX0:
-		packer_path = zx0_path
+	if _packer == PACKER_ZX0:
 		packer_ext = EXT_ZX0
 		packer_bin_ext = EXT_BIN_ZX0
 
-	if packer == PACKER_ZX0_SALVADORE:
-		packer_path = zx0salvadore_path
+	elif _packer == PACKER_ZX0_SALVADORE:
 		packer_ext = EXT_ZX0
 		packer_bin_ext = EXT_BIN_ZX0
 
-	if packer == PACKER_UPKR:
-		packer_path = upkr_path
+	elif _packer == PACKER_UPKR:
 		packer_ext = EXT_UPKR
 		packer_bin_ext = EXT_BIN_UPKR
+
+	packer_path = _packer_path
+	packer = _packer
 
 
 def set_emulator_path(path):
@@ -341,7 +343,7 @@ def compile_asm(source_path, bin_path, labels_path = ""):
 			print("\n")
 
 	else:
-		common.run_command(f"{assembler_path} {source_path} {bin_path}")
+		common.run_command(f"{assembler_path.replace('/', '\\')} {source_path} {bin_path}")
 		
 		if not assembler_path:
 			exit_error(f'ERROR: the compiler path was not provided')
@@ -359,3 +361,39 @@ def compile_asm(source_path, bin_path, labels_path = ""):
 CPM_FILENAME_LEN = 8
 def get_cpm_filename(filename, ext = EXT_BIN):	
 	return (filename[:CPM_FILENAME_LEN] + ext).upper()
+
+def export_fdd_file(asm_meta_path, asm_data_path, bin_path, asm_meta_body = ""):
+	source_name = common.path_to_basename(asm_meta_path)
+	
+	# compile the asm
+	compile_asm(asm_data_path, bin_path)
+	
+	file_len = os.path.getsize(bin_path)
+	last_record_len = file_len & 0x7f
+
+	# add the last record len to the meta data
+	asm_meta = "; fdd bin file metadata\n"
+	asm_meta += "; asm data file: " + asm_data_path + "\n"
+	asm_meta += "; bin file: " + bin_path + "\n"
+	asm_meta += "\n"
+	asm_meta += f"{source_name.upper()}_FILE_LEN = {file_len}\n"
+	asm_meta += f"{source_name.upper()}_LAST_RECORD_LEN = {last_record_len}\n"
+	# add the filename to the meta data
+	cmp_filename = os.path.basename(bin_path).split(".")
+	cmp_filename_wo_ext_len = len(cmp_filename[0])
+	asm_meta += f'{source_name.upper()}_filename\n'
+	asm_meta += f'			.byte "{cmp_filename[0]}" ; filename\n'
+	if cmp_filename_wo_ext_len < CPM_FILENAME_LEN:
+		filename_white_chars = " " * (CPM_FILENAME_LEN - len(cmp_filename[0]))
+		asm_meta += f'			.byte "{filename_white_chars}" ; filename white chars\n'
+	asm_meta += f'			.byte "{cmp_filename[1]}" ; extension\n'
+	asm_meta += "\n"
+
+	asm_meta += asm_meta_body
+
+	# save the asm meta file
+	asm_gfx_ptrs_dir = str(Path(asm_meta_path).parent) + "/"	
+	if not os.path.exists(asm_gfx_ptrs_dir):
+		os.mkdir(asm_gfx_ptrs_dir)
+	with open(asm_meta_path, "w") as file:
+		file.write(asm_meta)

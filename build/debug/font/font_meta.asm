@@ -1,3 +1,14 @@
+; fdd bin file metadata
+; asm data file: build/debug/font/font_data.asm
+; bin file: build/debug/bin/FONT.BIN
+
+FONT_META_FILE_LEN = 1624
+FONT_META_LAST_RECORD_LEN = 88
+FONT_META_filename
+			.byte "FONT" ; filename
+			.byte "    " ; filename white chars
+			.byte "BIN" ; extension
+
 ; relative labels. to make it global call __text_ex_rd_init
 font_0 = 2
 font_1 = 26
@@ -86,10 +97,3 @@ GFX_PTRS_LEN = 90
 			.word font_1, font_2, font_3, font_4, font_5, font_6, font_7, font_8, font_9, font_colon, font_space, font_space, font_space, font_space, font_question, font_space, 
 			.word font_A, font_B, font_C, font_D, font_E, font_F, font_G, font_H, font_I, font_J, font_K, font_L, font_M, font_N, font_O, font_P, 
 			.word font_Q, font_R, font_S, font_T, font_U, font_V, font_W, font_X, font_Y, font_Z, 
-
-FONT_FILE_LEN = 1624
-FONT_LAST_RECORD_LEN = 88
-FONT_filename
-			.byte "FONT" ; filename
-			.byte "    " ; filename white chars
-			.byte "BIN" ; extension
