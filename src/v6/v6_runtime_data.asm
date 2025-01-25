@@ -1,3 +1,5 @@
+.include "src/v6/sound/v6_gc_runtime_data.asm"
+
 ; contains the current RAM-disk mode
 ; to restore by the interrupt routine after its execution
 ram_disk_mode:

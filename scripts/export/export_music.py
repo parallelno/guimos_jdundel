@@ -61,8 +61,12 @@ def export_asm(asset_j_path, asm_meta_path, asm_data_path, bin_path, clean_tmp =
 		# task stacks
 		# song's credits
 		file_inc.write(f'; {comment1}\n; {comment2}\n; {comment3}\n')
+		
+		# org
+		file_inc.write(f'.org 0\n')
+
 		# reg_data ptrs. 
-		file_inc.write(f'gcplayer_ay_reg_data_ptrs: .word ')
+		file_inc.write(f'v6_gc_ay_reg_data_ptrs: .word ')
 		for i, _ in enumerate(reg_data[0:14]):
 			file_inc.write(f'ay_reg_data{i:02d}, ')
 		file_inc.write(f'\n')

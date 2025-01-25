@@ -1,5 +1,5 @@
 ; this is a subset of utills required only for main_unpacker
-.include "v6/v6_dzx0.asm"
+.include "src/v6/v6_dzx0.asm"
 
 ;========================================
 ; copy a buffer into the ram-disk

@@ -1,5 +1,5 @@
-.include "v6/v6_rnd.asm"
-.include "v6/v6_utils_unpacker.asm"
+.include "src/v6/v6_rnd.asm"
+.include "src/v6/v6_utils_unpacker.asm"
 
 ; shared chunk of code to restore SP
 ; and dismount the ram-disk
@@ -346,7 +346,7 @@ copy_to_ram_disk32:
 		.endif
 		.if length > 0
 			mvi l, length/2
-			call copy_from_ram_disk
+			copy_from_ram_disk()
 		.endif
 .endmacro
 

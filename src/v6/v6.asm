@@ -1,14 +1,15 @@
-.org	$100
+.org	0x100
 jmp v6_main_init
 
-.include "v6/v6_macro.asm"
-.include "v6/v6_consts.asm"
-.include "v6/v6_os.asm"
-.include "v6/v6_utils.asm"
-.include "v6/v6_controls.asm"
-.include "v6/v6_interruption.asm"
-.include "v6/v6_draw_text_mono.asm"
-.include "v6/v6_draw_text_ex.asm"
+.include "src/v6/v6_macros.asm"
+.include "src/v6/v6_consts.asm"
+.include "src/v6/v6_os.asm"
+.include "src/v6/v6_utils.asm"
+.include "src/v6/v6_controls.asm"
+.include "src/v6/v6_interruption.asm"
+.include "src/v6/v6_draw_text_mono.asm"
+.include "src/v6/v6_draw_text_ex.asm"
+.include "src/v6/sound/v6_sound.asm"
 
 v6_main_init:
 			lxi h, v6_main_reboot

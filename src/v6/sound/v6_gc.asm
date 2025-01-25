@@ -1,0 +1,436 @@
+; gigachad16 music player
+; it uses AY-3-8910 sound chip
+; info/credits:
+; music has to be compressed into 14 buffers each for every AY register
+; this player decompresses and plays 14 parallel streams.
+; Only one task is executed each frame that decompresses 16 bytes for one of the ay registers.
+; Performance: 5-20 of 312 scanlines per a frame
+; Original player code was written by svofski 2022
+; Zx0 decompression port to i8080 was made by ivagor 2022
+
+.include "src/v6/sound/v6_gc_consts.asm"
+
+setting_music	.byte SETTING_ON
+
+; ex. CALL_RAM_DISK_FUNC(v6_gc_init, __RAM_DISK_M_GCPLAYER | RAM_DISK_M_8F)
+v6_gc_init:
+			call v6_gc_mute
+			call v6_gc_clear_buffers
+			ret
+
+; set a new song
+; hl - the song data
+v6_gc_set_song:
+			push h
+			call v6_gc_mute
+			pop h
+
+			shld v6_song_ptr
+			; update the song ay_reg_data_ptrs
+			mov d, h
+			mov e, l
+			mvi c, GC_TASKS ; 72 cc
+@loop:
+			mov a, m
+			add e
+			mov m, a
+			inx h
+			mov a, m
+			adc d
+			mov m, a
+			inx h
+
+			dcr c
+			jnz @loop ; loop 76
+			ret
+
+
+; uses to start a new song or to repeat a finished song
+; ex. CALL_RAM_DISK_FUNC(v6_gc_start_repeat, __RAM_DISK_S_GCPLAYER | __RAM_DISK_M_GCPLAYER | RAM_DISK_M_8F)
+; requires a call v6_gc_set_song upfront!
+v6_gc_start:
+			call v6_gc_tasks_init
+			call v6_gc_scheduler_init
+
+			; set buffer_idx GC_TASKS bytes prior to the init unpacking addr (0),
+			; to let zx0 unpack data for GC_TASKS number of regs
+			; that means the music will be GC_TASKS number of frames delayed
+			mvi a, -GC_TASKS
+			sta v6_gc_buffer_idx
+			mvi a, -1
+			sta v6_gc_task_id
+
+			call v6_gc_unmute
+			ret
+
+
+; called by the unterruption routine
+; ex. CALL_RAM_DISK_FUNC_NO_RESTORE(v6_gc_update, __RAM_DISK_S_GCPLAYER | __RAM_DISK_M_GCPLAYER | RAM_DISK_M_8F)
+v6_gc_update:
+			; return if muted
+			lda setting_music
+			cpi SETTING_ON
+			rnz
+
+			; handle the current task
+			lxi h, v6_gc_task_id
+			mov a, m
+			inr a
+			ani $f
+			mov m, a
+			; if the task idx is higher GC_TASKS number, skip it
+			cpi GC_TASKS
+			jnc @skip
+			call v6_gc_scheduler_update
+@skip:
+			lxi h, v6_gc_buffer_idx
+			inr m
+			call v6_gc_ay_update
+			ret
+
+
+;==========================================
+; create a v6_gc_unpack tasks
+;
+v6_gc_tasks_init:
+			di
+			lxi h, 0
+			dad sp
+			shld @restore_sp+1
+
+			lxi sp, v6_gc_task_stack_end
+			lhld v6_song_ptr
+			lxi d, GC_TASKS * ADDR_LEN
+			dad d
+			; b = 0, c = a task counter * 2
+			lxi b, (GC_TASKS - 1) * ADDR_LEN
+@loop:
+			; store zx0 entry point to a task stack
+			lxi h, v6_gc_unpack
+			push h
+			; store the buffer addr to a task stack
+			mov a, c
+			rrc
+			adi >v6_gc_buffer
+			mov h, a
+			mov l, b
+			push h
+			; store the reg_data addr to a task stack
+			xchg
+			dcx h
+			mov d, m
+			dcx h
+			mov e, m
+			push d
+			xchg
+			; store taskSP to v6_gc_task_sps
+			lxi h, v6_gc_task_sps
+			dad b
+			shld @storeTaskSP+1
+			; move sp back 4 bytes to skip storing HL, PSW because zx0 doesnt use them to init
+			LXI_H_NEG(WORD_LEN * 2)
+			dad sp
+@storeTaskSP:
+			shld TEMP_ADDR
+			; move SP to the previous task stack end
+			LXI_H_NEG(GC_STACK_SIZE - WORD_LEN * 3)
+			dad sp
+
+			sphl
+			dcr c
+			dcr c
+			jp @loop
+@restore_sp: lxi sp, TEMP_ADDR
+			ei
+			ret
+
+
+; Set the current task stack pointer to the first task stack pointer
+v6_gc_scheduler_init:
+			lxi h, v6_gc_task_sps
+			shld v6_gc_current_task_spp
+			ret
+
+
+; it clears the last 14 bytes of every buffer
+; to prevent player to play gugbage data
+; when it repeats the current song or
+; play a new one
+v6_gc_clear_buffers:
+			mvi h, >v6_gc_buffer
+			mvi a, >v6_gc_buffer_end
+@next_buff:
+			mvi l, -GC_TASKS
+@loop:
+			mvi m, 0
+			inr l
+			jnz @loop
+			inr h
+			cmp h
+			jnz @next_buff
+			ret
+
+
+; this func restores the context of the current task
+; then calls v6_gc_unpack to let it continue unpacking reg_data
+; this code is performed during an interruption
+v6_gc_scheduler_update:
+			lxi h, 0
+			dad sp
+			shld GCPlayerSchedulerRestoreSp+1
+			lhld v6_gc_current_task_spp
+			mov e, m
+			inx h
+			mov d, m ; de = &v6_gc_task_sps[n]
+			xchg
+			sphl
+			; restore a task context and return into it
+			pop psw
+			pop h
+			pop d
+			pop b
+			; go to v6_gc_unpack
+			ret
+
+; v6_gc_unpack task calls this after unpacking 16 bytes.
+; it stores all the registers of the current task
+v6_gc_scheduler_store_task_context:
+			push b
+			push d
+			push h
+			push psw
+
+			lxi h, 0
+			dad sp
+			xchg
+			lhld v6_gc_current_task_spp
+			mov m, e
+			inx h
+			mov m, d
+			inx h
+			mvi a, <v6_gc_task_sps_end
+			cmp l
+			jnz @storeNextTaskSp
+			mvi a, >v6_gc_task_sps_end
+			cmp h
+			jnz @storeNextTaskSp
+			; (v6_gc_current_task_spp) = v6_gc_task_sps[0]
+			lxi h, v6_gc_task_sps
+@storeNextTaskSp:
+			shld v6_gc_current_task_spp
+GCPlayerSchedulerRestoreSp:
+			lxi sp, TEMP_ADDR
+			ret
+
+
+; unpacks 16 bytes of reg_data for the current task
+; this function is called during an interruption
+; Parameters (forward):
+; DE: source addr (compressed data)
+; BC: destination addr (decompressing)
+; unpack every 16 bytes into a current task circular buffer,
+; then call v6_gc_scheduler_store_task_context
+v6_gc_unpack:
+			lxi h, $ffff
+			push h
+			inx h
+			mvi a, $80
+@literals:
+			call @Elias
+			push psw
+@Ldir1:
+			ldax d
+			stax b
+			inx d
+			inr c 		; to stay inside the circular buffer
+			; check if it's time to have a break
+			mvi a, $0f
+			ana c
+			cz v6_gc_scheduler_store_task_context
+
+			dcx h
+			mov a, h
+			ora l
+			jnz @Ldir1
+			pop psw
+			add a
+
+			jc @new_offset
+			call @Elias
+@copy:
+			xchg
+			xthl
+			push h
+			dad b
+			mov h, b ; to stay inside the circular buffer
+			xchg
+
+@ldirFromBuff:
+			push psw
+@ldirFromBuff1:
+			ldax d
+			stax b
+			inr e		; to stay inside the circular buffer
+			inr c 		; to stay inside the circular buffer
+			; check if it's time to have a break
+			mvi a, $0f
+			ana c
+			cz v6_gc_scheduler_store_task_context
+
+			dcx h
+			mov a, h
+			ora l
+			jnz @ldirFromBuff1
+			mvi h, 0	; ----------- ???
+			pop psw
+			add a
+
+			xchg
+			pop h
+			xthl
+			xchg
+			jnc @literals
+@new_offset:
+			call @Elias
+			mov h, a
+			pop psw
+			xra a
+			sub l
+			jz @exit
+			push h
+			rar
+			mov h, a
+			ldax d
+			rar
+			mov l, a
+			inx d
+			xthl
+			mov a, h
+			lxi h, 1
+			cnc @elias_backtrack
+			inx h
+			jmp @copy
+
+@Elias:
+			inr l
+@elias_loop:
+			add a
+			jnz @elias_skip
+			ldax d
+			inx d
+			ral
+@elias_skip:
+			rc
+@elias_backtrack:
+			dad h
+			add a
+			jnc @elias_loop
+			jmp @Elias
+
+@exit:
+			; the song ended
+			; restore sp
+			lhld GCPlayerSchedulerRestoreSp+1
+			sphl
+			; restart the music
+			call v6_gc_start
+
+			; pop v6_gc_scheduler_update return addr
+			; to return right to the func that called v6_gc_update
+			pop psw
+			; return to the func that called v6_gc_update
+			ret
+
+.macro GC_AY_UPDATE_REG(do_dcr = true)
+			mov a, e
+			out PORT_AY_REG
+
+			ldax b
+			out PORT_AY_DATA
+		.if do_dcr
+			dcr b
+			dcr e
+		.endif
+.endmacro
+
+; send buffers data to AY regs
+; input:
+; hl = buffer_idx
+; if envelope shape reg13 data = $ff, then don't send data to reg13
+; AY-3-8910 ports
+
+v6_gc_ay_update:
+			mvi e, GC_TASKS - 1
+			mov c, m
+			mvi b, (>v6_gc_buffer) + GC_TASKS - 1
+			ldax b
+			cpi $ff
+			jz @doNotSendEnvData
+			GC_AY_UPDATE_REG(false) ; reg 13 (Envelope)
+@doNotSendEnvData:
+			dcr b
+			dcr e
+			GC_AY_UPDATE_REG() ; reg 12 (envelope FDIV H)
+			GC_AY_UPDATE_REG() ; reg 11 (envelope FDIV L)
+			GC_AY_UPDATE_REG() ; reg 10 (Vol C)
+			GC_AY_UPDATE_REG() ; reg 9  (Vol B)
+			GC_AY_UPDATE_REG() ; reg 8  (Vol A)
+			GC_AY_UPDATE_REG() ; reg 7 (Mixer)
+			GC_AY_UPDATE_REG() ; reg 6 (Noise FDIV)
+			GC_AY_UPDATE_REG() ; reg 5 (Tone FDIV CHC H)
+			GC_AY_UPDATE_REG() ; reg 4 (Tone FDIV CHC L)
+			GC_AY_UPDATE_REG() ; reg 3 (Tone FDIV CHB H)
+			GC_AY_UPDATE_REG() ; reg 2 (Tone FDIV CHB L)
+			GC_AY_UPDATE_REG() ; reg 1 (Tone FDIV CHA H)
+			GC_AY_UPDATE_REG() ; reg 0 (Tone FDIV CHA L)
+
+@doNotSendData:
+			ret
+
+; to mute the player. It can continue the song after unmute
+; to call from this module: call v6_gc_mute
+; to call outside: CALL_RAM_DISK_FUNC(v6_gc_mute, __RAM_DISK_S_GCPLAYER | __RAM_DISK_M_GCPLAYER | RAM_DISK_M_8F)
+v6_gc_mute:
+			; disable the updates
+			mvi a, SETTING_OFF
+			sta setting_music
+			; set zeros to AY regs to mute it
+			mvi e, GC_TASKS - 1
+@send_data:
+			mov a, e
+			out PORT_AY_REG
+			A_TO_ZERO(0)
+			out PORT_AY_DATA
+			dcr e
+			jp @send_data
+			ret
+
+; to unmute the player after being muted. It continues the song from where it has been stopped
+; to call from this module: call v6_gc_unmute
+; to call outside: CALL_RAM_DISK_FUNC(v6_gc_unmute, __RAM_DISK_S_GCPLAYER | __RAM_DISK_M_GCPLAYER | RAM_DISK_M_8F)
+v6_gc_unmute:
+			mvi a, SETTING_ON
+			sta setting_music
+			ret
+
+; to flip mute/unmute
+; to call from this module: call v6_gc_flip_mute
+; to call outside: CALL_RAM_DISK_FUNC(v6_gc_flip_mute, __RAM_DISK_S_GCPLAYER | __RAM_DISK_M_GCPLAYER | RAM_DISK_M_8F)
+v6_gc_flip_mute:
+			lxi h, setting_music
+			mov a, m
+			cma
+			mov m, a
+			cpi SETTING_OFF
+			jz v6_gc_mute
+			jmp v6_gc_unmute
+
+; return setting_music value
+; to call from this module: call v6_gc_get_setting
+; to call outside: CALL_RAM_DISK_FUNC(v6_gc_get_setting, __RAM_DISK_S_GCPLAYER | __RAM_DISK_M_GCPLAYER | RAM_DISK_M_8F)
+; out:
+; c - setting_music value
+v6_gc_get_setting:
+			lda setting_music
+			mov c, a
+			ret

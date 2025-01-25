@@ -90,7 +90,7 @@ interruption_fps:
 			shld interruption_fps + 1
 			; draw fps
 			; a - <fps
-			call draw_fps
+			draw_fps()
 			lxi h, ints_per_sec_counter
 			mvi m, INTS_PER_SEC
 interruption_no_fps_update:

@@ -70,7 +70,7 @@ int_to_ascii_hex:
 ; de - location of ASCII string (3 bytes buffer)
 ; use:
 ; bc, a
-.function int16_to_ascii_dec()
+int16_to_ascii_dec:
 			LXI_B( -10000)
 			call int8_to_ascii_dec_decr
 			lxi b, 10000
@@ -97,8 +97,7 @@ int8_to_ascii_dec_decr:
 			jc @loop
 			stax d
 			inx	d
-			;ret ; because of .endif
-.endf
+			ret ; because of .endif
 
 ; draw int8 as an acii text
 ; in:

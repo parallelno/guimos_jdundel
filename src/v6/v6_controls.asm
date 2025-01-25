@@ -1,4 +1,4 @@
-.include "v6/v6_controls_consts.asm"
+.include "src/v6/v6_controls_consts.asm"
 
 action_code:
 			.word CONTROL_CODE_NO<<8 || CONTROL_CODE_NO
