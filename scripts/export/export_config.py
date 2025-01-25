@@ -47,18 +47,25 @@ def export(source_j_path):
 	path = build.BUILD_PATH + "args" + build.EXT_ASM
 	export_args(source_j, path)
 
-	# check dependencies
+	# check if general scripts were updated
 	dependency_paths_j = source_j["dependencies"]
 	global_force_export = False
 	for path in dependency_paths_j["scripts"]:
+		if not os.path.exists(path):
+			build.exit_error(f'export_config ERROR: script file not found: {path}')
 		global_force_export |= build.is_file_updated(path)
 	asset_types_dependencies = dependency_paths_j["exporters"]
+	
+	# check if asset-type-related scripts were updated
 	asset_types_force_export = {}
 	for asset_type in asset_types_dependencies:
-		asset_types_force_export[asset_type] = global_force_export | build.is_file_updated(asset_types_dependencies[asset_type])
+		path = asset_types_dependencies[asset_type]
+		if not os.path.exists(path):
+			build.exit_error(f'export_config ERROR: script file not found: {path}')
+		asset_types_force_export[asset_type] = global_force_export | build.is_file_updated(path)
 
-	fdd_files = []
 	# export assets
+	fdd_files = []
 	for load_set_name, load_set in source_j["export_files"].items():
 		for path in load_set:
 			if not os.path.exists(path):

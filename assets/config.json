@@ -10,29 +10,26 @@
 	"dependencies" :
 	{
 		"exporters": {
-			"sprite" : "scripts/export_sprite.py",
-			"back" : "scripts/export_back.py",
-			"decal" : "scripts/export_decal.py",
-			"level_data" : "scripts/export_level.py",
-			"level_gfx" : "scripts/export_level.py",
-			"music" : "scripts/export_music.py",
-			"font" : "scripts/export_font.py",
-			"font_rd" : "scripts/export_font.py",
-			"image" : "scripts/export_image.py",
-			"tiled_img_data" : "scripts/export_tiled_img.py",
-			"tiled_img_gfx" : "scripts/export_tiled_img.py",
-			"text" : "scripts/export_text.py"
+			"sprite" : "scripts/export/export_sprite.py",
+			"back" : "scripts/export/export_back.py",
+			"decal" : "scripts/export/export_decal.py",
+			"level_data" : "scripts/export/export_level.py",
+			"level_gfx" : "scripts/export/export_level.py",
+			"music" : "scripts/export/export_music.py",
+			"font" : "scripts/export/export_font.py",
+			"font_rd" : "scripts/export/export_font.py",
+			"image" : "scripts/export/export_image.py",
+			"tiled_img_data" : "scripts/export/export_tiled_img.py",
+			"tiled_img_gfx" : "scripts/export/export_tiled_img.py",
+			"text" : "scripts/export/export_text.py"
 		},
 		"scripts" : [
 			"assets/config.json",
-			"scripts/export_config.py",
-			"scripts/export_data_asm.py",
-			"scripts/export_data_init.py",
-			"scripts/export_segment.py",
-			"scripts/task_build_run.py",
-			"scripts/build.py",
-			"scripts/common.py",
-			"scripts/common_gfx.py"
+			"scripts/export/export_config.py",
+			"scripts/build_and_run.py",
+			"scripts/utils/build.py",
+			"scripts/utils/common.py",
+			"scripts/utils/common_gfx.py"
 		]
 	},
 	"export_dir" :
