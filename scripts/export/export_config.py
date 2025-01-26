@@ -112,8 +112,7 @@ def export(source_j_path):
 	raw_labels_path = build_bin_dir + build.DEBUG_FILE_NAME
 	build.compile_asm(main_asm_path, bin_path)
 	exported_labels_path = common.rename_extention(com_path, build.EXT_JSON)
-	_, comments = build.export_labels(raw_labels_path, False, exported_labels_path)
-	build.printc(comments, build.TextColor.YELLOW)
+	build.export_labels(raw_labels_path, False, exported_labels_path)
 
 	# make a com file
 	common.rename_file(bin_path, com_path, True)

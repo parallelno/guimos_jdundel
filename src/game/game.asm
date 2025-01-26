@@ -17,12 +17,12 @@ main_start:
 			LOAD_FILE(FONT_META_filename, FONT_META_FILE_LEN)
 			
 			lxi b, 0x6000
-			text_ex_rd_init()
+			text_ex_init()
 
 			; draw a test text
 			lxi h, __text_main_menu_settings
 			lxi b, (0)<<8 | 100
-			CALL_RAM_DISK_FUNC(text_ex_rd_scr1, 0)
+			CALL_RAM_DISK_FUNC(text_ex_scr1, 0)
 
 			jmp main_loop
 			ret

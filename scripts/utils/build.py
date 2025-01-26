@@ -2,6 +2,7 @@ import os
 import sqlite3
 import utils.common as common
 from pathlib import Path
+import json
 
 SEGMENT_0000_7F00_ADDR = 0x0000
 SEGMENT_8000_0000_ADDR = 0x8000
@@ -235,50 +236,28 @@ def export_labels(path, externals_only = False, out_path = None):
 	with open(path, "rb") as file:
 		lines = file.readlines()
 
-	get_all_next_lines = False
-	get_comments_lines = False
-	comments = ""
-	labels = ""
-	label_pairs = {}
+	debug_data = {}
+	debug_data["labels"] = {}
+	debug_data["consts"] = {}
 	for line_b in lines:
-		line = line_b.decode('ascii')
-		if get_all_next_lines:
-			if (not externals_only or line[0:2] == "__") and line.find("=") != -1:
-				labels += line
-
-				label_name_end = line.find(" ")
-				label_name = line[:label_name_end]
-
-				second_addr_end = line.find(")")
-				if second_addr_end == -1:
-					addr_start = line.find("$") + 1
-					addr_end = len(line)
-					
-				else:
-					addr_start = line.find("(") + 2
-					addr_end = second_addr_end
-
-				addr_s = line[addr_start : addr_end]
-				addr = int(addr_s, 16)
-				label_pairs[label_name] = addr
-
+		line = line_b.decode('ascii').split(" ")
+		if len(line) != 2 or line[1][0] != "$":
 			continue
 
-		if get_comments_lines:
-			comments += line
+		label_name = line[0]
+		addr = int(line[1][1:], 16)
+		addrS = f"0x{addr:X}"
 
-		if line.find("Segment: Code") != -1:
-			get_all_next_lines = True
-			get_comments_lines = False
-		if line.find("Engine Designs") != -1:
-			get_comments_lines = True
-		if line.find("*******************") != -1:
-			get_comments_lines = False
+		if label_name == label_name.upper():
+			debug_data["consts"][label_name] = addrS
+		else:
+			debug_data["labels"][label_name] = addrS
+
 	if out_path:
 		with open(out_path, "w") as file:
-			file.write(labels)
+			file.write(json.dumps(debug_data, indent=4))
 	
-	return label_pairs, comments
+	return debug_data
 
 def get_segment_size_max(segment_addr):
 	if segment_addr == SEGMENT_0000_7F00_ADDR:
