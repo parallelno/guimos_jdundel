@@ -21,13 +21,13 @@ v6_gc_task_sps_end:
 ; points to a current task sp. 
 ; *v6_gc_current_task_spp = v6_gc_task_sps[current_task]
 v6_gc_current_task_spp: 
-			.word TEMP_ADDR
+			.storage WORD_LEN
 			
 ; bufferN[buffer_idx] data will be send to AY for each register accordingly
 v6_gc_buffer_idx:
-			.byte TEMP_BYTE
+			.storage BYTE_LEN
 v6_gc_task_id:
-			.byte TEMP_BYTE
+			.storage BYTE_LEN
 
 v6_song_reg_data_ptrs_end: ; contains the end of the array of ptrs to the song reg data
-			.word TEMP_ADDR
+			.storage WORD_LEN

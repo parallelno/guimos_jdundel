@@ -66,36 +66,38 @@ def export(source_j_path):
 
 	# export assets
 	fdd_files = []
-	for load_set_name, load_set in source_j["export_files"].items():
-		for path in load_set:
-			if not os.path.exists(path):
-				build.exit_error(f'export_config ERROR: file not found: {path}')
+	for memory_name, load_sets in source_j["fdd_files"].items():
+		for load_set in load_sets:
+			for load_type, paths in load_set.items():
+				for path in paths:
+					if not os.path.exists(path):
+						build.exit_error(f'export_config ERROR: file not found: {path}')
 
-			with open(path, "rb") as file:
-				asset_j = json.load(file)
+					with open(path, "rb") as file:
+						asset_j = json.load(file)
 
-			asset_type = asset_j["asset_type"]
-			export_dir = build.build_subfolder + asset_type + "/"
-			force_export = asset_types_force_export[asset_type]
+					asset_type = asset_j["asset_type"]
+					export_dir = build.build_subfolder + asset_type + "/"
+					force_export = asset_types_force_export[asset_type]
 
-			bin_data_path = None
-			match asset_type:
-				case build.ASSET_TYPE_FONT:
-					bin_data_path = export_font.export_if_updated(
-							path,
-							export_dir,
-							build_bin_dir,
-							force_export)
-				
-				case build.ASSET_TYPE_MUSIC:
-					bin_data_path = export_music.export_if_updated(
-							path,
-							export_dir,
-							build_bin_dir,
-							force_export)
-				
-			if bin_data_path:
-				fdd_files.append(bin_data_path)
+					bin_data_path = None
+					match asset_type:
+						case build.ASSET_TYPE_FONT:
+							bin_data_path = export_font.export_if_updated(
+									path,
+									export_dir,
+									build_bin_dir,
+									force_export)
+						
+						case build.ASSET_TYPE_MUSIC:
+							bin_data_path = export_music.export_if_updated(
+									path,
+									export_dir,
+									build_bin_dir,
+									force_export)
+						
+					if bin_data_path:
+						fdd_files.append(bin_data_path)
 
 	# ===============================================================================
  

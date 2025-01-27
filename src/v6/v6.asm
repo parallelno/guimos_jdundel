@@ -22,7 +22,6 @@ v6_main_reboot:
 			call v6_os_exit
 
 ; TODO: use .function to not worry about unused funcs
-; TODO: add a script that removes ret command that .function adds
 v6_init:
 .if DEBUG
 			;clear_ram_disk()

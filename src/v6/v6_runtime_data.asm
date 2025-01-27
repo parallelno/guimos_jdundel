@@ -1,9 +1,10 @@
+	; this line for VSCode proper formating
 .include "src/v6/sound/v6_gc_runtime_data.asm"
 
 ; contains the current RAM-disk mode
 ; to restore by the interrupt routine after its execution
 ram_disk_mode:
-			.byte TEMP_BYTE
+			.storage BYTE_LEN
 
 ;=============================================================================
 ;
@@ -12,12 +13,12 @@ ram_disk_mode:
 ; the disk number to restore it before returning to the OS
 ; check RDS_DISK in os_consts.asm for more info
 os_disk:
-			.byte TEMP_BYTE
+			.storage BYTE_LEN
 
 ; the last filename IO handled
 os_filename:
 			.storage BASENAME_LEN
-			.byte TEMP_BYTE ; "."
+			.storage BYTE_LEN ; "."
 os_filename_ext:
 			.storage EXT_LEN
 			.storage 2 ; "\n$"
@@ -25,10 +26,10 @@ os_filename_ext:
 ; the last file format IO handled
 ; TODO: make it useful or delete
 ;os_file_format:
-;            .byte TEMP_BYTE
+;			.storage BYTE_LEN
 ; points to next byte after loaded file
 os_file_data_ptr:
-			.byte TEMP_ADDR
+			.storage BYTE_LEN
 
 ;=============================================================================
 ;
@@ -42,12 +43,12 @@ os_file_data_ptr:
 palette:
 			.storage PALETTE_COLORS
 border_color_idx:
-			.byte 0
+			.storage BYTE_LEN
 scr_offset_y:
-			.byte 0
+			.storage BYTE_LEN
 ; it is used to check how many updates needs to happened to sync with interruptions
 game_updates_required:
-			.byte 0
+			.storage BYTE_LEN
 
 
 

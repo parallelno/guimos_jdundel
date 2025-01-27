@@ -44,13 +44,35 @@
 	"build_db_path" : "build/build.db",
 	"main_asm_path" : "src/main.asm",
 	"basefdd_path" : "assets/basefdd/rds308.fdd",
-	"export_files" :
-	{
-		"permanent" : [
-			"assets/fonts/eng/font.json",
-			"assets/music/song01.json"
+	"fdd_files" : {
+		"ram" :
+		[
+			{
+				"permanent" : 
+				[
+					"assets/fonts/eng/font.json"
+				]
+			},
+			{
+				"main_menu" : 
+				[
+					"assets/music/song01.json"
+				]
+			}
 		],
-		"main_menu" : [
+		
+		"ram-disk" :
+		[			
+			{
+				"permanent" : 
+				[	
+				]
+			},
+			{
+				"main_menu" : 
+				[				
+				]
+			}
 		]
 	}
 }
