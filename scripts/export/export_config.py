@@ -81,20 +81,20 @@ def export(source_j_path):
 			bin_data_path = None
 			match asset_type:
 				case build.ASSET_TYPE_FONT:
-					exported, bin_data_path = export_font.export_if_updated(
+					bin_data_path = export_font.export_if_updated(
 							path,
 							export_dir,
 							build_bin_dir,
 							force_export)
 				
 				case build.ASSET_TYPE_MUSIC:
-					exported, bin_data_path = export_music.export_if_updated(
+					bin_data_path = export_music.export_if_updated(
 							path,
 							export_dir,
 							build_bin_dir,
 							force_export)
 				
-			if exported and bin_data_path is not None:
+			if bin_data_path:
 				fdd_files.append(bin_data_path)
 
 	# ===============================================================================
@@ -122,7 +122,7 @@ def export(source_j_path):
 	export_autoexec(com_filename, autoexec_path)
 
 	# export fdd
-	fdd_files = [autoexec_path, com_path]
+	fdd_files += [autoexec_path, com_path] 
 	fdd_path = common.rename_extention(com_path, build.EXT_FDD)
 	export_fdd.export(
 		input_files = fdd_files,

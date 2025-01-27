@@ -18,7 +18,7 @@ v6_main_init:
 v6_main_reboot:
 			
 			call v6_init
-			call main_start
+			call game_start
 			call v6_os_exit
 
 ; TODO: use .function to not worry about unused funcs

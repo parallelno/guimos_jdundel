@@ -1,6 +1,13 @@
 .include "build/debug/font/font_meta.asm"
 
-main_start:
+game_start:
+			call game_init
+@loop:
+			call game_update
+			call game_draw
+			jmp @loop
+
+game_init:
 			; clear the screen
 			lxi b, 0
 			lxi d, 1023
@@ -28,15 +35,22 @@ main_start:
 			lxi h, __text_main_menu_settings
 			lxi b, (0)<<8 | 100
 			CALL_RAM_DISK_FUNC(text_ex_scr1, 0)
-
-			jmp main_loop
 			ret
 
+game_update:
+			ret
 
-main_loop:
+game_draw:
+			; update counter to calc fps
+			lhld game_draws_counter
+			inx h
+			shld game_draws_counter
 
+.if DEBUG
+			hlt
+.endif
 
-			jmp main_loop
+			ret
 
 __text_main_menu_settings:
 			TEXT("START GAME", _LINE_BREAK_)
