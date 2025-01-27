@@ -68,7 +68,6 @@ mem_copy:
 			ret
 
 
-
 ; clear a memory buffer using stack operations
 ; can be used to clear ram-disk memory as well
 ; input:
@@ -191,6 +190,28 @@ screen_erase_block:
 			lxi h, palette_update_request
 			mvi m, PALETTE_UPD_REQ_YES
 			;ret
+.endf
+
+
+; adds the offset to the pointers
+; in:
+; hl - points to the array of ptrs to the data
+; de - the data addr
+; c - the len of the array
+.function update_labels()
+@loop:
+			mov a, m
+			add e
+			mov m, a
+			inx h
+			mov a, m
+			adc d
+			mov m, a
+			inx h
+
+			dcr c
+			jnz @loop
+			ret			
 .endf
 
 ; Set the palette

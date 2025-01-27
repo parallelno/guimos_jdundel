@@ -5,28 +5,6 @@ __RAM_DISK_M_TEXT_EX = 0 ; it's zero because this func code is in the main ram
 LINE_SPACING_DEFAULT = -12
 PARAG_SPACING_DEFAULT = -24
 
-; convert local labels into global
-; in:
-; bc - __font_gfx addr
-; hl - font_gfx_ptrs
-; a - GFX_PTRS_LEN
-.function text_ex_init()
-@loop:
-			mov e, m
-			inx h
-			mov d, m
-			xchg
-			dad b
-			xchg
-			mov m, d
-			dcx h
-			mov m, e
-			INX_H(2)
-			dcr a
-			jnz @loop
-			;ret ; commented because of .endf
-.endf
-
 ; set a default line and a paragraph spacing
 .function text_ex_reset_spacing()
 			mvi a, LINE_SPACING_DEFAULT

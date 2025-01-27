@@ -18,7 +18,7 @@ def export_if_updated(asset_j_path, export_asm_dir, export_bin_dir, force_export
 
 		print(f"export_font: {asset_j_path} got exported.")
 	
-	return asm_gfx_path if exported else None
+	return bin_gfx_path if exported else None
 
 
 def is_source_updated(asset_j_path):

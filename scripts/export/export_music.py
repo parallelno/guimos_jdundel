@@ -55,6 +55,9 @@ def export_asm(asset_j_path, asm_meta_path, asm_data_path, bin_path, clean_tmp =
 	except:
 		build.exit_error(f'export_music ERROR: reading file: {song_path}')
 
+	ay_reg_data_ptrs = ""
+	ay_reg_data_lens = []
+
 	# save the asm
 	source_name = os.path.splitext(asset_j_path)[0]
 	with open(asm_data_path, "w") as file_inc:
@@ -64,12 +67,6 @@ def export_asm(asset_j_path, asm_meta_path, asm_data_path, bin_path, clean_tmp =
 		
 		# org
 		file_inc.write(f'.org 0\n')
-
-		# reg_data ptrs. 
-		file_inc.write(f'v6_gc_ay_reg_data_ptrs: .word ')
-		for i, _ in enumerate(reg_data[0:14]):
-			file_inc.write(f'ay_reg_data{i:02d}, ')
-		file_inc.write(f'\n')
 
 		for i, c in enumerate(reg_data[0:14]):
 			bin_file = f"source_name{i:02d}{build.EXT_BIN}"
@@ -84,13 +81,29 @@ def export_asm(asset_j_path, asm_meta_path, asm_data_path, bin_path, clean_tmp =
 				dbname = f"ay_reg_data{i:02d}"
 				data = f.read()
 				file_inc.write(f'{dbname}: .byte ' + ",".join("$%02x" % x for x in data) + "\n")
+				ay_reg_data_lens.append(len(data))
+
 			if clean_tmp:
 				print("export_music: clean up tmp resources")
 				common.delete_file(bin_file)
 				common.delete_file(zx0File)
 
+	# reg_data ptrs. 
+	addr = 0
+	for i, reg_data_len in enumerate(ay_reg_data_lens):
+		label_name = f'ay_reg_data{i:02d}'
+		ay_reg_data_ptrs += f'{label_name} = {addr}\n'
+		addr += reg_data_len
+
+	ay_reg_data_ptrs += '\n'
+		
+	ay_reg_data_ptrs += f'v6_gc_ay_reg_data_ptrs:\n			.word '
+	for i, _ in enumerate(reg_data[0:14]):
+		ay_reg_data_ptrs += f'ay_reg_data{i:02d}, '
+	ay_reg_data_ptrs += '\n'
+
 	# save the bin
-	build.export_fdd_file(asm_meta_path, asm_data_path, bin_path)
+	build.export_fdd_file(asm_meta_path, asm_data_path, bin_path, ay_reg_data_ptrs)
 
 	return True
 

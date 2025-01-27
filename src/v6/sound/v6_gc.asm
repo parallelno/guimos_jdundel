@@ -10,43 +10,37 @@
 
 .include "src/v6/sound/v6_gc_consts.asm"
 
-setting_music	.byte SETTING_ON
+setting_music:
+			.byte SETTING_OFF
 
-; ex. CALL_RAM_DISK_FUNC(v6_gc_init, __RAM_DISK_M_GCPLAYER | RAM_DISK_M_8F)
 v6_gc_init:
 			call v6_gc_mute
 			call v6_gc_clear_buffers
 			ret
 
 ; set a new song
-; hl - the song data
+; hl - the song reg ptrs (v6_gc_ay_reg_data_ptrs)
+; de - the song data
 v6_gc_set_song:
 			push h
+			; store the end of the array of ptrs to the song reg data
+			lxi b, GC_TASKS * ADDR_LEN
+			dad b
+			shld v6_song_reg_data_ptrs_end
+
+			push d
 			call v6_gc_mute
+			pop d
 			pop h
-
-			shld v6_song_ptr
-			; update the song ay_reg_data_ptrs
-			mov d, h
-			mov e, l
-			mvi c, GC_TASKS ; 72 cc
-@loop:
-			mov a, m
-			add e
-			mov m, a
-			inx h
-			mov a, m
-			adc d
-			mov m, a
-			inx h
-
-			dcr c
-			jnz @loop ; loop 76
+			; hl - points to the array of ptrs to the reg data
+			; de - points to the song data
+			mvi c, GC_TASKS
+			update_labels()
 			ret
 
 
 ; uses to start a new song or to repeat a finished song
-; ex. CALL_RAM_DISK_FUNC(v6_gc_start_repeat, __RAM_DISK_S_GCPLAYER | __RAM_DISK_M_GCPLAYER | RAM_DISK_M_8F)
+; ex. CALL_RAM_DISK_FUNC(v6_gc_start, __RAM_DISK_S_GCPLAYER | __RAM_DISK_M_GCPLAYER | RAM_DISK_M_8F)
 ; requires a call v6_gc_set_song upfront!
 v6_gc_start:
 			call v6_gc_tasks_init
@@ -69,8 +63,8 @@ v6_gc_start:
 v6_gc_update:
 			; return if muted
 			lda setting_music
-			cpi SETTING_ON
-			rnz
+			CPI_WITH_ZERO(SETTING_OFF)
+			rz
 
 			; handle the current task
 			lxi h, v6_gc_task_id
@@ -99,9 +93,8 @@ v6_gc_tasks_init:
 			shld @restore_sp+1
 
 			lxi sp, v6_gc_task_stack_end
-			lhld v6_song_ptr
-			lxi d, GC_TASKS * ADDR_LEN
-			dad d
+			lhld v6_song_reg_data_ptrs_end
+			xchg
 			; b = 0, c = a task counter * 2
 			lxi b, (GC_TASKS - 1) * ADDR_LEN
 @loop:

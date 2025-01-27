@@ -1,4 +1,5 @@
 .include "build/debug/font/font_meta.asm"
+.include "build/debug/music/song01_meta.asm"
 
 game_start:
 			call game_init
@@ -20,16 +21,32 @@ game_init:
 
 
 			; init the files data ptr
-			lxi h, SCR_ADDR
+			lxi h, 0x4000
 			shld os_file_data_ptr
+
+			push h
+
+			; load the font
+			LOAD_FILE(SONG01_META_filename, SONG01_META_FILE_LEN)
+
+			call v6_sound_init
+			pop d
+			; de - song ptr
+			lxi h, v6_gc_ay_reg_data_ptrs
+			call v6_gc_set_song
+			
+			call v6_gc_start
+
+			lhld os_file_data_ptr
+			push h
 
 			; load the font
 			LOAD_FILE(FONT_META_filename, FONT_META_FILE_LEN)
-		
-			lxi b, SCR_ADDR
-			mvi a, GFX_PTRS_LEN
+
+			pop d
+			mvi c, GFX_PTRS_LEN
 			lxi h, font_gfx_ptrs
-			text_ex_init()
+			update_labels()
 
 			; draw a test text
 			lxi h, __text_main_menu_settings

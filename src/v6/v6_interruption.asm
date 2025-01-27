@@ -38,6 +38,7 @@ interruption:
 
 			// TODO: fix music
 			;CALL_RAM_DISK_FUNC_NO_RESTORE(__sound_update, __RAM_DISK_S_SOUND | __RAM_DISK_M_SOUND | RAM_DISK_M_8F)
+			CALL_RAM_DISK_FUNC_NO_RESTORE(v6_sound_update, 0)
 
 ;======================================================================================================================			
 ;

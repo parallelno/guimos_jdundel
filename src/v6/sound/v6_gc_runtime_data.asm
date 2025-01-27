@@ -29,5 +29,5 @@ v6_gc_buffer_idx:
 v6_gc_task_id:
 			.byte TEMP_BYTE
 
-v6_song_ptr:
+v6_song_reg_data_ptrs_end: ; contains the end of the array of ptrs to the song reg data
 			.word TEMP_ADDR
