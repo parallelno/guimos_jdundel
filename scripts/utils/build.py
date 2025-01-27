@@ -90,17 +90,17 @@ packer_bin_ext	= ""
 
 # ANSI escape codes for text color
 class TextColor:
-    BLACK = '\033[30m'
-    RED = '\033[31m'
-    GREEN = '\033[32m'
-    YELLOW = '\033[33m'
-    BLUE = '\033[34m'
-    MAGENTA = '\033[35m'
-    CYAN = '\033[36m'
-    WHITE = '\033[37m'
-    RESET = '\033[0m'  # Reset to default color
-    GRAY = '\033[90m'
-    GRAY_LIGHT = '\033[37m'	
+	BLACK = '\033[30m'
+	RED = '\033[31m'
+	GREEN = '\033[32m'
+	YELLOW = '\033[33m'
+	BLUE = '\033[34m'
+	MAGENTA = '\033[35m'
+	CYAN = '\033[36m'
+	WHITE = '\033[37m'
+	RESET = '\033[0m'  # Reset to default color
+	GRAY = '\033[90m'
+	GRAY_LIGHT = '\033[37m'	
 
 def printc(text, color = TextColor.WHITE):
 	print(color + text + TextColor.RESET)
@@ -214,8 +214,8 @@ def is_file_updated(path):
 			modified = False
 		else:
 			sql = ''' UPDATE files
-              SET modtime = ?
-              WHERE path = ?'''
+			  SET modtime = ?
+			  WHERE path = ?'''
 			cur.execute(sql, (modification_time, path))
 			modified = True
 
@@ -232,26 +232,50 @@ def store_labels(labels, path):
 	with open(path, "w") as file:
 		file.write(labels_txt)
 
-def export_labels(path, externals_only = False, out_path = None):
+def export_debug_data(path, out_path = None):
 	with open(path, "rb") as file:
 		lines = file.readlines()
 
 	debug_data = {}
 	debug_data["labels"] = {}
 	debug_data["consts"] = {}
+	debug_data["breakpoints"] = []
 	for line_b in lines:
-		line = line_b.decode('ascii').split(" ")
-		if len(line) != 2 or line[1][0] != "$":
+		line = line_b.decode('ascii')
+		lineParts = line.split(" ")
+		
+		if len(lineParts) == 0:
 			continue
 
-		label_name = line[0]
-		addr = int(line[1][1:], 16)
-		addrS = f"0x{addr:X}"
+		# check if it's a breakpoint
+		if lineParts[0].find("BREAKPOINT") != -1:
+			addr = int(lineParts[1][1:], 16)
+			addrS = f"0x{addr:X}"
+			commentPos = line.find("IF")
+			comment = line[commentPos+3:] if commentPos != -1 else ""
 
-		if label_name == label_name.upper():
-			debug_data["consts"][label_name] = addrS
-		else:
-			debug_data["labels"][label_name] = addrS
+			bpJ = {}
+			bpJ["addr"] = addrS
+			bpJ["autoDel"] = False
+			bpJ["comment"] = comment
+			bpJ["cond"] = "=ANY" # TODO: add support for other conditions
+			bpJ["memPages"] = 4294967295 # means check every page of the ram-disk. TODO: add support for other memPages
+			bpJ["operand"] = "RW" # TODO: add support for other operands
+			bpJ["status"] = 1 # enabled
+			bpJ["value"] = addrS
+
+			debug_data["breakpoints"].append(bpJ)
+		
+		# check if it's a label or a constant
+		elif len(lineParts) == 2 and lineParts[1][0] == "$":
+			label_name = lineParts[0]
+			addr = int(lineParts[1][1:], 16)
+			addrS = f"0x{addr:X}"
+
+			if label_name == label_name.upper():
+				debug_data["consts"][label_name] = addrS
+			else:
+				debug_data["labels"][label_name] = addrS
 
 	if out_path:
 		with open(out_path, "w") as file:
@@ -360,7 +384,7 @@ def export_fdd_file(asm_meta_path, asm_data_path, bin_path, asm_meta_body = ""):
 	# add the filename to the meta data
 	cmp_filename = os.path.basename(bin_path).split(".")
 	cmp_filename_wo_ext_len = len(cmp_filename[0])
-	asm_meta += f'{source_name.upper()}_filename\n'
+	asm_meta += f'{source_name.upper()}_filename:\n'
 	asm_meta += f'			.byte "{cmp_filename[0]}" ; filename\n'
 	if cmp_filename_wo_ext_len < CPM_FILENAME_LEN:
 		filename_white_chars = " " * (CPM_FILENAME_LEN - len(cmp_filename[0]))

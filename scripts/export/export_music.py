@@ -17,14 +17,14 @@ def export_if_updated(asset_j_path, export_asm_dir, export_bin_dir, force_export
 	# exported into the fdd file
 	asm_data_path = export_asm_dir + source_name + "_data" + build.EXT_ASM
 	bin_path = export_bin_dir + build.get_cpm_filename(source_name)
+	exported = False
 
 	if force_export or is_source_updated(asset_j_path):
-		bin_path = export_asm(asset_j_path, asm_meta_path, asm_data_path, bin_path)
+		exported = export_asm(asset_j_path, asm_meta_path, asm_data_path, bin_path)
 
 		print(f"export_music: {asset_j_path} got exported.")
-		return bin_path
 	
-	return None
+	return exported, bin_path
 
 def is_source_updated(asset_j_path):
 	with open(asset_j_path, "rb") as file:
@@ -91,6 +91,8 @@ def export_asm(asset_j_path, asm_meta_path, asm_data_path, bin_path, clean_tmp =
 
 	# save the bin
 	build.export_fdd_file(asm_meta_path, asm_data_path, bin_path)
+
+	return True
 
 
 def chunker(seq, size):

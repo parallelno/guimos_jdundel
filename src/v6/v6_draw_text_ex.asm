@@ -1,5 +1,4 @@
 .include "src/v6/v6_draw_text_ex_consts.asm"
-.include "build/debug/font/font_meta.asm"
 
 ;__RAM_DISK_M_TEXT_EX = RAM_DISK_M | RAM_DISK_M_89
 __RAM_DISK_M_TEXT_EX = 0 ; it's zero because this func code is in the main ram
@@ -9,9 +8,9 @@ PARAG_SPACING_DEFAULT = -24
 ; convert local labels into global
 ; in:
 ; bc - __font_gfx addr
+; hl - font_gfx_ptrs
+; a - GFX_PTRS_LEN
 .function text_ex_init()
-			mvi a, GFX_PTRS_LEN
-			lxi h, font_gfx_ptrs
 @loop:
 			mov e, m
 			inx h

@@ -46,10 +46,13 @@ mem_fill_short:
 			ret
 
 ; copy a memory buffer
-; input:
-; hl - source
-; de - destination
-; bc - length
+; in:
+; 	hl - source
+; 	de - destination
+; 	bc - length
+; out:
+; 	hl - points to the next byte after copied source buffer
+;	de - points to the next byte after copied destination buffer
 ; use:
 ; a
 mem_copy:
@@ -63,6 +66,8 @@ mem_copy:
 			ora b
 			jnz @loop
 			ret
+
+
 
 ; clear a memory buffer using stack operations
 ; can be used to clear ram-disk memory as well

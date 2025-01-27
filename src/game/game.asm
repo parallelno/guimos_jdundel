@@ -1,3 +1,5 @@
+.include "build/debug/font/font_meta.asm"
+
 main_start:
 			; clear the screen
 			lxi b, 0
@@ -13,10 +15,13 @@ main_start:
 			; init the files data ptr
 			lxi h, SCR_ADDR
 			shld os_file_data_ptr
+
 			; load the font
 			LOAD_FILE(FONT_META_filename, FONT_META_FILE_LEN)
-			
-			lxi b, 0x6000
+		
+			lxi b, SCR_ADDR
+			mvi a, GFX_PTRS_LEN
+			lxi h, font_gfx_ptrs
 			text_ex_init()
 
 			; draw a test text

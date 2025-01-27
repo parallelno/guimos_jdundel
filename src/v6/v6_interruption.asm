@@ -112,7 +112,7 @@ game_draws_counter = interruption_fps + 1
 			; restore A
 			mov a, l
 
-interruption_restoreHL:	
+interruption_restoreHL:
 			lxi		h, TEMP_WORD
 interruption_restoreSP:	
 			lxi		sp, TEMP_ADDR

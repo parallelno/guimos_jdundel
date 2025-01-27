@@ -13,9 +13,19 @@ ram_disk_mode:
 ; check RDS_DISK in os_consts.asm for more info
 os_disk:
 			.byte TEMP_BYTE
-; loaded file format
-os_file_format:
-            .byte TEMP_BYTE
+
+; the last filename IO handled
+os_filename:
+			.storage BASENAME_LEN
+			.byte TEMP_BYTE ; "."
+os_filename_ext:
+			.storage EXT_LEN
+			.storage 2 ; "\n$"
+
+; the last file format IO handled
+; TODO: make it useful or delete
+;os_file_format:
+;            .byte TEMP_BYTE
 ; points to next byte after loaded file
 os_file_data_ptr:
 			.byte TEMP_ADDR

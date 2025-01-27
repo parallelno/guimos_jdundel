@@ -78,24 +78,24 @@ def export(source_j_path):
 			export_dir = build.build_subfolder + asset_type + "/"
 			force_export = asset_types_force_export[asset_type]
 
-			bin_gfx_path = None
+			bin_data_path = None
 			match asset_type:
 				case build.ASSET_TYPE_FONT:
-					bin_gfx_path = export_font.export_if_updated(
+					exported, bin_data_path = export_font.export_if_updated(
 							path,
 							export_dir,
 							build_bin_dir,
 							force_export)
 				
 				case build.ASSET_TYPE_MUSIC:
-					bin_gfx_path = export_music.export_if_updated(
+					exported, bin_data_path = export_music.export_if_updated(
 							path,
 							export_dir,
 							build_bin_dir,
 							force_export)
 				
-			if bin_gfx_path:
-				fdd_files.append(bin_gfx_path)
+			if exported and bin_data_path is not None:
+				fdd_files.append(bin_data_path)
 
 	# ===============================================================================
  
@@ -111,8 +111,8 @@ def export(source_j_path):
 	# compile the main.asm
 	raw_labels_path = build_bin_dir + build.DEBUG_FILE_NAME
 	build.compile_asm(main_asm_path, bin_path)
-	exported_labels_path = common.rename_extention(com_path, build.EXT_JSON)
-	build.export_labels(raw_labels_path, False, exported_labels_path)
+	debug_data_path = common.rename_extention(com_path, build.EXT_JSON)
+	build.export_debug_data(raw_labels_path, debug_data_path)
 
 	# make a com file
 	common.rename_file(bin_path, com_path, True)
@@ -122,7 +122,7 @@ def export(source_j_path):
 	export_autoexec(com_filename, autoexec_path)
 
 	# export fdd
-	fdd_files += [autoexec_path, com_path]
+	fdd_files = [autoexec_path, com_path]
 	fdd_path = common.rename_extention(com_path, build.EXT_FDD)
 	export_fdd.export(
 		input_files = fdd_files,

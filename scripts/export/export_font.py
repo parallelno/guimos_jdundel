@@ -11,14 +11,14 @@ def export_if_updated(asset_j_path, export_asm_dir, export_bin_dir, force_export
 	asm_gfx_ptrs_path = export_asm_dir + source_name + "_meta" + build.EXT_ASM
 	asm_gfx_path = export_asm_dir + source_name + "_data" + build.EXT_ASM
 	bin_gfx_path = export_bin_dir + build.get_cpm_filename(source_name)
+	exported = False
 
 	if force_export or is_source_updated(asset_j_path):
-		bin_gfx_path = export_asm(asset_j_path, asm_gfx_ptrs_path, asm_gfx_path, bin_gfx_path)
+		exported = export_asm(asset_j_path, asm_gfx_ptrs_path, asm_gfx_path, bin_gfx_path)
 
 		print(f"export_font: {asset_j_path} got exported.")
-		return bin_gfx_path
 	
-	return None
+	return exported, bin_gfx_path
 
 
 def is_source_updated(asset_j_path):
@@ -59,7 +59,7 @@ def export_asm(asset_j_path, asm_gfx_ptrs_path, asm_gfx_path, bin_gfx_path):
 	# compile and save the gfx bin files
 	build.export_fdd_file(asm_gfx_ptrs_path, asm_gfx_path, bin_gfx_path, asm_gfx_ptrs)
 
-	return bin_gfx_path
+	return True
 
 
 def gfx_to_asm(label_prefix, source_j, image):

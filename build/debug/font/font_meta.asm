@@ -4,7 +4,7 @@
 
 FONT_META_FILE_LEN = 1624
 FONT_META_LAST_RECORD_LEN = 88
-FONT_META_filename
+FONT_META_filename:
 			.byte "FONT" ; filename
 			.byte "    " ; filename white chars
 			.byte "BIN" ; extension

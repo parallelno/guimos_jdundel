@@ -12,9 +12,10 @@
 ;=======================================================
 
 
-v6_os_errmsg_file_open:			.byte "Error opening file\n$"
-v6_cpm_errmsg_hardware:			.byte "Hardware error\n$"
-v6_cpm_errmsg_invalid_fcb:		.byte "Invalid FCB\n$"
+v6_os_err_file_open:		.byte "Error opening file: $"						
+v6_os_err_hardware:			.byte "Hardware error\n$"
+v6_os_err_invalid_fcb:		.byte "Invalid FCB\n$"
+v6_os_msg_exit:				.byte "Exit the game.\n$"
 /*
 errmsg_invalid_read_data:	.byte "Invalid read data\n$"
 
@@ -50,11 +51,10 @@ v6_os_init:
 .if DEBUG
 			jmp @print
 @text:
-			.byte "Debug mode is on$"
+			.byte "Debug mode is on\n$"
 @print:
-			SYS_CALL(CPM_SUB_PRINT, @text)
+			SYS_CALL_D(CPM_SUB_PRINT, @text)
 .endif
-
 			di
 			lxi sp, 0 ; TODO: check if it's required for call 5
 			; map 0x0A000-0xDFFF range to the Screen buffer
@@ -112,13 +112,13 @@ load_file:
 			call set_file_name
 
 			; Open the file
-			SYS_CALL(CPM_SUB_F_OPEN, CPM_FCB)
+			SYS_CALL_D(CPM_SUB_F_OPEN, CPM_FCB)
 			cpi CPM_MSG_ERROR
 			jz v6_os_error_file_open
 
 @loop:
 			; Read the record from the file
-			SYS_CALL(CPM_SUB_F_READ, CPM_FCB)
+			SYS_CALL_D(CPM_SUB_F_READ, CPM_FCB)
 			cpi CPM_MSG_ERROR
 			jz v6_os_error_hardware
 			cpi CPM_MSG_INVALID_FCB
@@ -165,7 +165,7 @@ load_file:
 			call mem_copy
 @close_file:
 			; Close the file
-			SYS_CALL(CPM_SUB_F_CLOSE, CPM_FCB)
+			SYS_CALL_D(CPM_SUB_F_CLOSE, CPM_FCB)
 			ret
 /*
 ;=======================================================
@@ -175,13 +175,13 @@ del_file:
 			lxi h, file_name
 			call set_file_name
 
-			SYS_CALL(CPM_SUB_F_SFIRST, CPM_FCB)
+			SYS_CALL_D(CPM_SUB_F_SFIRST, CPM_FCB)
 			cpi CPM_ERROR
 			lxi d, errmsg_search_file
 			jz exit_w_error
 
 			; delete the file
-			SYS_CALL(CPM_SUB_F_DELETE, CPM_FCB)
+			SYS_CALL_D(CPM_SUB_F_DELETE, CPM_FCB)
 			cpi CPM_ERROR
 			lxi d, errmsg_delete_file
 			jz exit_w_error
@@ -202,12 +202,12 @@ save_file:
 			call set_file_name
 
 			; Create the file
-			SYS_CALL(CPM_SUB_F_MAKE, CPM_FCB)
+			SYS_CALL_D(CPM_SUB_F_MAKE, CPM_FCB)
 			cpi CPM_ERROR		; Check if file was created successfully
 			jz error_file_make	; Handle file creation error
 
 			; Open file for writing
-			SYS_CALL(CPM_SUB_F_OPEN, CPM_FCB)
+			SYS_CALL_D(CPM_SUB_F_OPEN, CPM_FCB)
 			cpi CPM_ERROR
 			lxi d, errmsg_file_open_to_save
 			jz exit_w_error
@@ -222,7 +222,7 @@ save_file:
 			shld bin_data_ptr
 
 			; Write a record to the file
-			SYS_CALL(CPM_SUB_F_WRITE, CPM_FCB)
+			SYS_CALL_D(CPM_SUB_F_WRITE, CPM_FCB)
 			cpi CPM_SUCCESS
 			lxi d, errmsg_file_save
 			jnz exit_w_error
@@ -237,10 +237,10 @@ save_file:
 
 @done:
 			; Close the file
-			SYS_CALL(CPM_SUB_F_CLOSE, CPM_FCB)
+			SYS_CALL_D(CPM_SUB_F_CLOSE, CPM_FCB)
 
 			; Exit program
-			SYS_CALL(CPM_SUB_PRINT, msg_file_saved)
+			SYS_CALL_D(CPM_SUB_PRINT, msg_file_saved)
 			ret
 */
 
@@ -249,16 +249,43 @@ save_file:
 set_file_name:
 			; Set the filename
 			lxi d, CPM_FCB+1 ; file name addr
-			lxi b, FILE_NAME_LEN
+			lxi b, FILENAME_LEN
+			push h
 			call mem_copy
+			pop h
+
+			push h
+
+			; Store the filename as a CPM string
+			lxi d, os_filename
+			lxi b, BASENAME_LEN
+			call copy_filebase
+			; print the '.' symbol
+			mvi a, '.'
+			stax d
+			inx d
+
+			pop h
+			; hl - filename ptr
+			lxi b, BASENAME_LEN
+			dad b
+			; hl - file ext ptr
+			; de - points to v6_os_errmsg_file_open_ext
+			lxi b, EXT_LEN
+			call mem_copy
+			mvi a, '\n'
+			stax d
+			inx d
+			mvi a, '$'
+			stax d
 
 			; Set the disk drive number
 			mvi a, DISK_CURRENT
 			sta CPM_FCB
 
 			; Erase the rest of the FCB
-			lxi h, CPM_FCB + FILE_NAME_LEN + 1
-			mvi c, <(CMP_DMA_BUFFER - (CPM_FCB + FILE_NAME_LEN + 1))
+			lxi h, CPM_FCB + FILENAME_LEN + 1
+			mvi c, <(CMP_DMA_BUFFER - (CPM_FCB + FILENAME_LEN + 1))
 			call mem_erase_short
 			ret
 
@@ -267,29 +294,33 @@ set_file_name:
 ;=======================================================
 
 v6_os_error_file_open:
-			lxi d, v6_os_errmsg_file_open
-			jmp v6_os_exit
+			call v6_os_exit_prep
+			SYS_CALL_D(CPM_SUB_PRINT, v6_os_err_file_open)
+			SYS_CALL_D(CPM_SUB_PRINT, os_filename)
+			jmp CPM_EXIT
 
 v6_os_error_hardware:
-			lxi d, v6_cpm_errmsg_hardware
-			jmp v6_os_exit
+			call v6_os_exit_prep
+			SYS_CALL_D(CPM_SUB_PRINT, v6_os_err_hardware)
+			jmp CPM_EXIT
 
 v6_os_error_invalid_fcb:
-			lxi b, v6_cpm_errmsg_invalid_fcb
-			jmp v6_os_exit
-/*
-v6_os_error_invalid_read_data:
-			lxi d, errmsg_invalid_read_data
-			jmp v6_os_exit
+			call v6_os_exit_prep
+			SYS_CALL_D(CPM_SUB_PRINT, v6_os_err_invalid_fcb)
+			jmp CPM_EXIT			
 
-v6_os_error_file_make:
-			lxi d, errmsg_file_make
-			jmp v6_os_exit
-*/
 ;=======================================================
 ; Return to OS. Should be called last in the application
 ;=======================================================
+
 v6_os_exit:
+			call v6_os_exit_prep
+			SYS_CALL_D(CPM_SUB_PRINT, v6_os_msg_exit)
+			jmp CPM_EXIT
+
+v6_os_exit_prep:
+			pop h
+			shld @return+1
 			di
 			mvi a, RDS_MODE_0
 			sta RDS_MODE
@@ -299,4 +330,32 @@ v6_os_exit:
 			; restore the system fdd disk num
 			lda os_disk
 			sta RDS_DISK
-			jmp CPM_EXIT
+@return:
+			lxi h, TEMP_ADDR
+			pchl
+
+; copy a memory buffer that ends with a whitespace (' ') or takes the full length stored in bc
+; in:
+; 	hl - source
+; 	de - destination
+; 	bc - length
+; out:
+; 	hl - points to the next byte after copied source buffer
+;	de - points to the next byte after copied destination buffer
+; use:
+; a
+copy_filebase:
+@loop:		mov a, m
+			; check if it's the end
+			cpi ' '
+			rz
+
+			stax d
+			inx h
+			inx d
+			dcx b
+
+			mov a, c
+			ora b
+			jnz @loop
+			ret
