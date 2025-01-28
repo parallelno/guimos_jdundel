@@ -1,0 +1,13 @@
+Ram permanent usage:
+	font.json [11138], song01.json [59], 
+used: 2BBD
+free: 381D
+
+
+Ram-disk permanent usage:
+	
+used: 0000
+free: 63DA
+
+
+
