@@ -43,10 +43,6 @@ def export(source_j_path):
 	os.makedirs(os.path.dirname(build_code_dir), exist_ok=True)
 	os.makedirs(os.path.dirname(build_bin_dir), exist_ok=True)
 
-	# export args
-	path = build.BUILD_PATH + "args" + build.EXT_ASM
-	export_args(source_j, path)
-
 	# check if general scripts were updated
 	dependency_paths_j = source_j["dependencies"]
 	global_force_export = False
@@ -55,7 +51,8 @@ def export(source_j_path):
 			build.exit_error(f'export_config ERROR: script file not found: {path}')
 		global_force_export |= build.is_file_updated(path)
 	asset_types_dependencies = dependency_paths_j["exporters"]
-	
+
+
 	# check if asset-type-related scripts were updated
 	asset_types_force_export = {}
 	for asset_type in asset_types_dependencies:
@@ -65,49 +62,47 @@ def export(source_j_path):
 		asset_types_force_export[asset_type] = global_force_export | build.is_file_updated(path)
 
 	# aggregate assets
-	asset_paths = source_j["fdd_files"]["permanent"]["ram"]
-	asset_paths += source_j["fdd_files"]["permanent"]["ram-disk"]
+	fdd_files = {}
+	for asset_j_path in source_j["fdd_files"]["permanent"]["ram"]:
+		fdd_files[asset_j_path] = {}
+	for asset_j_path in source_j["fdd_files"]["permanent"]["ram-disk"]:
+		fdd_files[asset_j_path] = {}
 	for memory_name, load_sets in source_j["fdd_files"]["reload"].items():
 		for load_set_name, load_set in load_sets.items():
-			for json_path in load_set:
-				asset_paths.append(json_path)
+			for asset_j_path in load_set:
+				fdd_files[asset_j_path] = {}
 
 	# export assets
-	fdd_files = []
-	for path in asset_paths:
-		if not os.path.exists(path):
-			build.exit_error(f'export_config ERROR: file not found: {path}')
+	for asset_j_path in fdd_files:
+		if not os.path.exists(asset_j_path):
+			build.exit_error(f'export_config ERROR: file not found: {asset_j_path}')
 
-		with open(path, "rb") as file:
-			asset_j = json.load(file)
-
-		asset_type = asset_j["asset_type"]
-		export_dir = build.build_subfolder + asset_type + "/"
+		asm_meta_path, asm_data_path, bin_path = get_asset_export_paths(asset_j_path, build_bin_dir)
 		force_export = asset_types_force_export[asset_type]
 
-		bin_data_path = None
 		match asset_type:
 			case build.ASSET_TYPE_FONT:
-				bin_data_path = export_font.export_if_updated(
-						path,
-						export_dir,
-						build_bin_dir,
+				export_font.export_if_updated(
+						asset_j_path,
+						asm_meta_path, asm_data_path, bin_path,
 						force_export)
 			
 			case build.ASSET_TYPE_MUSIC:
-				bin_data_path = export_music.export_if_updated(
-						path,
-						export_dir,
-						build_bin_dir,
+				export_music.export_if_updated(
+						asset_j_path,
+						asm_meta_path, asm_data_path, bin_path,
 						force_export)
 					
-		if bin_data_path:
-			fdd_files.append(bin_data_path)
-		else:
-			build.exit_error(f'export_config ERROR: failed asset export: {path}')
+		fdd_files[asset_j_path] = {
+			"asm_meta_path": asm_meta_path,
+			"asm_data_path": asm_data_path,
+			"bin_path": bin_path
+		}
 
 	# ===============================================================================
 
+	# export a build includes
+	export_build_includes(source_j, fdd_files)
  
 	# processing main.asm
 	main_asm_path = source_j["main_asm_path"]
@@ -127,19 +122,25 @@ def export(source_j_path):
 	debug_data_path = common.rename_extention(com_path, build.EXT_JSON)
 	debug_data = build.export_debug_data(raw_labels_path, debug_data_path)
 
-	# build a memory usage report
-	report_path = build.build_subfolder + 'mem_usage_report' + build.EXT_TXT
-	get_mem_usage_report(source_j["fdd_files"], debug_data, report_path, build_bin_dir)
+	# export a memory usage report
+	export_memory_usage_report(source_j, debug_data, fdd_files)
 
 	# export autoexec
 	autoexec_path = build_bin_dir + build.get_cpm_filename('autoexec', build.EXT_BAT)
 	export_autoexec(com_filename, autoexec_path)
 
 	# export fdd
-	fdd_files += [autoexec_path, com_path] 
+	fdd_files[autoexec_path] = {
+		"bin_path": autoexec_path
+	}
+	fdd_files[com_path] = {
+		"bin_path": com_path
+	}
+	bin_paths = get_bin_paths(fdd_files)
+
 	fdd_path = common.rename_extention(com_path, build.EXT_FDD)
 	export_fdd.export(
-		input_files = fdd_files,
+		input_files = bin_paths,
 		basefdd_path = source_j["basefdd_path"],
 		output_fdd = fdd_path)
 
@@ -166,16 +167,10 @@ def export_ram_data_labels(build_code_dir, segments_info, main_asm_labels):
 	with open(path, "w") as file:
 		file.write(asm)
 
-def export_args(source_j, output_path):
-	
-	# delete output file if it exists
-	if os.path.exists(output_path):
-		os.remove(output_path)
-
-	with open(output_path, 'w') as f:
-		for str in source_j["args"]:
-			f.write(str + "\n")
-
+def export_args(source_j):
+	args = ""
+	for str in source_j["args"]:
+		args += str + "\n"
 
 def export_autoexec(com_filename, autoexec_path):
 	# delete output file if it exists
@@ -186,58 +181,118 @@ def export_autoexec(com_filename, autoexec_path):
 		f.write("A:\n")
 		f.write(com_filename + "\n")
 
-def get_mem_usage_report(fdd_files_j, debug_data, report_path, build_bin_dir):
+
+def export_build_includes(config_j, fdd_files):
+	# prepare the include path
+	build_include_path = build.BUILD_PATH + "build_includes" + build.EXT_ASM
+
+	# delete output file if it exists
+	if os.path.exists(build_include_path):
+		os.remove(build_include_path)
+
+	build_include = ""
+
+	# export args
+	for arg in config_j["args"]:
+		build_include += arg + "\n"
+	build_include += "\n"
+
+	# include all meta files
+	for asset_j_path in fdd_files:
+		build_include += f'.include "{fdd_files[asset_j_path]["asm_meta_path"]}"\n'
+	build_include += "\n"
+
+	# save the file
+	with open(build_include_path, 'w') as f:
+		f.write(build_include)
+
+def export_memory_usage_report(config_j, debug_data, fdd_files):
+	# prepare the include path
+	report_path = build.BUILD_PATH + "mem_usage_report" + build.EXT_ASM
+
+	# delete output file if it exists
+	if os.path.exists(report_path):
+		os.remove(report_path)
+
 	report = ""
 	
-	ram_peramanent = fdd_files_j["permanent"]["ram"]
-	ram_disk_peramanent = fdd_files_j["permanent"]["ram-disk"]
+	ram_peramanent = config_j["fdd_files"]["permanent"]["ram"]
+	ram_disk_peramanent = config_j["fdd_files"]["permanent"]["ram-disk"]
 
-	runtime_data_end = int(debug_data["labels"]["runtime_data_end"], 16)
-
-	total_free_ram = 0x8000 - runtime_data_end
-	
-	# report for a ram
+	# report for a ram	
 	report += f"Ram permanent usage:\n"
 	report += "	"
+
+	free = 0x8000 # because of the screen buffer
+	reserved = int(debug_data["labels"]["runtime_data_end"], 16)
 	used = 0
-	for json_path in ram_peramanent:
-		bin_path = get_bin_file_path(json_path, build_bin_dir)
+
+	for asset_j_path in ram_peramanent:
+		bin_path = fdd_files[asset_j_path]["bin_path"]
 		file_size = os.path.getsize(bin_path)
 		report += f"{os.path.basename(bin_path)} [{file_size}], "
 		used += file_size
 
 	report += "\n"
+	report += f"reserved: {reserved}\n"
 	report += f"used: {used}\n"
-	free = total_free_ram - used
+	free = free - reserved - used
 	report += f"free: {free}\n"
 	report += "\n\n"
 
 	# report for a ram-disk
 	report += f"Ram-disk permanent usage:\n"
 	report += "	"
+	
+	reserved = 0
+	ram_disk_reserved = config_j["ram_disk_reserved"]	
+	for reservation in ram_disk_reserved:
+		reserved += int(reservation["length"], 16)
+		report += f"{reservation['name']} [{int(reservation['length'], 16)}], "
+
+	bank_len = 0x10000 # ram-disk bank size
+	banks = 4
+	free = bank_len * banks
 	used = 0
+	
 	for json_path in ram_disk_peramanent:
-		bin_path = get_bin_file_path(json_path, build_bin_dir)
+		bin_path = fdd_files[asset_j_path]["bin_path"]
 		file_size = os.path.getsize(bin_path)
 		report += f"{os.path.basename(bin_path)} [{file_size}], "
 		used += file_size
 
 	report += "\n"
+	report += f"reserved: {reserved}\n"	
 	report += f"used: {used}\n"
-	free = total_free_ram - used
+	free = free - reserved - used
 	report += f"free: {free}\n"
 	report += "\n\n"
 
+	# save the file
 	with open(report_path, 'w') as f:
-		f.write(report + "\n")
+		f.write(report)		
 
-	return report
-
-def get_bin_file_path(json_path, build_bin_dir):
-	with open(json_path, "rb") as file:
+def get_asset_export_paths(asset_j_path, build_bin_dir):
+	with open(asset_j_path, "rb") as file:
 		asset_j = json.load(file)
 
+	asset_name = common.path_to_basename(asset_j_path)
 	asset_type = asset_j["asset_type"]
-	source_name = common.path_to_basename(json_path)	
-	bin_path = build_bin_dir + build.get_cpm_filename(source_name)
-	return bin_path
+	export_asm_dir = build.build_subfolder + asset_type + "/"
+
+	# linked to the main program
+	asm_meta_path = export_asm_dir + asset_name + "_meta" + build.EXT_ASM
+	# exported into the fdd file
+	asm_data_path = export_asm_dir + asset_name + "_data" + build.EXT_ASM
+	bin_path = build_bin_dir + build.get_cpm_filename(asset_name)
+
+	return asm_meta_path, asm_data_path, bin_path
+
+def get_bin_paths(fdd_files):
+	bin_paths = []
+
+	for asset_j_path in fdd_files:
+		bin_path = fdd_files[asset_j_path]["bin_path"]
+		bin_paths.append(bin_path)
+
+	return bin_paths

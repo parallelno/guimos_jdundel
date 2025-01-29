@@ -194,6 +194,3 @@ BUFFERS_END_ADDR	= STACK_MIN_ADDR
 
 ; FPS counter screen addr
 FPS_SCR_ADDR = $bdfb - 16
-
-; must be included at the end of this file to be able to use define consts above
-.include "build/args.asm"

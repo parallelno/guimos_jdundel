@@ -1,6 +1,3 @@
-.include "build/debug/font/font_meta.asm"
-.include "build/debug/music/song01_meta.asm"
-
 game_start:
 			call game_init
 @loop:

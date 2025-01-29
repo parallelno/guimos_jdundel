@@ -9,22 +9,12 @@ import lhafile
 import io
 
 
-def export_if_updated(asset_j_path, export_asm_dir, export_bin_dir, force_export):
-	source_name = common.path_to_basename(asset_j_path)
-
-	# linked to the main program
-	asm_meta_path = export_asm_dir + source_name + "_meta" + build.EXT_ASM
-	# exported into the fdd file
-	asm_data_path = export_asm_dir + source_name + "_data" + build.EXT_ASM
-	bin_path = export_bin_dir + build.get_cpm_filename(source_name)
-	exported = True
+def export_if_updated(		asset_j_path, asm_meta_path, asm_data_path, bin_path,
+		force_export):
 
 	if force_export or is_source_updated(asset_j_path):
-		exported = export_asm(asset_j_path, asm_meta_path, asm_data_path, bin_path)
-
+		export_asm(asset_j_path, asm_meta_path, asm_data_path, bin_path)
 		print(f"export_music: {asset_j_path} got exported.")
-	
-	return bin_path if exported else None
 
 def is_source_updated(asset_j_path):
 	with open(asset_j_path, "rb") as file:
