@@ -6,6 +6,7 @@ game_start:
 			jmp @loop
 
 game_init:
+			
 			; clear the screen
 			lxi b, 0
 			lxi d, 1023
@@ -14,37 +15,44 @@ game_init:
 
 			lxi d, __level00_palette
 			mvi h, 0
-			copy_palette_request_update()
-
-
-			; init the files data ptr
-			lxi h, 0x4000
-			shld os_file_data_ptr
-
-			push h
-
-			; load the font
-			LOAD_FILE(SONG01_META_filename, SONG01_META_FILE_LEN)
+			copy_palette_request_update()			
 
 			call v6_sound_init
-			pop d
-			; de - song ptr
+; copy data
+; de - source addr + data length
+; hl - target addr + data length
+; bc - buffer length / 2
+; a - ram-disk activation command
+; use:
+; all
+;mem_copy_sp()
+//==========================================================
+			di
+; loading destination addr
+SONG01_DATA_ADDR = 0x4000
+FONT_DATA_ADDR = SONG01_DATA_ADDR + SONG01_META_FILE_LEN
+
+			;======================
+			; SONG01
+			;======================
+			; load			
+			LOAD_FILE(SONG01_DATA_ADDR, SONG01_META_filename, SONG01_META_FILE_LEN)
+
+			lxi d, SONG01_DATA_ADDR
 			lxi h, v6_gc_ay_reg_data_ptrs
-			call v6_gc_set_song
-			
+			call v6_gc_init_song
 			call v6_gc_start
 
-			lhld os_file_data_ptr
-			push h
-
-			; load the font
-			LOAD_FILE(FONT_META_filename, FONT_META_FILE_LEN)
-
-			pop d
+			;======================
+			; FONT
+			;======================
+			LOAD_FILE(FONT_DATA_ADDR, FONT_META_filename, FONT_META_FILE_LEN)
+			lxi d, FONT_DATA_ADDR
 			mvi c, GFX_PTRS_LEN
 			lxi h, font_gfx_ptrs
 			update_labels()
 
+			
 			; draw a test text
 			lxi h, __text_main_menu_settings
 			lxi b, (0)<<8 | 100

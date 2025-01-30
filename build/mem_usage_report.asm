@@ -1,8 +1,8 @@
 Ram permanent usage:
 	FONT.BIN [1624], 
-reserved: 7206
+reserved: 6950
 used: 1624
-free: 23938
+free: 24194
 
 
 Ram-disk permanent usage:

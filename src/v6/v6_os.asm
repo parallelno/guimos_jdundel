@@ -92,19 +92,39 @@ v6_os_init:
 ;=======================================================
 
 ; in:
-; os_file_data_ptr - points to a loded file data
-; hl - filename ptr
-; a - the len of the last record (<128)
-; c - the num of full records (128 byte long)
+; os_file_data_ptr - it must contain the load destination addr
+; filenamePtr - filename ptr
+; file_len - the len of the last record (<128)
 ; out:
 ; os_file_data_ptr - points to next byte after loaded file
-.macro LOAD_FILE(filenamePtr, file_len)
+.macro LOAD_FILE_NEXT(filenamePtr, file_len)
 			mvi a, file_len & (CMP_DMA_BUFFER_LEN - 1)
 			mvi c, file_len >> 7
 			lxi h, filenamePtr
 			call load_file
 .endmacro
 
+; in:
+; dest - load destination addr
+; filenamePtr - filename ptr
+; file_len - the len of the last record (<128)
+; out:
+; os_file_data_ptr - points to next byte after loaded file
+.macro LOAD_FILE(dest, filenamePtr, file_len)
+			lxi h, dest
+			shld os_file_data_ptr
+			mvi a, file_len & (CMP_DMA_BUFFER_LEN - 1)
+			mvi c, file_len >> 7
+			lxi h, filenamePtr
+			call load_file
+.endmacro
+; in:
+; os_file_data_ptr - load destination addr
+; hl - filename ptr
+; a - the len of the last record (<128)
+; c - the num of full records (128 byte long)
+; out:
+; os_file_data_ptr - points to next byte after loaded file
 load_file:
 			sta @copy_last_record+1
 			mov a, c
@@ -141,7 +161,7 @@ load_file:
 			shld os_file_data_ptr
 			lxi h, CMP_DMA_BUFFER
 			lxi b, CMP_DMA_BUFFER_LEN
-			call mem_copy
+			mem_copy()
 			jmp @loop
 
 @copy_last_record:
@@ -162,7 +182,7 @@ load_file:
 			; hl - CMP_DMA_BUFFER
 			; de - os_file_data_ptr before advance
 			; bc - the length of the last record
-			call mem_copy
+			mem_copy()
 @close_file:
 			; Close the file
 			SYS_CALL_D(CPM_SUB_F_CLOSE, CPM_FCB)
@@ -251,7 +271,7 @@ set_file_name:
 			lxi d, CPM_FCB+1 ; file name addr
 			lxi b, FILENAME_LEN
 			push h
-			call mem_copy
+			mem_copy()
 			pop h
 
 			push h
@@ -272,7 +292,7 @@ set_file_name:
 			; hl - file ext ptr
 			; de - points to v6_os_errmsg_file_open_ext
 			lxi b, EXT_LEN
-			call mem_copy
+			mem_copy()
 			mvi a, '\n'
 			stax d
 			inx d

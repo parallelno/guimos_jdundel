@@ -77,7 +77,9 @@ def export(source_j_path):
 		if not os.path.exists(asset_j_path):
 			build.exit_error(f'export_config ERROR: file not found: {asset_j_path}')
 
-		asm_meta_path, asm_data_path, bin_path = get_asset_export_paths(asset_j_path, build_bin_dir)
+		asm_meta_path, asm_data_path, bin_path, asset_type \
+			= get_asset_export_paths(asset_j_path, build_bin_dir)
+
 		force_export = asset_types_force_export[asset_type]
 
 		match asset_type:
@@ -237,7 +239,7 @@ def export_memory_usage_report(config_j, debug_data, fdd_files):
 	report += f"reserved: {reserved}\n"
 	report += f"used: {used}\n"
 	free = free - reserved - used
-	report += f"free: {free}\n"
+	report += f"free: {free}\n" 
 	report += "\n\n"
 
 	# report for a ram-disk
@@ -286,7 +288,7 @@ def get_asset_export_paths(asset_j_path, build_bin_dir):
 	asm_data_path = export_asm_dir + asset_name + "_data" + build.EXT_ASM
 	bin_path = build_bin_dir + build.get_cpm_filename(asset_name)
 
-	return asm_meta_path, asm_data_path, bin_path
+	return asm_meta_path, asm_data_path, bin_path, asset_type
 
 def get_bin_paths(fdd_files):
 	bin_paths = []

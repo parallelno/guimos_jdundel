@@ -1,5 +1,4 @@
 .include "src/v6/v6_rnd.asm"
-.include "src/v6/v6_utils_unpacker.asm"
 
 ; shared chunk of code to restore SP
 ; and dismount the ram-disk
@@ -51,11 +50,11 @@ mem_fill_short:
 ; 	de - destination
 ; 	bc - length
 ; out:
-; 	hl - points to the next byte after copied source buffer
-;	de - points to the next byte after copied destination buffer
+; 	hl - points to the next byte after source buffer
+;	de - points to the next byte after destination buffer
 ; use:
 ; a
-mem_copy:
+.function mem_copy()
 @loop:		mov a, m
 			stax d
 			inx h
@@ -65,7 +64,52 @@ mem_copy:
 			mov a, c
 			ora b
 			jnz @loop
-			ret
+			;ret
+.endf
+
+;========================================
+; copy a buffer into the ram-disk
+; disable INTERRUPTIONS before calling it!
+; input:
+; de - source addr + data length
+; hl - target addr + data length
+; bc - buffer length / 2
+; a - ram-disk activation command
+; use:
+; all
+.function mem_copy_sp()
+			shld @restoreTargetAddr+1
+			; store sp
+			lxi h, NULL
+			dad sp
+			shld @restore_sp+1
+			RAM_DISK_ON_BANK_NO_RESTORE()
+@restoreTargetAddr:
+			lxi h, TEMP_WORD
+			sphl
+			xchg
+@loop:
+			COPY_TO_RAM_DISK(1)
+			dcx b
+			mov a, b
+			ora c
+			jnz @loop
+
+@restore_sp:
+			lxi sp, TEMP_ADDR
+			RAM_DISK_OFF_NO_RESTORE()
+			;ret
+.endf
+
+.macro COPY_TO_RAM_DISK(count)
+		.loop count
+			dcx h
+			mov d, m
+			dcx h
+			mov e, m
+			push d
+		.endloop
+.endmacro
 
 
 ; clear a memory buffer using stack operations

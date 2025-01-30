@@ -18,10 +18,10 @@ v6_gc_init:
 			call v6_gc_clear_buffers
 			ret
 
-; set a new song
+; init a new song
 ; hl - the song reg ptrs (v6_gc_ay_reg_data_ptrs)
 ; de - the song data
-v6_gc_set_song:
+v6_gc_init_song:
 			push h
 			; store the end of the array of ptrs to the song reg data
 			lxi b, GC_TASKS * ADDR_LEN
@@ -41,7 +41,7 @@ v6_gc_set_song:
 
 ; uses to start a new song or to repeat a finished song
 ; ex. CALL_RAM_DISK_FUNC(v6_gc_start, __RAM_DISK_S_GCPLAYER | __RAM_DISK_M_GCPLAYER | RAM_DISK_M_8F)
-; requires a call v6_gc_set_song upfront!
+; requires a call v6_gc_init_song upfront!
 v6_gc_start:
 			call v6_gc_tasks_init
 			call v6_gc_scheduler_init

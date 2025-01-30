@@ -183,6 +183,9 @@ INTS_PER_SEC			= 50 ; Interuptions per sec
 SETTING_OFF	= 0
 SETTING_ON	= $ff
 
+; the temporal space while before putting the data into the ram-disk
+LOADING_TEMP_ADDR = SCR_ADDR
+
 ;=======================================================
 ; V6 Runtime Data Buffer
 ;=======================================================
