@@ -91,44 +91,42 @@ v6_os_init:
 ; Read file
 ;=======================================================
 
-; in:
-; os_file_data_ptr - it must contain the load destination addr
-; filenamePtr - filename ptr
-; file_len - the len of the last record (<128)
-; out:
-; os_file_data_ptr - points to next byte after loaded file
-.macro LOAD_FILE_NEXT(filenamePtr, file_len)
-			mvi a, file_len & (CMP_DMA_BUFFER_LEN - 1)
-			mvi c, file_len >> 7
-			lxi h, filenamePtr
-			call load_file
-.endmacro
+// .macro LOAD_FILE_NEXT(filename_ptr, command, file_len)
+// 	recs = file_len>>7
+// 	last_rec = file_len & (CMP_DMA_BUFFER_LEN - 1)
+// 			lxi b, (recs<<8) | last_rec
+// 			lxi d, filename_ptr
+// 			mvi a, command
+// 			call load_file_next
+// .endmacro
 
-; in:
-; dest - load destination addr
-; filenamePtr - filename ptr
-; file_len - the len of the last record (<128)
-; out:
-; os_file_data_ptr - points to next byte after loaded file
-.macro LOAD_FILE(dest, filenamePtr, file_len)
+.macro LOAD_FILE(filename_ptr, command, dest, file_len)
 			lxi h, dest
-			shld os_file_data_ptr
-			mvi a, file_len & (CMP_DMA_BUFFER_LEN - 1)
-			mvi c, file_len >> 7
-			lxi h, filenamePtr
+	recs = file_len>>7
+	last_rec = file_len & (CMP_DMA_BUFFER_LEN - 1)
+			lxi b, (recs<<8) | last_rec
+			lxi d, filename_ptr
+			mvi a, command
 			call load_file
 .endmacro
 ; in:
-; os_file_data_ptr - load destination addr
-; hl - filename ptr
-; a - the len of the last record (<128)
-; c - the num of full records (128 byte long)
+; hl - loading destination addr
+; de - filename ptr
+; b - the num of full records (128 byte long)
+; c - the len of the last record (<128)
+; a - ram disk activation command
 ; out:
 ; os_file_data_ptr - points to next byte after loaded file
 load_file:
-			sta @copy_last_record+1
+			shld os_file_data_ptr
+load_file_next:
+			sta @ram_disk_activation+1
+			mov a, b
+			sta @rec_num
 			mov a, c
-			sta @check_rec_num+1
+			sta @restore_last_rec_len+1
+			
+			xchg
 			call set_file_name
 
 			; Open the file
@@ -146,47 +144,60 @@ load_file:
 			cpi CPM_MSG_EOF
 			jz @close_file
 
-@check_rec_num:
-			mvi a, TEMP_BYTE
-			ora a
-			jz @copy_last_record
-			dcr a
-			sta @check_rec_num+1
+			; detect the last record
+			lxi h, @rec_num
+			dcr m
+			push psw
 
-			; copy CMP_DMA_BUFFER_LEN bytes, then continue loading
-			lhld os_file_data_ptr
 			lxi d, CMP_DMA_BUFFER_LEN
-			xchg
-			dad d
-			shld os_file_data_ptr
-			lxi h, CMP_DMA_BUFFER
-			lxi b, CMP_DMA_BUFFER_LEN
-			mem_copy()
-			jmp @loop
+			jnz @copy
+			; it's the last record
+@restore_last_rec_len:
+			mvi e, TEMP_WORD
+@copy:
+			call @copy_record
 
-@copy_last_record:
-			lxi d, TEMP_WORD ; the length of the last record (<128) 
-			; check if the len is 0
-			A_TO_ZERO(0)
-			ora e
-			jz @close_file
-			push d
-			; advance os_file_data_ptr to += the length of the last record
-			lhld os_file_data_ptr
-			xchg
-			dad d
-			shld os_file_data_ptr
-			
-			lxi h, CMP_DMA_BUFFER
-			pop b
-			; hl - CMP_DMA_BUFFER
-			; de - os_file_data_ptr before advance
-			; bc - the length of the last record
-			mem_copy()
+			pop psw
+			jnz @loop
 @close_file:
 			; Close the file
 			SYS_CALL_D(CPM_SUB_F_CLOSE, CPM_FCB)
 			ret
+
+; in:
+; de - len
+@copy_record:
+			; check if len=0
+			A_TO_ZERO(0)
+			ora e
+			rz
+
+			push d ; len
+			; advance os_file_data_ptr by the loaded chunk
+			lhld os_file_data_ptr
+			xchg
+			dad d
+			shld os_file_data_ptr
+
+			; copy the data
+			xchg
+			lxi d, CMP_DMA_BUFFER
+			pop b
+			; make the len divisible by 2
+			mvi a, 1
+			ana c
+			jz @even
+			inx b
+@even:
+			; de - dma buffer
+			; hl - loading destination addr
+			; bc - len
+@ram_disk_activation:
+			mvi a, TEMP_BYTE ; ram-disk activation command
+			mem_copy_sp()
+			ret
+@rec_num:
+			.byte TEMP_BYTE
 /*
 ;=======================================================
 ; Delete file

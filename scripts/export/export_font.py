@@ -130,7 +130,7 @@ def gfx_ptrs_to_asm(label_prefix, source_j, gfx_ptrs = None, font_gfx_ptrs_rd = 
 	asm += "; relative labels. to make it global call __text_ex_rd_init\n"
 	for char_name in gfx_ptrs:
 		adjusted_char = get_char_label_postfix(char_name) 
-		asm += f"{label_prefix}_{adjusted_char} = {gfx_ptrs[char_name]}\n"
+		asm += f"; {label_prefix}_{adjusted_char} = {gfx_ptrs[char_name]}\n"
 
 	asm += f"{label_prefix}_gfx_ptrs:\n"
 
@@ -143,8 +143,9 @@ def gfx_ptrs_to_asm(label_prefix, source_j, gfx_ptrs = None, font_gfx_ptrs_rd = 
 			if i != 0:
 				asm += "\n"
 			asm += "			.word "
-		adjusted_char = get_char_label_postfix(char_name)
-		asm += f"{label_access_prefix}{label_prefix}_{adjusted_char}, "
+		#adjusted_char = get_char_label_postfix(char_name)
+		#asm += f"{label_access_prefix}{label_prefix}_{adjusted_char}, "
+		asm += f"{gfx_ptrs[char_name]}, "
 
 	asm +="\n"
 

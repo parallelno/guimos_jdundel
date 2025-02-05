@@ -372,13 +372,6 @@ def export_fdd_file(asm_meta_path, asm_data_path, bin_path, asm_meta_body = ""):
 	compile_asm(asm_data_path, bin_path)
 	
 	file_len = os.path.getsize(bin_path)
-	# the len MUST be a multiple of 2 because it's stored by PUSH operation
-	if file_len % 2 != 0:
-		# expand the len of the data file to a multiple of 2
-		file_len += 1
-		with open(bin_path, "ab") as file:
-			file.write(b"\0")
-
 	last_record_len = file_len & 0x7f
 
 	# add the last record len to the meta data

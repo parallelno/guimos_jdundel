@@ -70,7 +70,7 @@ def export_asm(asset_j_path, asm_meta_path, asm_data_path, bin_path, clean_tmp =
 			with open(zx0File, "rb") as f:
 				dbname = f"ay_reg_data{i:02d}"
 				data = f.read()
-				file_inc.write(f'{dbname}: .byte ' + ",".join("$%02x" % x for x in data) + "\n")
+				file_inc.write(f'/*{dbname}:*/ .byte ' + ",".join("$%02x" % x for x in data) + "\n")
 				ay_reg_data_lens.append(len(data))
 
 			if clean_tmp:
@@ -80,16 +80,15 @@ def export_asm(asset_j_path, asm_meta_path, asm_data_path, bin_path, clean_tmp =
 
 	# reg_data ptrs. 
 	addr = 0
+	ptrs = f'v6_gc_ay_reg_data_ptrs:\n			.word '
 	for i, reg_data_len in enumerate(ay_reg_data_lens):
 		label_name = f'ay_reg_data{i:02d}'
-		ay_reg_data_ptrs += f'{label_name} = {addr}\n'
+		ay_reg_data_ptrs += f'; {label_name} = {addr}\n'
+		ptrs += f'{addr}, '
 		addr += reg_data_len
 
 	ay_reg_data_ptrs += '\n'
-		
-	ay_reg_data_ptrs += f'v6_gc_ay_reg_data_ptrs:\n			.word '
-	for i, _ in enumerate(reg_data[0:14]):
-		ay_reg_data_ptrs += f'ay_reg_data{i:02d}, '
+	ay_reg_data_ptrs += ptrs
 	ay_reg_data_ptrs += '\n'
 
 	# save the bin

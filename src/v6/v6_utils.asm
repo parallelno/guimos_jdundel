@@ -7,7 +7,7 @@ restore_sp:
 			lxi sp, TEMP_ADDR
 			RAM_DISK_OFF()
 			ret
-			
+
 
 ; clears a memory buffer
 ; input:
@@ -24,7 +24,7 @@ mem_erase:
 			ora c
 			ora b
 			jnz @loop
-			ret		
+			ret
 
 ; Fills a short, aligned memory buffer.
 ; The buffer length is <= 256 bytes.
@@ -44,73 +44,6 @@ mem_fill_short:
 			jnz @loop
 			ret
 
-; copy a memory buffer
-; in:
-; 	hl - source
-; 	de - destination
-; 	bc - length
-; out:
-; 	hl - points to the next byte after source buffer
-;	de - points to the next byte after destination buffer
-; use:
-; a
-.function mem_copy()
-@loop:		mov a, m
-			stax d
-			inx h
-			inx d
-			dcx b
-
-			mov a, c
-			ora b
-			jnz @loop
-			;ret
-.endf
-
-;========================================
-; copy a buffer into the ram-disk
-; disable INTERRUPTIONS before calling it!
-; input:
-; de - source addr + data length
-; hl - target addr + data length
-; bc - buffer length / 2
-; a - ram-disk activation command
-; use:
-; all
-.function mem_copy_sp()
-			shld @restoreTargetAddr+1
-			; store sp
-			lxi h, NULL
-			dad sp
-			shld @restore_sp+1
-			RAM_DISK_ON_BANK_NO_RESTORE()
-@restoreTargetAddr:
-			lxi h, TEMP_WORD
-			sphl
-			xchg
-@loop:
-			COPY_TO_RAM_DISK(1)
-			dcx b
-			mov a, b
-			ora c
-			jnz @loop
-
-@restore_sp:
-			lxi sp, TEMP_ADDR
-			RAM_DISK_OFF_NO_RESTORE()
-			;ret
-.endf
-
-.macro COPY_TO_RAM_DISK(count)
-		.loop count
-			dcx h
-			mov d, m
-			dcx h
-			mov e, m
-			push d
-		.endloop
-.endmacro
-
 
 ; clear a memory buffer using stack operations
 ; can be used to clear ram-disk memory as well
@@ -129,7 +62,7 @@ mem_fill_short:
 			call mem_erase_sp
 		.if disable_int
 			ei
-		.endif			
+		.endif
 .endmacro
 
 mem_erase_sp:
@@ -215,7 +148,7 @@ screen_erase_block:
 			inr l
 			cmp l
 			jnz @loop
-			
+
 			inr h
 			mov l, c
 
@@ -224,16 +157,185 @@ screen_erase_block:
 			ret
 
 
-; Copy the pallete from a ram-disk, then request for using it
+; copy a memory buffer
 ; in:
-; de - ram-disk palette addr
-; h - ram-disk activation command
-.function copy_palette_request_update()
-			lxi b, palette
-			COPY_FROM_RAM_DISK(PALETTE_COLORS)
-			lxi h, palette_update_request
-			mvi m, PALETTE_UPD_REQ_YES
+; 	hl - source
+; 	de - destination
+; 	bc - length
+; out:
+; 	hl - points to the next byte after source buffer
+;	de - points to the next byte after destination buffer
+; use:
+; a
+; 12cc - preparation
+; 64cc - loop iteration
+.function mem_copy()
+@loop:		mov a, m
+			stax d
+			inx h
+			inx d
+			dcx b
+
+			mov a, c
+			ora b
+			jnz @loop
 			;ret
+.endf
+
+
+;========================================
+; copy a buffer into the ram-disk
+; disable INTERRUPTIONS before calling it!
+; in:
+; de - source
+; hl - destination
+; bc - length
+; a - ram-disk activation command
+
+; len must be divisible by 2
+; 140 - prep
+; copy a word: 64-96cc
+; TODO: optimization: unroll the loop 4 or more times, 
+; then start it depending on the remined
+; start_here_if_len%4=0: COPY_WORD_MACRO()
+; start_here_if_len%4=1: COPY_WORD_MACRO()
+; start_here_if_len%4=2: COPY_WORD_MACRO()
+; start_here_if_len%4=3: COPY_WORD_MACRO()
+; dcx d
+; jnz
+; copy a word: (12*4*4 + 4*4)/4 = 52
+.function mem_copy_sp()
+
+			dad b
+			shld @dest+1
+
+			lxi h, 0
+			dad sp
+			shld @restore_sp+1
+			RAM_DISK_ON_BANK_NO_RESTORE()
+@dest:
+			lxi sp, TEMP_ADDR
+
+			mov h, d
+			mov l, e
+			dad b
+			; hl - source + len
+			; de - source
+@loop2:
+			mov a, e
+@loop:
+			COPY_W_SP()
+
+			cmp l
+			jnz @loop
+			mov a, d
+			cmp h
+			jnz @loop2
+
+@restore_sp:
+			lxi sp, TEMP_ADDR
+			RAM_DISK_OFF_NO_RESTORE()
+			;ret
+.endf
+
+.macro COPY_W_SP()
+			dcx h
+			mov b, m
+			dcx h
+			mov c, m
+			push b
+.endmacro
+
+
+;========================================
+; fast copy a buffer into the ram-disk.
+; if interruptions are ON, it corrupts a pair of bytes at target addr-2 !!!
+; input:
+; de - source addr + data length
+; hl - target addr + data length
+; bc - buffer length / 32
+; a - ram-disk activation command
+; use:
+; all
+
+.macro COPY_TO_RAM_DISK(count)
+		.loop count
+			dcx h
+			mov d, m
+			dcx h
+			mov e, m
+			push d
+		.endloop
+.endmacro
+
+.function mem_copy_sp32()
+			shld @restoreTargetAddr+1
+			; store sp
+			lxi h, NULL
+			dad sp
+			shld @restore_sp+1
+			RAM_DISK_ON_BANK()
+@restoreTargetAddr:
+			lxi sp, TEMP_ADDR
+			xchg
+@loop:
+			COPY_TO_RAM_DISK(16)
+			dcx b
+			mov a, b
+			ora c
+			jnz @loop
+
+@restore_sp:
+			lxi sp, TEMP_ADDR
+			RAM_DISK_OFF()
+			;ret
+.endf
+
+
+; Copy data (max 510) from the ram-disk to ram w/o blocking interruptions
+; this macro is for checking if the length fits the range 1-510
+.macro COPY_FROM_RAM_DISK(length)
+		.if length > 510
+			.error "The length (" length ") is bigger than required (510)"
+		.endif
+		mvi l, length/2
+		copy_from_ram_disk()
+.endmacro
+
+; Copy data (max 510) from the ram-disk to ram w/o blocking interruptions
+; input:
+; h - ram-disk activation command
+; l - data length / 2
+; de - data addr in the ram-disk
+; bc - destination addr
+
+; performance related details:
+; using stack ops to copy data adds 128 cc overhead
+; replacing pop with mov_(2), inx_(2), adds 8 cc per byte overhead
+; that said, copying with pop becomes efficient if a copy len > 16
+.function copy_from_ram_disk()
+			; store sp
+			push h
+			lxi h, $0002
+			dad sp
+			shld restore_sp+1
+			; copy unpacked data into the ram_disk
+			xchg
+			pop d
+			mov a, d
+			RAM_DISK_ON_BANK()
+			sphl
+			mov l, c
+			mov h, b
+@loop:
+			pop b
+			mov m, c
+			inx h
+			mov m, b
+			inx h
+			dcr e
+			jnz @loop
+			jmp restore_sp
 .endf
 
 
@@ -255,8 +357,50 @@ screen_erase_block:
 
 			dcr c
 			jnz @loop
-			ret			
+			ret
 .endf
+
+
+; Read a word from the ram-disk w/o blocking interruptions
+; keep two two reserved bytes prior the addr stores in de reg pair
+; because this func can corrupt it
+; input:
+; de - data addr in the ram-disk
+; a - ram-disk activation command
+; use:
+; de, a
+; out:
+; bc - data
+; hl - data addr in the ram-disk
+; cc = 148
+get_word_from_ram_disk:
+			RAM_DISK_ON_BANK()
+			; store sp
+			lxi h, $0000
+			dad sp
+			shld @restore_sp+1
+			; copy unpacked data into the ram_disk
+			xchg
+			sphl
+			pop b ; bc has to be used when interruptions is on
+@restore_sp:
+			lxi sp, TEMP_ADDR
+			RAM_DISK_OFF()
+			ret
+
+/*
+; a special version of a func above for accessing addr $8000 and higher
+; cc = 100
+get_word_from_scr_ram_disk:
+			RAM_DISK_ON_BANK()
+			xchg
+			mov c, m
+			inx h
+			mov b, m
+			RAM_DISK_OFF()
+			ret
+*/
+
 
 ; Set the palette
 ; input: hl - the addr of the last item in the palette
@@ -282,7 +426,7 @@ set_palette_int:			; call it from an interruption routine
 
 			jp	@loop
 			ret
-			
+
 /*
 ; Set palette copied from the ram-disk w/o blocking interruptions
 ; input:
@@ -335,129 +479,63 @@ set_palette_from_ram_disk:
 			jmp restore_sp
 */
 
-; Read a word from the ram-disk w/o blocking interruptions
-; keep two two reserved bytes prior the addr stores in de reg pair
-; because this func can corrupt it
-; input:
-; de - data addr in the ram-disk
-; a - ram-disk activation command
-; use:
-; de, a
-; out:
-; bc - data
-; hl - data addr in the ram-disk
-; cc = 148
-get_word_from_ram_disk:
-			RAM_DISK_ON_BANK()
-			; store sp
-			lxi h, $0000
-			dad sp
-			shld @restore_sp+1
-			; copy unpacked data into the ram_disk
-			xchg
-			sphl
-			pop b ; bc has to be used when interruptions is on
-@restore_sp:
-			lxi sp, TEMP_ADDR
-			RAM_DISK_OFF()
-			ret
-
-/*
-; a special version of a func above for accessing addr $8000 and higher
-; cc = 100
-get_word_from_scr_ram_disk:
-			RAM_DISK_ON_BANK()
-			xchg
-			mov c, m
-			inx h
-			mov b, m
-			RAM_DISK_OFF()
-			ret
-*/
-
-;========================================
-; fast copy a buffer into the ram-disk.
-; if interruptions are ON, it corrupts a pair of bytes at target addr-2 !!!
-; input:
-; de - source addr + data length
-; hl - target addr + data length
-; bc - buffer length / 32
-; a - ram-disk activation command
-; use:
-; all
-copy_to_ram_disk32:
-			shld @restoreTargetAddr+1
-			; store sp
-			lxi h, $0000
-			dad sp
-			shld @restore_sp+1
-			RAM_DISK_ON_BANK()
-@restoreTargetAddr:
-			lxi h, TEMP_WORD
-			sphl
-			xchg
-@loop:
-			COPY_TO_RAM_DISK(16)
-			dcx b
-			mov a, b
-			ora c
-			jnz @loop
-
-@restore_sp:
-			lxi sp, TEMP_ADDR
-			RAM_DISK_OFF()
-			ret
-
-; Copy data (max 510) from the ram-disk to ram w/o blocking interruptions
-; this macro is for checking if the length fits the range 1-510
-.macro COPY_FROM_RAM_DISK(length)
-		.if length > 510
-			.error "The length (" length ") is bigger than required (510)"
-		.endif
-		.if length > 0
-			mvi l, length/2
-			copy_from_ram_disk()
-		.endif
-.endmacro
-
-; Copy data (max 510) from the ram-disk to ram w/o blocking interruptions
-; input:
+; Copy the pallete from a ram-disk, then request for using it
+; in:
+; de - ram-disk palette addr
 ; h - ram-disk activation command
-; l - data length / 2
-; de - data addr in the ram-disk
-; bc - destination addr
-
-; performance related details:
-; using stack ops to copy data adds 128 cc overhead
-; replacing pop with mov_(2), inx_(2), adds 8 cc per byte overhead
-; that said, copying with pop becomes efficient if a copy len > 16
-.function copy_from_ram_disk()
-			; store sp
-			push h
-			lxi h, $0002
-			dad sp
-			shld restore_sp+1
-			; copy unpacked data into the ram_disk
-			xchg
-			pop d
-			mov a, d
-			RAM_DISK_ON_BANK()
-			sphl
-			mov l, c
-			mov h, b
-@loop:
-			pop b
-			mov m, c
-			inx h
-			mov m, b
-			inx h
-			dcr e
-			jnz @loop
-			jmp restore_sp
+.function copy_palette_request_update()
+			lxi b, palette
+			COPY_FROM_RAM_DISK(PALETTE_COLORS)
+			lxi h, palette_update_request
+			mvi m, PALETTE_UPD_REQ_YES
+			;ret
 .endf
+
 
 ; empty func
 ; used as a placeholder for empty callbacks
 .function empty_func()
 			;ret ; commented because of .endf
 .endf
+
+/*
+			// div range [0,29951] by 96*2
+			//int s = n>>8;
+    		//int res = (( (s + (s>>2) + (s>>4) + (s>>6))+2)<<1); // -2, 3
+			mvi b, 0b00111111
+			mov d, a
+			rrc \ rrc \ ana b
+			mov e, a
+			rrc \ rrc \ ana b
+			mov c, a
+			rrc \ rrc \ ana b
+			add d
+			add e
+			add c
+			adi 2
+			; 22*4=88
+
+			// div range [0,29951] by 96*2
+			// int s = n>>8;
+    		// int res = (((s + ((s<<2) + (s<<4) + (s<<6))>>4)+4)>>1); // -1, 2
+			mov e, a
+			add a \ add a
+			mov c, a
+			add a \ add a
+			add c
+			mov l, a
+			adc e
+			sub l
+			mov h, a
+
+			mvi a, 0x111100
+			ani e
+			rrc \ rrc
+			mov d, a
+			rrc \ rrc \ 
+			ani 0x00001111
+
+			add d
+			add h
+			; 28*4=112
+*/
