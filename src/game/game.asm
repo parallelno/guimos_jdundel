@@ -39,14 +39,14 @@ FONT_DATA_ADDR = SONG01_DATA_ADDR + SONG01_META_FILE_LEN + (SONG01_META_FILE_LEN
 			;======================
 			; FONT
 			;======================
-			//LOAD_FILE(FONT_META_filename, 0, FONT_DATA_ADDR, FONT_META_FILE_LEN)
-			
+			LOAD_FILE(FONT_META_filename, 0, FONT_DATA_ADDR, FONT_META_FILE_LEN)
+.breakpoint			
 			lxi d, FONT_DATA_ADDR
 			mvi c, GFX_PTRS_LEN
 			lxi h, font_gfx_ptrs
 			update_labels()
+.breakpoint
 
-.breakpoint			
 			; draw a test text
 			lxi h, __text_main_menu_settings
 			lxi b, (0)<<8 | 100

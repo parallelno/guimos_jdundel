@@ -372,6 +372,15 @@ def export_fdd_file(asm_meta_path, asm_data_path, bin_path, asm_meta_body = ""):
 	compile_asm(asm_data_path, bin_path)
 	
 	file_len = os.path.getsize(bin_path)
+	
+	# make the len even
+	if file_len & 1 == 1:
+		file_len += 1
+		# store one byte to the end of the file
+		with open(bin_path, "ab") as file:
+			file.write(b'\x00')
+
+
 	last_record_len = file_len & 0x7f
 
 	# add the last record len to the meta data

@@ -91,19 +91,19 @@ v6_os_init:
 ; Read file
 ;=======================================================
 
-// .macro LOAD_FILE_NEXT(filename_ptr, command, file_len)
-// 	recs = file_len>>7
-// 	last_rec = file_len & (CMP_DMA_BUFFER_LEN - 1)
-// 			lxi b, (recs<<8) | last_rec
-// 			lxi d, filename_ptr
-// 			mvi a, command
-// 			call load_file_next
-// .endmacro
-
 .macro LOAD_FILE(filename_ptr, command, dest, file_len)
+	odd_len = file_len & 1
+		.if odd_len
+			.error "file length must be even. filename_ptr = ", filename_ptr
+		.endif
+			
 			lxi h, dest
-	recs = file_len>>7
+	recs .var file_len>>7
 	last_rec = file_len & (CMP_DMA_BUFFER_LEN - 1)
+	.if last_rec > 0
+		recs = recs + 1
+	.endif	
+
 			lxi b, (recs<<8) | last_rec
 			lxi d, filename_ptr
 			mvi a, command
@@ -117,6 +117,7 @@ v6_os_init:
 ; a - ram disk activation command
 ; out:
 ; os_file_data_ptr - points to next byte after loaded file
+; the len must be even
 load_file:
 			shld os_file_data_ptr
 load_file_next:
@@ -183,11 +184,6 @@ load_file_next:
 			xchg
 			lxi d, CMP_DMA_BUFFER
 			pop b
-			; make the len divisible by 2
-			mvi a, 1
-			ana c
-			jz @even
-			inx b
 @even:
 			; de - dma buffer
 			; hl - loading destination addr
