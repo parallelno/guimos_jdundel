@@ -267,6 +267,11 @@ def export_debug_data(path, out_path = None):
 		# check if it's a label or a constant
 		elif len(lineParts) == 2 and lineParts[1][0] == "$":
 			label_name = lineParts[0]
+
+			# check if it's not for export
+			if len(label_name) >= 2 and label_name[0] == "_" and label_name[1] != "_":
+				continue
+			
 			addr = int(lineParts[1][1:], 16)
 			addrS = f"0x{addr:X}"
 

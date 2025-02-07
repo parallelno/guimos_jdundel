@@ -2,7 +2,7 @@
 	"game_name" : "guimos_jdundel",
 	"com_filename" : "gj",
 	"asset_type" : "config",
-	"args" : [
+	"consts" : [
 		"DEBUG = 1",
 		"TEXT_MONOSPACED_CHARS = 0",
 		"DRAW_FPS = 1"

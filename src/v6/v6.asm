@@ -5,6 +5,7 @@ jmp v6_main_init
 .include "src/v6/v6_consts.asm"
 .include "build/build_includes.asm"
 .include "src/v6/v6_os.asm"
+.include "build/loads.asm"
 .include "src/v6/v6_utils.asm"
 .include "src/v6/v6_controls.asm"
 .include "src/v6/v6_interruption.asm"

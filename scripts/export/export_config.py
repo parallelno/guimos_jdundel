@@ -9,42 +9,42 @@ from export import export_sprite
 from export import export_fdd
 
 #==============================================================================
-def export(source_j_path):
+def export(config_j_path):
 
 	build.printc(";===========================================================================", build.TextColor.MAGENTA)
 	build.printc(";", build.TextColor.MAGENTA)
-	build.printc(f"; ram-disk data export: {source_j_path}", build.TextColor.MAGENTA)
+	build.printc(f"; ram-disk data export: {config_j_path}", build.TextColor.MAGENTA)
 	build.printc(";", build.TextColor.MAGENTA)
 	build.printc(";===========================================================================", build.TextColor.MAGENTA)
 	print("\n")
 
-	common.CheckPath(source_j_path, "Config file not found")
-	with open(source_j_path, "rb") as file:
-			source_j = json.load(file)
+	common.CheckPath(config_j_path, "Config file not found")
+	with open(config_j_path, "rb") as file:
+			config_j = json.load(file)
 
 	common.CheckJsonField(
-		source_j, "asset_type",
-		f'export_config ERROR: asset_type != "{build.ASSET_TYPE_CONFIG}", path: {source_j_path}',
+		config_j, "asset_type",
+		f'export_config ERROR: asset_type != "{build.ASSET_TYPE_CONFIG}", path: {config_j_path}',
 		build.ASSET_TYPE_CONFIG)
 
 	# set the global vars
 	# strip of the path to make it approprite for windows console processor
-	assembler_path = source_j["assembler_path"]
+	assembler_path = config_j["assembler_path"]
 	build.set_assembler_path(assembler_path)
-	build.set_assembler_labels_cmd(source_j["assembler_labels_cmd"])
-	build.set_packer(build.PACKER_ZX0_SALVADORE, source_j["packer_path"])
-	build.set_emulator_path(source_j["emulator_path"])
-	build.build_db_init(source_j["build_db_path"])
+	build.set_assembler_labels_cmd(config_j["assembler_labels_cmd"])
+	build.set_packer(build.PACKER_ZX0_SALVADORE, config_j["packer_path"])
+	build.set_emulator_path(config_j["emulator_path"])
+	build.build_db_init(config_j["build_db_path"])
 
 	# make necessary directories
-	build_code_dir = build.build_subfolder + source_j["export_dir"]["code"]
-	build_bin_dir = build.build_subfolder + source_j["export_dir"]["bin"]
+	build_code_dir = build.build_subfolder + config_j["export_dir"]["code"]
+	build_bin_dir = build.build_subfolder + config_j["export_dir"]["bin"]
 	os.makedirs(os.path.dirname(build.build_subfolder), exist_ok=True)
 	os.makedirs(os.path.dirname(build_code_dir), exist_ok=True)
 	os.makedirs(os.path.dirname(build_bin_dir), exist_ok=True)
 
 	# check if general scripts were updated
-	dependency_paths_j = source_j["dependencies"]
+	dependency_paths_j = config_j["dependencies"]
 	global_force_export = False
 	for path in dependency_paths_j["scripts"]:
 		if not os.path.exists(path):
@@ -63,7 +63,7 @@ def export(source_j_path):
 
 	# aggregate assets
 	fdd_files = {}
-	for load_name, load_set in source_j["loads"].items():
+	for load_name, load_set in config_j["loads"].items():
 		for mem_type, asset_j_paths in load_set.items():
 			for asset_j_path in asset_j_paths:
 				fdd_files[asset_j_path] = {}
@@ -100,15 +100,18 @@ def export(source_j_path):
 	# ===============================================================================
 
 	# export the code to load assets & a memory usage report
-	loads_path = export_loads(build_code_dir, source_j, fdd_files)
+	loads_path = export_loads(config_j, fdd_files)
+
+	# export a consts
+	build_consts_path = export_build_consts(config_j, build_code_dir)
 
 	# export a build includes
-	export_build_includes(source_j, fdd_files, [])
+	export_build_includes(config_j, fdd_files, [build_consts_path])
 
 	# processing main.asm
-	main_asm_path = source_j["main_asm_path"]
+	main_asm_path = config_j["main_asm_path"]
 
-	com_filename = build.get_cpm_filename(source_j['com_filename'], build.EXT_COM)
+	com_filename = build.get_cpm_filename(config_j['com_filename'], build.EXT_COM)
 	com_path = build_bin_dir + \
 		com_filename
 	bin_path = common.rename_extention(com_path, build.EXT_BIN)
@@ -139,7 +142,7 @@ def export(source_j_path):
 	fdd_path = common.rename_extention(com_path, build.EXT_FDD)
 	export_fdd.export(
 		input_files = bin_paths,
-		basefdd_path = source_j["basefdd_path"],
+		basefdd_path = config_j["basefdd_path"],
 		output_fdd = fdd_path)
 
 	build.printc(f";===========================================================================", build.TextColor.GREEN)
@@ -165,11 +168,6 @@ def export_ram_data_labels(build_code_dir, segments_info, main_asm_labels):
 	with open(path, "w") as file:
 		file.write(asm)
 
-def export_args(source_j):
-	args = ""
-	for str in source_j["args"]:
-		args += str + "\n"
-
 def export_autoexec(com_filename, autoexec_path):
 	# delete output file if it exists
 	if os.path.exists(autoexec_path):
@@ -178,6 +176,21 @@ def export_autoexec(com_filename, autoexec_path):
 	with open(autoexec_path, 'w') as f:
 		f.write("A:\n")
 		f.write(com_filename + "\n")
+
+def export_build_consts(config_j, build_code_dir):
+
+	path = build_code_dir + "build_consts" + build.EXT_ASM
+	asm = ""
+
+	# export consts
+	for const in config_j["consts"]:
+		asm += const + "\n"
+
+	# save the file
+	with open(path, 'w') as f:
+		f.write(asm)
+
+	return path
 
 
 def export_build_includes(config_j, fdd_files, extra_includes):
@@ -189,11 +202,6 @@ def export_build_includes(config_j, fdd_files, extra_includes):
 		os.remove(build_include_path)
 
 	build_include = ""
-
-	# export args
-	for arg in config_j["args"]:
-		build_include += arg + "\n"
-	build_include += "\n"
 
 	# include all meta files
 	for asset_j_path in fdd_files:
@@ -209,9 +217,9 @@ def export_build_includes(config_j, fdd_files, extra_includes):
 	with open(build_include_path, 'w') as f:
 		f.write(build_include)
 
-def export_loads(build_code_dir, config_j, fdd_files):
+def export_loads(config_j, fdd_files):
 	# prepare the include path
-	load_path = build_code_dir + "loads" + build.EXT_ASM
+	load_path = build.BUILD_PATH + "loads" + build.EXT_ASM
 
 	# delete output file if it exists
 	if os.path.exists(load_path):

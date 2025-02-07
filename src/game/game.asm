@@ -1,5 +1,3 @@
-.include "build/debug/code/loads.asm"
-
 game_start:
 			call game_init
 @loop:
@@ -36,7 +34,7 @@ game_init:
 			// LOAD_FILE(SONG01_FILENAME_PTR, 0, SONG01_DATA_ADDR, SONG01_FILE_LEN)
 			
 			lxi d, SONG01_DATA_ADDR
-			lxi h, v6_gc_ay_reg_data_ptrs
+			lxi h, SONG01_ay_reg_data_ptrs
 			call v6_gc_init_song
 			call v6_gc_start
 
