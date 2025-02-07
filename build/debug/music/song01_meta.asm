@@ -2,27 +2,27 @@
 ; asm data file: build/debug/music/song01_data.asm
 ; bin file: build/debug/bin/SONG01.BIN
 
-SONG01_META_FILE_LEN = 8548
-SONG01_META_LAST_RECORD_LEN = 100
-SONG01_META_filename:
+SONG01_FILE_LEN = 8548
+SONG01_LAST_RECORD_LEN = 100
+SONG01_FILENAME_PTR:
 			.byte "SONG01" ; filename
 			.byte "  " ; filename white chars
 			.byte "BIN" ; extension
 
-; ay_reg_data00 = 0
-; ay_reg_data01 = 847
-; ay_reg_data02 = 1114
-; ay_reg_data03 = 1949
-; ay_reg_data04 = 2407
-; ay_reg_data05 = 3902
-; ay_reg_data06 = 4015
-; ay_reg_data07 = 6120
-; ay_reg_data08 = 6656
-; ay_reg_data09 = 6854
-; ay_reg_data10 = 7324
-; ay_reg_data11 = 7837
-; ay_reg_data12 = 8512
-; ay_reg_data13 = 8519
+_ay_reg_data00 = 0
+_ay_reg_data01 = 847
+_ay_reg_data02 = 1114
+_ay_reg_data03 = 1949
+_ay_reg_data04 = 2407
+_ay_reg_data05 = 3902
+_ay_reg_data06 = 4015
+_ay_reg_data07 = 6120
+_ay_reg_data08 = 6656
+_ay_reg_data09 = 6854
+_ay_reg_data10 = 7324
+_ay_reg_data11 = 7837
+_ay_reg_data12 = 8512
+_ay_reg_data13 = 8519
 
 v6_gc_ay_reg_data_ptrs:
-			.word 0, 847, 1114, 1949, 2407, 3902, 4015, 6120, 6656, 6854, 7324, 7837, 8512, 8519, 
+			.word _ay_reg_data00, _ay_reg_data01, _ay_reg_data02, _ay_reg_data03, _ay_reg_data04, _ay_reg_data05, _ay_reg_data06, _ay_reg_data07, _ay_reg_data08, _ay_reg_data09, _ay_reg_data10, _ay_reg_data11, _ay_reg_data12, _ay_reg_data13, 

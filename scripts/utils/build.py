@@ -4,16 +4,13 @@ import utils.common as common
 from pathlib import Path
 import json
 
-SEGMENT_0000_7F00_ADDR = 0x0000
-SEGMENT_8000_0000_ADDR = 0x8000
+RAM_LEN = 0x10000
+RAM_DISK_BANK_LEN = 0x10000
+RAM_DISK_IDX_MAX = 3
+RAM_DISK_LEN = RAM_DISK_BANK_LEN * (RAM_DISK_IDX_MAX + 1)
 
-SEGMENT_0000_7F00_SIZE_MAX = 2 ** 15 - 256 # because an interruption can corrupt the ram-disk memory from STACK_MIN_ADDR = $7f00 to STACK_TEMP_ADDR = $8000
-SEGMENT_8000_0000_SIZE_MAX = 2 ** 15
-
-CHUNKS_MAX		= 2
-CHUNK_SIZE_MAX	= 24 * 1024
-
-SCR_BUFF_SIZE = 8192
+SCR_BUFF_LEN = 0x2000
+SCR_BUFFS_LEN = SCR_BUFF_LEN * 4
 
 ASSET_TYPE_BACK			= "back"
 ASSET_TYPE_FONT			= "font"
@@ -346,7 +343,8 @@ def compile_asm(source_path, bin_path, labels_path = ""):
 			print("\n")
 
 	else:
-		common.run_command(f"{assembler_path.replace('/', '\\')} {source_path} {bin_path}")
+		cmd = f"{assembler_path.replace('/', '\\')} {source_path} {bin_path}"
+		common.run_command(cmd)
 		
 		if not assembler_path:
 			exit_error(f'ERROR: the compiler path was not provided')
@@ -366,7 +364,7 @@ def get_cpm_filename(filename, ext = EXT_BIN):
 	return (filename[:CPM_FILENAME_LEN] + ext).upper()
 
 def export_fdd_file(asm_meta_path, asm_data_path, bin_path, asm_meta_body = ""):
-	source_name = common.path_to_basename(asm_meta_path)
+	source_name = common.path_to_basename(bin_path) 
 	
 	# compile the asm
 	compile_asm(asm_data_path, bin_path)
@@ -393,7 +391,7 @@ def export_fdd_file(asm_meta_path, asm_data_path, bin_path, asm_meta_body = ""):
 	# add the filename to the meta data
 	cmp_filename = os.path.basename(bin_path).split(".")
 	cmp_filename_wo_ext_len = len(cmp_filename[0])
-	asm_meta += f'{source_name.upper()}_filename:\n'
+	asm_meta += f'{source_name.upper()}_FILENAME_PTR:\n'
 	asm_meta += f'			.byte "{cmp_filename[0]}" ; filename\n'
 	if cmp_filename_wo_ext_len < CPM_FILENAME_LEN:
 		filename_white_chars = " " * (CPM_FILENAME_LEN - len(cmp_filename[0]))
@@ -404,8 +402,8 @@ def export_fdd_file(asm_meta_path, asm_data_path, bin_path, asm_meta_body = ""):
 	asm_meta += asm_meta_body
 
 	# save the asm meta file
-	asm_gfx_ptrs_dir = str(Path(asm_meta_path).parent) + "/"	
-	if not os.path.exists(asm_gfx_ptrs_dir):
-		os.mkdir(asm_gfx_ptrs_dir)
+	asm_meta_dir = str(Path(asm_meta_path).parent) + "/"	
+	if not os.path.exists(asm_meta_dir):
+		os.mkdir(asm_meta_dir)
 	with open(asm_meta_path, "w") as file:
 		file.write(asm_meta)

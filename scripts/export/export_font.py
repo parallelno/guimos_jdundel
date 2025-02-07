@@ -119,18 +119,14 @@ def get_char_label_postfix(char_name):
 		adjusted_char = f"{chr(adjusted_code_point)}{offset}"
 	return adjusted_char
 
-def gfx_ptrs_to_asm(label_prefix, source_j, gfx_ptrs = None, font_gfx_ptrs_rd = True):
+def gfx_ptrs_to_asm(label_prefix, source_j, gfx_ptrs = None):
 	asm = ""
-	if font_gfx_ptrs_rd:
-		label_access_prefix = ""
-	else:
-		label_access_prefix = "__"
 
 	# if font_gfx_ptrs_rd == True, then add list of labels with relatives addresses
 	asm += "; relative labels. to make it global call __text_ex_rd_init\n"
 	for char_name in gfx_ptrs:
 		adjusted_char = get_char_label_postfix(char_name) 
-		asm += f"; {label_prefix}_{adjusted_char} = {gfx_ptrs[char_name]}\n"
+		asm += f"_{label_prefix}_{adjusted_char} = {gfx_ptrs[char_name]}\n"
 
 	asm += f"{label_prefix}_gfx_ptrs:\n"
 
@@ -143,9 +139,8 @@ def gfx_ptrs_to_asm(label_prefix, source_j, gfx_ptrs = None, font_gfx_ptrs_rd = 
 			if i != 0:
 				asm += "\n"
 			asm += "			.word "
-		#adjusted_char = get_char_label_postfix(char_name)
-		#asm += f"{label_access_prefix}{label_prefix}_{adjusted_char}, "
-		asm += f"{gfx_ptrs[char_name]}, "
+		adjusted_char = get_char_label_postfix(char_name)
+		asm += f"_{label_prefix}_{adjusted_char}, "
 
 	asm +="\n"
 

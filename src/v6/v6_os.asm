@@ -98,8 +98,8 @@ v6_os_init:
 		.endif
 			
 			lxi h, dest
-	recs .var file_len>>7
-	last_rec = file_len & (CMP_DMA_BUFFER_LEN - 1)
+		recs .var file_len>>7
+		last_rec = file_len & (CMP_DMA_BUFFER_LEN - 1)
 	.if last_rec > 0
 		recs = recs + 1
 	.endif	

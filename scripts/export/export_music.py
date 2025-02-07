@@ -46,7 +46,7 @@ def export_asm(asset_j_path, asm_meta_path, asm_data_path, bin_path, clean_tmp =
 		build.exit_error(f'export_music ERROR: reading file: {song_path}')
 
 	ay_reg_data_ptrs = ""
-	ay_reg_data_lens = []
+	ay_reg_data_lens = [] 
 
 	# save the asm
 	source_name = os.path.splitext(asset_j_path)[0]
@@ -68,9 +68,9 @@ def export_asm(asset_j_path, asm_meta_path, asm_data_path, bin_path, clean_tmp =
 			common.run_command(f"{build.packer_path.replace('/', '\\')} -w 256 {bin_file} {zx0File}")
 
 			with open(zx0File, "rb") as f:
-				dbname = f"ay_reg_data{i:02d}"
+				dbname = f"_ay_reg_data{i:02d}"
 				data = f.read()
-				file_inc.write(f'/*{dbname}:*/ .byte ' + ",".join("$%02x" % x for x in data) + "\n")
+				file_inc.write(f'{dbname}: .byte ' + ",".join("$%02x" % x for x in data) + "\n")
 				ay_reg_data_lens.append(len(data))
 
 			if clean_tmp:
@@ -82,10 +82,10 @@ def export_asm(asset_j_path, asm_meta_path, asm_data_path, bin_path, clean_tmp =
 	addr = 0
 	ptrs = f'v6_gc_ay_reg_data_ptrs:\n			.word '
 	for i, reg_data_len in enumerate(ay_reg_data_lens):
-		label_name = f'ay_reg_data{i:02d}'
-		ay_reg_data_ptrs += f'; {label_name} = {addr}\n'
-		ptrs += f'{addr}, '
-		addr += reg_data_len
+		label_name = f'_ay_reg_data{i:02d}'
+		ay_reg_data_ptrs += f'{label_name} = {addr}\n'
+		ptrs += f'{label_name}, '
+		addr += reg_data_len 
 
 	ay_reg_data_ptrs += '\n'
 	ay_reg_data_ptrs += ptrs

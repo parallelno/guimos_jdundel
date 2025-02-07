@@ -1,3 +1,5 @@
+.include "build/debug/code/loads.asm"
+
 game_start:
 			call game_init
 @loop:
@@ -21,15 +23,17 @@ game_init:
 
 //==========================================================
 			di
+			load_permanent()
+
 ; loading destination addr
-SONG01_DATA_ADDR = 0x4000
-FONT_DATA_ADDR = SONG01_DATA_ADDR + SONG01_META_FILE_LEN + (SONG01_META_FILE_LEN & 1) ; +1 because _len must be div by 2
+// SONG01_DATA_ADDR = 0x4000
+// FONT_DATA_ADDR = SONG01_DATA_ADDR + SONG01_FILE_LEN
 
 			;======================
 			; SONG01
 			;======================
 
-			LOAD_FILE(SONG01_META_filename, 0, SONG01_DATA_ADDR, SONG01_META_FILE_LEN)
+			// LOAD_FILE(SONG01_FILENAME_PTR, 0, SONG01_DATA_ADDR, SONG01_FILE_LEN)
 			
 			lxi d, SONG01_DATA_ADDR
 			lxi h, v6_gc_ay_reg_data_ptrs
@@ -39,13 +43,12 @@ FONT_DATA_ADDR = SONG01_DATA_ADDR + SONG01_META_FILE_LEN + (SONG01_META_FILE_LEN
 			;======================
 			; FONT
 			;======================
-			LOAD_FILE(FONT_META_filename, 0, FONT_DATA_ADDR, FONT_META_FILE_LEN)
-.breakpoint			
+			// LOAD_FILE(FONT_FILENAME_PTR, 0, FONT_DATA_ADDR, FONT_FILE_LEN)
+	
 			lxi d, FONT_DATA_ADDR
 			mvi c, GFX_PTRS_LEN
 			lxi h, font_gfx_ptrs
 			update_labels()
-.breakpoint
 
 			; draw a test text
 			lxi h, __text_main_menu_settings

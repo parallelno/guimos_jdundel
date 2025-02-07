@@ -23,10 +23,10 @@ def export(source_j_path):
 			source_j = json.load(file)
 
 	common.CheckJsonField(
-		source_j, "asset_type", 
+		source_j, "asset_type",
 		f'export_config ERROR: asset_type != "{build.ASSET_TYPE_CONFIG}", path: {source_j_path}',
 		build.ASSET_TYPE_CONFIG)
-	
+
 	# set the global vars
 	# strip of the path to make it approprite for windows console processor
 	assembler_path = source_j["assembler_path"]
@@ -39,7 +39,7 @@ def export(source_j_path):
 	# make necessary directories
 	build_code_dir = build.build_subfolder + source_j["export_dir"]["code"]
 	build_bin_dir = build.build_subfolder + source_j["export_dir"]["bin"]
-	os.makedirs(os.path.dirname(build.build_subfolder), exist_ok=True)	
+	os.makedirs(os.path.dirname(build.build_subfolder), exist_ok=True)
 	os.makedirs(os.path.dirname(build_code_dir), exist_ok=True)
 	os.makedirs(os.path.dirname(build_bin_dir), exist_ok=True)
 
@@ -63,13 +63,9 @@ def export(source_j_path):
 
 	# aggregate assets
 	fdd_files = {}
-	for asset_j_path in source_j["fdd_files"]["permanent"]["ram"]:
-		fdd_files[asset_j_path] = {}
-	for asset_j_path in source_j["fdd_files"]["permanent"]["ram-disk"]:
-		fdd_files[asset_j_path] = {}
-	for memory_name, load_sets in source_j["fdd_files"]["reload"].items():
-		for load_set_name, load_set in load_sets.items():
-			for asset_j_path in load_set:
+	for load_name, load_set in source_j["loads"].items():
+		for mem_type, asset_j_paths in load_set.items():
+			for asset_j_path in asset_j_paths:
 				fdd_files[asset_j_path] = {}
 
 	# export assets
@@ -88,13 +84,13 @@ def export(source_j_path):
 						asset_j_path,
 						asm_meta_path, asm_data_path, bin_path,
 						force_export)
-			
+
 			case build.ASSET_TYPE_MUSIC:
 				export_music.export_if_updated(
 						asset_j_path,
 						asm_meta_path, asm_data_path, bin_path,
-						force_export)
-					
+						force_export) 
+
 		fdd_files[asset_j_path] = {
 			"asm_meta_path": asm_meta_path,
 			"asm_data_path": asm_data_path,
@@ -103,12 +99,15 @@ def export(source_j_path):
 
 	# ===============================================================================
 
+	# export the code to load assets & a memory usage report
+	loads_path = export_loads(build_code_dir, source_j, fdd_files)
+
 	# export a build includes
-	export_build_includes(source_j, fdd_files)
- 
+	export_build_includes(source_j, fdd_files, [])
+
 	# processing main.asm
 	main_asm_path = source_j["main_asm_path"]
-	
+
 	com_filename = build.get_cpm_filename(source_j['com_filename'], build.EXT_COM)
 	com_path = build_bin_dir + \
 		com_filename
@@ -123,9 +122,6 @@ def export(source_j_path):
 	# export the debug data
 	debug_data_path = common.rename_extention(com_path, build.EXT_JSON)
 	debug_data = build.export_debug_data(raw_labels_path, debug_data_path)
-
-	# export a memory usage report
-	export_memory_usage_report(source_j, debug_data, fdd_files)
 
 	# export autoexec
 	autoexec_path = build_bin_dir + build.get_cpm_filename('autoexec', build.EXT_BAT)
@@ -152,7 +148,7 @@ def export(source_j_path):
 	build.printc(f";", build.TextColor.GREEN)
 	build.printc(f";===========================================================================", build.TextColor.GREEN)
 
-	return fdd_path	
+	return fdd_path
 
 def export_ram_data_labels(build_code_dir, segments_info, main_asm_labels):
 	# use the main programm labels to find preshift anim labels and their addrs
@@ -184,7 +180,7 @@ def export_autoexec(com_filename, autoexec_path):
 		f.write(com_filename + "\n")
 
 
-def export_build_includes(config_j, fdd_files):
+def export_build_includes(config_j, fdd_files, extra_includes):
 	# prepare the include path
 	build_include_path = build.BUILD_PATH + "build_includes" + build.EXT_ASM
 
@@ -204,75 +200,215 @@ def export_build_includes(config_j, fdd_files):
 		build_include += f'.include "{fdd_files[asset_j_path]["asm_meta_path"]}"\n'
 	build_include += "\n"
 
+	# include all includes
+	for include_path in extra_includes:
+		build_include += f'.include "{include_path}"\n'
+	build_include += "\n"
+
 	# save the file
 	with open(build_include_path, 'w') as f:
 		f.write(build_include)
 
-def export_memory_usage_report(config_j, debug_data, fdd_files):
+def export_loads(build_code_dir, config_j, fdd_files):
 	# prepare the include path
-	report_path = build.BUILD_PATH + "mem_usage_report" + build.EXT_ASM
+	load_path = build_code_dir + "loads" + build.EXT_ASM
 
 	# delete output file if it exists
-	if os.path.exists(report_path):
-		os.remove(report_path)
+	if os.path.exists(load_path):
+		os.remove(load_path)
 
-	report = ""
+	report = "/*\n"
+	asm = ""
+
+	# report a ram permanent usage
+	permanent_load_name = config_j["permanent_load_name"]
+	permanent_load = config_j["loads"].pop(permanent_load_name)
 	
-	ram_peramanent = config_j["fdd_files"]["permanent"]["ram"]
-	ram_disk_peramanent = config_j["fdd_files"]["permanent"]["ram-disk"]
-
-	# report for a ram	
-	report += f"Ram permanent usage:\n"
-	report += "	"
-
-	free = 0x8000 # because of the screen buffer
-	reserved = int(debug_data["labels"]["runtime_data_end"], 16)
-	used = 0
-
-	for asset_j_path in ram_peramanent:
-		bin_path = fdd_files[asset_j_path]["bin_path"]
-		file_size = os.path.getsize(bin_path)
-		report += f"{os.path.basename(bin_path)} [{file_size}], "
-		used += file_size
-
-	report += "\n"
-	report += f"reserved: {reserved}\n"
-	report += f"used: {used}\n"
-	free = free - reserved - used
-	report += f"free: {free}\n" 
-	report += "\n\n"
-
-	# report for a ram-disk
-	report += f"Ram-disk permanent usage:\n"
-	report += "	"
+	ram_reserved = 0
+	ram_disk_bank_idx = 0
+	ram_disk_load_addr = 0 
 	
-	reserved = 0
-	ram_disk_reserved = config_j["ram_disk_reserved"]	
-	for reservation in ram_disk_reserved:
-		reserved += int(reservation["length"], 16)
-		report += f"{reservation['name']} [{int(reservation['length'], 16)}], "
-
-	bank_len = 0x10000 # ram-disk bank size
-	banks = 4
-	free = bank_len * banks
-	used = 0
+	usage_report, end_ram_addr, end_bank_idx, load_end_addr, ram_load, ram_disk_load = get_load_mem_usage_report(
+		permanent_load_name, permanent_load, fdd_files, ram_reserved, ram_disk_bank_idx, ram_disk_load_addr, config_j["ram_disk_reservations"])
 	
-	for json_path in ram_disk_peramanent:
-		bin_path = fdd_files[asset_j_path]["bin_path"]
-		file_size = os.path.getsize(bin_path)
-		report += f"{os.path.basename(bin_path)} [{file_size}], "
-		used += file_size
+	ram_reserved = end_ram_addr
+	ram_disk_bank_idx = end_bank_idx
+	ram_disk_load_addr = load_end_addr
+	report += usage_report
 
-	report += "\n"
-	report += f"reserved: {reserved}\n"	
-	report += f"used: {used}\n"
-	free = free - reserved - used
-	report += f"free: {free}\n"
-	report += "\n\n"
+	# export the load asm
+	load_asm = get_load_asm(permanent_load_name, ram_load, ram_disk_load)
+	asm += load_asm 
+
+	# report loads usage
+	for load_name, load in config_j["loads"].items():
+		usage_report, _, _, _, ram_load, ram_disk_load = get_load_mem_usage_report(
+		load_name, load, fdd_files, ram_reserved, ram_disk_bank_idx, ram_disk_load_addr, config_j["ram_disk_reservations"])
+		report += usage_report
+
+		load_asm = get_load_asm(load_name, ram_load, ram_disk_load)
+		asm += load_asm
+
+
+	report += "*/\n"
+
+	asm = report + asm
 
 	# save the file
-	with open(report_path, 'w') as f:
-		f.write(report)		
+	with open(load_path, 'w') as f:
+		f.write(asm)
+
+	return load_path
+
+# ===============================================================================
+
+def get_load_mem_usage_report(
+		load_name,
+		load,
+		fdd_files,
+		ram_reserved,
+		ram_disk_bank_idx,
+		ram_disk_bank_perm_load_addr,
+		ram_disk_reservations,
+		):
+
+	report = ""
+	ram_load = []
+	ram_disk_load = []
+
+	# report a ram usage
+	report += f"Ram '{load_name}' usage:\n"
+
+	ram_free = build.RAM_LEN - build.SCR_BUFFS_LEN - ram_reserved
+	ram_used = 0
+	file_addr = ram_reserved
+
+	ram_files = load["ram"]
+
+	for i, asset_j_path in enumerate(ram_files):
+		bin_path = fdd_files[asset_j_path]["bin_path"]
+		file_size = os.path.getsize(bin_path)
+		fdd_files[asset_j_path]["addr"] = ram_used
+		ram_used += file_size
+		# check if ram is overloaded
+		if ram_used >= ram_free:
+			build.exit_error(f'export_config ERROR: ram is overloaded: '
+				f'ram_used ({ram_used}) >= free ram ({ram_free}). File: {bin_path}')
+
+		report += "	" if i == 0 else ""
+		report += f"{os.path.basename(bin_path)} [{file_size}], "
+
+		load_file = {
+			"name" : common.path_to_basename(bin_path).upper(),
+			"bin_path": bin_path,
+			"size": file_size,
+			"addr": file_addr
+		}
+		ram_load.append(load_file)
+
+		file_addr += file_size
+
+	report += "\n" if len(ram_files) > 0 else ""
+	report += f"reserved: {ram_reserved}\n"
+	report += f"used: {ram_used}\n"
+	report += f"free: {ram_free - ram_used}\n"
+	report += "\n"
+
+	# report a ram-disk usage
+	report += f"Ram-disk '{load_name}' usage:\n"
+
+	ram_disk_load_used = 0
+	ram_disk_load_addr = ram_disk_bank_perm_load_addr
+	ram_disk_files = load["ram-disk"]
+	ram_disk_reserved = (ram_disk_bank_idx * build.RAM_DISK_BANK_LEN +
+							ram_disk_bank_perm_load_addr)
+
+	add_indent = True
+	for asset_j_path in ram_disk_files:
+
+		bin_path = fdd_files[asset_j_path]["bin_path"]
+		file_size = os.path.getsize(bin_path)
+		ram_disk_load_used += file_size
+
+		# adjust the file load addr if it lies inside the reserved space
+		reservation_bank_name = f'bank{ram_disk_bank_idx}'
+		if reservation_bank_name in ram_disk_reservations:
+			bank_reservation = ram_disk_reservations[reservation_bank_name]
+			bank_reservation_len = int(bank_reservation["length"], 16)
+			bank_reservation_addr = int(bank_reservation["addr"], 16)
+			bank_reservation_end_addr = bank_reservation_addr + bank_reservation_len
+
+			if (ram_disk_load_addr + file_size >= bank_reservation_addr and
+				ram_disk_load_addr + file_size < bank_reservation_end_addr):
+
+				report +="\n"
+				report += f"	EMPTY_SPACE " \
+					f"[bank idx: {ram_disk_bank_idx}, " \
+					f"addr: {ram_disk_load_addr}, size:{bank_reservation_addr - ram_disk_load_addr}]\n"
+				add_indent = True
+				
+				ram_disk_load_addr = bank_reservation_addr + bank_reservation_len				
+				ram_disk_reserved += bank_reservation_len
+
+		# adjust the file load addr if it lies outside the bank space
+		if (ram_disk_load_addr + file_size > build.RAM_DISK_BANK_LEN):
+			ram_disk_bank_idx += 1
+			ram_disk_load_addr = 0
+
+		# check if the ramk disk is overloaded
+		if (ram_disk_bank_idx > build.RAM_DISK_IDX_MAX):
+			build.exit_error(f'export_config ERROR: ram-disk is overloaded: '
+				f'File: {bin_path}')
+
+		if add_indent:
+			add_indent = False
+			report += "	"
+
+		report += f"{os.path.basename(bin_path)} " \
+			f"[bank idx: {ram_disk_bank_idx}, " \
+			f"addr: {ram_disk_load_addr}, size:{file_size}], "
+		
+		
+		load_file = {
+			"name" : common.path_to_basename(bin_path).upper(),
+			"bin_path": bin_path,
+			"size": file_size,
+			"addr": ram_disk_load_addr,
+			"bank_idx": ram_disk_bank_idx
+		}
+		ram_disk_load.append(load_file)
+
+		ram_disk_load_addr += file_size
+
+	report += "\n" if len(ram_disk_files) > 0 else ""
+	report += f"reserved: {ram_disk_reserved}\n"
+	report += f"used: {ram_disk_load_used}\n"
+	report += f"free: {build.RAM_DISK_LEN - ram_disk_load_used}\n"
+	report += "\n"
+
+	return report, ram_reserved + ram_used, ram_disk_bank_idx, ram_disk_load_addr, ram_load, ram_disk_load
+
+# ===============================================================================
+
+def get_load_asm(load_name, ram_load, ram_disk_load):
+	asm = ""
+	asm += f";===============================================\n"
+	asm += f"; {load_name}\n"
+	asm += f";===============================================\n"
+	asm += f".function load_{load_name}\n"
+	asm += "			; ram:\n"
+	for load_file in ram_load:
+		name = load_file["name"]
+		asm += f"			{name}_DATA_ADDR = runtime_data_end + {load_file['addr']}\n"
+		asm += f"			LOAD_FILE({name}_FILENAME_PTR, 0, {name}_DATA_ADDR, {name}_FILE_LEN)\n\n"
+
+	asm += "			; ram-disk:\n"
+	for load_file in ram_disk_load:
+		name = load_file["name"]
+		asm += f"			LOAD_FILE({name}_FILENAME_PTR, RAM_DISK_S{load_file['bank_idx']}, {name}_DATA_ADDR, {name}_FILE_LEN)\n\n"
+
+	asm += f".endf\n"
+	return asm
 
 def get_asset_export_paths(asset_j_path, build_bin_dir):
 	with open(asset_j_path, "rb") as file:

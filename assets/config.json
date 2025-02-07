@@ -44,41 +44,35 @@
 	"build_db_path" : "build/build.db",
 	"main_asm_path" : "src/main.asm",
 	"basefdd_path" : "assets/basefdd/rds308.fdd",
-	"ram_disk_reserved" : 
-	[
-		{
-			"name" : "backbuffer",
-			"comment" : "to restore a background in the backbuffer",
-			"bank"	: 0,
-			"addr" : "0x8000",
-			"length" : "0x8000"
-		},
-		{
+	"ram_disk_reservations" :
+	{
+		"bank0": {
 			"name" : "backbuffer2",
-			"comment" : "to avoid sprite flickering when it's rapidly erased/drawn",
-			"bank"	: 1,
-			"addr" : "0x8000",
-			"length" : "0x8000"
-		}		
-	],
-	"fdd_files" : {
+			"comment" : "to restore a background in the backbuffer",
+			"addr" : "0xA000",
+			"length" : "0x6000"
+		},
+		"bank1" : {
+			"name" : "backbuffer",
+			"comment" : "to avoid sprite flickering when it's consecutively erased/rendered",
+			"addr" : "0xA000",
+			"length" : "0x6000"
+		}
+	},
+	"permanent_load_name" : "permanent",
+	"loads" : {
 		"permanent" :
 		{
 			"ram" : [
-				"assets/fonts/eng/font.json"
+				"assets/fonts/eng/font.json",
+				"assets/music/song01.json"
 			],
 			"ram-disk" : []
 		},
-		"reload" :
+		"main_menu" :
 		{
-			"ram" : {
-			},
-			"ram-disk" : 
-			{
-				"main_menu" : [
-					"assets/music/song01.json"
-				]
-			}
+			"ram" : [],
+			"ram-disk" : []
 		}
 	}
 }
