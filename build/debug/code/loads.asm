@@ -26,10 +26,10 @@ free: 262144
 ;===============================================
 .function load_permanent
 			; ram:
-			FONT_DATA_ADDR = 0x4000 + 0
+			FONT_DATA_ADDR = STACK_MIN_ADDR - 0 - 1624
 			LOAD_FILE(FONT_FILENAME_PTR, 0, FONT_DATA_ADDR, FONT_FILE_LEN)
 
-			SONG01_DATA_ADDR = 0x4000 + 1624
+			SONG01_DATA_ADDR = STACK_MIN_ADDR - 1624 - 8548
 			LOAD_FILE(SONG01_FILENAME_PTR, 0, SONG01_DATA_ADDR, SONG01_FILE_LEN)
 
 			; ram-disk:
@@ -41,3 +41,4 @@ free: 262144
 			; ram:
 			; ram-disk:
 .endf
+LOADED_DATA_START_ADDR = 10172

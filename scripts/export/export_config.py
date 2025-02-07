@@ -242,17 +242,23 @@ def export_loads(build_code_dir, config_j, fdd_files):
 
 	# report loads usage
 	for load_name, load in config_j["loads"].items():
-		usage_report, _, _, _, ram_load, ram_disk_load = get_load_mem_usage_report(
+		usage_report, end_ram_addr, _, _, ram_load, ram_disk_load = get_load_mem_usage_report(
 		load_name, load, fdd_files, ram_reserved, ram_disk_bank_idx, ram_disk_load_addr, config_j["ram_disk_reservations"])
 		report += usage_report
-
+		
 		load_asm = get_load_asm(load_name, ram_load, ram_disk_load)
 		asm += load_asm
+
+		loaded_min_addr = build.SCR_ADDR - end_ram_addr
 
 
 	report += "*/\n"
 
 	asm = report + asm
+
+	# store the lowest addr of the loaded data
+	# to check if it is not overlapped with the main program (runtime data)
+	asm += f"LOADED_DATA_START_ADDR = {ram_reserved}\n"
 
 	# save the file
 	with open(load_path, 'w') as f:
@@ -287,26 +293,26 @@ def get_load_mem_usage_report(
 
 	for i, asset_j_path in enumerate(ram_files):
 		bin_path = fdd_files[asset_j_path]["bin_path"]
-		file_size = os.path.getsize(bin_path)
+		file_len = os.path.getsize(bin_path)
 		fdd_files[asset_j_path]["addr"] = ram_used
-		ram_used += file_size
+		ram_used += file_len
 		# check if ram is overloaded
 		if ram_used >= ram_free:
 			build.exit_error(f'export_config ERROR: ram is overloaded: '
 				f'ram_used ({ram_used}) >= free ram ({ram_free}). File: {bin_path}')
 
 		report += "	" if i == 0 else ""
-		report += f"{os.path.basename(bin_path)} [{file_size}], "
+		report += f"{os.path.basename(bin_path)} [{file_len}], "
 
 		load_file = {
 			"name" : common.path_to_basename(bin_path).upper(),
 			"bin_path": bin_path,
-			"size": file_size,
+			"len": file_len,
 			"addr": file_addr
 		}
 		ram_load.append(load_file)
 
-		file_addr += file_size
+		file_addr += file_len
 
 	report += "\n" if len(ram_files) > 0 else ""
 	report += f"reserved: {ram_reserved}\n"
@@ -327,8 +333,8 @@ def get_load_mem_usage_report(
 	for asset_j_path in ram_disk_files:
 
 		bin_path = fdd_files[asset_j_path]["bin_path"]
-		file_size = os.path.getsize(bin_path)
-		ram_disk_load_used += file_size
+		file_len = os.path.getsize(bin_path)
+		ram_disk_load_used += file_len
 
 		# adjust the file load addr if it lies inside the reserved space
 		reservation_bank_name = f'bank{ram_disk_bank_idx}'
@@ -338,8 +344,8 @@ def get_load_mem_usage_report(
 			bank_reservation_addr = int(bank_reservation["addr"], 16)
 			bank_reservation_end_addr = bank_reservation_addr + bank_reservation_len
 
-			if (ram_disk_load_addr + file_size >= bank_reservation_addr and
-				ram_disk_load_addr + file_size < bank_reservation_end_addr):
+			if (ram_disk_load_addr + file_len >= bank_reservation_addr and
+				ram_disk_load_addr + file_len < bank_reservation_end_addr):
 
 				report +="\n"
 				report += f"	EMPTY_SPACE " \
@@ -351,7 +357,7 @@ def get_load_mem_usage_report(
 				ram_disk_reserved += bank_reservation_len
 
 		# adjust the file load addr if it lies outside the bank space
-		if (ram_disk_load_addr + file_size > build.RAM_DISK_BANK_LEN):
+		if (ram_disk_load_addr + file_len > build.RAM_DISK_BANK_LEN):
 			ram_disk_bank_idx += 1
 			ram_disk_load_addr = 0
 
@@ -366,19 +372,19 @@ def get_load_mem_usage_report(
 
 		report += f"{os.path.basename(bin_path)} " \
 			f"[bank idx: {ram_disk_bank_idx}, " \
-			f"addr: {ram_disk_load_addr}, size:{file_size}], "
+			f"addr: {ram_disk_load_addr}, size:{file_len}], "
 		
 		
 		load_file = {
 			"name" : common.path_to_basename(bin_path).upper(),
 			"bin_path": bin_path,
-			"size": file_size,
+			"len": file_len,
 			"addr": ram_disk_load_addr,
 			"bank_idx": ram_disk_bank_idx
 		}
 		ram_disk_load.append(load_file)
 
-		ram_disk_load_addr += file_size
+		ram_disk_load_addr += file_len
 
 	report += "\n" if len(ram_disk_files) > 0 else ""
 	report += f"reserved: {ram_disk_reserved}\n"
@@ -399,7 +405,7 @@ def get_load_asm(load_name, ram_load, ram_disk_load):
 	asm += "			; ram:\n"
 	for load_file in ram_load:
 		name = load_file["name"]
-		asm += f"			{name}_DATA_ADDR = runtime_data_end + {load_file['addr']}\n"
+		asm += f"			{name}_DATA_ADDR = STACK_MIN_ADDR - {load_file['addr']} - {load_file['len']}\n"
 		asm += f"			LOAD_FILE({name}_FILENAME_PTR, 0, {name}_DATA_ADDR, {name}_FILE_LEN)\n\n"
 
 	asm += "			; ram-disk:\n"

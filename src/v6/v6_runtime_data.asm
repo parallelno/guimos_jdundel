@@ -64,7 +64,12 @@ game_updates_required:
 ; runtime data buffer size validation
 ;=============================================================================
 runtime_data_end:
-.if runtime_data_end >= BUFFERS_END_ADDR
-	.error "Runtime data buffer overflow detected at addr (" runtime_data_end ")." 
+.if runtime_data_end >= STACK_MIN_ADDR
+	.error "Runtime data buffer overlaps the stack buffer at addr (" runtime_data_end ")." 
 	.error "It must be within the range " BUFFERS_END_ADDR "."
+.endif
+
+.if runtime_data_end >= LOADED_DATA_START_ADDR
+	.error "Runtime data buffer overlaps the loaded data at addr (" runtime_data_end ")." 
+	.error "It must be within the range " LOADED_DATA_START_ADDR "."
 .endif

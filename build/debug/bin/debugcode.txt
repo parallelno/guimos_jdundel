@@ -1196,12 +1196,12 @@ $0ad0 cd d9 0a   call $0ad9
 $0ad3 cd f7 0a   call $0af7
 $0ad6 cd 68 03   call $0368
 $0ad9 c9         ret
-$0ada 21 00 40   lxi h,$4000
+$0ada 21 66 79   lxi h,$7966
 $0add 01 58 0d   lxi b,$0d58
 $0ae0 11 03 01   lxi d,$0103
 $0ae3 3e 00      mvi a,$00
 $0ae5 cd 92 02   call $0292
-$0ae8 21 58 46   lxi h,$4658
+$0ae8 21 02 58   lxi h,$5802
 $0aeb 01 64 43   lxi b,$4364
 $0aee 11 c2 01   lxi d,$01c2
 $0af1 3e 00      mvi a,$00
@@ -1223,11 +1223,11 @@ $0b14 cd b5 04   call $04b5
 $0b17 cd b9 0a   call $0ab9
 $0b1a f3         di
 $0b1b cd da 0a   call $0ada
-$0b1e 11 58 46   lxi d,$4658
+$0b1e 11 02 58   lxi d,$5802
 $0b21 21 cd 01   lxi h,$01cd
 $0b24 cd a7 07   call $07a7
 $0b27 cd bb 07   call $07bb
-$0b2a 11 00 40   lxi d,$4000
+$0b2a 11 66 79   lxi d,$7966
 $0b2d 0e 5a      mvi c,$5a
 $0b2f 21 0e 01   lxi h,$010e
 $0b32 cd 75 04   call $0475
