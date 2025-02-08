@@ -116,10 +116,10 @@ def load_json(source_j_path):
 	return source_j
 
 def remove_duplicate_slashes(path):
-    return path.replace('\\\\', '\\')
+    return path.replace('//', '/')
 
 def add_double_slashes(path: str) -> str:
-    return path.replace('\\', '\\\\')
+    return path.replace('/', '//')
 
 def get_addr_wo_prefix(hex_string):
 	hex_string_without_prefix = hex_string.replace("$", "")
@@ -162,7 +162,7 @@ def compress(source_path, path_compressed):
 	delete_file(path_compressed)
 	run_command(f"{build.packer_path} {source_path} {path_compressed}")
 	
-def asm_compress_to_asm(asm, path_tmp = "temp\\", delete_tmp_asm = True, delete_tmp_bin = True, delete_tmp_packed = True):
+def asm_compress_to_asm(asm, path_tmp = "temp/", delete_tmp_asm = True, delete_tmp_bin = True, delete_tmp_packed = True):
 	asm = ".org 0 \n" + asm
 
 	# save room data to a temp file
@@ -174,15 +174,16 @@ def asm_compress_to_asm(asm, path_tmp = "temp\\", delete_tmp_asm = True, delete_
 		file.write(asm)
 
 	# asm to temp bin
-	run_command(f"{build.assembler_path} {path_asm} "
-		f" {path_bin}")
+	cmd = f"{build.assembler_path.replace('/', '\\')} {path_asm} {path_bin}"
+	run_command(cmd)
 	
 	# pack a room data
-	run_command(f"{build.packer_path} {path_bin} {path_packed}")
+	run_command(f"{build.packer_path.replace('/', '\\')} {path_bin} {path_packed}")
 	
 	# load bin
+	asm_packed = None
 	with open(path_packed, "rb") as file:
-		asm_packed = bytes_to_asm(file.read())
+		asm_packed = file.read()
 
 	# del tmp files
 	if delete_tmp_asm:
@@ -192,4 +193,4 @@ def asm_compress_to_asm(asm, path_tmp = "temp\\", delete_tmp_asm = True, delete_
 	if delete_tmp_packed:
 		delete_file(path_packed)
 
-	return asm_packed
+	return bytes_to_asm(asm_packed), len(asm_packed)

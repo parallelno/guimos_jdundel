@@ -13,8 +13,8 @@
 			"sprite" : "scripts/export/export_sprite.py",
 			"back" : "scripts/export/export_back.py",
 			"decal" : "scripts/export/export_decal.py",
-			"level_data" : "scripts/export/export_level.py",
-			"level_gfx" : "scripts/export/export_level.py",
+			"level_data" : "scripts/export/export_level_data.py",
+			"level_gfx" : "scripts/export/export_level_gfx.py",
 			"music" : "scripts/export/export_music.py",
 			"font" : "scripts/export/export_font.py",
 			"font_rd" : "scripts/export/export_font.py",
@@ -69,10 +69,13 @@
 			],
 			"ram-disk" : []
 		},
-		"main_menu" :
+		"level0" :
 		{
 			"ram" : [],
-			"ram-disk" : []
+			"ram-disk" : [
+				"assets/levels/lv0_data.json",
+				"assets/levels/lv0_gfx.json"
+			]
 		}
 	}
 }

@@ -1,19 +1,19 @@
 ;=======================================================
 ; Ports
 ;=======================================================
-PORT0_OUT_OUT			= $88
-PORT0_OUT_IN			= $8a
+PORT0_OUT_OUT			= 0x88
+PORT0_OUT_IN			= 0x8a
 
-PORT_TIMER				= $08
-TIMER_INIT_CH0			= $36
-TIMER_INIT_CH1			= $76
-TIMER_INIT_CH2			= $B6
-TIMER_PORT_CH0			= $0b
-TIMER_PORT_CH1			= $0a
-TIMER_PORT_CH2			= $09
+PORT_TIMER				= 0x08
+TIMER_INIT_CH0			= 0x36
+TIMER_INIT_CH1			= 0x76
+TIMER_INIT_CH2			= 0xB6
+TIMER_PORT_CH0			= 0x0b
+TIMER_PORT_CH1			= 0x0a
+TIMER_PORT_CH2			= 0x09
 
-PORT_AY_REG				= $15
-PORT_AY_DATA			= $14
+PORT_AY_REG				= 0x15
+PORT_AY_DATA			= 0x14
 
 ;=======================================================
 ; Color
@@ -28,15 +28,15 @@ BORDER_COLOR_IDX		= 1
 ;=======================================================
 SCR_VERTICAL_OFFSET_DEFAULT = 255
 
-SCR_ADDR				= $8000
-SCR_BUFF0_ADDR			= $8000
-SCR_BUFF1_ADDR			= $A000
-SCR_BUFF2_ADDR			= $C000
-SCR_BUFF3_ADDR			= $E000
-SCR_BUFF_LEN            = $2000
+SCR_ADDR				= 0x8000
+SCR_BUFF0_ADDR			= 0x8000
+SCR_BUFF1_ADDR			= 0xA000
+SCR_BUFF2_ADDR			= 0xC000
+SCR_BUFF3_ADDR			= 0xE000
+SCR_BUFF_LEN            = 0x2000
 SCR_BUFFS_LEN			= SCR_BUFF_LEN * 4
-BACK_BUFF_ADDR          = $A000
-BACK_BUFF2_ADDR         = $A000
+BACK_BUFF_ADDR          = 0xA000
+BACK_BUFF2_ADDR         = 0xA000
 
 ;=======================================================
 ; Ram-disk
@@ -97,26 +97,26 @@ RAM_DISK_M_AF = RAM_DISK_M_AD | RAM_DISK_M_EF
 ;=======================================================
 ; Op-codes
 ;=======================================================
-OPCODE_NOP  = 0
-OPCODE_XCHG = $eb
-OPCODE_RET  = $c9
-OPCODE_RC	= $d8
-OPCODE_RNC  = $d0
-OPCODE_JMP	= $c3
-OPCODE_JNZ	= $c2
-OPCODE_JC	= $dA
-OPCODE_JNC	= $d2
-OPCODE_MOV_E_M = $5e
-OPCODE_MOV_E_A = $5f
-OPCODE_MOV_D_B = $50
-OPCODE_MOV_D_M = $56
-OPCODE_MOV_D_A = $57
-OPCODE_MOV_M_B = $70
-OPCODE_MOV_M_A = $77
-OPCODE_POP_B = $c1
-OPCODE_STC	= $37
-OPCODE_INX_D = $13
-OPCODE_LXI_H = $21
+OPCODE_NOP  	= 0x00
+OPCODE_XCHG 	= 0xEB
+OPCODE_RET  	= 0xC9
+OPCODE_RC		= 0xD8
+OPCODE_RNC  	= 0xD0
+OPCODE_JMP		= 0xC3
+OPCODE_JNZ		= 0xC2
+OPCODE_JC		= 0xDA
+OPCODE_JNC		= 0xD2
+OPCODE_MOV_E_M	= 0x5E
+OPCODE_MOV_E_A	= 0x5F
+OPCODE_MOV_D_B	= 0x50
+OPCODE_MOV_D_M	= 0x56
+OPCODE_MOV_D_A	= 0x57
+OPCODE_MOV_M_B	= 0x70
+OPCODE_MOV_M_A	= 0x77
+OPCODE_POP_B	= 0xC1
+OPCODE_STC		= 0x37
+OPCODE_INX_D	= 0x13
+OPCODE_LXI_H	= 0x21
 
 ;=======================================================
 ; AY-3-8910 sound chip consts
@@ -158,11 +158,11 @@ AY_REG_VOL_ENV_MASK		= %00010000
 ;=======================================================
 ; V6 Engine
 ;=======================================================
-RESTART_ADDR 			= $0000
-INT_ADDR	 			= $0038
+RESTART_ADDR 			= 0x0000
+INT_ADDR	 			= 0x0038
 
 STACK_LEN				= 32
-STACK_MAIN_PROGRAM_ADDR	= 0x8000 - 2 ; because erase funcs can let the interruption call corrupt $7ffe, @7fff bytes.
+STACK_MAIN_PROGRAM_ADDR	= 0x8000 - 2 ; because erase funcs can let the interruption call corrupt 0x7ffe, @7fff bytes.
 STACK_INTERRUPTION_ADDR	= STACK_MAIN_PROGRAM_ADDR - STACK_LEN ; it is used by the iterruption func
 STACK_MIN_ADDR			= STACK_INTERRUPTION_ADDR - STACK_LEN
 
@@ -171,17 +171,17 @@ WORD_LEN	= 2
 ADDR_LEN	= 2
 JMP_4_LEN	= 4
 
-TEMP_BYTE	= $00
-TEMP_WORD	= $0000
-TEMP_ADDR	= $0000
-NULL		= $0
-NULL_PTR	= $0
+TEMP_BYTE	= 00
+TEMP_WORD	= 0000
+TEMP_ADDR	= 0000
+NULL		= 0
+NULL_PTR	= 0000
 
 INTS_PER_SEC			= 50 ; Interuptions per sec
 
 ; settings
 SETTING_OFF	= 0
-SETTING_ON	= $ff
+SETTING_ON	= 0xff
 
 ; the temporal space while before putting the data into the ram-disk
 LOADING_TEMP_ADDR = SCR_ADDR
@@ -191,4 +191,4 @@ LOADING_TEMP_ADDR = SCR_ADDR
 ;=======================================================
 
 ; FPS counter screen addr
-FPS_SCR_ADDR = $bdfb - 16
+FPS_SCR_ADDR = 0xbdfb - 16

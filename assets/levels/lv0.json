@@ -1,0 +1,42 @@
+{
+	"path_png" : "tiled/art/lv0.png",
+	"palette" :
+	[ 
+		{"x": 0,	"y" : 0},
+		{"x": 16,	"y" : 0},
+		{"x": 32,	"y" : 0},
+		{"x": 48,	"y" : 0},
+		{"x": 64,	"y" : 0},
+		{"x": 80,	"y" : 0},
+		{"x": 96,	"y" : 0},
+		{"x": 112,	"y" : 0},
+		{"x": 128,	"y" : 0},
+		{"x": 144,	"y" : 0},
+		{"x": 160,	"y" : 0},
+		{"x": 176,	"y" : 0},
+		{"x": 192,	"y" : 0},
+		{"x": 208,	"y" : 0},
+		{"x": 234,	"y" : 0},
+		{"x": 240,	"y" : 0}
+	],
+	"asset_type" : "level",
+	"hero_start_pos" : {
+		"x" : 120,
+		"y" : 140
+	},
+	"rooms" : [
+		{"path" : "tiled/lv0_home.tmj"},
+		{"path" : "tiled/lv0_farm_fence.tmj"},
+		{"path" : "tiled/lv0_road_to_friends_home.tmj"},
+		{"path" : "tiled/lv0_friends_home.tmj"},
+		{"path" : "tiled/lv0_friends_home_backyard.tmj"},
+		{"path" : "tiled/lv0_friends_secret_place.tmj"},
+		{"path" : "tiled/lv0_crossroad.tmj"},
+		{"path" : "tiled/lv0_farm_entrance.tmj"},
+		{"path" : "tiled/lv0_farm_storage.tmj"},
+		{"path" : "tiled/lv0_loop.tmj"},
+		{"path" : "tiled/lv0_dungeon_entrance.tmj"},
+		{"path" : "tiled/lv0_abandoned_home.tmj"},
+		{"path" : "tiled/lv0_lost_coins.tmj"}
+	]
+}

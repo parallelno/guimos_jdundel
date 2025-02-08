@@ -394,6 +394,7 @@ def export_fdd_file(asm_meta_path, asm_data_path, bin_path, asm_meta_body = ""):
 	asm_meta += "\n"
 	asm_meta += f"{source_name.upper()}_FILE_LEN = {file_len}\n"
 	asm_meta += f"{source_name.upper()}_LAST_RECORD_LEN = {last_record_len}\n"
+	asm_meta += "\n"	
 	# add the filename to the meta data
 	cmp_filename = os.path.basename(bin_path).split(".")
 	cmp_filename_wo_ext_len = len(cmp_filename[0])

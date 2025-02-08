@@ -148,7 +148,7 @@ def get_list_of_tiles(remap_idxs, label_prefix, pngLabelPrefix):
 	asm = "\n			.word 0 ; safety pair of bytes for reading by POP B\n"
 	asm += label_prefix + "_tiles_addr:\n			.word "
 	for i, t_idx in enumerate(remap_idxs):
-		asm += "__" + pngLabelPrefix + "_tile" + str(remap_idxs[t_idx]) + ", "
+		asm += "_" + pngLabelPrefix + "_tile" + str(remap_idxs[t_idx]) + ", "
 		if i != len(remap_idxs)-1:
 			# two safety fytes
 			asm += "0, "

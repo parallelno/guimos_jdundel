@@ -4,6 +4,7 @@
 
 FONT_FILE_LEN = 1624
 FONT_LAST_RECORD_LEN = 88
+
 FONT_FILENAME_PTR:
 			.byte "FONT" ; filename
 			.byte "    " ; filename white chars

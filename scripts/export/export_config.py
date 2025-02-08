@@ -5,6 +5,8 @@ import utils.build as build
 import utils.common as common
 from export import export_font
 from export import export_music
+from export import export_level_data
+from export import export_level_gfx
 from export import export_sprite
 from export import export_fdd
 
@@ -78,7 +80,7 @@ def export(config_j_path):
 
 		force_export = asset_types_force_export[asset_type]
 
-		match asset_type:
+		match asset_type: 
 			case build.ASSET_TYPE_FONT:
 				export_font.export_if_updated(
 						asset_j_path,
@@ -89,7 +91,19 @@ def export(config_j_path):
 				export_music.export_if_updated(
 						asset_j_path,
 						asm_meta_path, asm_data_path, bin_path,
-						force_export) 
+						force_export)
+			
+			case build.ASSET_TYPE_LEVEL_DATA:
+				export_level_data.export_if_updated(
+						asset_j_path,
+						asm_meta_path, asm_data_path, bin_path,
+						force_export)
+				
+			case build.ASSET_TYPE_LEVEL_GFX:
+				export_level_gfx.export_if_updated(
+						asset_j_path,
+						asm_meta_path, asm_data_path, bin_path,
+						force_export)
 
 		fdd_files[asset_j_path] = {
 			"asm_meta_path": asm_meta_path,
@@ -249,6 +263,7 @@ def export_loads(config_j, fdd_files):
 	asm += load_asm 
 
 	# report loads usage
+	loaded_max_len = 0
 	for load_name, load in config_j["loads"].items():
 		usage_report, end_ram_addr, _, _, ram_load, ram_disk_load = get_load_mem_usage_report(
 		load_name, load, fdd_files, ram_reserved, ram_disk_bank_idx, ram_disk_load_addr, config_j["ram_disk_reservations"])
@@ -257,7 +272,8 @@ def export_loads(config_j, fdd_files):
 		load_asm = get_load_asm(load_name, ram_load, ram_disk_load)
 		asm += load_asm
 
-		loaded_min_addr = build.SCR_ADDR - end_ram_addr
+		if end_ram_addr > loaded_max_len:
+			loaded_max_len = end_ram_addr
 
 
 	report += "*/\n"
@@ -266,7 +282,7 @@ def export_loads(config_j, fdd_files):
 
 	# store the lowest addr of the loaded data
 	# to check if it is not overlapped with the main program (runtime data)
-	asm += f"LOADED_DATA_START_ADDR = {ram_reserved}\n"
+	asm += f"LOADED_DATA_START_ADDR = STACK_MIN_ADDR - {loaded_max_len}\n"
 
 	# save the file
 	with open(load_path, 'w') as f:
@@ -337,7 +353,6 @@ def get_load_mem_usage_report(
 	ram_disk_reserved = (ram_disk_bank_idx * build.RAM_DISK_BANK_LEN +
 							ram_disk_bank_perm_load_addr)
 
-	add_indent = True
 	for asset_j_path in ram_disk_files:
 
 		bin_path = fdd_files[asset_j_path]["bin_path"]
@@ -358,8 +373,7 @@ def get_load_mem_usage_report(
 				report +="\n"
 				report += f"	EMPTY_SPACE " \
 					f"[bank idx: {ram_disk_bank_idx}, " \
-					f"addr: {ram_disk_load_addr}, size:{bank_reservation_addr - ram_disk_load_addr}]\n"
-				add_indent = True
+					f"addr: {ram_disk_load_addr}, len:{bank_reservation_addr - ram_disk_load_addr}]\n"
 				
 				ram_disk_load_addr = bank_reservation_addr + bank_reservation_len				
 				ram_disk_reserved += bank_reservation_len
@@ -374,13 +388,11 @@ def get_load_mem_usage_report(
 			build.exit_error(f'export_config ERROR: ram-disk is overloaded: '
 				f'File: {bin_path}')
 
-		if add_indent:
-			add_indent = False
-			report += "	"
+		report += "	"
 
 		report += f"{os.path.basename(bin_path)} " \
 			f"[bank idx: {ram_disk_bank_idx}, " \
-			f"addr: {ram_disk_load_addr}, size:{file_len}], "
+			f"addr: {ram_disk_load_addr}, len:{file_len}], \n"
 		
 		
 		load_file = {
@@ -405,20 +417,25 @@ def get_load_mem_usage_report(
 # ===============================================================================
 
 def get_load_asm(load_name, ram_load, ram_disk_load):
+	
 	asm = ""
 	asm += f";===============================================\n"
 	asm += f"; {load_name}\n"
 	asm += f";===============================================\n"
 	asm += f".function load_{load_name}\n"
 	asm += "			; ram:\n"
+	asm += "\n"
+
 	for load_file in ram_load:
 		name = load_file["name"]
-		asm += f"			{name}_DATA_ADDR = STACK_MIN_ADDR - {load_file['addr']} - {load_file['len']}\n"
+		asm += f"			{name}_DATA_ADDR = STACK_MIN_ADDR - {load_file['addr']} - {name}_FILE_LEN\n"
 		asm += f"			LOAD_FILE({name}_FILENAME_PTR, 0, {name}_DATA_ADDR, {name}_FILE_LEN)\n\n"
 
+	
 	asm += "			; ram-disk:\n"
 	for load_file in ram_disk_load:
 		name = load_file["name"]
+		asm += f"			{name}_DATA_ADDR = {load_file['addr']}\n"
 		asm += f"			LOAD_FILE({name}_FILENAME_PTR, RAM_DISK_S{load_file['bank_idx']}, {name}_DATA_ADDR, {name}_FILE_LEN)\n\n"
 
 	asm += f".endf\n"
@@ -427,7 +444,7 @@ def get_load_asm(load_name, ram_load, ram_disk_load):
 def get_asset_export_paths(asset_j_path, build_bin_dir):
 	with open(asset_j_path, "rb") as file:
 		asset_j = json.load(file)
-
+ 
 	asset_name = common.path_to_basename(asset_j_path)
 	asset_type = asset_j["asset_type"]
 	export_asm_dir = build.build_subfolder + asset_type + "/"

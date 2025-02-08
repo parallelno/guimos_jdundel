@@ -18,10 +18,10 @@ def export_if_updated(		asset_j_path, asm_meta_path, asm_data_path, bin_path,
 
 def is_source_updated(asset_j_path):
 	with open(asset_j_path, "rb") as file:
-		source_j = json.load(file)
+		asset_j = json.load(file)
 	
-	source_dir = str(Path(asset_j_path).parent) + "/"
-	path_ym = source_dir + source_j["path_ym"]
+	asset_dir = str(Path(asset_j_path).parent) + "/"
+	path_ym = asset_dir + asset_j["path_ym"]
 
 	if build.is_file_updated(asset_j_path) | build.is_file_updated(path_ym):
 		return True
@@ -36,10 +36,10 @@ def export_asm(asset_j_path, asm_meta_path, asm_data_path, bin_path, clean_tmp =
 
 	try:
 		with open(asset_j_path, "rb") as file:
-			source_j = json.load(file)
+			asset_j = json.load(file)
 
-			source_dir = str(Path(asset_j_path).parent) + "/"
-			song_path = source_dir + source_j["path_ym"]
+			asset_dir = str(Path(asset_j_path).parent) + "/"
+			song_path = asset_dir + asset_j["path_ym"]
 
 		[reg_data, comment1, comment2, comment3] = readym(song_path)
 	except:
@@ -60,8 +60,8 @@ def export_asm(asset_j_path, asm_meta_path, asm_data_path, bin_path, clean_tmp =
 		file_inc.write(f'.org 0\n')
 
 		for i, c in enumerate(reg_data[0:14]):
-			bin_file = f"source_name{i:02d}{build.EXT_BIN}"
-			zx0File = f"source_name{i:02d}{build.packer_ext}"
+			bin_file = f"{label_prefix}{i:02d}{build.EXT_BIN}"
+			zx0File = f"{label_prefix}{i:02d}{build.packer_ext}"
 			with open(bin_file, "wb") as f:
 				f.write(c)
 			

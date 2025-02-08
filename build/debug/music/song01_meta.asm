@@ -4,6 +4,7 @@
 
 SONG01_FILE_LEN = 8548
 SONG01_LAST_RECORD_LEN = 100
+
 SONG01_FILENAME_PTR:
 			.byte "SONG01" ; filename
 			.byte "  " ; filename white chars

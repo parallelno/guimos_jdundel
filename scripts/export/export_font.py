@@ -16,53 +16,50 @@ def export_if_updated(
 
 def is_source_updated(asset_j_path):
 	with open(asset_j_path, "rb") as file:
-		source_j = json.load(file)
+		asset_j = json.load(file)
 	
-	source_dir = str(Path(asset_j_path).parent) + "/"
-	path_png = source_dir + source_j["path_png"]
+	asset_dir = str(Path(asset_j_path).parent) + "/"
+	path_png = asset_dir + asset_j["path_png"]
 
 	if build.is_file_updated(asset_j_path) | build.is_file_updated(path_png):
 		return True
 	return False
 
-def export_asm(asset_j_path, asm_gfx_ptrs_path, asm_gfx_path, bin_gfx_path):
+def export_asm(asset_j_path, asm_meta_path, asm_data_path, bin_path):
 
 	with open(asset_j_path, "rb") as file:
-		source_j = json.load(file)
+		asset_j = json.load(file)
 
-	if "asset_type" not in source_j or source_j["asset_type"] != build.ASSET_TYPE_FONT :
-		build.exit_error(f'export_font ERROR: asset_type != "{build.ASSET_TYPE_FONT}", path: {asset_j_path}')
-
-	source_name = common.path_to_basename(asset_j_path)
-	source_dir = str(Path(asset_j_path).parent) + "/"
-	path_png = source_dir + source_j["path_png"]
+	asset_name = common.path_to_basename(asset_j_path)
+	asset_dir = str(Path(asset_j_path).parent) + "/"
+	path_png = asset_dir + asset_j["path_png"]
 	image = Image.open(path_png)
 
-	asm_gfx, gfx_ptrs = gfx_to_asm("__" + source_name, source_j, image)
+	asm_ram_disk_data, data_ptrs = gfx_to_asm("_" + asset_name, asset_j, image)
 
-	asm_gfx_ptrs = gfx_ptrs_to_asm(source_name, source_j, gfx_ptrs)
+	asm_ram_data = gfx_ptrs_to_asm(asset_name, asset_j, data_ptrs)
 
 	# save the asm gfx
-	asm_gfx_dir = str(Path(asm_gfx_path).parent) + "/"
+	asm_gfx_dir = str(Path(asm_data_path).parent) + "/"
 	if not os.path.exists(asm_gfx_dir):
 		os.mkdir(asm_gfx_dir)
-	with open(asm_gfx_path, "w") as file:
-		file.write(asm_gfx)
+	with open(asm_data_path, "w") as file:
+		file.write(asm_ram_disk_data)
 	
 	# compile and save the gfx bin files
-	build.export_fdd_file(asm_gfx_ptrs_path, asm_gfx_path, bin_gfx_path, asm_gfx_ptrs)
+	build.export_fdd_file(asm_meta_path, asm_data_path, bin_path, asm_ram_data)
 
 	return True
 
 
-def gfx_to_asm(label_prefix, source_j, image):
+def gfx_to_asm(label_prefix, asset_j, image):
 	gfx_ptrs = {}
-	gfx_j = source_j["gfx"]
+	gfx_j = asset_j["gfx"]
 	asm = label_prefix + "_gfx:"
 
-	backgrount_color_pos = source_j.get("color_sample_pos", [0,0])
+	backgrount_color_pos = asset_j.get("color_sample_pos", [0,0])
 	backgrount_color_idx = image.getpixel((backgrount_color_pos[0], backgrount_color_pos[1]))
-	spacing = source_j.get("spacing", 1)
+	spacing = asset_j.get("spacing", 1)
 	
 	char_addr_offset = 0
 	for char_j in gfx_j:
@@ -119,7 +116,7 @@ def get_char_label_postfix(char_name):
 		adjusted_char = f"{chr(adjusted_code_point)}{offset}"
 	return adjusted_char
 
-def gfx_ptrs_to_asm(label_prefix, source_j, gfx_ptrs = None):
+def gfx_ptrs_to_asm(label_prefix, asset_j, gfx_ptrs = None):
 	asm = ""
 
 	# if font_gfx_ptrs_rd == True, then add list of labels with relatives addresses
@@ -130,11 +127,11 @@ def gfx_ptrs_to_asm(label_prefix, source_j, gfx_ptrs = None):
 
 	asm += f"{label_prefix}_gfx_ptrs:\n"
 
-	gfx_ptrs_len = len(source_j["gfx_ptrs"])
+	gfx_ptrs_len = len(asset_j["gfx_ptrs"])
 	asm += f"GFX_PTRS_LEN = {gfx_ptrs_len}\n"
 	
 	numbers_in_line = 16 
-	for i, char_name in enumerate(source_j["gfx_ptrs"]):
+	for i, char_name in enumerate(asset_j["gfx_ptrs"]):
 		if i % numbers_in_line == 0:
 			if i != 0:
 				asm += "\n"

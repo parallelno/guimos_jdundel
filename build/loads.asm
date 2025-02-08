@@ -10,15 +10,18 @@ reserved: 0
 used: 0
 free: 262144
 
-Ram 'main_menu' usage:
+Ram 'level0' usage:
 reserved: 10172
 used: 0
 free: 22596
 
-Ram-disk 'main_menu' usage:
+Ram-disk 'level0' usage:
+	LV0_DATA.BIN [bank idx: 0, addr: 0, len:3638], 
+	LV0_GFX.BIN [bank idx: 0, addr: 3638, len:5524], 
+
 reserved: 0
-used: 0
-free: 262144
+used: 9162
+free: 252982
 
 */
 ;===============================================
@@ -26,19 +29,27 @@ free: 262144
 ;===============================================
 .function load_permanent
 			; ram:
-			FONT_DATA_ADDR = STACK_MIN_ADDR - 0 - 1624
+
+			FONT_DATA_ADDR = STACK_MIN_ADDR - 0 - FONT_FILE_LEN
 			LOAD_FILE(FONT_FILENAME_PTR, 0, FONT_DATA_ADDR, FONT_FILE_LEN)
 
-			SONG01_DATA_ADDR = STACK_MIN_ADDR - 1624 - 8548
+			SONG01_DATA_ADDR = STACK_MIN_ADDR - 1624 - SONG01_FILE_LEN
 			LOAD_FILE(SONG01_FILENAME_PTR, 0, SONG01_DATA_ADDR, SONG01_FILE_LEN)
 
 			; ram-disk:
 .endf
 ;===============================================
-; main_menu
+; level0
 ;===============================================
-.function load_main_menu
+.function load_level0
 			; ram:
+
 			; ram-disk:
+			LV0_DATA_DATA_ADDR = 0
+			LOAD_FILE(LV0_DATA_FILENAME_PTR, RAM_DISK_S0, LV0_DATA_DATA_ADDR, LV0_DATA_FILE_LEN)
+
+			LV0_GFX_DATA_ADDR = 3638
+			LOAD_FILE(LV0_GFX_FILENAME_PTR, RAM_DISK_S0, LV0_GFX_DATA_ADDR, LV0_GFX_FILE_LEN)
+
 .endf
-LOADED_DATA_START_ADDR = 10172
+LOADED_DATA_START_ADDR = STACK_MIN_ADDR - 10172

@@ -23,15 +23,11 @@ game_init:
 			di
 			load_permanent()
 
-; loading destination addr
-// SONG01_DATA_ADDR = 0x4000
-// FONT_DATA_ADDR = SONG01_DATA_ADDR + SONG01_FILE_LEN
+			load_level0()
 
 			;======================
 			; SONG01
 			;======================
-
-			// LOAD_FILE(SONG01_FILENAME_PTR, 0, SONG01_DATA_ADDR, SONG01_FILE_LEN)
 			
 			lxi d, SONG01_DATA_ADDR
 			lxi h, SONG01_ay_reg_data_ptrs
@@ -41,7 +37,6 @@ game_init:
 			;======================
 			; FONT
 			;======================
-			// LOAD_FILE(FONT_FILENAME_PTR, 0, FONT_DATA_ADDR, FONT_FILE_LEN)
 	
 			lxi d, FONT_DATA_ADDR
 			mvi c, GFX_PTRS_LEN
