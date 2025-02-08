@@ -1279,7 +1279,7 @@ $0cb8 af         xra a
 $0cb9 f3         di
 $0cba cd 9c 05   call $059c
 $0cbd fb         ei
-$0cbe 11 2a 0d   lxi d,$0d2a
+$0cbe 11 b7 02   lxi d,$02b7
 $0cc1 26 00      mvi h,$00
 $0cc3 cd 81 06   call $0681
 $0cc6 cd 85 0c   call $0c85
@@ -1315,6 +1315,4 @@ $0d08 53 54 41 52 54 20 47 41   START GA
 $0d10 4d 45 6a 4f 50 54 49 4f   MEjOPTIO
 $0d18 4e 53 6a 53 43 4f 52 45   NSjSCORE
 $0d20 53 6a 43 52 45 44 49 54   SjCREDIT
-$0d28 53 00 65 52 5c 6b a4 6c   S.eR\k¤l
-$0d30 b7 6f 9b fd af 5f ff e2   ·o›ý¯_ÿâ
-$0d38 62 1f                     b.
+$0d28 53 00                     S.

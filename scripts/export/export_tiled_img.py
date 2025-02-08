@@ -208,7 +208,7 @@ def export_gfx(source_j_path, export_gfx_path):
 	asm = f"__RAM_DISK_S_{source_name.upper()}_GFX = RAM_DISK_S\n"
 	asm += f"__RAM_DISK_M_{source_name.upper()}_GFX = RAM_DISK_M\n"
 	
-	palette_asm, colors = common_gfx.palette_to_asm(image, source_j, path_png, "__" + source_name)
+	palette_asm, colors = common_gfx.palette_to_asm(image, source_j, path_png, "_" + source_name)
 	asm += palette_asm
 
 	image = common_gfx.remap_colors(image, colors)

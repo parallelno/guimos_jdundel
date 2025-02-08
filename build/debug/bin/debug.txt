@@ -240,7 +240,7 @@ _lv0_containers_inst_data $02a6
 LV0_GFX_FILE_LEN $1594
 LV0_GFX_LAST_RECORD_LEN $0014
 LV0_GFX_FILENAME_PTR $02aa
-__lv0_palette $02b7
+_lv0_palette $02b7
 _lv0_tile0 $0002
 _lv0_tile1 $0086
 _lv0_tile2 $010a
@@ -590,7 +590,6 @@ game_init $0cb2
 game_update $0cfe
 game_draw $0cff
 __text_main_menu_settings $0d08
-__level00_palette $0d2a
 v6_gc_buffer $0e00
 v6_gc_buffer_end $1c00
 v6_gc_task_stack $1c00

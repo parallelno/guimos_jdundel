@@ -33,7 +33,7 @@ def palette_to_asm(image, char_j, path = "", label_prefix = ""):
 	asm = "; " + path + "\n"
 	asm += "			.word 0 ; safety pair of bytes for reading by POP B\n"	
 	asm += label_prefix + "_palette" + ":\n"
-	palette = image.getpalette()
+	palette = image.getpalette() 
 
 	for i, pos in enumerate(palette_coords):
 		x = pos["x"]

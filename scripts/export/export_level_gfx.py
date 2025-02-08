@@ -86,8 +86,8 @@ def data_ptrs_to_asm(level_j_path, data_ptrs, remap_idxs):
 	image = Image.open(path_png)
 	
 	# palette
-	palette_asm, colors = common_gfx.palette_to_asm(image, level_j, path_png, "__" + level_name)
-	asm += palette_asm
+	palette_asm, colors = common_gfx.palette_to_asm(image, level_j, path_png, "_" + level_name)
+	asm += palette_asm + "\n"
 
 	
 	# list of tiles
