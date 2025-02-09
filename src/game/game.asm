@@ -31,7 +31,8 @@ game_init:
 
 			lxi d, 0x80a0
 			lxi b, _lv0_tile0 + LV0_GFX_ADDR
-			RAM_DISK_ON(RAM_DISK_S_LV0_GFX | RAM_DISK_M_BACKBUFF | RAM_DISK_M_8F)
+			;RAM_DISK_ON(RAM_DISK_S_LV0_GFX | RAM_DISK_M_BACKBUFF | RAM_DISK_M_8F)
+			RAM_DISK_ON(RAM_DISK_S_LV0_GFX | 0 | 0)
 			call draw_tile_16x16
 			RAM_DISK_OFF()
 

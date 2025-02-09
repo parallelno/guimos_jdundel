@@ -1478,7 +1478,7 @@ $0d95 cd 46 05   call $0546
 $0d98 cd 63 05   call $0563
 $0d9b 11 a0 80   lxi d,$80a0
 $0d9e 01 38 0e   lxi b,$0e38
-$0da1 3e f1      mvi a,$f1
+$0da1 3e 10      mvi a,$10
 $0da3 32 02 1f   sta $1f02
 $0da6 d3 11      out $11
 $0da8 cd a9 0c   call $0ca9
