@@ -104,6 +104,12 @@ def export(config_j_path):
 						asset_j_path,
 						asm_meta_path, asm_data_path, bin_path,
 						force_export)
+				
+			case build.ASSET_TYPE_SPRITE:
+				export_sprite.export_if_updated(
+						asset_j_path,
+						asm_meta_path, asm_data_path, bin_path,
+						force_export)				
 
 		fdd_files[asset_j_path] = {
 			"asm_meta_path": asm_meta_path,

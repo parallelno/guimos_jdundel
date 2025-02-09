@@ -76,7 +76,8 @@
 			"ram" : [],
 			"ram-disk" : [
 				"assets/levels/lv0_data.json",
-				"assets/levels/lv0_gfx.json"
+				"assets/levels/lv0_gfx.json",
+				"assets/levels/knight.json"
 			]
 		}
 	}
