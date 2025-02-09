@@ -196,6 +196,10 @@ def export_build_consts(config_j, build_code_dir):
 	path = build_code_dir + "build_consts" + build.EXT_ASM
 	asm = ""
 
+	for reservation in config_j["ram_disk_reservations"]:
+		idx = reservation["bank_idx"]
+		asm += f"RAM_DISK_M_{reservation["name"]} = RAM_DISK_M{idx}\n"
+
 	# export consts
 	for const in config_j["consts"]:
 		asm += const + "\n"
@@ -360,23 +364,23 @@ def get_load_mem_usage_report(
 		ram_disk_load_used += file_len
 
 		# adjust the file load addr if it lies inside the reserved space
-		reservation_bank_name = f'bank{ram_disk_bank_idx}'
-		if reservation_bank_name in ram_disk_reservations:
-			bank_reservation = ram_disk_reservations[reservation_bank_name]
-			bank_reservation_len = int(bank_reservation["length"], 16)
-			bank_reservation_addr = int(bank_reservation["addr"], 16)
-			bank_reservation_end_addr = bank_reservation_addr + bank_reservation_len
+		for bank_reservation in ram_disk_reservations:
+			if bank_reservation["bank_idx"] == ram_disk_bank_idx:
 
-			if (ram_disk_load_addr + file_len >= bank_reservation_addr and
-				ram_disk_load_addr + file_len < bank_reservation_end_addr):
+				bank_reservation_len = int(bank_reservation["length"], 16)
+				bank_reservation_addr = int(bank_reservation["addr"], 16)
+				bank_reservation_end_addr = bank_reservation_addr + bank_reservation_len
 
-				report +="\n"
-				report += f"	EMPTY_SPACE " \
-					f"[bank idx: {ram_disk_bank_idx}, " \
-					f"addr: {ram_disk_load_addr}, len:{bank_reservation_addr - ram_disk_load_addr}]\n"
-				
-				ram_disk_load_addr = bank_reservation_addr + bank_reservation_len				
-				ram_disk_reserved += bank_reservation_len
+				if (ram_disk_load_addr + file_len >= bank_reservation_addr and
+					ram_disk_load_addr + file_len < bank_reservation_end_addr):
+
+					report +="\n"
+					report += f"	EMPTY_SPACE " \
+						f"[bank idx: {ram_disk_bank_idx}, " \
+						f"addr: {ram_disk_load_addr}, len:{bank_reservation_addr - ram_disk_load_addr}]\n"
+					
+					ram_disk_load_addr = bank_reservation_addr + bank_reservation_len				
+					ram_disk_reserved += bank_reservation_len
 
 		# adjust the file load addr if it lies outside the bank space
 		if (ram_disk_load_addr + file_len > build.RAM_DISK_BANK_LEN):
@@ -428,15 +432,16 @@ def get_load_asm(load_name, ram_load, ram_disk_load):
 
 	for load_file in ram_load:
 		name = load_file["name"]
-		asm += f"			{name}_DATA_ADDR = STACK_MIN_ADDR - {load_file['addr']} - {name}_FILE_LEN\n"
-		asm += f"			LOAD_FILE({name}_FILENAME_PTR, 0, {name}_DATA_ADDR, {name}_FILE_LEN)\n\n"
+		asm += f"			{name}_ADDR = STACK_MIN_ADDR - {load_file['addr']} - {name}_FILE_LEN\n"
+		asm += f"			LOAD_FILE({name}_FILENAME_PTR, 0, {name}_ADDR, {name}_FILE_LEN)\n\n"
 
 	
 	asm += "			; ram-disk:\n"
 	for load_file in ram_disk_load:
 		name = load_file["name"]
-		asm += f"			{name}_DATA_ADDR = {load_file['addr']}\n"
-		asm += f"			LOAD_FILE({name}_FILENAME_PTR, RAM_DISK_S{load_file['bank_idx']}, {name}_DATA_ADDR, {name}_FILE_LEN)\n\n"
+		asm += f"			RAM_DISK_S_{name} = RAM_DISK_S{load_file['bank_idx']}\n"
+		asm += f"			{name}_ADDR = {load_file['addr']}\n"
+		asm += f"			LOAD_FILE({name}_FILENAME_PTR, RAM_DISK_S_{name}, {name}_ADDR, {name}_FILE_LEN)\n\n"
 
 	asm += f".endf\n"
 	return asm

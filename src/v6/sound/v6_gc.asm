@@ -87,7 +87,7 @@ v6_gc_update:
 ; create a v6_gc_unpack tasks
 ;
 v6_gc_tasks_init:
-			di
+			di			; TODO: avoid disabling/enabling interrupts. it's not obvious behavior
 			lxi h, 0
 			dad sp
 			shld @restore_sp+1

@@ -3,6 +3,7 @@ jmp v6_main_init
 
 .include "src/v6/v6_macros.asm"
 .include "src/v6/v6_consts.asm"
+.include "src/game/consts.asm"
 .include "build/build_includes.asm"
 .include "src/v6/v6_os.asm"
 .include "build/loads.asm"
@@ -12,6 +13,7 @@ jmp v6_main_init
 .include "src/v6/v6_draw_text_mono.asm"
 .include "src/v6/v6_draw_text_ex.asm"
 .include "src/v6/sound/v6_sound.asm"
+.include "src/v6/v6_draw_tile.asm"
 
 v6_main_init:
 			lxi h, v6_main_reboot

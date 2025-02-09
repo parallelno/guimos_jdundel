@@ -1,0 +1,3 @@
+; level
+ROOM_WIDTH		= 16
+ROOM_HEIGHT		= 15
