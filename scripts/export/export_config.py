@@ -318,17 +318,20 @@ def get_load_mem_usage_report(
 		):
 
 	report = ""
+	report +=  ";===============================================\n"
+	report += f"; {load_name}\n"
+	report +=  ";===============================================\n"
 	ram_load = []
 	ram_disk_load = []
 
 	# report a ram usage
-	report += f"Ram '{load_name}' usage:\n"
+	report += f"Ram usage:\n"
 
 	ram_free = build.RAM_LEN - build.SCR_BUFFS_LEN - ram_reserved
 	ram_used = 0
 	file_addr = ram_reserved
 
-	ram_files = load["ram"]
+	ram_files = load["ram"] 
 
 	for i, asset_j_path in enumerate(ram_files):
 		bin_path = fdd_files[asset_j_path]["bin_path"]
@@ -340,8 +343,7 @@ def get_load_mem_usage_report(
 			build.exit_error(f'export_config ERROR: ram is overloaded: '
 				f'ram_used ({ram_used}) >= free ram ({ram_free}). File: {bin_path}')
 
-		report += "	" if i == 0 else ""
-		report += f"{os.path.basename(bin_path)} [{file_len}], "
+		report += f"	{os.path.basename(bin_path)} [addr: {file_addr}, len: {file_len}],\n"
 
 		load_file = {
 			"name" : common.path_to_basename(bin_path).upper(),
@@ -360,9 +362,12 @@ def get_load_mem_usage_report(
 	report += "\n"
 
 	# report a ram-disk usage
-	report += f"Ram-disk '{load_name}' usage:\n"
+	report += f"Ram-disk usage:\n"
+	report += f"	bank idx: {ram_disk_bank_idx}\n"
 
 	ram_disk_load_used = 0
+	ram_disk_wasted = 0
+	
 	ram_disk_load_addr = ram_disk_bank_perm_load_addr
 	ram_disk_files = load["ram-disk"]
 	ram_disk_reserved = (ram_disk_bank_idx * build.RAM_DISK_BANK_LEN +
@@ -385,10 +390,12 @@ def get_load_mem_usage_report(
 				if (ram_disk_load_addr + file_len >= bank_reservation_addr and
 					ram_disk_load_addr + file_len < bank_reservation_end_addr):
 
+					wasted = bank_reservation_addr - ram_disk_load_addr
+					ram_disk_wasted += wasted
+
 					report +="\n"
-					report += f"	>>> EMPTY_SPACE <<< " \
-						f"[bank idx: {ram_disk_bank_idx}, " \
-						f"addr: {ram_disk_load_addr}, len:{bank_reservation_addr - ram_disk_load_addr}]\n\n"
+					report += f"	>>> WASTED_SPACE <<< " \
+						f"[addr: {ram_disk_load_addr}, len:{wasted}]\n\n"
 					
 					ram_disk_load_addr = bank_reservation_addr + bank_reservation_len				
 					ram_disk_reserved += bank_reservation_len
@@ -397,6 +404,7 @@ def get_load_mem_usage_report(
 		if (ram_disk_load_addr + file_len > build.RAM_DISK_BANK_LEN):
 			ram_disk_bank_idx += 1
 			ram_disk_load_addr = 0
+			report += f"	bank idx: {ram_disk_bank_idx}\n"
 
 		# check if the ramk disk is overloaded
 		if (ram_disk_bank_idx > build.RAM_DISK_IDX_MAX):
@@ -406,8 +414,7 @@ def get_load_mem_usage_report(
 		report += "	"
 
 		report += f"{os.path.basename(bin_path)} " \
-			f"[bank idx: {ram_disk_bank_idx}, " \
-			f"addr: {ram_disk_load_addr}, len:{file_len}], \n"
+			f"[addr: {ram_disk_load_addr}, len:{file_len}], \n"
 		
 		
 		load_file = {
@@ -421,10 +428,28 @@ def get_load_mem_usage_report(
 
 		ram_disk_load_addr += file_len
 
+	# calc free space
+	ram_disk_load_free = (build.RAM_DISK_LEN - 
+					   ram_disk_bank_idx * build.RAM_DISK_BANK_LEN - 
+					   ram_disk_load_addr)
+	for bank_reservation in ram_disk_reservations:
+		
+		bank_reservation_len = int(bank_reservation["length"], 16)
+		bank_reservation_addr = int(bank_reservation["addr"], 16)
+		bank_reservation_end_addr = bank_reservation_addr + bank_reservation_len
+
+		if (bank_reservation["bank_idx"] > ram_disk_bank_idx or
+			(bank_reservation["bank_idx"] == ram_disk_bank_idx and
+			ram_disk_load_addr + file_len >= bank_reservation_addr and
+			ram_disk_load_addr + file_len < bank_reservation_end_addr)):
+			
+			ram_disk_load_free -= bank_reservation_len
+
 	report += "\n" if len(ram_disk_files) > 0 else ""
 	report += f"reserved: {ram_disk_reserved}\n"
 	report += f"used: {ram_disk_load_used}\n"
-	report += f"free: {build.RAM_DISK_LEN - ram_disk_load_used}\n"
+	report += f"free: {ram_disk_load_free}\n"
+	report += f"wasted: {ram_disk_wasted}\n"
 	report += "\n"
 
 	return report, ram_reserved + ram_used, ram_disk_bank_idx, ram_disk_load_addr, ram_load, ram_disk_load

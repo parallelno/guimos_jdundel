@@ -75,21 +75,22 @@
 		{
 			"ram" : [],
 			"ram-disk" : [
-				"assets/levels/lv0_data.json",
 				"assets/levels/lv0_gfx.json",
 
-				"assets/sprites/bomb.json",
 				"assets/sprites/burner.json",
 				"assets/sprites/hero_l.json",
+				"assets/sprites/sword.json",				
+				"assets/sprites/vfx.json",				
 				"assets/sprites/hero_r.json",
 				"assets/sprites/knight.json",
-				"assets/sprites/scythe.json",
 				"assets/sprites/skeleton.json",
+				"assets/sprites/scythe.json",				
 				"assets/sprites/snowflake.json",
-				"assets/sprites/sword.json",
+				
 				"assets/sprites/tnt.json",
-				"assets/sprites/vfx.json",
-				"assets/sprites/vfx4.json"
+				"assets/sprites/vfx4.json",
+				"assets/levels/lv0_data.json",				
+				"assets/sprites/bomb.json"
 			]
 		}
 	}
