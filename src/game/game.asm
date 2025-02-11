@@ -29,7 +29,19 @@ game_init:
 			load_level0()
 ;.breakpoint
 
-			lxi d, 0x80a0
+			;======================
+			; hero_r_idle0_0
+			;======================
+			lxi d, 0xB0A0
+			lxi b, _hero_r_idle0_0
+			RAM_DISK_ON(RAM_DISK_S_HERO_R | 0 | 0)
+			call draw_sprite_vm
+			RAM_DISK_OFF()
+
+			;======================
+			; LV0 tile 0
+			;======================
+			lxi d, 0x80A0
 			lxi b, _lv0_tile0 + LV0_GFX_ADDR
 			;RAM_DISK_ON(RAM_DISK_S_LV0_GFX | RAM_DISK_M_BACKBUFF | RAM_DISK_M_8F)
 			RAM_DISK_ON(RAM_DISK_S_LV0_GFX | 0 | 0)

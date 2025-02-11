@@ -11,6 +11,14 @@ TNT_FILENAME_PTR:
 			.byte "BIN" ; extension
 
 ; relative labels. to make it global call __text_ex_rd_init
+_tnt_idle0_0 = 2
+_tnt_idle0_1 = 68
+_tnt_idle0_2 = 200
+_tnt_idle0_3 = 332
+_tnt_idle1_0 = 464
+_tnt_idle1_1 = 542
+_tnt_idle1_2 = 698
+_tnt_idle1_3 = 854
 
 sprite_get_scr_addr_tnt = sprite_get_scr_addr4
 
@@ -23,11 +31,3 @@ _tnt_run:
 			.word _tnt_idle0_0, _tnt_idle0_1, _tnt_idle0_2, _tnt_idle0_3, 
 			.byte 245, $ff ; offset to the first frame
 			.word _tnt_idle1_0, _tnt_idle1_1, _tnt_idle1_2, _tnt_idle1_3, 
-_tnt_idle0_0 = 1
-_tnt_idle0_1 = 1
-_tnt_idle0_2 = 1
-_tnt_idle0_3 = 1
-_tnt_idle1_0 = 1
-_tnt_idle1_1 = 1
-_tnt_idle1_2 = 1
-_tnt_idle1_3 = 1

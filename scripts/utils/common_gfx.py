@@ -1,14 +1,5 @@
 IMAGE_COLORS_MAX = 16
 
-def bytes_to_asm_tiled(data):
-	asm = ""
-	for tile in data:
-		asm += "			.byte "
-		for b in tile:
-			asm += str(b) + ","
-		asm += "\n"
-	return asm
-
 # find the most leftest or rightest pixel in a sprite
 # return its dx
 def find_sprite_horiz_border(forward_search, sprite_img, mask_alpha, width, height):

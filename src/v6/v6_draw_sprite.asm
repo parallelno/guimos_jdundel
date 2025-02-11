@@ -23,7 +23,7 @@ draw_sprite_width_height_ram_disk:
 ; offset_x in bytes
 ; offset_y in pixels
 ; it uses sp to read the sprite data
-; ex. CALL_RAM_DISK_FUNC(__draw_sprite_vm, __RAM_DISK_S_HERO_ATTACK01 | __RAM_DISK_M_DRAW_SPRITE_VM | RAM_DISK_M_8F)
+; ex. CALL_RAM_DISK_FUNC(_draw_sprite_vm, RAM_DISK_S_HERO_ATTACK01 | RAM_DISK_M_DRAW_SPRITE_VM | RAM_DISK_M_8F)
 ; in:
 ; bc - sprite data
 ; de - screen addr

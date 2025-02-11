@@ -11,6 +11,22 @@ SCYTHE_FILENAME_PTR:
 			.byte "BIN" ; extension
 
 ; relative labels. to make it global call __text_ex_rd_init
+_scythe_run0_0 = 2
+_scythe_run0_1 = 62
+_scythe_run0_2 = 122
+_scythe_run0_3 = 182
+_scythe_run1_0 = 272
+_scythe_run1_1 = 416
+_scythe_run1_2 = 560
+_scythe_run1_3 = 704
+_scythe_run2_0 = 776
+_scythe_run2_1 = 848
+_scythe_run2_2 = 920
+_scythe_run2_3 = 992
+_scythe_run3_0 = 1100
+_scythe_run3_1 = 1244
+_scythe_run3_2 = 1388
+_scythe_run3_3 = 1460
 
 sprite_get_scr_addr_scythe = sprite_get_scr_addr4
 
@@ -27,19 +43,3 @@ _scythe_run:
 			.word _scythe_run2_0, _scythe_run2_1, _scythe_run2_2, _scythe_run2_3, 
 			.byte 225, $ff ; offset to the first frame
 			.word _scythe_run3_0, _scythe_run3_1, _scythe_run3_2, _scythe_run3_3, 
-_scythe_run0_0 = 1
-_scythe_run0_1 = 1
-_scythe_run0_2 = 1
-_scythe_run0_3 = 1
-_scythe_run1_0 = 1
-_scythe_run1_1 = 1
-_scythe_run1_2 = 1
-_scythe_run1_3 = 1
-_scythe_run2_0 = 1
-_scythe_run2_1 = 1
-_scythe_run2_2 = 1
-_scythe_run2_3 = 1
-_scythe_run3_0 = 1
-_scythe_run3_1 = 1
-_scythe_run3_2 = 1
-_scythe_run3_3 = 1

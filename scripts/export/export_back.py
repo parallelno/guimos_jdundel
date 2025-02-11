@@ -130,7 +130,7 @@ def gfx_to_asm(label_prefix, source_j, image):
 		offset_x_packed = offset_x//8
 		asm += "			.byte " + str( offset_y ) + ", " +  str( offset_x_packed ) + "; offset_y, offset_x\n"
 		asm += "			.byte " + str( height ) + ", " +  str( width_packed ) + "; height, width\n"
-		asm += common_gfx.bytes_to_asm_tiled(data)
+		asm += common.bytes_to_asm(data)
 		asm += "\n"
 
 	return asm

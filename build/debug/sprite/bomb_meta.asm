@@ -11,6 +11,22 @@ BOMB_FILENAME_PTR:
 			.byte "BIN" ; extension
 
 ; relative labels. to make it global call __text_ex_rd_init
+_bomb_run0_0 = 2
+_bomb_run0_1 = 38
+_bomb_run0_2 = 74
+_bomb_run0_3 = 146
+_bomb_run1_0 = 218
+_bomb_run1_1 = 254
+_bomb_run1_2 = 290
+_bomb_run1_3 = 362
+_bomb_dmg0_0 = 434
+_bomb_dmg0_1 = 470
+_bomb_dmg0_2 = 506
+_bomb_dmg0_3 = 578
+_bomb_dmg1_0 = 650
+_bomb_dmg1_1 = 686
+_bomb_dmg1_2 = 722
+_bomb_dmg1_3 = 794
 
 sprite_get_scr_addr_bomb = sprite_get_scr_addr4
 
@@ -28,19 +44,3 @@ _bomb_dmg:
 			.word _bomb_dmg0_0, _bomb_dmg0_1, _bomb_dmg0_2, _bomb_dmg0_3, 
 			.byte 245, $ff ; offset to the first frame
 			.word _bomb_dmg1_0, _bomb_dmg1_1, _bomb_dmg1_2, _bomb_dmg1_3, 
-_bomb_run0_0 = 1
-_bomb_run0_1 = 1
-_bomb_run0_2 = 1
-_bomb_run0_3 = 1
-_bomb_run1_0 = 1
-_bomb_run1_1 = 1
-_bomb_run1_2 = 1
-_bomb_run1_3 = 1
-_bomb_dmg0_0 = 1
-_bomb_dmg0_1 = 1
-_bomb_dmg0_2 = 1
-_bomb_dmg0_3 = 1
-_bomb_dmg1_0 = 1
-_bomb_dmg1_1 = 1
-_bomb_dmg1_2 = 1
-_bomb_dmg1_3 = 1

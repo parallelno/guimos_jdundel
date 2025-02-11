@@ -1,0 +1,137 @@
+/*
+;===============================================
+; permanent
+;===============================================
+Ram usage:
+	FONT.BIN [addr: 0, len: 1624],
+	SONG01.BIN [addr: 1624, len: 8548],
+
+reserved: 0
+used: 10172
+free: 22596
+
+Ram-disk usage:
+	bank idx: 0
+reserved: 0
+used: 0
+free: 237568
+wasted: 0
+
+;===============================================
+; level0
+;===============================================
+Ram usage:
+reserved: 10172
+used: 0
+free: 22596
+
+Ram-disk usage:
+	bank idx: 0
+	LV0_GFX.BIN [addr: 0, len:5524], 
+	BURNER.BIN [addr: 5524, len:9600], 
+	HERO_L.BIN [addr: 15124, len:13818], 
+	SWORD.BIN [addr: 28942, len:9522], 
+	VFX.BIN [addr: 38464, len:2184], 
+
+	>>> WASTED_SPACE <<< [addr: 40648, len:312]
+
+	bank idx: 1
+	HERO_R.BIN [addr: 0, len:13818], 
+	KNIGHT.BIN [addr: 13818, len:16398], 
+	SKELETON.BIN [addr: 30216, len:10140], 
+
+	>>> WASTED_SPACE <<< [addr: 40356, len:604]
+
+	bank idx: 2
+	SCYTHE.BIN [addr: 0, len:1626], 
+	SNOWFLAK.BIN [addr: 1626, len:1332], 
+	TNT.BIN [addr: 2958, len:1056], 
+	VFX4.BIN [addr: 4014, len:4686], 
+	LV0_DATA.BIN [addr: 8700, len:3638], 
+	BOMB.BIN [addr: 12338, len:960], 
+
+reserved: 49152
+used: 94302
+free: 117774
+wasted: 916
+
+*/
+;===============================================
+; permanent
+;===============================================
+.function load_permanent
+			; ram:
+
+			FONT_ADDR = STACK_MIN_ADDR - 0 - FONT_FILE_LEN
+			LOAD_FILE(FONT_FILENAME_PTR, 0, FONT_ADDR, FONT_FILE_LEN)
+
+			SONG01_ADDR = STACK_MIN_ADDR - 1624 - SONG01_FILE_LEN
+			LOAD_FILE(SONG01_FILENAME_PTR, 0, SONG01_ADDR, SONG01_FILE_LEN)
+
+			; ram-disk:
+.endf
+;===============================================
+; level0
+;===============================================
+.function load_level0
+			; ram:
+
+			; ram-disk:
+			RAM_DISK_S_LV0_GFX = RAM_DISK_S0
+			LV0_GFX_ADDR = 0
+			LOAD_FILE(LV0_GFX_FILENAME_PTR, RAM_DISK_S_LV0_GFX, LV0_GFX_ADDR, LV0_GFX_FILE_LEN)
+
+			RAM_DISK_S_BURNER = RAM_DISK_S0
+			BURNER_ADDR = 5524
+			LOAD_FILE(BURNER_FILENAME_PTR, RAM_DISK_S_BURNER, BURNER_ADDR, BURNER_FILE_LEN)
+
+			RAM_DISK_S_HERO_L = RAM_DISK_S0
+			HERO_L_ADDR = 15124
+			LOAD_FILE(HERO_L_FILENAME_PTR, RAM_DISK_S_HERO_L, HERO_L_ADDR, HERO_L_FILE_LEN)
+
+			RAM_DISK_S_SWORD = RAM_DISK_S0
+			SWORD_ADDR = 28942
+			LOAD_FILE(SWORD_FILENAME_PTR, RAM_DISK_S_SWORD, SWORD_ADDR, SWORD_FILE_LEN)
+
+			RAM_DISK_S_VFX = RAM_DISK_S0
+			VFX_ADDR = 38464
+			LOAD_FILE(VFX_FILENAME_PTR, RAM_DISK_S_VFX, VFX_ADDR, VFX_FILE_LEN)
+
+			RAM_DISK_S_HERO_R = RAM_DISK_S1
+			HERO_R_ADDR = 0
+			LOAD_FILE(HERO_R_FILENAME_PTR, RAM_DISK_S_HERO_R, HERO_R_ADDR, HERO_R_FILE_LEN)
+
+			RAM_DISK_S_KNIGHT = RAM_DISK_S1
+			KNIGHT_ADDR = 13818
+			LOAD_FILE(KNIGHT_FILENAME_PTR, RAM_DISK_S_KNIGHT, KNIGHT_ADDR, KNIGHT_FILE_LEN)
+
+			RAM_DISK_S_SKELETON = RAM_DISK_S1
+			SKELETON_ADDR = 30216
+			LOAD_FILE(SKELETON_FILENAME_PTR, RAM_DISK_S_SKELETON, SKELETON_ADDR, SKELETON_FILE_LEN)
+
+			RAM_DISK_S_SCYTHE = RAM_DISK_S2
+			SCYTHE_ADDR = 0
+			LOAD_FILE(SCYTHE_FILENAME_PTR, RAM_DISK_S_SCYTHE, SCYTHE_ADDR, SCYTHE_FILE_LEN)
+
+			RAM_DISK_S_SNOWFLAK = RAM_DISK_S2
+			SNOWFLAK_ADDR = 1626
+			LOAD_FILE(SNOWFLAK_FILENAME_PTR, RAM_DISK_S_SNOWFLAK, SNOWFLAK_ADDR, SNOWFLAK_FILE_LEN)
+
+			RAM_DISK_S_TNT = RAM_DISK_S2
+			TNT_ADDR = 2958
+			LOAD_FILE(TNT_FILENAME_PTR, RAM_DISK_S_TNT, TNT_ADDR, TNT_FILE_LEN)
+
+			RAM_DISK_S_VFX4 = RAM_DISK_S2
+			VFX4_ADDR = 4014
+			LOAD_FILE(VFX4_FILENAME_PTR, RAM_DISK_S_VFX4, VFX4_ADDR, VFX4_FILE_LEN)
+
+			RAM_DISK_S_LV0_DATA = RAM_DISK_S2
+			LV0_DATA_ADDR = 8700
+			LOAD_FILE(LV0_DATA_FILENAME_PTR, RAM_DISK_S_LV0_DATA, LV0_DATA_ADDR, LV0_DATA_FILE_LEN)
+
+			RAM_DISK_S_BOMB = RAM_DISK_S2
+			BOMB_ADDR = 12338
+			LOAD_FILE(BOMB_FILENAME_PTR, RAM_DISK_S_BOMB, BOMB_ADDR, BOMB_FILE_LEN)
+
+.endf
+LOADED_DATA_START_ADDR = STACK_MIN_ADDR - 10172

@@ -98,7 +98,7 @@ def sprite_data(bytes1, bytes2, bytes3, w, h, mask_bytes = None):
 					data.append(mask_bytes[i])
 				data.append(bytes1[i])
 
-	return [data]
+	return data
 
 def get_anim_labels(path, main_ram_labels_addrs):
 	with open(path, "r") as file:
@@ -175,10 +175,9 @@ def anims_to_asm(label_prefix, asset_name, source_j, data_ptrs, source_j_path):
 	# add the list of frame labels and their addresses
 	frame_relative_labels_asm = "; relative labels. to make it global call __text_ex_rd_init\n"
 	for label_name, addr in data_ptrs.items():
-		asm += f"{label_name} = {addr}\n"
+		frame_relative_labels_asm += f"{label_name} = {addr}\n"
 	frame_relative_labels_asm += "\n"
-
-	asm = frame_relative_labels_asm + asm
+	asm = frame_relative_labels_asm + asm 
 
 	return asm
 
@@ -199,13 +198,14 @@ def make_empty_sprite_data(has_mask, width, height):
 				data.append(255)
 			data.append(0)
 
-	return [data]
+	return data
 
 def gfx_to_asm(label_prefix, asset_name, source_j, image, has_mask, source_j_path):
 	sprites_j = source_j["sprites"]
 	asm = f"{label_prefix}{asset_name}_sprites:"
 
 	data_ptrs = {}
+	sprite_data_addr = 2 # safety pair of bytes for reading by POP B
 
 	preshifted_sprites = source_j.get("preshifted_sprites", 1)
 	
@@ -296,8 +296,10 @@ def gfx_to_asm(label_prefix, asset_name, source_j, image, has_mask, source_j_pat
 		asm += f"			.byte {str( offset_y )}, {str( offset_x_packed )}; offset_y, offset_x\n"
 		asm += f"			.byte {str( height )}, {str( width_packed )}; height, width\n"
 
-		asm += common_gfx.bytes_to_asm_tiled(data)
-		data_ptrs[frame_label] = len(data)
+		asm += common.bytes_to_asm(data)
+		
+		data_ptrs[frame_label] = sprite_data_addr
+		sprite_data_addr += len(data)
 
 
 		# find leftest pixel dx
@@ -327,8 +329,10 @@ def gfx_to_asm(label_prefix, asset_name, source_j, image, has_mask, source_j_pat
 			asm += f"			.byte {str( height )}, {str( width_preshifted_packed )}; height, width\n"
 
 			frame_data = make_empty_sprite_data(has_mask, width_preshifted, height)
-			asm += common_gfx.bytes_to_asm_tiled(frame_data)
-			data_ptrs[frame_label] = len(frame_data)
+			asm += common.bytes_to_asm(frame_data)
+			
+			data_ptrs[frame_label] = sprite_data_addr
+			sprite_data_addr += len(frame_data)
 
 	return asm, data_ptrs
 

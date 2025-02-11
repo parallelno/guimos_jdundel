@@ -11,6 +11,30 @@ VFX4_FILENAME_PTR:
 			.byte "BIN" ; extension
 
 ; relative labels. to make it global call __text_ex_rd_init
+_vfx4_hit0_0 = 2
+_vfx4_hit0_1 = 134
+_vfx4_hit0_2 = 266
+_vfx4_hit0_3 = 464
+_vfx4_hit1_0 = 596
+_vfx4_hit1_1 = 740
+_vfx4_hit1_2 = 884
+_vfx4_hit1_3 = 1100
+_vfx4_hit2_0 = 1244
+_vfx4_hit2_1 = 1412
+_vfx4_hit2_2 = 1664
+_vfx4_hit2_3 = 1916
+_vfx4_hit3_0 = 2168
+_vfx4_hit3_1 = 2360
+_vfx4_hit3_2 = 2648
+_vfx4_hit3_3 = 2936
+_vfx4_hero_death1_0 = 3224
+_vfx4_hero_death1_1 = 3368
+_vfx4_hero_death1_2 = 3584
+_vfx4_hero_death1_3 = 3800
+_vfx4_hero_death2_0 = 4016
+_vfx4_hero_death2_1 = 4112
+_vfx4_hero_death2_2 = 4256
+_vfx4_hero_death2_3 = 4400
 
 sprite_get_scr_addr_vfx4 = sprite_get_scr_addr4
 
@@ -65,27 +89,3 @@ _vfx4_spark:
 			.word _vfx4_hit2_0, _vfx4_hit2_1, _vfx4_hit2_2, _vfx4_hit2_3, 
 			.byte 225, $ff ; offset to the first frame
 			.word _vfx4_hit3_0, _vfx4_hit3_1, _vfx4_hit3_2, _vfx4_hit3_3, 
-_vfx4_hit0_0 = 1
-_vfx4_hit0_1 = 1
-_vfx4_hit0_2 = 1
-_vfx4_hit0_3 = 1
-_vfx4_hit1_0 = 1
-_vfx4_hit1_1 = 1
-_vfx4_hit1_2 = 1
-_vfx4_hit1_3 = 1
-_vfx4_hit2_0 = 1
-_vfx4_hit2_1 = 1
-_vfx4_hit2_2 = 1
-_vfx4_hit2_3 = 1
-_vfx4_hit3_0 = 1
-_vfx4_hit3_1 = 1
-_vfx4_hit3_2 = 1
-_vfx4_hit3_3 = 1
-_vfx4_hero_death1_0 = 1
-_vfx4_hero_death1_1 = 1
-_vfx4_hero_death1_2 = 1
-_vfx4_hero_death1_3 = 1
-_vfx4_hero_death2_0 = 1
-_vfx4_hero_death2_1 = 1
-_vfx4_hero_death2_2 = 1
-_vfx4_hero_death2_3 = 1

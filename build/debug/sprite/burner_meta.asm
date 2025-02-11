@@ -11,6 +11,54 @@ BURNER_FILENAME_PTR:
 			.byte "BIN" ; extension
 
 ; relative labels. to make it global call __text_ex_rd_init
+_burner_dash_0_0 = 2
+_burner_dash_0_1 = 170
+_burner_dash_0_2 = 422
+_burner_dash_0_3 = 674
+_burner_dash_1_0 = 926
+_burner_dash_1_1 = 1094
+_burner_dash_1_2 = 1346
+_burner_dash_1_3 = 1598
+_burner_dash_2_0 = 1850
+_burner_dash_2_1 = 2018
+_burner_dash_2_2 = 2270
+_burner_dash_2_3 = 2522
+_burner_dash_3_0 = 2774
+_burner_dash_3_1 = 2942
+_burner_dash_3_2 = 3194
+_burner_dash_3_3 = 3446
+_burner_run_r0_0 = 3698
+_burner_run_r0_1 = 3854
+_burner_run_r0_2 = 4010
+_burner_run_r0_3 = 4244
+_burner_run_r1_0 = 4400
+_burner_run_r1_1 = 4556
+_burner_run_r1_2 = 4712
+_burner_run_r1_3 = 4946
+_burner_run_r2_0 = 5102
+_burner_run_r2_1 = 5258
+_burner_run_r2_2 = 5414
+_burner_run_r2_3 = 5648
+_burner_run_r3_0 = 5804
+_burner_run_r3_1 = 5960
+_burner_run_r3_2 = 6116
+_burner_run_r3_3 = 6350
+_burner_run_l0_0 = 6506
+_burner_run_l0_1 = 6662
+_burner_run_l0_2 = 6818
+_burner_run_l0_3 = 7052
+_burner_run_l1_0 = 7208
+_burner_run_l1_1 = 7364
+_burner_run_l1_2 = 7520
+_burner_run_l1_3 = 7754
+_burner_run_l2_0 = 7910
+_burner_run_l2_1 = 8066
+_burner_run_l2_2 = 8222
+_burner_run_l2_3 = 8456
+_burner_run_l3_0 = 8612
+_burner_run_l3_1 = 8768
+_burner_run_l3_2 = 8924
+_burner_run_l3_3 = 9158
 
 sprite_get_scr_addr_burner = sprite_get_scr_addr4
 
@@ -62,51 +110,3 @@ _burner_dash:
 			.word _burner_dash_2_0, _burner_dash_2_1, _burner_dash_2_2, _burner_dash_2_3, 
 			.byte 225, $ff ; offset to the first frame
 			.word _burner_dash_3_0, _burner_dash_3_1, _burner_dash_3_2, _burner_dash_3_3, 
-_burner_dash_0_0 = 1
-_burner_dash_0_1 = 1
-_burner_dash_0_2 = 1
-_burner_dash_0_3 = 1
-_burner_dash_1_0 = 1
-_burner_dash_1_1 = 1
-_burner_dash_1_2 = 1
-_burner_dash_1_3 = 1
-_burner_dash_2_0 = 1
-_burner_dash_2_1 = 1
-_burner_dash_2_2 = 1
-_burner_dash_2_3 = 1
-_burner_dash_3_0 = 1
-_burner_dash_3_1 = 1
-_burner_dash_3_2 = 1
-_burner_dash_3_3 = 1
-_burner_run_r0_0 = 1
-_burner_run_r0_1 = 1
-_burner_run_r0_2 = 1
-_burner_run_r0_3 = 1
-_burner_run_r1_0 = 1
-_burner_run_r1_1 = 1
-_burner_run_r1_2 = 1
-_burner_run_r1_3 = 1
-_burner_run_r2_0 = 1
-_burner_run_r2_1 = 1
-_burner_run_r2_2 = 1
-_burner_run_r2_3 = 1
-_burner_run_r3_0 = 1
-_burner_run_r3_1 = 1
-_burner_run_r3_2 = 1
-_burner_run_r3_3 = 1
-_burner_run_l0_0 = 1
-_burner_run_l0_1 = 1
-_burner_run_l0_2 = 1
-_burner_run_l0_3 = 1
-_burner_run_l1_0 = 1
-_burner_run_l1_1 = 1
-_burner_run_l1_2 = 1
-_burner_run_l1_3 = 1
-_burner_run_l2_0 = 1
-_burner_run_l2_1 = 1
-_burner_run_l2_2 = 1
-_burner_run_l2_3 = 1
-_burner_run_l3_0 = 1
-_burner_run_l3_1 = 1
-_burner_run_l3_2 = 1
-_burner_run_l3_3 = 1

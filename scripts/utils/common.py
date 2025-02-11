@@ -27,7 +27,7 @@ def is_bytes_zeros(bytes):
 		if byte != 0 : return False
 	return True
 
-def bytes_to_asm(data, numbers_in_line = 16, add_empty_line = False):
+def bytes_to_asm(data, numbers_in_line = 16, add_empty_last_line = False):
 	asm = ""
 	for i, byte in enumerate(data):
 		if i % numbers_in_line == 0:
@@ -37,7 +37,7 @@ def bytes_to_asm(data, numbers_in_line = 16, add_empty_line = False):
 		asm += str(byte) + ","
 
 	asm += "\n"
-	if add_empty_line:
+	if add_empty_last_line:
 		asm += "\n"
 	return asm
 
