@@ -120,13 +120,13 @@ def export(config_j_path):
 	# ===============================================================================
 
 	# export the code to load assets & a memory usage report
-	loads_path = export_loads(config_j, fdd_files)
+	loads_path = export_loads(config_j, fdd_files, build_code_dir)
 
 	# export a consts
-	build_consts_path = export_build_consts(config_j, build_code_dir)
+	export_build_consts(config_j, build_code_dir)
 
 	# export a build includes
-	export_build_includes(config_j, fdd_files, [build_consts_path])
+	export_build_includes(config_j, fdd_files, [loads_path])
 
 	# processing main.asm
 	main_asm_path = config_j["main_asm_path"]
@@ -199,22 +199,27 @@ def export_autoexec(com_filename, autoexec_path):
 
 def export_build_consts(config_j, build_code_dir):
 
-	path = build_code_dir + "build_consts" + build.EXT_ASM
+	# save an inter-build const file
+	inter_build_consts_path = build.BUILD_PATH + "build_consts" + build.EXT_ASM	
+	with open(inter_build_consts_path, 'w') as f:
+		f.write(f'.include "{build_code_dir}/build_consts.asm"')
+	
+	build_consts_path = build_code_dir + "build_consts" + build.EXT_ASM
+	
 	asm = ""
 
 	for reservation in config_j["ram_disk_reservations"]:
 		idx = reservation["bank_idx"]
 		asm += f"RAM_DISK_M_{reservation["name"]} = RAM_DISK_M{idx}\n"
+		asm += f"RAM_DISK_S_{reservation["name"]} = RAM_DISK_S{idx}\n"
 
 	# export consts
 	for const in config_j["consts"]:
 		asm += const + "\n"
 
 	# save the file
-	with open(path, 'w') as f:
+	with open(build_consts_path, 'w') as f:
 		f.write(asm)
-
-	return path
 
 
 def export_build_includes(config_j, fdd_files, extra_includes):
@@ -241,9 +246,9 @@ def export_build_includes(config_j, fdd_files, extra_includes):
 	with open(build_include_path, 'w') as f:
 		f.write(build_include)
 
-def export_loads(config_j, fdd_files):
+def export_loads(config_j, fdd_files, build_code_dir):
 	# prepare the include path
-	load_path = build.BUILD_PATH + "loads" + build.EXT_ASM
+	load_path = build_code_dir + "loads" + build.EXT_ASM
 
 	# delete output file if it exists
 	if os.path.exists(load_path):
@@ -381,9 +386,9 @@ def get_load_mem_usage_report(
 					ram_disk_load_addr + file_len < bank_reservation_end_addr):
 
 					report +="\n"
-					report += f"	EMPTY_SPACE " \
+					report += f"	>>> EMPTY_SPACE <<< " \
 						f"[bank idx: {ram_disk_bank_idx}, " \
-						f"addr: {ram_disk_load_addr}, len:{bank_reservation_addr - ram_disk_load_addr}]\n"
+						f"addr: {ram_disk_load_addr}, len:{bank_reservation_addr - ram_disk_load_addr}]\n\n"
 					
 					ram_disk_load_addr = bank_reservation_addr + bank_reservation_len				
 					ram_disk_reserved += bank_reservation_len

@@ -116,7 +116,7 @@ def get_char_label_postfix(char_name):
 		adjusted_char = f"{chr(adjusted_code_point)}{offset}"
 	return adjusted_char
 
-def gfx_ptrs_to_asm(label_prefix, asset_j, gfx_ptrs = None):
+def gfx_ptrs_to_asm(label_prefix, asset_j, gfx_ptrs):
 	asm = ""
 
 	# if font_gfx_ptrs_rd == True, then add list of labels with relatives addresses

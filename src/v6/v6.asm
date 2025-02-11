@@ -4,9 +4,8 @@ jmp v6_main_init
 .include "src/v6/v6_macros.asm"
 .include "src/v6/v6_consts.asm"
 .include "src/game/consts.asm"
-.include "build/build_includes.asm"
+.include "build/build_consts.asm"
 .include "src/v6/v6_os.asm"
-.include "build/loads.asm"
 .include "src/v6/v6_utils.asm"
 .include "src/v6/v6_controls.asm"
 .include "src/v6/v6_interruption.asm"
@@ -14,6 +13,13 @@ jmp v6_main_init
 .include "src/v6/v6_draw_text_ex.asm"
 .include "src/v6/sound/v6_sound.asm"
 .include "src/v6/v6_draw_tile.asm"
+.include "src/v6/v6_sprite.asm"
+.include "src/v6/v6_sprite_to_scr.asm"
+.include "src/v6/v6_sprite_to_backbuf.asm"
+.include "src/v6/v6_draw_sprite.asm"
+.include "src/v6/v6_draw_sprite_hit.asm"
+.include "src/v6/v6_draw_sprite_invis.asm"
+.include "build/build_includes.asm"
 
 v6_main_init:
 			lxi h, v6_main_reboot

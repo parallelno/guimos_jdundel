@@ -39,6 +39,31 @@ BACK_BUFF_ADDR          = 0xA000
 BACK_BUFF2_ADDR         = 0xA000
 
 ;=======================================================
+; Sprite
+;=======================================================
+SPRITE_X_SCR_ADDR		= >SCR_BUFF1_ADDR
+SPRITE_SCR_BUFFS		= 3
+SPRITE_W16				= 2
+SPRITE_W24				= 3
+SPRITE_W8_PACKED		= 0
+SPRITE_W16_PACKED		= 1
+SPRITE_W24_PACKED		= 2
+SPRITE_W32_PACKED		= 3
+
+; sprite preshift
+SPRITE_PRESHIFT_H_MAX	= 24
+SPRITES_PRESHIFTED_4	= 4
+SPRITES_PRESHIFTED_8	= 8
+; sprite copy to scr
+SPRITE_COPY_TO_SCR_W_PACKED_MIN = SPRITE_W8_PACKED
+SPRITE_COPY_TO_SCR_W_PACKED_MAX = SPRITE_W32_PACKED
+SPRITE_COPY_TO_SCR_H_MIN = 5
+SPRITE_COPY_TO_SCR_H_MAX = 20
+; sprite min
+SPRITE_W_PACKED_MIN		= SPRITE_COPY_TO_SCR_W_PACKED_MIN
+SPRITE_H_MIN			= SPRITE_COPY_TO_SCR_H_MIN
+
+;=======================================================
 ; Ram-disk
 ;=======================================================
 /*
