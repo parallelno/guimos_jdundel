@@ -14,20 +14,19 @@ _lv0_start_pos:					; a hero starting pos
 			.byte 120			; pos_x
 
 _lv0_home = 2
-_lv0_farm_fence = 278
-_lv0_road_to_friends_home = 542
-_lv0_friends_home = 826
-_lv0_friends_home_backyard = 1088
-_lv0_friends_secret_place = 1353
-_lv0_crossroad = 1667
-_lv0_farm_entrance = 1943
-_lv0_farm_storage = 2212
-_lv0_loop = 2476
-_lv0_dungeon_entrance = 2765
-_lv0_abandoned_home = 3051
-_lv0_lost_coins = 3322
+_lv0_farm_fence = 280
+_lv0_road_to_friends_home = 546
+_lv0_friends_home = 832
+_lv0_friends_home_backyard = 1096
+_lv0_friends_secret_place = 1363
+_lv0_crossroad = 1679
+_lv0_farm_entrance = 1957
+_lv0_farm_storage = 2228
+_lv0_loop = 2494
+_lv0_dungeon_entrance = 2785
+_lv0_abandoned_home = 3073
+_lv0_lost_coins = 3346
 
-			.word 0 ; safety pair of bytes for reading by POP B
 lv0_rooms_addr:
 			.word _lv0_home, 0, _lv0_farm_fence, 0, _lv0_road_to_friends_home, 0, _lv0_friends_home, 0, _lv0_friends_home_backyard, 0, _lv0_friends_secret_place, 0, _lv0_crossroad, 0, _lv0_farm_entrance, 0, _lv0_farm_storage, 0, _lv0_loop, 0, _lv0_dungeon_entrance, 0, _lv0_abandoned_home, 0, _lv0_lost_coins, 
 

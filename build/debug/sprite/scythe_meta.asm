@@ -12,21 +12,21 @@ SCYTHE_FILENAME_PTR:
 
 ; relative labels. to make it global call __text_ex_rd_init
 _scythe_run0_0 = 2
-_scythe_run0_1 = 62
-_scythe_run0_2 = 122
-_scythe_run0_3 = 182
-_scythe_run1_0 = 272
-_scythe_run1_1 = 416
-_scythe_run1_2 = 560
-_scythe_run1_3 = 704
-_scythe_run2_0 = 776
-_scythe_run2_1 = 848
-_scythe_run2_2 = 920
-_scythe_run2_3 = 992
-_scythe_run3_0 = 1100
-_scythe_run3_1 = 1244
-_scythe_run3_2 = 1388
-_scythe_run3_3 = 1460
+_scythe_run0_1 = 68
+_scythe_run0_2 = 128
+_scythe_run0_3 = 188
+_scythe_run1_0 = 278
+_scythe_run1_1 = 428
+_scythe_run1_2 = 572
+_scythe_run1_3 = 716
+_scythe_run2_0 = 788
+_scythe_run2_1 = 866
+_scythe_run2_2 = 938
+_scythe_run2_3 = 1010
+_scythe_run3_0 = 1118
+_scythe_run3_1 = 1268
+_scythe_run3_2 = 1412
+_scythe_run3_3 = 1484
 
 sprite_get_scr_addr_scythe = sprite_get_scr_addr4
 

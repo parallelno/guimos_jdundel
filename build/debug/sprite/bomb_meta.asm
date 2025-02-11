@@ -12,21 +12,21 @@ BOMB_FILENAME_PTR:
 
 ; relative labels. to make it global call __text_ex_rd_init
 _bomb_run0_0 = 2
-_bomb_run0_1 = 38
-_bomb_run0_2 = 74
-_bomb_run0_3 = 146
-_bomb_run1_0 = 218
-_bomb_run1_1 = 254
-_bomb_run1_2 = 290
-_bomb_run1_3 = 362
-_bomb_dmg0_0 = 434
-_bomb_dmg0_1 = 470
-_bomb_dmg0_2 = 506
-_bomb_dmg0_3 = 578
-_bomb_dmg1_0 = 650
-_bomb_dmg1_1 = 686
-_bomb_dmg1_2 = 722
-_bomb_dmg1_3 = 794
+_bomb_run0_1 = 44
+_bomb_run0_2 = 80
+_bomb_run0_3 = 152
+_bomb_run1_0 = 224
+_bomb_run1_1 = 266
+_bomb_run1_2 = 302
+_bomb_run1_3 = 374
+_bomb_dmg0_0 = 446
+_bomb_dmg0_1 = 488
+_bomb_dmg0_2 = 524
+_bomb_dmg0_3 = 596
+_bomb_dmg1_0 = 668
+_bomb_dmg1_1 = 710
+_bomb_dmg1_2 = 746
+_bomb_dmg1_3 = 818
 
 sprite_get_scr_addr_bomb = sprite_get_scr_addr4
 

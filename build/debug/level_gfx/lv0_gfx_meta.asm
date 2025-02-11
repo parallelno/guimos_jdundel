@@ -11,7 +11,6 @@ LV0_GFX_FILENAME_PTR:
 			.byte "BIN" ; extension
 
 ; assets\levels/tiled/art/lv0.png
-			.word 0 ; safety pair of bytes for reading by POP B
 _lv0_palette:
 			.byte %01100101, %01010010, %01011100, %01101011, 
 			.byte %10100100, %01101100, %10110111, %01101111, 
@@ -64,8 +63,6 @@ _lv0_tile42 = 5130
 _lv0_tile43 = 5262
 _lv0_tile44 = 5394
 
-
-			.word 0 ; safety pair of bytes for reading by POP B
 _lv0_tiles_addr:
 			.word _lv0_tile0, 0, _lv0_tile1, 0, _lv0_tile2, 0, _lv0_tile3, 0, _lv0_tile4, 0, _lv0_tile5, 0, _lv0_tile6, 0, _lv0_tile7, 0, _lv0_tile8, 0, _lv0_tile9, 0, _lv0_tile10, 0, _lv0_tile11, 0, _lv0_tile12, 0, _lv0_tile13, 0, _lv0_tile14, 0, _lv0_tile15, 0, _lv0_tile16, 0, _lv0_tile17, 0, _lv0_tile18, 0, _lv0_tile19, 0, _lv0_tile20, 0, _lv0_tile21, 0, _lv0_tile22, 0, _lv0_tile23, 0, _lv0_tile24, 0, _lv0_tile25, 0, _lv0_tile26, 0, _lv0_tile27, 0, _lv0_tile28, 0, _lv0_tile29, 0, _lv0_tile30, 0, _lv0_tile31, 0, _lv0_tile32, 0, _lv0_tile33, 0, _lv0_tile34, 0, _lv0_tile35, 0, _lv0_tile36, 0, _lv0_tile37, 0, _lv0_tile38, 0, _lv0_tile39, 0, _lv0_tile40, 0, _lv0_tile41, 0, _lv0_tile42, 0, _lv0_tile43, 0, _lv0_tile44, 
 

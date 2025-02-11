@@ -22,7 +22,7 @@ def palette_to_asm(image, char_j, path = "", label_prefix = ""):
 	palette_coords = char_j["palette"]
 	colors = {}
 	asm = "; " + path + "\n"
-	asm += "			.word 0 ; safety pair of bytes for reading by POP B\n"	
+	# asm += "			.word 0 ; safety pair of bytes for reading by POP B\n"	
 	asm += label_prefix + "_palette" + ":\n"
 	palette = image.getpalette() 
 
@@ -51,7 +51,8 @@ def pack_color(r,g,b):
 	return b | g | r
 
 def image_palette_to_asm(colors, label_prefix):
-	asm = "			.word 0 ; safety pair of bytes for reading by POP B\n"
+	asm = ""
+	#asm += "			.word 0 ; safety pair of bytes for reading by POP B\n"
 	asm += label_prefix + "_palette:\n"	
 
 	for color_idx in range(IMAGE_COLORS_MAX):
@@ -136,7 +137,8 @@ def plane_indexes_to_bit_lists(tile_img):
 	return bits0, bits1, bits2, bits3
 
 def get_list_of_tiles(remap_idxs, label_prefix, pngLabelPrefix):
-	asm = "\n			.word 0 ; safety pair of bytes for reading by POP B\n"
+	asm = ""
+	#asm += "\n			.word 0 ; safety pair of bytes for reading by POP B\n"
 	asm += label_prefix + "_tiles_addr:\n			.word "
 	for i, t_idx in enumerate(remap_idxs):
 		asm += "_" + pngLabelPrefix + "_tile" + str(remap_idxs[t_idx]) + ", "

@@ -12,29 +12,29 @@ VFX4_FILENAME_PTR:
 
 ; relative labels. to make it global call __text_ex_rd_init
 _vfx4_hit0_0 = 2
-_vfx4_hit0_1 = 134
-_vfx4_hit0_2 = 266
-_vfx4_hit0_3 = 464
-_vfx4_hit1_0 = 596
-_vfx4_hit1_1 = 740
-_vfx4_hit1_2 = 884
-_vfx4_hit1_3 = 1100
-_vfx4_hit2_0 = 1244
-_vfx4_hit2_1 = 1412
-_vfx4_hit2_2 = 1664
-_vfx4_hit2_3 = 1916
-_vfx4_hit3_0 = 2168
-_vfx4_hit3_1 = 2360
-_vfx4_hit3_2 = 2648
-_vfx4_hit3_3 = 2936
-_vfx4_hero_death1_0 = 3224
-_vfx4_hero_death1_1 = 3368
-_vfx4_hero_death1_2 = 3584
-_vfx4_hero_death1_3 = 3800
-_vfx4_hero_death2_0 = 4016
-_vfx4_hero_death2_1 = 4112
-_vfx4_hero_death2_2 = 4256
-_vfx4_hero_death2_3 = 4400
+_vfx4_hit0_1 = 140
+_vfx4_hit0_2 = 272
+_vfx4_hit0_3 = 470
+_vfx4_hit1_0 = 602
+_vfx4_hit1_1 = 752
+_vfx4_hit1_2 = 896
+_vfx4_hit1_3 = 1112
+_vfx4_hit2_0 = 1256
+_vfx4_hit2_1 = 1430
+_vfx4_hit2_2 = 1682
+_vfx4_hit2_3 = 1934
+_vfx4_hit3_0 = 2186
+_vfx4_hit3_1 = 2384
+_vfx4_hit3_2 = 2672
+_vfx4_hit3_3 = 2960
+_vfx4_hero_death1_0 = 3248
+_vfx4_hero_death1_1 = 3398
+_vfx4_hero_death1_2 = 3614
+_vfx4_hero_death1_3 = 3830
+_vfx4_hero_death2_0 = 4046
+_vfx4_hero_death2_1 = 4148
+_vfx4_hero_death2_2 = 4292
+_vfx4_hero_death2_3 = 4436
 
 sprite_get_scr_addr_vfx4 = sprite_get_scr_addr4
 

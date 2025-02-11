@@ -70,7 +70,8 @@ def remap_index(rooms_j):
 	return remap_idxs
 
 def get_list_of_rooms(room_paths, label_prefix):
-	asm = "\n			.word 0 ; safety pair of bytes for reading by POP B\n"
+	asm = ""
+	#asm += "\n			.word 0 ; safety pair of bytes for reading by POP B\n"
 	asm += label_prefix + "_rooms_addr:\n			.word "
 
 	for i, room_path_p in enumerate(room_paths):

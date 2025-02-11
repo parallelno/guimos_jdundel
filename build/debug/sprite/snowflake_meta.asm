@@ -11,17 +11,17 @@ SNOWFLAK_FILENAME_PTR:
 
 ; relative labels. to make it global call __text_ex_rd_init
 _snowflake_run0_0 = 2
-_snowflake_run0_1 = 122
-_snowflake_run0_2 = 242
-_snowflake_run0_3 = 362
-_snowflake_run1_0 = 482
-_snowflake_run1_1 = 542
-_snowflake_run1_2 = 662
-_snowflake_run1_3 = 782
-_snowflake_run2_0 = 902
-_snowflake_run2_1 = 962
-_snowflake_run2_2 = 1082
-_snowflake_run2_3 = 1202
+_snowflake_run0_1 = 128
+_snowflake_run0_2 = 248
+_snowflake_run0_3 = 368
+_snowflake_run1_0 = 488
+_snowflake_run1_1 = 554
+_snowflake_run1_2 = 674
+_snowflake_run1_3 = 794
+_snowflake_run2_0 = 914
+_snowflake_run2_1 = 980
+_snowflake_run2_2 = 1100
+_snowflake_run2_3 = 1220
 
 sprite_get_scr_addr_snowflake = sprite_get_scr_addr4
 

@@ -91,6 +91,7 @@ def data_to_asm(level_j_path):
 
 		room_ptrs[room_data_label] = room_addr_offset
 		room_addr_offset += data_len
+		room_addr_offset += 2 # safety pair of bytes for reading by POP B
 
 		# collect resource data
 
@@ -231,6 +232,8 @@ def data_ptrs_to_asm(level_j_path, data_ptrs):
 	# list of rooms
 	for label, addr in data_ptrs.items():
 		asm += f"{label} = {addr}\n"
+	asm += "\n"
+
 	asm += level_utils.get_list_of_rooms(room_paths, level_name)
 
 	return asm

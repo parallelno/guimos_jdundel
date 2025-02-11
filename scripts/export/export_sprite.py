@@ -205,37 +205,33 @@ def gfx_to_asm(label_prefix, asset_name, source_j, image, has_mask, source_j_pat
 	asm = f"{label_prefix}{asset_name}_sprites:"
 
 	data_ptrs = {}
-	sprite_data_addr = 2 # safety pair of bytes for reading by POP B
+	sprite_data_relative_addr = 2 # safety pair of bytes for reading by POP B
 
 	preshifted_sprites = source_j.get("preshifted_sprites", 1)
 	
 	if (preshifted_sprites != 1 and
 		preshifted_sprites != 4 and preshifted_sprites != 8):
-		build.exit_error(f'export_sprite ERROR: preshifted_sprites can be only equal 1, 4, 8", path: {source_j_path}')
+		build.exit_error(f'export_sprite ERROR: preshifted_sprites can be only equal 1, 4, 8. Path: {source_j_path}')
 
 	for sprite in sprites_j:
 		sprite_name = sprite["name"]
+		
 		x = sprite["x"]
 		y = sprite["y"]
 		width = sprite["width"]
 		height = sprite["height"]
-		offset_x = 0
-		mirrored = False
-		if sprite.get("offset_x") is not None:
-			offset_x = sprite["offset_x"]
-		offset_y = 0
-		if sprite.get("offset_y") is not None:
-			offset_y = sprite["offset_y"]
-
-		if sprite.get("mirrored") is not None:
-			mirrored = sprite["mirrored"]
+		offset_x = sprite["offset_x"] if sprite.get("offset_x") is not None else 0
+		offset_y = sprite["offset_y"] if sprite.get("offset_y") is not None else 0
+		mirrored = sprite["mirrored"] if sprite.get("mirrored") is not None else False
+		mask_alpha = sprite["mask_alpha"]
+		mask_color = sprite["mask_color"]
 
 		# get a sprite as a color index 2d array
 		sprite_img = []
-		for py in reversed(range(y, y + height)) : # Y is reversed because it is from bottomto top in the game
+		for pos_y in reversed(range(y, y + height)) : # Y is reversed because it is from bottom to top in the game
 			line = []
-			for px in range(x, x+width) :
-				color_idx = image.getpixel((px, py))
+			for pos_x in range(x, x+width) :
+				color_idx = image.getpixel((pos_x, pos_y))
 				line.append(color_idx)
 
 			sprite_img.append(line)
@@ -243,14 +239,11 @@ def gfx_to_asm(label_prefix, asset_name, source_j, image, has_mask, source_j_pat
 		# convert indexes into bit lists.
 		bits0, bits1, bits2, bits3 = common_gfx.indexes_to_bit_lists(sprite_img)
 		
-		# combite bits into byte lists
+		# combine bits into byte lists
 		#bytes0 = common.combine_bits_to_bytes(bits0) # 8000-9FFF # from left to right, from bottom to top
 		bytes1 = common.combine_bits_to_bytes(bits1) # A000-BFFF
 		bytes2 = common.combine_bits_to_bytes(bits2) # C000-DFFF
 		bytes3 = common.combine_bits_to_bytes(bits3) # E000-FFFF
-
-		mask_alpha = sprite["mask_alpha"]
-		mask_color = sprite["mask_color"]
 
 		mask_bytes = None
 		if has_mask:
@@ -298,8 +291,10 @@ def gfx_to_asm(label_prefix, asset_name, source_j, image, has_mask, source_j_pat
 
 		asm += common.bytes_to_asm(data)
 		
-		data_ptrs[frame_label] = sprite_data_addr
-		sprite_data_addr += len(data)
+		data_ptrs[frame_label] = sprite_data_relative_addr
+		sprite_data_relative_addr += len(data)
+		sprite_data_relative_addr += 2 # safety pair of bytes for reading by POP B
+		sprite_data_relative_addr += 4 # offset_y, offset_x_packed, height, width_packed
 
 
 		# find leftest pixel dx
@@ -331,8 +326,8 @@ def gfx_to_asm(label_prefix, asset_name, source_j, image, has_mask, source_j_pat
 			frame_data = make_empty_sprite_data(has_mask, width_preshifted, height)
 			asm += common.bytes_to_asm(frame_data)
 			
-			data_ptrs[frame_label] = sprite_data_addr
-			sprite_data_addr += len(frame_data)
+			data_ptrs[frame_label] = sprite_data_relative_addr
+			sprite_data_relative_addr += len(frame_data)
 
 	return asm, data_ptrs
 

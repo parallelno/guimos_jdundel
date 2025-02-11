@@ -151,6 +151,8 @@ def gfx_to_asm(room_j, image, path, remap_idxs, label_prefix):
 		asm += common.bytes_to_asm(data)
 
 		tile_ptrs[label] = tile_addr_offset
-		tile_addr_offset += 4 + len(data)
+		tile_addr_offset += len(data)
+		tile_addr_offset += 2 # mask, counter
+		tile_addr_offset += 2 # safety pair of bytes for reading by POP B
 
 	return asm, tile_ptrs

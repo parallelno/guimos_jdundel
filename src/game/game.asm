@@ -33,10 +33,11 @@ game_init:
 			; hero_r_idle0_0
 			;======================
 			lxi d, 0xB0A0
-			lxi b, _hero_r_idle0_0
+			lxi b, _hero_r_idle0_1
 			RAM_DISK_ON(RAM_DISK_S_HERO_R | 0 | 0)
 			call draw_sprite_vm
 			RAM_DISK_OFF()
+.breakpoint
 
 			;======================
 			; LV0 tile 0

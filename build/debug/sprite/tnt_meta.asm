@@ -12,13 +12,13 @@ TNT_FILENAME_PTR:
 
 ; relative labels. to make it global call __text_ex_rd_init
 _tnt_idle0_0 = 2
-_tnt_idle0_1 = 68
-_tnt_idle0_2 = 200
-_tnt_idle0_3 = 332
-_tnt_idle1_0 = 464
-_tnt_idle1_1 = 542
-_tnt_idle1_2 = 698
-_tnt_idle1_3 = 854
+_tnt_idle0_1 = 74
+_tnt_idle0_2 = 206
+_tnt_idle0_3 = 338
+_tnt_idle1_0 = 470
+_tnt_idle1_1 = 554
+_tnt_idle1_2 = 710
+_tnt_idle1_3 = 866
 
 sprite_get_scr_addr_tnt = sprite_get_scr_addr4
 
