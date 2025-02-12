@@ -75,10 +75,9 @@
 		{
 			"ram" : [],
 			"ram-disk" : [
+				"assets/sprites/hero_l.json",				
 				"assets/levels/lv0_gfx.json",
-
 				"assets/sprites/burner.json",
-				"assets/sprites/hero_l.json",
 				"assets/sprites/sword.json",				
 				"assets/sprites/vfx.json",				
 				"assets/sprites/hero_r.json",

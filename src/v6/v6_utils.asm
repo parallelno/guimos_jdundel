@@ -339,11 +339,13 @@ screen_erase_block:
 .endf
 
 
-; adds the offset to the pointers
+; adds the offset to the pointers in the array
 ; in:
 ; hl - points to the array of ptrs to the data
 ; de - the data addr
 ; c - the len of the array
+; out:
+; hl - points to the next byte after the array
 .function update_labels()
 @loop:
 			mov a, m

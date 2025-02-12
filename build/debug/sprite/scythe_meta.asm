@@ -2,8 +2,8 @@
 ; asm data file: build/debug/sprite/scythe_data.asm
 ; bin file: build/debug/bin/SCYTHE.BIN
 
-SCYTHE_FILE_LEN = 1626
-SCYTHE_LAST_RECORD_LEN = 90
+SCYTHE_FILE_LEN = 1554
+SCYTHE_LAST_RECORD_LEN = 18
 
 SCYTHE_FILENAME_PTR:
 			.byte "SCYTHE" ; filename
@@ -13,20 +13,20 @@ SCYTHE_FILENAME_PTR:
 ; relative labels. to make it global call __text_ex_rd_init
 _scythe_run0_0 = 2
 _scythe_run0_1 = 68
-_scythe_run0_2 = 128
-_scythe_run0_3 = 188
-_scythe_run1_0 = 278
-_scythe_run1_1 = 428
-_scythe_run1_2 = 572
-_scythe_run1_3 = 716
-_scythe_run2_0 = 788
-_scythe_run2_1 = 866
-_scythe_run2_2 = 938
-_scythe_run2_3 = 1010
-_scythe_run3_0 = 1118
-_scythe_run3_1 = 1268
-_scythe_run3_2 = 1412
-_scythe_run3_3 = 1484
+_scythe_run0_2 = 134
+_scythe_run0_3 = 200
+_scythe_run1_0 = 296
+_scythe_run1_1 = 374
+_scythe_run1_2 = 524
+_scythe_run1_3 = 674
+_scythe_run2_0 = 752
+_scythe_run2_1 = 830
+_scythe_run2_2 = 908
+_scythe_run2_3 = 986
+_scythe_run3_0 = 1100
+_scythe_run3_1 = 1250
+_scythe_run3_2 = 1400
+_scythe_run3_3 = 1478
 
 sprite_get_scr_addr_scythe = sprite_get_scr_addr4
 

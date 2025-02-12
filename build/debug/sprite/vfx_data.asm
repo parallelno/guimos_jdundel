@@ -1,15 +1,15 @@
 _vfx_sprites:
-			.byte 1,1  ; safety pair of bytes for reading by POP B, and also (mask_flag, preshifting is done)
+			.word 0  ; safety pair of bytes for reading by POP B
 _vfx_invis_0:
-			.byte 0, 0; offset_y, offset_x
-			.byte 5, 0; height, width
-			.byte 255,3,255,12,255,0,255,0,255,16,255,15,255,6,255,25,
-			.byte 255,0,255,0,255,15,255,0,255,0,255,0,255,0,
+			.byte 0, 1; offset_y, offset_x
+			.byte 5, -2; h, w
 
-			.byte 1,1  ; safety pair of bytes for reading by POP B, and also (mask_flag, preshifting is done)
+
+
+			.word 0  ; safety pair of bytes for reading by POP B
 _vfx_puff0_0:
 			.byte 2, 0; offset_y, offset_x
-			.byte 11, 1; height, width
+			.byte 11, 1; h, w
 			.byte 255,0,159,0,159,96,255,0,159,0,255,0,224,0,15,0,
 			.byte 15,240,224,31,15,0,224,0,192,7,15,192,15,48,192,56,
 			.byte 15,0,192,0,192,0,15,0,15,16,192,48,15,224,192,15,
@@ -20,10 +20,11 @@ _vfx_puff0_0:
 			.byte 3,140,240,15,3,112,240,0,255,0,135,0,135,120,255,0,
 			.byte 135,0,255,0,
 
-			.byte 1,1  ; safety pair of bytes for reading by POP B, and also (mask_flag, preshifting is done)
+
+			.word 0  ; safety pair of bytes for reading by POP B
 _vfx_puff1_0:
 			.byte 0, 0; offset_y, offset_x
-			.byte 15, 1; height, width
+			.byte 15, 1; h, w
 			.byte 255,0,255,0,255,96,255,0,255,0,255,0,255,0,255,0,
 			.byte 255,252,255,0,255,0,255,0,255,0,159,0,159,254,255,24,
 			.byte 159,0,255,0,224,0,15,0,15,158,224,63,15,96,224,0,
@@ -37,10 +38,11 @@ _vfx_puff1_0:
 			.byte 255,254,255,24,255,0,255,0,255,0,255,0,255,124,255,0,
 			.byte 255,0,255,0,
 
-			.byte 1,1  ; safety pair of bytes for reading by POP B, and also (mask_flag, preshifting is done)
+
+			.word 0  ; safety pair of bytes for reading by POP B
 _vfx_puff2_0:
 			.byte 0, 0; offset_y, offset_x
-			.byte 15, 1; height, width
+			.byte 15, 1; h, w
 			.byte 255,0,255,0,255,120,255,0,255,0,255,0,255,0,255,0,
 			.byte 255,252,255,120,255,0,255,0,255,0,159,0,159,142,255,228,
 			.byte 159,0,255,0,224,0,15,0,15,6,224,195,15,0,224,0,
@@ -54,10 +56,11 @@ _vfx_puff2_0:
 			.byte 255,135,255,100,255,0,255,0,255,0,255,0,255,78,255,56,
 			.byte 255,0,255,0,
 
-			.byte 1,1  ; safety pair of bytes for reading by POP B, and also (mask_flag, preshifting is done)
+
+			.word 0  ; safety pair of bytes for reading by POP B
 _vfx_puff3_0:
 			.byte 0, 0; offset_y, offset_x
-			.byte 15, 1; height, width
+			.byte 15, 1; h, w
 			.byte 255,0,255,0,255,124,255,120,255,0,255,0,255,0,255,0,
 			.byte 255,134,255,196,255,0,255,0,255,0,159,0,159,2,255,129,
 			.byte 159,0,255,0,224,0,15,0,15,2,224,0,15,0,224,0,
@@ -71,10 +74,11 @@ _vfx_puff3_0:
 			.byte 255,0,255,64,255,0,255,0,255,0,255,0,255,130,255,32,
 			.byte 255,0,255,0,
 
-			.byte 1,1  ; safety pair of bytes for reading by POP B, and also (mask_flag, preshifting is done)
+
+			.word 0  ; safety pair of bytes for reading by POP B
 _vfx_reward0_0:
 			.byte 0, 0; offset_y, offset_x
-			.byte 15, 1; height, width
+			.byte 15, 1; h, w
 			.byte 254,1,255,0,255,0,254,0,255,0,254,0,254,0,255,0,
 			.byte 255,0,254,0,255,0,254,1,223,32,247,8,247,0,223,0,
 			.byte 247,0,223,0,239,0,239,0,239,0,239,0,239,16,239,16,
@@ -88,10 +92,11 @@ _vfx_reward0_0:
 			.byte 255,0,254,0,255,0,254,1,254,1,255,0,255,0,254,0,
 			.byte 255,0,254,0,
 
-			.byte 1,1  ; safety pair of bytes for reading by POP B, and also (mask_flag, preshifting is done)
+
+			.word 0  ; safety pair of bytes for reading by POP B
 _vfx_reward1_0:
 			.byte 0, 0; offset_y, offset_x
-			.byte 16, 1; height, width
+			.byte 16, 1; h, w
 			.byte 254,1,255,0,255,0,254,0,255,0,254,0,246,1,247,0,
 			.byte 247,0,246,0,247,8,246,9,250,5,239,16,239,0,250,0,
 			.byte 239,0,250,1,190,1,253,0,253,0,190,0,253,2,190,65,
@@ -105,10 +110,11 @@ _vfx_reward1_0:
 			.byte 223,0,222,0,223,32,222,33,254,1,255,0,255,0,254,0,
 			.byte 255,0,254,1,254,0,255,0,255,0,254,0,255,0,254,1,
 
-			.byte 1,1  ; safety pair of bytes for reading by POP B, and also (mask_flag, preshifting is done)
+
+			.word 0  ; safety pair of bytes for reading by POP B
 _vfx_reward2_0:
 			.byte 1, 0; offset_y, offset_x
-			.byte 13, 1; height, width
+			.byte 13, 1; h, w
 			.byte 254,1,255,0,255,0,254,0,255,0,254,0,255,0,255,0,
 			.byte 255,0,255,0,255,0,255,0,238,17,239,16,239,0,238,0,
 			.byte 239,0,238,0,246,9,223,32,223,0,246,0,223,32,246,9,
@@ -120,10 +126,11 @@ _vfx_reward2_0:
 			.byte 239,0,238,0,255,0,255,0,255,0,255,0,255,0,255,0,
 			.byte 254,1,255,0,255,0,254,0,255,0,254,0,
 
-			.byte 1,1  ; safety pair of bytes for reading by POP B, and also (mask_flag, preshifting is done)
+
+			.word 0  ; safety pair of bytes for reading by POP B
 _vfx_reward3_0:
 			.byte 3, 0; offset_y, offset_x
-			.byte 9, 1; height, width
+			.byte 9, 1; h, w
 			.byte 254,1,255,0,255,0,254,0,255,0,254,1,255,0,255,0,
 			.byte 255,0,255,0,255,0,255,0,254,1,255,0,255,0,254,0,
 			.byte 255,0,254,0,254,1,255,0,255,0,254,0,255,0,254,1,
@@ -132,10 +139,11 @@ _vfx_reward3_0:
 			.byte 255,0,254,0,255,0,255,0,255,0,255,0,255,0,255,0,
 			.byte 254,1,255,0,255,0,254,0,255,0,254,1,
 
-			.byte 1,1  ; safety pair of bytes for reading by POP B, and also (mask_flag, preshifting is done)
+
+			.word 0  ; safety pair of bytes for reading by POP B
 _vfx_selection_0:
 			.byte 0, 0; offset_y, offset_x
-			.byte 16, 1; height, width
+			.byte 16, 1; h, w
 			.byte 255,0,255,0,255,0,255,0,255,0,255,0,31,0,248,0,
 			.byte 248,0,31,0,248,0,31,0,15,224,240,7,240,7,15,224,
 			.byte 240,0,15,0,31,0,248,0,248,1,31,128,248,1,31,128,
@@ -149,10 +157,11 @@ _vfx_selection_0:
 			.byte 240,7,15,224,240,7,15,224,31,0,248,0,248,0,31,0,
 			.byte 248,0,31,0,255,0,255,0,255,0,255,0,255,0,255,0,
 
-			.byte 1,1  ; safety pair of bytes for reading by POP B, and also (mask_flag, preshifting is done)
+
+			.word 0  ; safety pair of bytes for reading by POP B
 _vfx_firepool0_0:
 			.byte 0, 0; offset_y, offset_x
-			.byte 16, 1; height, width
+			.byte 16, 1; h, w
 			.byte 255,0,135,0,135,0,255,0,135,120,255,0,130,125,49,206,
 			.byte 49,192,130,65,49,192,130,65,128,28,3,28,3,28,128,28,
 			.byte 3,244,128,127,15,240,97,18,97,30,15,0,97,30,15,0,
@@ -166,10 +175,11 @@ _vfx_firepool0_0:
 			.byte 243,12,175,80,243,12,175,80,238,16,247,8,247,8,238,16,
 			.byte 247,8,238,16,255,0,63,64,63,64,255,0,63,64,255,0,
 
-			.byte 1,1  ; safety pair of bytes for reading by POP B, and also (mask_flag, preshifting is done)
+
+			.word 0  ; safety pair of bytes for reading by POP B
 _vfx_firepool1_0:
 			.byte 0, 0; offset_y, offset_x
-			.byte 16, 1; height, width
+			.byte 16, 1; h, w
 			.byte 255,0,135,0,135,0,255,0,135,120,255,0,130,125,49,206,
 			.byte 49,192,130,1,49,192,130,1,128,24,1,150,1,150,128,24,
 			.byte 1,254,128,123,15,240,97,20,97,28,15,0,97,28,15,0,
@@ -183,10 +193,11 @@ _vfx_firepool1_0:
 			.byte 131,112,175,0,131,112,175,0,234,0,215,32,215,32,234,0,
 			.byte 215,32,234,0,215,32,51,4,51,4,215,32,51,4,215,32,
 
-			.byte 1,1  ; safety pair of bytes for reading by POP B, and also (mask_flag, preshifting is done)
+
+			.word 0  ; safety pair of bytes for reading by POP B
 _vfx_firepool2_0:
 			.byte 0, 0; offset_y, offset_x
-			.byte 16, 1; height, width
+			.byte 16, 1; h, w
 			.byte 255,0,129,0,129,0,255,0,129,126,255,0,130,61,48,207,
 			.byte 48,78,130,97,48,78,130,97,128,80,1,140,1,140,128,80,
 			.byte 1,100,128,115,7,224,97,0,97,0,7,0,97,0,7,0,
@@ -199,3 +210,4 @@ _vfx_firepool2_0:
 			.byte 54,136,64,36,64,36,54,136,64,11,54,137,166,9,3,132,
 			.byte 3,0,166,25,3,0,166,25,168,16,151,64,151,64,168,16,
 			.byte 151,64,168,80,211,4,19,32,19,32,211,0,19,32,211,0,
+

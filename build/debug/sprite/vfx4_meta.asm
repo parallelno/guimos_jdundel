@@ -2,8 +2,8 @@
 ; asm data file: build/debug/sprite/vfx4_data.asm
 ; bin file: build/debug/bin/VFX4.BIN
 
-VFX4_FILE_LEN = 4686
-VFX4_LAST_RECORD_LEN = 78
+VFX4_FILE_LEN = 3888
+VFX4_LAST_RECORD_LEN = 48
 
 VFX4_FILENAME_PTR:
 			.byte "VFX4" ; filename
@@ -13,28 +13,28 @@ VFX4_FILENAME_PTR:
 ; relative labels. to make it global call __text_ex_rd_init
 _vfx4_hit0_0 = 2
 _vfx4_hit0_1 = 140
-_vfx4_hit0_2 = 272
-_vfx4_hit0_3 = 470
-_vfx4_hit1_0 = 602
-_vfx4_hit1_1 = 752
-_vfx4_hit1_2 = 896
-_vfx4_hit1_3 = 1112
-_vfx4_hit2_0 = 1256
-_vfx4_hit2_1 = 1430
-_vfx4_hit2_2 = 1682
-_vfx4_hit2_3 = 1934
-_vfx4_hit3_0 = 2186
-_vfx4_hit3_1 = 2384
-_vfx4_hit3_2 = 2672
-_vfx4_hit3_3 = 2960
-_vfx4_hero_death1_0 = 3248
-_vfx4_hero_death1_1 = 3398
-_vfx4_hero_death1_2 = 3614
-_vfx4_hero_death1_3 = 3830
-_vfx4_hero_death2_0 = 4046
-_vfx4_hero_death2_1 = 4148
-_vfx4_hero_death2_2 = 4292
-_vfx4_hero_death2_3 = 4436
+_vfx4_hit0_2 = 278
+_vfx4_hit0_3 = 416
+_vfx4_hit1_0 = 554
+_vfx4_hit1_1 = 704
+_vfx4_hit1_2 = 854
+_vfx4_hit1_3 = 1004
+_vfx4_hit2_0 = 1154
+_vfx4_hit2_1 = 1328
+_vfx4_hit2_2 = 1502
+_vfx4_hit2_3 = 1676
+_vfx4_hit3_0 = 1850
+_vfx4_hit3_1 = 2048
+_vfx4_hit3_2 = 2246
+_vfx4_hit3_3 = 2444
+_vfx4_hero_death1_0 = 2642
+_vfx4_hero_death1_1 = 2792
+_vfx4_hero_death1_2 = 2942
+_vfx4_hero_death1_3 = 3164
+_vfx4_hero_death2_0 = 3386
+_vfx4_hero_death2_1 = 3488
+_vfx4_hero_death2_2 = 3590
+_vfx4_hero_death2_3 = 3740
 
 sprite_get_scr_addr_vfx4 = sprite_get_scr_addr4
 

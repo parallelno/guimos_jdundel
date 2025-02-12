@@ -23,7 +23,9 @@ def export_asm(asset_j_path, asm_meta_path, asm_data_path, bin_path):
 	asset_dir = str(Path(asset_j_path).parent) + "/"
 	level_j_path = asset_dir + asset_j["path_level"]
 
-	asm_ram_disk_data, data_ptrs, resources, resource_max_tiledata, containers, container_max_tiledata = data_to_asm(level_j_path)
+	asm_ram_disk_data, data_ptrs, \
+	resources, resource_max_tiledata, \
+	containers, container_max_tiledata = data_to_asm(level_j_path)
 	
 	asm_ram_data = data_ptrs_to_asm(level_j_path, data_ptrs)
 	asm_ram_data += get_resources_inst_data(level_j_path, resources, resource_max_tiledata)
@@ -129,7 +131,8 @@ def get_resources_inst_data(level_j_path, resources, resource_max_tiledata):
 	if len(resources) > 0:
 		asm += "			.byte "
 
-		# add resource tiledata which is not present in the level to make resources_inst_data_ptrs array contain contiguous data
+		# add resource tiledata which is not present in the level to 
+		# make resources_inst_data_ptrs array contain contiguous data
 		# for example: all the rooms contain only res_id=1 and res_id=3
 		# to make a proper data we need to add null_ptrs for res_id=0 and res_id=2
 		# to let the asm code look up it by the res_id
@@ -177,7 +180,8 @@ def get_containers_inst_data(level_j_path, containers, container_max_tiledata):
 	if len(containers) > 0:		
 		asm += "			.byte "
 
-		# add container tiledata which is not present in the level to make containers_inst_data_ptrs array contain contiguous data
+		# add container tiledata which is not present in the level 
+		# to make containers_inst_data_ptrs array contain contiguous data
 		# for example: all the rooms contain only container_id=1 and container_id=3
 		# to make a proper data we need to add null_ptrs for container_id=0 and container_id=2
 		# to let the asm code look up it by the container_id

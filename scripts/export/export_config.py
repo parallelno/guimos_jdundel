@@ -122,11 +122,11 @@ def export(config_j_path):
 	# export the code to load assets & a memory usage report
 	loads_path = export_loads(config_j, fdd_files, build_code_dir)
 
-	# export a consts
-	export_build_consts(config_j, build_code_dir)
-
 	# export a build includes
 	export_build_includes(config_j, fdd_files, [loads_path])
+
+	# export a consts
+	export_build_consts(config_j, build_code_dir)
 
 	# processing main.asm
 	main_asm_path = config_j["main_asm_path"]

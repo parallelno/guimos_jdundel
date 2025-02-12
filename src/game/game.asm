@@ -23,21 +23,9 @@ game_init:
 			call v6_sound_init
 //==========================================================
 
-;.breakpoint
 			load_permanent()
-;.breakpoint
 			load_level0()
-;.breakpoint
 
-			;======================
-			; hero_r_idle0_0
-			;======================
-			lxi d, 0xB0A0
-			lxi b, _hero_r_idle0_1
-			RAM_DISK_ON(RAM_DISK_S_HERO_R | 0 | 0)
-			call draw_sprite_vm
-			RAM_DISK_OFF()
-.breakpoint
 
 			;======================
 			; LV0 tile 0
@@ -55,8 +43,8 @@ game_init:
 			
 			lxi d, SONG01_ADDR
 			lxi h, SONG01_ay_reg_data_ptrs
-			call v6_gc_init_song
-			call v6_gc_start
+			;call v6_gc_init_song
+			;call v6_gc_start
 
 			;======================
 			; FONT
@@ -71,9 +59,76 @@ game_init:
 			lxi h, __text_main_menu_settings
 			lxi b, (0)<<8 | 100
 			CALL_RAM_DISK_FUNC(text_ex_scr1, 0)
-
+			
 			ei
+
+			;======================
+			; preshift test hero_r_idle0
+			;======================
+			lxi d, _burner_preshifted_sprites
+			lxi h, BURNER_ADDR
+			sprite_update_labels()
+
+		frame .var 0
+		shift .var 0
+@loop:			
+			shift = 2
+
+			frame = 0
+			lhld 2 + _burner_dash + (2 + 8)*frame + shift*2
+			mov c, l
+			mov b, h
+			;lxi h, _burner_dash_3_0 + BURNER_ADDR
+			lxi d, 0xB0A0
+			RAM_DISK_ON(RAM_DISK_S_BURNER | 0 | 0)
+			call draw_sprite_vm
+			RAM_DISK_OFF()
+			call wait
+
+			frame = 1
+			lhld 2 + _burner_dash + (2 + 8)*frame + shift*2
+			mov c, l
+			mov b, h
+			lxi d, 0xB0A0
+			RAM_DISK_ON(RAM_DISK_S_BURNER | 0 | 0)
+			call draw_sprite_vm
+			RAM_DISK_OFF()
+			call wait
+
+			frame = 2
+			lhld 2 + _burner_dash + (2 + 8)*frame + shift*2
+			mov c, l
+			mov b, h
+			lxi d, 0xB0A0
+			RAM_DISK_ON(RAM_DISK_S_BURNER | 0 | 0)
+			call draw_sprite_vm
+			RAM_DISK_OFF()
+			call wait
+
+			frame = 3
+			lhld 2 + _burner_dash + (2 + 8)*frame + shift*2
+			mov c, l
+			mov b, h
+			lxi d, 0xB0A0
+			RAM_DISK_ON(RAM_DISK_S_BURNER | 0 | 0)
+			call draw_sprite_vm
+			RAM_DISK_OFF()
+			call wait			
+
+			jmp @loop		
+
+			
 			ret
+
+wait:
+			lxi h, 10000
+@loop:
+			dcx h
+			mov a, h
+			ora l
+			jnz @loop
+			ret
+
 
 game_update:
 			ret

@@ -84,3 +84,66 @@ sprite_get_scr_addr1:
 			mov	d, a
 			; de - sprite screen addr
 			ret
+
+
+; updates sprite label addrs
+; in:
+; de - _hero_l_preshifted_sprites
+; hl - sprite gfx addr (_hero_l_sprites)
+.function sprite_update_labels()
+			shld @gfx_addr+1
+			xchg
+			; hl - _hero_l_preshifted_sprites
+			mov a, m
+			sta @preshifted_sprites+1
+			inx h
+			; read the anim ptr
+@next_anim:			
+			mov e, m
+			inx h
+			mov d, m
+			inx h
+			; check if all anims are updated
+			mov a, d
+			ora e
+			rz
+			; de - anim ptr
+			push h
+			xchg
+			; hl - anim ptr
+			call @update_frame_labels
+			pop h
+			jmp @next_anim
+			ret
+
+; in:
+; hl - anim ptr
+@update_frame_labels:
+			; check if it's the last frame (offset to the next frame < 0)
+			mov a, m
+			push psw
+			inx h
+			inx h
+			; hl - ptr to array of frame ptrs
+			; the len of array = @preshifted_sprites
+@preshifted_sprites:
+			mvi c, TEMP_BYTE
+@gfx_addr:
+			lxi d, TEMP_ADDR
+			; hl - points to the array of ptrs to the data
+			; de - the data addr
+			; c - the len of the array
+			update_labels()
+			pop psw
+			; if a < 0, we updated the last frame in the animation
+			ora a
+			jp @update_frame_labels
+			;ret
+.endf
+
+
+
+
+
+
+			
