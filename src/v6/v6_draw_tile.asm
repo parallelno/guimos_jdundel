@@ -124,7 +124,7 @@ draw_tile_16x16_back_buff:
 			; store sp
 			lxi h, $0000
 			dad sp
-			shld @restore_sp + 1
+			shld @restore__sp + 1
 			; sp = BC
 			mov h, b
 			mov l, c
@@ -189,6 +189,7 @@ draw_tile_16x16_back_buff:
 ; c - tile_idx
 ; out:
 ; bc - tile screen addr
+/*
 .function draw_tile_16x16_buffs()
 			; calc tile gfx ptr
 			mov l, c
@@ -240,3 +241,4 @@ draw_tile_16x16_back_buff:
 			pop b
 			; ret // because of .endf
 .endf
+*/

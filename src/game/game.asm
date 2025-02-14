@@ -6,15 +6,14 @@ game_start:
 			jmp @loop
 
 game_init:
-			di			
+			di
 			; clear the screen
-			lxi b, 0
+			lxi h, 0
 			lxi d, 1023
 			A_TO_ZERO(0)
 			MEM_ERASE_SP()
 
-			lxi d, _lv0_palette
-			mvi h, 0
+			lxi h, _lv0_palette
 			copy_palette_request_update()
 			ei
 			hlt
@@ -22,11 +21,11 @@ game_init:
 
 			call v6_sound_init
 //==========================================================
-
 			load_permanent()
 			load_level0()
 
-
+/*
+FIX RAM_DISK_ON/OFF in the commented funcs below
 			;======================
 			; LV0 tile 0
 			;======================
@@ -59,7 +58,7 @@ game_init:
 			lxi h, __text_main_menu_settings
 			lxi b, (0)<<8 | 100
 			CALL_RAM_DISK_FUNC(text_ex_scr1, 0)
-			
+*/
 			ei
 
 			;======================
@@ -80,9 +79,8 @@ game_init:
 			mov b, h
 			;lxi h, _burner_dash_3_0 + BURNER_ADDR
 			lxi d, 0xB0A0
-			RAM_DISK_ON(RAM_DISK_S_BURNER | 0 | 0)
+			mvi a, RAM_DISK_S_BURNER
 			call draw_sprite_vm
-			RAM_DISK_OFF()
 			call wait
 
 			frame = 1
@@ -90,9 +88,8 @@ game_init:
 			mov c, l
 			mov b, h
 			lxi d, 0xB0A0
-			RAM_DISK_ON(RAM_DISK_S_BURNER | 0 | 0)
+			mvi a, RAM_DISK_S_BURNER
 			call draw_sprite_vm
-			RAM_DISK_OFF()
 			call wait
 
 			frame = 2
@@ -100,9 +97,8 @@ game_init:
 			mov c, l
 			mov b, h
 			lxi d, 0xB0A0
-			RAM_DISK_ON(RAM_DISK_S_BURNER | 0 | 0)
+			mvi a, RAM_DISK_S_BURNER
 			call draw_sprite_vm
-			RAM_DISK_OFF()
 			call wait
 
 			frame = 3
@@ -110,9 +106,8 @@ game_init:
 			mov c, l
 			mov b, h
 			lxi d, 0xB0A0
-			RAM_DISK_ON(RAM_DISK_S_BURNER | 0 | 0)
+			mvi a, RAM_DISK_S_BURNER
 			call draw_sprite_vm
-			RAM_DISK_OFF()
 			call wait			
 
 			jmp @loop		

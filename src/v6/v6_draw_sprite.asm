@@ -1,8 +1,7 @@
 ; sharetable chunk of code to restore SP and 
 ; return a couple of parameters within HL, C
 draw_sprite_ret_ram_disk:
-draw_sprite_restore_sp_ram_disk:
-			lxi sp, TEMP_ADDR
+			RAM_DISK_OFF()
 draw_sprite_scr_addr_ram_disk:
 			lxi b, TEMP_ADDR
 draw_sprite_width_height_ram_disk:
@@ -27,6 +26,7 @@ draw_sprite_width_height_ram_disk:
 ; in:
 ; bc - sprite data
 ; de - screen addr
+; a - ram-disk activation command
 ; out:
 ; d - width
 ;		00 - 8pxs,
@@ -59,10 +59,8 @@ draw_sprite_width_height_ram_disk:
 ; repeat for the next lines of the art data
 
 draw_sprite_vm:
-			; store SP
-			lxi h, 0
-			dad sp
-			shld draw_sprite_restore_sp_ram_disk + 1
+			; enable ram-disk mapping
+			RAM_DISK_ON_BANK()
 			; sp = BC
 			mov	h, b
 			mov	l, c

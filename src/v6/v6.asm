@@ -22,11 +22,8 @@ jmp v6_main_init
 .include "build/build_includes.asm"
 
 v6_main_init:
-			lxi h, v6_main_reboot
-			lxi d, interruption
+			lxi h, interruption
 			call v6_os_init
-v6_main_reboot:
-			
 			call v6_init
 			call game_start
 			call v6_os_exit

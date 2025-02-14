@@ -5,7 +5,8 @@
 ; to restore by the interrupt routine after its execution
 ram_disk_mode:
 			.storage BYTE_LEN
-
+restore__sp:
+			.storage WORD_LEN
 ;=============================================================================
 ;
 ; OS I/O vars

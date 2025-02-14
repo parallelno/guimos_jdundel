@@ -90,7 +90,7 @@ v6_gc_tasks_init:
 			di			; TODO: avoid disabling/enabling interrupts. it's not obvious behavior
 			lxi h, 0
 			dad sp
-			shld @restore_sp+1
+			shld @restore_sp + 1
 
 			lxi sp, v6_gc_task_stack_end
 			lhld v6_song_reg_data_ptrs_end

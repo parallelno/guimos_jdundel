@@ -10,7 +10,7 @@
 ; in:
 ; de - source address (compressed data)
 ; bc - destination address (decompressing)
-dzx0:
+.function dzx0()
 			lxi h, $0FFFF
 			push h
 			inx h
@@ -81,8 +81,9 @@ dzx0:
 			jnz @ldir1
 			pop psw
 			add a
-			ret
-			
+			;ret
+.endf
+
 
 	; unpack to the ram-disk $8000-$FFFF
 	; in:
@@ -92,7 +93,11 @@ dzx0:
 	;
 	; based on ZX0 i8080 decoder v7 by Ivan Gorodetsky -  OLD FILE FORMAT v1
 	; which based on ZX0 z80 decoder by Einar Saukas
-
+//		IT IS NOT RECOMMENDED TO USE
+//		BECAUSE OF THE RISK OF DATA CORRUPTION
+//		RAM_DISK_ON_BANK macro must not be used before calling a function!
+//		check the reqs of RAM_DISK_ON_BANK_NO_RESTORE before using it here
+/*
 dzx0_rd:
 			sta ramDiskCmd1+1
 			sta ramDiskCmd2+1
@@ -199,4 +204,4 @@ elias_backtrack:
 			add a
 			jnc elias_loop
 			jmp elias
-			
+*/

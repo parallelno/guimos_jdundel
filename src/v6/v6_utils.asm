@@ -2,9 +2,7 @@
 
 ; shared chunk of code to restore SP
 ; and dismount the ram-disk
-; cc = 56
-restore_sp:
-			lxi sp, TEMP_ADDR
+restore_sp_:
 			RAM_DISK_OFF()
 			ret
 
@@ -15,7 +13,8 @@ restore_sp:
 ; bc - length
 ; use:
 ; a
-mem_erase:
+/*
+.function mem_erase()
 @loop:
 			A_TO_ZERO(NULL)
 			mov m, a
@@ -24,8 +23,9 @@ mem_erase:
 			ora c
 			ora b
 			jnz @loop
-			ret
-
+			;ret
+.endif
+*/
 ; Fills a short, aligned memory buffer.
 ; The buffer length is <= 256 bytes.
 ; The buffer is aligned to a $100 (256-byte) memory block.
@@ -35,6 +35,7 @@ mem_erase:
 ; c - filler, if mem_fill_short is called
 ; use:
 ; a
+
 mem_erase_short:
 			mvi c, 0
 mem_fill_short:
@@ -45,17 +46,19 @@ mem_fill_short:
 			ret
 
 
-; clear a memory buffer using stack operations
-; can be used to clear ram-disk memory as well
+
+; clears a memory buffer using stack operations
+; can be used to clear the ram-disk as well
 ; input:
-; bc - the last addr of an erased buffer + 1
-; de - length/32 - 1
+; hl - the next addr after the erased buffer
+; de - length // 32 - 1
 ; a - ram-disk activation command
 ; 		a = 0 to clear the main memory
 ; use:
 ; hl
+;		IT CORRUPTS TWO BYTES BEFORE THE BUFFER!
 
-.macro MEM_ERASE_SP(disable_int)
+.macro MEM_ERASE_SP(disable_int = false)
 		.if disable_int
 			di
 		.endif
@@ -66,25 +69,22 @@ mem_fill_short:
 .endmacro
 
 mem_erase_sp:
-			lxi h, $0000
-			dad sp
-			shld mem_erase_sp_restore_sp + 1
-			mov h, b
-			mov l, c
+			shld @buff_end+1
+
 			RAM_DISK_ON_BANK()
-mem_erase_sp_filler:
+@buff_end:	
+			lxi sp, TEMP_ADDR
+@filler:
 			lxi b, $0000
-			sphl
-			mvi a, $ff
-mem_erase_sp_loop:
+			mvi a, 0xFF
+@loop:
 			PUSH_B(16)
+
 			dcx d
 			cmp d
-			jnz mem_erase_sp_loop
-mem_erase_sp_restore_sp:
-			lxi sp, TEMP_WORD
-			RAM_DISK_OFF()
-			ret
+			jnz @loop
+			jmp restore_sp_
+mem_erase_sp_filler = @filler
 
 ; fill a memory buffer with a word using stack operations
 ; can be used to clear ram-disk memory as well
@@ -92,18 +92,21 @@ mem_erase_sp_restore_sp:
 ; hl - a filler word
 ; bc - the last addr of a erased buffer + 1
 ; de - length/32 - 1
-; a - ram disk activation command
+; a - ram-disk activation command
 ; 		a = 0 to clear the main memory
-mem_fill_sp:
+/*
+.function mem_fill_sp()
 			shld mem_erase_sp_filler + 1
 			call mem_erase_sp
 			lxi h, 0
 			shld mem_erase_sp_filler + 1
-			ret
-
+			;ret
+.endf
+*/
 ; clear the ram-disk using sp operations
 ; disables interruptions
 ; input:
+/*
 .function clear_ram_disk()
 			di
 			lxi b, $0000
@@ -133,12 +136,14 @@ mem_fill_sp:
 			MEM_ERASE_SP(true)
 			//ret ; commented out because .endf is replaced with ret
 .endf
+*/
 
 ; erase a block in the screen buff
 ; in:
 ; hl - scr_addr
 ; b - width/8
 ; c - height
+/*
 screen_erase_block:
 			mov a, c
 			add l
@@ -155,7 +160,7 @@ screen_erase_block:
 			dcr b
 			jnz @loop
 			ret
-
+*/
 
 ; copy a memory buffer
 ; in:
@@ -169,6 +174,7 @@ screen_erase_block:
 ; a
 ; 12cc - preparation
 ; 64cc - loop iteration
+
 .function mem_copy()
 @loop:		mov a, m
 			stax d
@@ -189,10 +195,9 @@ screen_erase_block:
 ; in:
 ; de - source
 ; hl - destination
-; bc - length
+; bc - length, must be divisible by 2
 ; a - ram-disk activation command
 
-; len must be divisible by 2
 ; 140 - prep
 ; copy a word: 64-96cc
 ; TODO: optimization: unroll the loop 4 or more times, 
@@ -203,16 +208,14 @@ screen_erase_block:
 ; start_here_if_len%4=3: COPY_WORD_MACRO()
 ; dcx d
 ; jnz
-; copy a word: (12*4*4 + 4*4)/4 = 52
+; copy a word: (12*4*4 + 4*4)/4 = 52cc
+
 .function mem_copy_sp()
 
 			dad b
 			shld @dest+1
 
-			lxi h, 0
-			dad sp
-			shld @restore_sp+1
-			RAM_DISK_ON_BANK_NO_RESTORE()
+			RAM_DISK_ON_BANK(false)
 @dest:
 			lxi sp, TEMP_ADDR
 
@@ -232,9 +235,7 @@ screen_erase_block:
 			cmp h
 			jnz @loop2
 
-@restore_sp:
-			lxi sp, TEMP_ADDR
-			RAM_DISK_OFF_NO_RESTORE()
+			RAM_DISK_OFF(false)
 			;ret
 .endf
 
@@ -257,7 +258,10 @@ screen_erase_block:
 ; a - ram-disk activation command
 ; use:
 ; all
-
+//		IT IS NOT RECOMMENDED TO USE THESE MACROS
+//		BECAUSE OF THE RISK OF DATA CORRUPTION
+//		RAM_DISK_ON_BANK macro must not be used before calling a function!
+/*
 .macro COPY_TO_RAM_DISK(count)
 		.loop count
 			dcx h
@@ -273,7 +277,7 @@ screen_erase_block:
 			; store sp
 			lxi h, NULL
 			dad sp
-			shld @restore_sp+1
+			shld @restore__sp + 1
 			RAM_DISK_ON_BANK()
 @restoreTargetAddr:
 			lxi sp, TEMP_ADDR
@@ -290,10 +294,11 @@ screen_erase_block:
 			RAM_DISK_OFF()
 			;ret
 .endf
-
+*/
 
 ; Copy data (max 510) from the ram-disk to ram w/o blocking interruptions
 ; this macro is for checking if the length fits the range 1-510
+/*
 .macro COPY_FROM_RAM_DISK(length)
 		.if length > 510
 			.error "The length (" length ") is bigger than required (510)"
@@ -301,7 +306,7 @@ screen_erase_block:
 		mvi l, length/2
 		copy_from_ram_disk()
 .endmacro
-
+*/
 ; Copy data (max 510) from the ram-disk to ram w/o blocking interruptions
 ; input:
 ; h - ram-disk activation command
@@ -313,12 +318,16 @@ screen_erase_block:
 ; using stack ops to copy data adds 128 cc overhead
 ; replacing pop with mov_(2), inx_(2), adds 8 cc per byte overhead
 ; that said, copying with pop becomes efficient if a copy len > 16
+//		IT IS NOT RECOMMENDED TO USE THESE MACROS
+//		BECAUSE OF THE RISK OF DATA CORRUPTION
+//		RAM_DISK_ON_BANK macro must not be used before calling a function!
+/*
 .function copy_from_ram_disk()
 			; store sp
 			push h
 			lxi h, $0002
 			dad sp
-			shld restore_sp+1
+			shld restore__sp + 1
 			; copy unpacked data into the ram_disk
 			xchg
 			pop d
@@ -337,7 +346,7 @@ screen_erase_block:
 			jnz @loop
 			jmp restore_sp
 .endf
-
+*/
 
 ; adds the offset to the pointers in the array
 ; in:
@@ -346,6 +355,7 @@ screen_erase_block:
 ; c - the len of the array
 ; out:
 ; hl - points to the next byte after the array
+
 .function update_labels()
 @loop:
 			mov a, m
@@ -375,12 +385,16 @@ screen_erase_block:
 ; bc - data
 ; hl - data addr in the ram-disk
 ; cc = 148
+//		IT IS NOT RECOMMENDED TO USE THESE MACROS
+//		BECAUSE OF THE RISK OF DATA CORRUPTION
+//		RAM_DISK_ON_BANK macro must not be used before calling a function!
+/*
 get_word_from_ram_disk:
 			RAM_DISK_ON_BANK()
 			; store sp
 			lxi h, $0000
 			dad sp
-			shld @restore_sp+1
+			shld @restore__sp + 1
 			; copy unpacked data into the ram_disk
 			xchg
 			sphl
@@ -389,7 +403,7 @@ get_word_from_ram_disk:
 			lxi sp, TEMP_ADDR
 			RAM_DISK_OFF()
 			ret
-
+*/
 /*
 ; a special version of a func above for accessing addr $8000 and higher
 ; cc = 100
@@ -407,6 +421,7 @@ get_word_from_scr_ram_disk:
 ; Set the palette
 ; input: hl - the addr of the last item in the palette
 ; use: hl, b, a
+
 set_palette:
 			hlt
 set_palette_int:			; call it from an interruption routine
@@ -417,32 +432,35 @@ set_palette_int:			; call it from an interruption routine
 @loop:		mov	a, b
 			out	2
 			mov a, m
-			out $0c
+			out 0x0C
 			push psw
 			pop psw
 			push psw
 			pop psw
 			dcx h
 			dcr b
-			out $0c
+			out 0x0C
 
 			jp	@loop
 			ret
 
-/*
+
 ; Set palette copied from the ram-disk w/o blocking interruptions
 ; input:
 ; de - the addr of the first item in the palette
 ; a - ram-disk activation command
 ; use:
 ; hl, bc, a
-
+//		IT IS NOT RECOMMENDED TO USE THESE MACROS
+//		BECAUSE OF THE RISK OF DATA CORRUPTION
+//		RAM_DISK_ON_BANK macro must not be used before calling a function!
+/*
 set_palette_from_ram_disk:
 			hlt
 			; store sp
 			lxi h, $0000
 			dad sp
-			shld restore_sp+1
+			shld restore__sp + 1
 			; copy unpacked data into the ram_disk
 			xchg
 			RAM_DISK_ON_BANK()
@@ -481,13 +499,14 @@ set_palette_from_ram_disk:
 			jmp restore_sp
 */
 
-; Copy the pallete from a ram-disk, then request for using it
+; Copy the pallete, then request for using it
 ; in:
-; de - ram-disk palette addr
-; h - ram-disk activation command
+; hl - palette addr
+; uses: bc, de, hl, a
 .function copy_palette_request_update()
-			lxi b, palette
-			COPY_FROM_RAM_DISK(PALETTE_COLORS)
+			lxi d, palette
+			lxi b, PALETTE_COLORS
+			call mem_copy
 			lxi h, palette_update_request
 			mvi m, PALETTE_UPD_REQ_YES
 			;ret

@@ -33,6 +33,11 @@
 ; y++
 ; repeat for the next lines of the art data
 
+//		IT IS NOT RECOMMENDED TO USE
+//		BECAUSE OF THE RISK OF DATA CORRUPTION
+//		RAM_DISK_ON_BANK macro must not be used before calling a function!
+//		check the reqs of RAM_DISK_ON_BANK_NO_RESTORE before using it here
+/*
 draw_sprite_hit_vm:
 			; store SP
 			lxi h, 0
@@ -221,3 +226,4 @@ draw_sprite_hit_vm:
 			.endif			
 			mov m, a
 .endmacro
+*/

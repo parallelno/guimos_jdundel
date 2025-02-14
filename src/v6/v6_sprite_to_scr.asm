@@ -7,24 +7,28 @@
 ;		10 - 24pxs,
 ;		11 - 32pxs
 ; c - height
-
+//		IT IS NOT RECOMMENDED TO USE
+//		BECAUSE OF THE RISK OF DATA CORRUPTION
+//		RAM_DISK_ON_BANK macro must not be used before calling a function!
+//		check the reqs of RAM_DISK_ON_BANK_NO_RESTORE before using it here
+/*
 sprite_copy_to_scr_v:
 			; store sp
 			lxi h, 0
 			dad	sp
-			shld restore_sp + 1
+			shld restore__sp + 1
 
 			; Y -= 1 because we start copying bytes with dec Y
 			inr e
-/*
-			; w=max(h, SPRITE_COPY_TO_SCR_H_MAX)
-			mvi a, SPRITE_COPY_TO_SCR_W_PACKED_MAX
-			cmp b
-			jnc @skipMaxW
-@maxW:
-			mvi b, SPRITE_COPY_TO_SCR_W_PACKED_MAX
-@skipMaxW:
-*/
+
+// 			; w=max(h, SPRITE_COPY_TO_SCR_H_MAX)
+// 			mvi a, SPRITE_COPY_TO_SCR_W_PACKED_MAX
+// 			cmp b
+// 			jnc @skipMaxW
+// @maxW:
+// 			mvi b, SPRITE_COPY_TO_SCR_W_PACKED_MAX
+// @skipMaxW:
+
 			; h=max(h, SPRITE_COPY_TO_SCR_H_MAX)
 			mov a, c
 			cpi SPRITE_COPY_TO_SCR_H_MAX
@@ -161,3 +165,4 @@ sprite_copy_to_scr_v:
 			jp @next_column
 			jmp restore_sp
 .endmacro
+*/

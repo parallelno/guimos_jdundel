@@ -12,7 +12,7 @@
 ;=======================================================
 
 
-v6_os_err_file_open:		.byte "Error opening file: $"						
+v6_os_err_file_open:		.byte "Error opening file: $"
 v6_os_err_hardware:			.byte "Hardware error\n$"
 v6_os_err_invalid_fcb:		.byte "Invalid FCB\n$"
 v6_os_msg_exit:				.byte "Exit the game.\n$"
@@ -37,12 +37,9 @@ donemsg:			.byte "Done\n$"
 ;=======================================================
 ; OS init. Should be called first in the application
 ; in:
-;	hl - reboot_addr
-;	de - interruption_addr
+;	hl - interruption_addr
 ;=======================================================
 v6_os_init:
-			shld @set_reboot+1
-			xchg
 			shld @set_int+1
 
 			; take from the stack the return addr
@@ -68,16 +65,12 @@ v6_os_init:
 			lda RDS_DISK
 			sta os_disk
 
-			RAM_DISK_OFF(RAM_DISK0_PORT)	; disable the ram-disk 0 because the OS uses it
-			RAM_DISK_OFF()					; disable the ram-disk 1 because the game uses it
-			mvi a, OPCODE_JMP
-			sta RESTART_ADDR
-			sta INT_ADDR
+			RAM_DISK_OFF_INT(true, RAM_DISK0_PORT) ; disable the ram-disk 0 because the OS uses it
+			RAM_DISK_OFF_INT() ; disable ram-disk used by the game
 
-			; set the reboot & interrupt routine vectors
-@set_reboot:			
-			lxi h, TEMP_ADDR
-			shld RESTART_ADDR + 1
+			; set the interrupt routine vector
+			mvi a, OPCODE_JMP
+			sta INT_ADDR
 @set_int:
 			lxi h, TEMP_ADDR
 			shld INT_ADDR + 1
@@ -96,13 +89,13 @@ v6_os_init:
 		.if odd_len
 			.error "file length must be even. filename_ptr = ", filename_ptr
 		.endif
-			
+
 			lxi h, dest
 		recs .var file_len>>7
 		last_rec = file_len & (CMP_DMA_BUFFER_LEN - 1)
 	.if last_rec > 0
 		recs = recs + 1
-	.endif	
+	.endif
 
 			lxi b, (recs<<8) | last_rec
 			lxi d, filename_ptr
@@ -114,7 +107,7 @@ v6_os_init:
 ; de - filename ptr
 ; b - the num of full records (128 byte long)
 ; c - the len of the last record (<128)
-; a - ram disk activation command
+; a - ram-disk activation command
 ; out:
 ; os_file_data_ptr - points to next byte after loaded file
 ; the len must be even
@@ -126,7 +119,7 @@ load_file_next:
 			sta @rec_num
 			mov a, c
 			sta @restore_last_rec_len+1
-			
+
 			xchg
 			call set_file_name
 
@@ -334,7 +327,7 @@ v6_os_error_hardware:
 v6_os_error_invalid_fcb:
 			call v6_os_exit_prep
 			SYS_CALL_D(CPM_SUB_PRINT, v6_os_err_invalid_fcb)
-			jmp CPM_EXIT			
+			jmp CPM_EXIT
 
 ;=======================================================
 ; Return to OS. Should be called last in the application

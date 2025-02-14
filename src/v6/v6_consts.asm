@@ -100,7 +100,7 @@ RAM_DISK5_PORT = 0x41
 RAM_DISK6_PORT = 0x80
 RAM_DISK7_PORT = 0x81
 
-RAM_DISK_PORT = RAM_DISK1_PORT ; ram-disk1 by default because the ram-disk0 is reserved by the OS
+RAM_DISK_PORT = RAM_DISK1_PORT ; working ram-disk used by the game
 
 RAM_DISK_OFF_CMD = 0
 RAM_DISK_S0 = %00010000

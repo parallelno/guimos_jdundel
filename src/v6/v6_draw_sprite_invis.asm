@@ -7,7 +7,11 @@
 ; bc	sprite data
 ; de	screen addr
 ; use: a, hl, sp
-
+//		IT IS NOT RECOMMENDED TO USE
+//		BECAUSE OF THE RISK OF DATA CORRUPTION
+//		RAM_DISK_ON_BANK macro must not be used before calling a function!
+//		check the reqs of RAM_DISK_ON_BANK_NO_RESTORE before using it here
+/*
 draw_sprite_invis_vm:
 			; store SP
 			lxi h, 0
@@ -33,3 +37,4 @@ draw_sprite_invis_vm:
 			xchg
 			shld draw_sprite_width_height_ram_disk+1
 			jmp draw_sprite_ret_ram_disk
+*/

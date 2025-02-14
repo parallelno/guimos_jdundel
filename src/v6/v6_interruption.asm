@@ -30,15 +30,13 @@ interruption:
 			; restore two bytes that were corrupted by this interruption call
 			push b
 
-			; dismount ram disks to not damage the ram-disk data with the interruption stack
-			RAM_DISK_OFF_NO_RESTORE()
+			; dismount ram disks to not corrupt the ram-disk data with the interruption stack
+			RAM_DISK_OFF_INT()
 			lxi sp, STACK_INTERRUPTION_ADDR-2
 			push b
 			push d
 
-			// TODO: fix music
-			;CALL_RAM_DISK_FUNC_NO_RESTORE(__sound_update, __RAM_DISK_S_SOUND | __RAM_DISK_M_SOUND | RAM_DISK_M_8F)
-			CALL_RAM_DISK_FUNC_NO_RESTORE(v6_sound_update, 0)
+			call v6_sound_update
 
 ;======================================================================================================================			
 ;
