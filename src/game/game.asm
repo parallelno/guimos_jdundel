@@ -24,17 +24,14 @@ game_init:
 			load_permanent()
 			load_level0()
 
-/*
-FIX RAM_DISK_ON/OFF in the commented funcs below
+
 			;======================
 			; LV0 tile 0
 			;======================
 			lxi d, 0x80A0
 			lxi b, _lv0_tile0 + LV0_GFX_ADDR
-			;RAM_DISK_ON(RAM_DISK_S_LV0_GFX | RAM_DISK_M_BACKBUFF | RAM_DISK_M_8F)
-			RAM_DISK_ON(RAM_DISK_S_LV0_GFX | 0 | 0)
+			mvi a, RAM_DISK_S_LV0_GFX
 			call draw_tile_16x16
-			RAM_DISK_OFF()
 
 			;======================
 			; SONG01
@@ -42,8 +39,8 @@ FIX RAM_DISK_ON/OFF in the commented funcs below
 			
 			lxi d, SONG01_ADDR
 			lxi h, SONG01_ay_reg_data_ptrs
-			;call v6_gc_init_song
-			;call v6_gc_start
+			call v6_gc_init_song
+			call v6_gc_start
 
 			;======================
 			; FONT
@@ -55,10 +52,11 @@ FIX RAM_DISK_ON/OFF in the commented funcs below
 			update_labels()
 
 			; draw a test text
-			lxi h, __text_main_menu_settings
+			lxi d, __text_main_menu_settings
 			lxi b, (0)<<8 | 100
-			CALL_RAM_DISK_FUNC(text_ex_scr1, 0)
-*/
+			lxi h, >SCR_BUFF1_ADDR
+			draw_text_ex()
+
 			ei
 
 			;======================

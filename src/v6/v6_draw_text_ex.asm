@@ -1,7 +1,5 @@
 .include "src/v6/v6_draw_text_ex_consts.asm"
 
-;__RAM_DISK_M_TEXT_EX = RAM_DISK_M | RAM_DISK_M_89
-__RAM_DISK_M_TEXT_EX = 0 ; it's zero because this func code is in the main ram
 LINE_SPACING_DEFAULT = -12
 PARAG_SPACING_DEFAULT = -24
 
@@ -29,36 +27,35 @@ PARAG_SPACING_DEFAULT = -24
 
 ; draw a text with kerning. blend func - OR
 ; font gfx can be on the ram-disk. 
-; the text data should be in the main memory or in the ram-disk 
-; reachable by non-stack operations
+; the text data should be reachable by non-stack
+; operations.
 ; char_id = 0 is EOD
 ; char_id = _LINE_BREAK_ is a new line
 ; in:
-; hl - text addr
+; de - text addr
 ; bc - pos_xy
-; call ex. CALL_RAM_DISK_FUNC(text_ex_scr1, __RAM_DISK_S_FONT)
-text_ex_scr3:
-			mvi a, >SCR_BUFF3_ADDR
-			jmp text_ex_draw
-text_ex_scr2:
-			mvi a, >SCR_BUFF2_ADDR
-			jmp text_ex_draw
-text_ex_scr1:
-			mvi a, >SCR_BUFF1_ADDR
-; draw a text with kerning. blend func - OR
-; a - scr buff high addr, ex: >SCR_BUFF0_ADDR
-text_ex_draw:
+; h - text gfx data ram-disk activation command
+; l - SCR_BUFF3_ADDR or SCR_BUFF2_ADDR or SCR_BUFF1_ADDR
+
+.function draw_text_ex()
+.breakpoint			
+			mov a, l
 			sta @scr_buff_addr+1
-			; store pox_x
+			mov a, h
+			RAM_DISK_ON_BANK()
+
+			xchg
+			; hl - text addr
+			; store pos_x
 			mov a, b
 			sta text_ex_restore_pos_x + 1
 @next_char:
 			; get a char code
 			mov e, m
-			; return if its code 0
+			; return if it's 0
 			A_TO_ZERO(NULL)
 			ora e
-			rz
+			jz restore_sp_ret
 			inx h
 			; a - char_code
 			; check if it is the end of the line
@@ -69,8 +66,12 @@ text_ex_draw:
 			jz text_ex_parag_spacing
 
 			mvi d, 0
-			push h ; preserve the text data ptr
-			push b ; preserve pos_xy
+			shld @restore_text_addr + 1  ; preserve the text data ptr
+			; preserve pos_xy
+			mov a, c
+			sta @restore_pos_xy + 1
+			mov a, b
+			sta @restore_pos_xy + 2
 
 			; get a char gfx pptr
 			xchg
@@ -83,10 +84,6 @@ text_ex_draw:
 			inx h
 			mov d, m
 
-			; preserve SP
-			lxi h, 0
-			dad sp
-			shld @restore_sp + 1
 			xchg
 			; hl points to a char gfx
 			sphl
@@ -119,7 +116,7 @@ text_ex_draw:
 			ana d
 			RRC_(3)
 @scr_buff_addr:
-			adi TEMP_ADDR;>SCR_BUFF1_ADDR
+			adi TEMP_BYTE	; for ex. >SCR_BUFF1_ADDR
 			mov d, a
 
 			; draw a char
@@ -164,18 +161,22 @@ text_ex_draw:
 @advance_pos:
 			; bc - a pos offset
 @restore_sp:
-			lxi sp, TEMP_ADDR
-			pop h ; restore pos_xy
+			lxi sp, 0x0002 ; safe SP addr
+@restore_pos_xy:
+			lxi h, TEMP_WORD ; restore pos_xy
 			; advance a pos_xy to the next char
 			dad b
 			mov b, h
 			mov c, l
-			pop h ; retore text addr 
+@restore_text_addr:
+			lxi h, TEMP_ADDR ; retore text addr
+
 			jmp @next_char
 @skip_dad_ptrs:
 			.word @shift0, @shift1,	@shift2, @shift3, @shift4, @shift5, @shift6, @shift7
 
 text_ex_next_char: = @next_char
+
 
 ; move a position to the next paragraph
 text_ex_parag_spacing:
@@ -191,3 +192,4 @@ text_ex_line_spacing:
 text_ex_restore_pos_x:
 			mvi b, TEMP_BYTE
 			jmp text_ex_next_char
+.endf

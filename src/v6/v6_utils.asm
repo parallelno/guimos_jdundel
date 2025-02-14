@@ -2,7 +2,7 @@
 
 ; shared chunk of code to restore SP
 ; and dismount the ram-disk
-restore_sp_:
+restore_sp_ret:
 			RAM_DISK_OFF()
 			ret
 
@@ -83,7 +83,7 @@ mem_erase_sp:
 			dcx d
 			cmp d
 			jnz @loop
-			jmp restore_sp_
+			jmp restore_sp_ret
 mem_erase_sp_filler = @filler
 
 ; fill a memory buffer with a word using stack operations

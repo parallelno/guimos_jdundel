@@ -3,6 +3,7 @@
 ; input:
 ; bc - a tile gfx ptr
 ; de - screen addr
+; a - ram-disk activation command
 ; use: a, hl, sp
 
 ; tile gfx format:
@@ -15,10 +16,7 @@
 ; SCR_BUFF3_ADDR : same
 
 draw_tile_16x16:
-			; store sp
-			lxi h, $0000
-			dad sp
-			shld @restore_sp + 1
+			RAM_DISK_ON_BANK()
 			; sp = BC
 			mov h, b
 			mov l, c
@@ -54,9 +52,7 @@ draw_tile_16x16:
 
 			dcr d
 			jnz @loop
-@restore_sp:		
-			lxi sp, TEMP_ADDR
-			ret
+			jmp restore_sp_ret
 draw_tile_16x16_end:
 			
 			
@@ -103,86 +99,6 @@ draw_tile_16x16_end:
 			mov m, a 
 			dcr h		
 .endmacro
-/*
-;----------------------------------------------------------------
-; draw a tile (16x16 pixels) skipping SCR_BUFF0_ADDR
-; input:
-; bc - a tile gfx ptr
-; de - screen addr
-; use: a, hl, sp
-
-; tile gfx format:
-; .byte - a bit mask xxxxECA8, where the "8" bit says if a sprite needs to be drawn in the $8000 buffer, the "A" bit in charge of $A000 buffer etc.
-; .byte 4 - needs for a counter
-; screen format
-; SCR_BUFF0_ADDR : draw 16 bytes down, step one byte right, draw 16 bytes up.
-; SCR_BUFF1_ADDR : same
-; SCR_BUFF2_ADDR : same
-; SCR_BUFF3_ADDR : same
-
-draw_tile_16x16_back_buff:
-			; store sp
-			lxi h, $0000
-			dad sp
-			shld @restore__sp + 1
-			; sp = BC
-			mov h, b
-			mov l, c
-			sphl
-			; get a mask and a counter
-			pop b
-			xchg
-			mov e, c
-			mov d, b
-
-; HL - screen buff addr
-; SP - sprite data
-; E - contains a bit mask xxxxECA8
-;   "8" bit - draw in $8000 buffer
-;   "A" bit - draw in $A000 buffer etc.
-; D - counter of screen buffers
-
-@loop:
-			mvi a, >SCR_BUFF1_ADDR
-			cmp h
-			jnc @skip_buf
-
-			mov a, e
-			rrc
-			mov e, a
-			jnc @erase_tile_buf
-
-			DRAWTILE16x16_DRAW_BUF()
-			jmp @next_buf
-
-@erase_tile_buf:
-			DRAWTILE16x16_ERASE_BUF()
-@next_buf:
-			; move X to the next scr buff
-			mvi a, $20
-			add h
-			mov h, a
-
-			dcr d
-			jnz @loop
-@restore_sp:		
-			lxi sp, TEMP_ADDR
-			ret
-
-@skip_buf:
-			mov a, e
-			rrc
-			mov e, a
-			jnc @next_buf
-			DRAWTILE16x16_DRAW_BUF_SKIP()
-			jmp @next_buf
-
-.macro DRAWTILE16x16_DRAW_BUF_SKIP()
-		.loop 16
-			pop b
-		.endloop
-.endmacro
-*/
 
 ; draws a tile into the screen, a backbuffer, a backbuffer2
 ; in:

@@ -59,7 +59,6 @@ draw_sprite_width_height_ram_disk:
 ; repeat for the next lines of the art data
 
 draw_sprite_vm:
-			; enable ram-disk mapping
 			RAM_DISK_ON_BANK()
 			; sp = BC
 			mov	h, b
