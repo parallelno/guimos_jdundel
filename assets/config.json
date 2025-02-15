@@ -17,10 +17,9 @@
 			"level_gfx" : "scripts/export/export_level_gfx.py",
 			"music" : "scripts/export/export_music.py",
 			"font" : "scripts/export/export_font.py",
-			"font_rd" : "scripts/export/export_font.py",
 			"image" : "scripts/export/export_image.py",
-			"tiled_img_data" : "scripts/export/export_tiled_img.py",
-			"tiled_img_gfx" : "scripts/export/export_tiled_img.py",
+			"tiled_img_data" : "scripts/export/export_tiled_img_data.py",
+			"tiled_img_gfx" : "scripts/export/export_tiled_img_gfx.py",
 			"text" : "scripts/export/export_text.py"
 		},
 		"scripts" : [
@@ -75,7 +74,7 @@
 		{
 			"ram" : [],
 			"ram-disk" : [
-				"assets/sprites/hero_l.json",				
+				"assets/sprites/hero_l.json",
 				"assets/levels/lv0_gfx.json",
 				"assets/sprites/burner.json",
 				"assets/sprites/sword.json",				
@@ -85,11 +84,12 @@
 				"assets/sprites/skeleton.json",
 				"assets/sprites/scythe.json",				
 				"assets/sprites/snowflake.json",
-				
 				"assets/sprites/tnt.json",
 				"assets/sprites/vfx4.json",
 				"assets/levels/lv0_data.json",				
-				"assets/sprites/bomb.json"
+				"assets/sprites/bomb.json",
+				"assets/tiled_img/ti0_data.json",
+				"assets/tiled_img/ti0_gfx.json"
 			]
 		}
 	}

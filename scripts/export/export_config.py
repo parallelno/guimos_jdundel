@@ -9,6 +9,8 @@ from export import export_level_data
 from export import export_level_gfx
 from export import export_sprite
 from export import export_fdd
+from export import export_tiled_img_data
+from export import export_tiled_img_gfx
 
 #==============================================================================
 def export(config_j_path):
@@ -109,7 +111,19 @@ def export(config_j_path):
 				export_sprite.export_if_updated(
 						asset_j_path,
 						asm_meta_path, asm_data_path, bin_path,
-						force_export)				
+						force_export)
+				
+			case build.ASSET_TYPE_TILED_IMG_DATA:
+				export_tiled_img_data.export_if_updated(
+						asset_j_path,
+						asm_meta_path, asm_data_path, bin_path,
+						force_export)
+				
+			case build.ASSET_TYPE_TILED_IMG_GFX:
+				export_tiled_img_gfx.export_if_updated(
+						asset_j_path,
+						asm_meta_path, asm_data_path, bin_path,
+						force_export)
 
 		fdd_files[asset_j_path] = {
 			"asm_meta_path": asm_meta_path,

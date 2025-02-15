@@ -10,10 +10,13 @@ import utils.build as build
 
 def export_if_updated(asset_j_path, asm_meta_path, asm_data_path, bin_path,
 		force_export):
+	source_name = common.path_to_basename(asset_j_path)
 
-	if force_export or level_utils.is_source_updated(asset_j_path, build.ASSET_TYPE_LEVEL_GFX):
+	if (force_export or 
+		level_utils.is_source_updated(asset_j_path, build.ASSET_TYPE_LEVEL_DATA)):
+		
 		export_asm(asset_j_path, asm_meta_path, asm_data_path, bin_path)
-		print(f"export_level_gfx: {asset_j_path} got exported.")
+		print(f"export_tiled_img_gfx: {asset_j_path} got exported.")
 
 def export_asm(asset_j_path, asm_meta_path, asm_data_path, bin_path):
 

@@ -37,8 +37,7 @@ PARAG_SPACING_DEFAULT = -24
 ; h - text gfx data ram-disk activation command
 ; l - SCR_BUFF3_ADDR or SCR_BUFF2_ADDR or SCR_BUFF1_ADDR
 
-.function draw_text_ex()
-.breakpoint			
+.function draw_text_ex()	
 			mov a, l
 			sta @scr_buff_addr+1
 			mov a, h

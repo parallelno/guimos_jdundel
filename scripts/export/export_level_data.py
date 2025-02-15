@@ -1,5 +1,4 @@
 import os
-from PIL import Image
 from pathlib import Path
 import json
 
@@ -8,9 +7,11 @@ import utils.common as common
 import utils.build as build
 
 def export_if_updated(asset_j_path, asm_meta_path, asm_data_path, bin_path,
-		force_export): 
+		force_export):
 
-	if force_export or level_utils.is_source_updated(asset_j_path, build.ASSET_TYPE_LEVEL_DATA):
+	if (force_export or
+		level_utils.is_source_updated(asset_j_path, build.ASSET_TYPE_LEVEL_DATA)):
+
 		export_asm(asset_j_path, asm_meta_path, asm_data_path, bin_path)
 		print(f"export_level_data: {asset_j_path} got exported.")
 
@@ -26,7 +27,7 @@ def export_asm(asset_j_path, asm_meta_path, asm_data_path, bin_path):
 	asm_ram_disk_data, data_ptrs, \
 	resources, resource_max_tiledata, \
 	containers, container_max_tiledata = data_to_asm(level_j_path)
-	
+
 	asm_ram_data = data_ptrs_to_asm(level_j_path, data_ptrs)
 	asm_ram_data += get_resources_inst_data(level_j_path, resources, resource_max_tiledata)
 	asm_ram_data += get_containers_inst_data(level_j_path, containers, container_max_tiledata)
@@ -37,7 +38,7 @@ def export_asm(asset_j_path, asm_meta_path, asm_data_path, bin_path):
 		os.mkdir(asm_data_dir)
 	with open(asm_data_path, "w") as file:
 		file.write(asm_ram_disk_data)
-	
+
 	# compile and save the gfx bin files
 	build.export_fdd_file(asm_meta_path, asm_data_path, bin_path, asm_ram_data)
 
@@ -48,7 +49,6 @@ def data_to_asm(level_j_path):
 	with open(level_j_path, "rb") as file:
 		level_j = json.load(file)
 
-	level_name = common.path_to_basename(level_j_path)
 	level_dir = str(Path(level_j_path).parent) + "/"
 
 	asm = ""
@@ -72,24 +72,24 @@ def data_to_asm(level_j_path):
 	# per room data
 	for room_id, room_j in enumerate(rooms_j):
 		room_path = room_paths[room_id]['path']
-		
+
 		# clamp tiledata values into the range
 		tiledatas_unclamped = room_j["layers"][1]["data"]
 		tiledatas = [x % 256 for x in tiledatas_unclamped]
-		
+
 		width = room_j["width"]
 		height = room_j["height"]
-		
+
 		asm_room_data = level_utils.room_tiles_to_asm(room_j["layers"][0], remap_idxs)
 		asm_room_data += level_utils.room_tiles_data_to_asm(tiledatas, width, height, room_path)
-		
+
 		room_data_label = level_utils.get_room_data_label(room_path)
 		compressed_room_asm, data_len = common.asm_compress_to_asm(asm_room_data)
 
 		asm += "\n			.word 0 ; safety pair of bytes for reading by POP B\n"
 		asm += "; " + room_path + "\n"
 		asm += room_data_label + ":\n"
-		asm += compressed_room_asm 
+		asm += compressed_room_asm
 
 		room_ptrs[room_data_label] = room_addr_offset
 		room_addr_offset += data_len
@@ -112,18 +112,18 @@ def data_to_asm(level_j_path):
 			if level_utils.TILEDATA_CONTAINER <= tiledata < level_utils.TILEDATA_CONTAINER + level_utils.CONTAINERS_UNIQUE_MAX:
 				if tiledata not in containers:
 					containers[tiledata] = []
-				containers[tiledata].append((room_id, tile_idx))		
+				containers[tiledata].append((room_id, tile_idx))
 				if container_max_tiledata < tiledata:
 					container_max_tiledata = tiledata
 
 			if level_utils.TILEDATA_BREAKABLES <= tiledata < level_utils.TILEDATA_BREAKABLES + level_utils.BREAKABLES_UNIQUE_MAX:
-				breakables_count += 1	
+				breakables_count += 1
 				if breakables_count > level_utils.BREAKABLES_MAX:
 					build.exit_error(f"ERROR: {level_j_path} has breakables amount > {level_utils.BREAKABLES_MAX}")
-	return asm, room_ptrs, resources, resource_max_tiledata, containers, container_max_tiledata	
+	return asm, room_ptrs, resources, resource_max_tiledata, containers, container_max_tiledata
 
 def get_resources_inst_data(level_j_path, resources, resource_max_tiledata):
-	
+
 	asm = ""
 	level_name = common.path_to_basename(level_j_path)
 	# make resources_inst_data_ptrs data
@@ -131,7 +131,7 @@ def get_resources_inst_data(level_j_path, resources, resource_max_tiledata):
 	if len(resources) > 0:
 		asm += "			.byte "
 
-		# add resource tiledata which is not present in the level to 
+		# add resource tiledata which is not present in the level to
 		# make resources_inst_data_ptrs array contain contiguous data
 		# for example: all the rooms contain only res_id=1 and res_id=3
 		# to make a proper data we need to add null_ptrs for res_id=0 and res_id=2
@@ -141,7 +141,7 @@ def get_resources_inst_data(level_j_path, resources, resource_max_tiledata):
 				resources[tiledata] = []
 
 		resources_sorted = dict(sorted(resources.items()))
-		
+
 		ptr = 0
 		resources_inst_data_ptrs_len = len(resources_sorted) + 1
 
@@ -149,13 +149,13 @@ def get_resources_inst_data(level_j_path, resources, resource_max_tiledata):
 			inst_len = len(resources_sorted[tiledata]) * level_utils.WORD_LEN
 			if len(resources_sorted[tiledata]) > 0:
 				asm += str(ptr + resources_inst_data_ptrs_len) + ", "
-			else:     
-				asm += str(ptr + inst_len + resources_inst_data_ptrs_len) + ", "				
-			ptr += inst_len			
-				
+			else:
+				asm += str(ptr + inst_len + resources_inst_data_ptrs_len) + ", "
+			ptr += inst_len
+
 		asm += str(ptr + resources_inst_data_ptrs_len) + ", "
 
-		# make resources_inst_data data 
+		# make resources_inst_data data
 		asm += f"\n_{level_name}_resources_inst_data:\n"
 		for i, tiledata in enumerate(resources_sorted):
 			if len(resources_sorted[tiledata]) > 0:
@@ -164,23 +164,23 @@ def get_resources_inst_data(level_j_path, resources, resource_max_tiledata):
 					asm += f"{tile_idx}, {room_id}, "
 				asm += "\n"
 
-			
+
 		if 	ptr + resources_inst_data_ptrs_len > 256:
 			build.exit_error(f"ERROR: {level_j_path} has resource instance data > {level_utils.RESOURCES_LEN} bytes")
 
 	return asm
 
 def get_containers_inst_data(level_j_path, containers, container_max_tiledata):
-	
+
 	asm = ""
 	level_name = common.path_to_basename(level_j_path)
 
-	# make containers_inst_data_ptrs data 
+	# make containers_inst_data_ptrs data
 	asm += f"\n_{level_name}_containers_inst_data_ptrs:\n"
-	if len(containers) > 0:		
+	if len(containers) > 0:
 		asm += "			.byte "
 
-		# add container tiledata which is not present in the level 
+		# add container tiledata which is not present in the level
 		# to make containers_inst_data_ptrs array contain contiguous data
 		# for example: all the rooms contain only container_id=1 and container_id=3
 		# to make a proper data we need to add null_ptrs for container_id=0 and container_id=2
@@ -189,7 +189,7 @@ def get_containers_inst_data(level_j_path, containers, container_max_tiledata):
 			if tiledata not in containers:
 				containers[tiledata] = []
 
-		containers_sorted = dict(sorted(containers.items())) 
+		containers_sorted = dict(sorted(containers.items()))
 
 		ptr = 0
 		containers_inst_data_ptrs_len = len(containers_sorted) + 1
@@ -198,11 +198,11 @@ def get_containers_inst_data(level_j_path, containers, container_max_tiledata):
 			if len(containers_sorted[tiledata]) > 0:
 				asm += str(ptr + containers_inst_data_ptrs_len) + ", "
 			else:
-				asm += str(ptr + inst_len + containers_inst_data_ptrs_len) + ", "			
+				asm += str(ptr + inst_len + containers_inst_data_ptrs_len) + ", "
 			ptr += inst_len
 		asm += str(ptr + containers_inst_data_ptrs_len) + ", "
 
-		# make containers_inst_data data 
+		# make containers_inst_data data
 		asm += f"\n_{level_name}_containers_inst_data:\n"
 		for i, tiledata in enumerate(containers_sorted):
 			if len(containers_sorted[tiledata]) > 0:
@@ -210,7 +210,7 @@ def get_containers_inst_data(level_j_path, containers, container_max_tiledata):
 				for room_id, tile_idx in containers_sorted[tiledata]:
 					asm += f"{tile_idx}, {room_id}, "
 				asm += "\n"
-			
+
 		if 	ptr + containers_inst_data_ptrs_len > 256:
 			build.exit_error(f"ERROR: {level_j_path} has container instance data > {level_utils.CONTAINERS_LEN} bytes")
 
@@ -218,7 +218,7 @@ def get_containers_inst_data(level_j_path, containers, container_max_tiledata):
 
 
 def data_ptrs_to_asm(level_j_path, data_ptrs):
-	
+
 	with open(level_j_path, "rb") as file:
 		level_j = json.load(file)
 
