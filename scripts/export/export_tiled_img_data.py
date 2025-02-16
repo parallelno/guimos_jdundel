@@ -7,12 +7,12 @@ import utils.common as common
 import utils.build as build
 
 
-def export_data_if_updated(asset_j_path, asm_meta_path, asm_data_path, bin_path,
+def export_if_updated(asset_j_path, asm_meta_path, asm_data_path, bin_path,
 		force_export):
 	source_name = common.path_to_basename(asset_j_path)
 
 	if (force_export or
-		tiled_img_utils.is_source_updated(asset_j_path, build.ASSET_TYPE_LEVEL_DATA)):
+		tiled_img_utils.is_source_updated(asset_j_path, build.ASSET_TYPE_TILED_IMG_DATA)):
 
 		export_asm(asset_j_path, asm_meta_path, asm_data_path, bin_path)
 		print(f"export_tiled_img_data: {asset_j_path} got exported.")
@@ -28,7 +28,7 @@ def export_asm(asset_j_path, asm_meta_path, asm_data_path, bin_path):
 
 	#==========================
 	asm_ram_disk_data, data_ptrs, = data_to_asm(tiled_img_j_path)
-	asm_ram_data = data_ptrs_to_asm(tiled_img_j_path, data_ptrs)
+	asm_ram_data = data_ptrs_to_asm(data_ptrs)
 
 	# save the asm gfx
 	asm_data_dir = str(Path(asm_data_path).parent) + "/"
@@ -42,6 +42,17 @@ def export_asm(asset_j_path, asm_meta_path, asm_data_path, bin_path):
 
 	return True
 
+def data_ptrs_to_asm(data_ptrs):
+
+	asm = ""
+
+	# list of labels and local addresses
+	for label, addr in data_ptrs.items():
+		asm += f"{label} = {addr}\n"
+	asm += "\n"
+
+	return asm
+
 def data_to_asm(tiled_img_j_path):
 
 	with open(tiled_img_j_path, "rb") as file:
@@ -51,20 +62,17 @@ def data_to_asm(tiled_img_j_path):
 	tiled_img_dir = str(Path(tiled_img_j_path).parent) + "/"
 
 	asm = ""
+	img_idxs_ptrs = {}
+	img_idxs_addr_offset = 2 # added safety pair of bytes for reading by POP B
 
+	# load the tiled file
 	tiled_file_path = tiled_img_dir + tiled_img_j['path']
 	with open(tiled_file_path, "rb") as file:
 		tiled_file_j = json.load(file)
 
-	asm += "TILED_IMG_SCR_BUFFS = 4\n"
-	asm += "TILED_IMG_TILE_H = 8\n"
-	asm += "TILE_IMG_TILE_LEN = TILED_IMG_TILE_H * TILED_IMG_SCR_BUFFS + 2 ; 8*4 bytes + a couple of safety bytes\n"
-	asm += "\n"
-
-
+	
 	# make a tile index remap dictionary, to have the first idx = 0
 	remap_idxs = tiled_img_utils.remap_indices(tiled_file_j)
-
 
 	for layer in tiled_file_j["layers"]:
 		layer_name = layer["name"]
@@ -121,11 +129,22 @@ def data_to_asm(tiled_img_j_path):
 		tiles_h = tile_last_y - tile_first_y + 1
 
 		tiled_img_asm, tiled_img_len = tiled_img_utils.tile_idxs_to_asm(
-			source_name, idxs, pos_x, pos_y, tiles_w, tiles_h, label_name )
+				label_name, idxs, pos_x, pos_y, tiles_w, tiles_h)
 		asm += tiled_img_asm
+
+		# add the tiled img local ptr		
+		img_idxs_ptrs[label_name] = img_idxs_addr_offset
+		img_idxs_addr_offset += tiled_img_len
+		img_idxs_addr_offset += 2 # added safety pair of bytes for reading by POP B
+		
+		# add the tiled img length
+		# idxs_data_copy_len represents how many pairs of bytes 
+		# must to be copied by copy_from_ram_disk asm func
+		idxs_data_copy_len = tiled_img_len // 2 + tiled_img_len % 2
+		asm += f"{label_name.upper()}_COPY_LEN = {idxs_data_copy_len}\n"
 
 		# check if the length of the image fits the requirements
 		if tiled_img_len > tiled_img_utils.TILED_IMG_IDXS_LEN_MAX:
 			build.exit_error(f'export_tiled_img ERROR: tiled image {layer_name} > "{tiled_img_utils.TILED_IMG_IDXS_LEN_MAX}", path: {tiled_img_j_path}')
 
-	return asm, room_ptrs
+	return asm, img_idxs_ptrs

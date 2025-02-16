@@ -78,18 +78,20 @@
 				"assets/levels/lv0_gfx.json",
 				"assets/sprites/burner.json",
 				"assets/sprites/sword.json",				
-				"assets/sprites/vfx.json",				
+				"assets/sprites/vfx.json",
+				"assets/sprites/snowflake.json",
+				"assets/tiled_imgs/ti0_data.json",
+
 				"assets/sprites/hero_r.json",
 				"assets/sprites/knight.json",
 				"assets/sprites/skeleton.json",
-				"assets/sprites/scythe.json",				
-				"assets/sprites/snowflake.json",
 				"assets/sprites/tnt.json",
+				"assets/sprites/bomb.json",
+
+				"assets/sprites/scythe.json",				
 				"assets/sprites/vfx4.json",
 				"assets/levels/lv0_data.json",				
-				"assets/sprites/bomb.json",
-				"assets/tiled_img/ti0_data.json",
-				"assets/tiled_img/ti0_gfx.json"
+				"assets/tiled_imgs/ti0_gfx.json"
 			]
 		}
 	}

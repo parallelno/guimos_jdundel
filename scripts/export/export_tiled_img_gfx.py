@@ -3,42 +3,59 @@ from PIL import Image
 from pathlib import Path
 import json
 
-import export.level_utils as level_utils
+import export.tiled_img_utils as tiled_img_utils
 import utils.common as common
-import utils.common as common_gfx
+import utils.common_gfx as common_gfx
 import utils.build as build
 
 
-def export_gfx_if_updated(source_path, generated_dir, force_export):
-	source_name = common.path_to_basename(source_path)
+def export_if_updated(asset_j_path, asm_meta_path, asm_data_path, bin_path,
+		force_export):
+	source_name = common.path_to_basename(asset_j_path)
 
-	export_paths = {"ram_disk" : generated_dir + source_name + "_gfx" + build.EXT_ASM }
+	if (force_export or
+		tiled_img_utils.is_source_updated(asset_j_path, build.ASSET_TYPE_TILED_IMG_DATA)):
 
-	if force_export or is_source_updated(source_path):
-		export_gfx( source_path, export_paths["ram_disk"])
-			
-		print(f"export_level: {source_path} got exported.")		
-		return True, export_paths
-	else:
-		return False, export_paths
+		export_asm(asset_j_path, asm_meta_path, asm_data_path, bin_path)
+		print(f"export_tiled_img_gfx: {asset_j_path} got exported.")
 
-def export_gfx(source_j_path, export_gfx_path):
-	with open(source_j_path, "rb") as file:
+
+def export_asm(asset_j_path, asm_meta_path, asm_data_path, bin_path):
+
+	with open(asset_j_path, "rb") as file:
+		asset_j = json.load(file)
+
+	asset_dir = str(Path(asset_j_path).parent) + "/"
+	tiled_img_j_path = asset_dir + asset_j["path_tiled_img"]
+
+	#==========================
+	asm_ram_disk_data = data_to_asm(tiled_img_j_path)
+
+	# save the asm gfx
+	asm_data_dir = str(Path(asm_data_path).parent) + "/"
+	if not os.path.exists(asm_data_dir):
+		os.mkdir(asm_data_dir)
+	with open(asm_data_path, "w") as file:
+		file.write(asm_ram_disk_data)
+
+	# compile and save the gfx bin files
+	build.export_fdd_file(asm_meta_path, asm_data_path, bin_path, "")
+
+	return True
+
+def data_to_asm(tiled_img_j_path):
+
+	with open(tiled_img_j_path, "rb") as file:
 		source_j = json.load(file)
 
-	source_dir = str(Path(source_j_path).parent) + "\\"
-
-	if "asset_type" not in source_j or source_j["asset_type"] != build.ASSET_TYPE_TILED_IMG:
-		build.exit_error(f'export_tiled_img ERROR: asset_type != "{build.ASSET_TYPE_TILED_IMG}", path: {source_j_path}')
+	source_dir = str(Path(tiled_img_j_path).parent) + "/"
 
 	path_png = source_dir + source_j["path_png"]
 	image = Image.open(path_png)
 
-	source_name = common.path_to_basename(source_j_path)
+	source_name = common.path_to_basename(tiled_img_j_path)
 	
 	asm = ""
-	asm = f"__RAM_DISK_S_{source_name.upper()}_GFX = RAM_DISK_S\n"
-	asm += f"__RAM_DISK_M_{source_name.upper()}_GFX = RAM_DISK_M\n"
 	
 	palette_asm, colors = common_gfx.palette_to_asm(image, source_j, path_png, "_" + source_name)
 	asm += palette_asm
@@ -50,10 +67,10 @@ def export_gfx(source_j_path, export_gfx_path):
 		tiled_file_j = json.load(file)
 
 	# make a tile index remap dictionary, to have the first idx = 0
-	remap_idxs = remap_indices(tiled_file_j)
+	remap_idxs = tiled_img_utils.remap_indices(tiled_file_j)
 
-	if len(remap_idxs) > TILED_IMG_GFX_IDX_MAX:
-		build.exit_error(f'export_tiled_img ERROR: gfx_idxs > "{TILED_IMG_GFX_IDX_MAX}", path: {source_j_path}')
+	if len(remap_idxs) > tiled_img_utils.TILED_IMG_GFX_IDX_MAX:
+		build.exit_error(f'export_tiled_img ERROR: gfx_idxs > "{tiled_img_utils.TILED_IMG_GFX_IDX_MAX}", path: {source_j_path}')
 
 	# list of tiles addreses
 	png_name = common.path_to_basename(path_png)
@@ -62,11 +79,6 @@ def export_gfx(source_j_path, export_gfx_path):
 	# asm += common_gfx.get_list_of_tiles(remap_idxs, "__" + source_name, png_name)
 	
 	# tile gfx data to asm
-	asm += gfx_to_asm(image, remap_idxs, "__" + png_name)
+	asm += tiled_img_utils.gfx_to_asm("_" + png_name, image, remap_idxs)
 
-	# save asm
-	export_dir = str(Path(export_gfx_path).parent) + "\\"		
-	if not os.path.exists(export_dir):
-		os.mkdir(export_dir)	
-	with open(export_gfx_path, "w") as file:
-		file.write(asm)	
+	return asm
