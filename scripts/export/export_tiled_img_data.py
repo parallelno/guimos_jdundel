@@ -70,7 +70,7 @@ def data_to_asm(tiled_img_j_path):
 	with open(tiled_file_path, "rb") as file:
 		tiled_file_j = json.load(file)
 
-	
+
 	# make a tile index remap dictionary, to have the first idx = 0
 	remap_idxs = tiled_img_utils.remap_indices(tiled_file_j)
 
@@ -122,26 +122,21 @@ def data_to_asm(tiled_img_j_path):
 					idxs.append(0)
 
 		label_name = "_" + base_name + "_" + layer_name
-		pos_x = tile_first_x # SCR_TILES_W - tile_last_x - 1
+		pos_x = tile_first_x
 		pos_y = (tiled_img_utils.SCR_TILES_H - tile_last_y - 1) * \
 				tiled_img_utils.IMG_TILE_W
 		tiles_w = tile_last_x - tile_first_x + 1
 		tiles_h = tile_last_y - tile_first_y + 1
 
 		tiled_img_asm, tiled_img_len = tiled_img_utils.tile_idxs_to_asm(
-				label_name, idxs, pos_x, pos_y, tiles_w, tiles_h)
-		asm += tiled_img_asm
+				label_name, idxs, pos_x, pos_y, tiles_w, tiles_h) 
 
-		# add the tiled img local ptr		
+		# add the tiled img local ptr
 		img_idxs_ptrs[label_name] = img_idxs_addr_offset
 		img_idxs_addr_offset += tiled_img_len
 		img_idxs_addr_offset += 2 # added safety pair of bytes for reading by POP B
-		
-		# add the tiled img length
-		# idxs_data_copy_len represents how many pairs of bytes 
-		# must to be copied by copy_from_ram_disk asm func
-		idxs_data_copy_len = tiled_img_len // 2 + tiled_img_len % 2
-		asm += f"{label_name.upper()}_COPY_LEN = {idxs_data_copy_len}\n"
+
+		asm += tiled_img_asm 
 
 		# check if the length of the image fits the requirements
 		if tiled_img_len > tiled_img_utils.TILED_IMG_IDXS_LEN_MAX:

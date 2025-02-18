@@ -19,6 +19,7 @@ jmp v6_main_init
 .include "src/v6/v6_draw_sprite.asm"
 .include "src/v6/v6_draw_sprite_hit.asm"
 .include "src/v6/v6_draw_sprite_invis.asm"
+.include "src/v6/v6_draw_tiled_img.asm"
 .include "build/build_includes.asm"
 
 v6_main_init:

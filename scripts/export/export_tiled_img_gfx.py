@@ -56,6 +56,7 @@ def data_to_asm(tiled_img_j_path):
 	source_name = common.path_to_basename(tiled_img_j_path)
 	
 	asm = ""
+	asm += "			.word 0 ; safety pair of bytes for reading by POP B\n"
 	
 	palette_asm, colors = common_gfx.palette_to_asm(image, source_j, path_png, "_" + source_name)
 	asm += palette_asm
@@ -74,9 +75,6 @@ def data_to_asm(tiled_img_j_path):
 
 	# list of tiles addreses
 	png_name = common.path_to_basename(path_png)
-
-	# remove it because this gives a big overhead for such small tiles.
-	# asm += common_gfx.get_list_of_tiles(remap_idxs, "__" + source_name, png_name)
 	
 	# tile gfx data to asm
 	asm += tiled_img_utils.gfx_to_asm("_" + png_name, image, remap_idxs)

@@ -29,3 +29,15 @@ LEVEL_INIT_TBL_LEN = @data_end - level_init_tbl
 ROOM_TILES_GFX_PTRS_LEN	= ROOM_WIDTH * ROOM_HEIGHT * ADDR_LEN
 room_tiles_gfx_ptrs:		.storage ROOM_TILES_GFX_PTRS_LEN
 room_tiles_gfx_ptrs_end:	= room_tiles_gfx_ptrs + ROOM_TILES_GFX_PTRS_LEN
+
+;=============================================================================
+; tiled image idxs buffer
+; a temporal buffer to unpack data
+
+; TODO: consider increasing this buffer and combine 
+; title1, title2, main_menu_back1, and main_menu_back2 into one image
+TILED_IMG_IDXS_LEN = $100
+tiled_img_idxs:
+	.storage TILED_IMG_IDXS_LEN
+
+

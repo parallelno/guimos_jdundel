@@ -15,6 +15,8 @@
 ; SCR_BUFF2_ADDR : same
 ; SCR_BUFF3_ADDR : same
 
+; this graphics is used to render level rooms
+
 draw_tile_16x16:
 			RAM_DISK_ON_BANK()
 			; sp = BC

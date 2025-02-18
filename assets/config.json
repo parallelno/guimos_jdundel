@@ -28,7 +28,9 @@
 			"scripts/build_and_run.py",
 			"scripts/utils/build.py",
 			"scripts/utils/common.py",
-			"scripts/utils/common_gfx.py"
+			"scripts/utils/common_gfx.py",
+			"scripts/export/level_utils.py",
+			"scripts/export/tiled_img_utils.py"
 		]
 	},
 	"export_dir" :

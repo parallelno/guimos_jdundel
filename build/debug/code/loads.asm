@@ -50,11 +50,11 @@ Ram-disk usage:
 	SCYTHE.BIN [addr: 0, len:1554], 
 	VFX4.BIN [addr: 1554, len:3888], 
 	LV0_DATA.BIN [addr: 5442, len:3638], 
-	TI0_GFX.BIN [addr: 9080, len:8176], 
+	TI0_GFX.BIN [addr: 9080, len:8178], 
 
 reserved: 49152
-used: 98842
-free: 113816
+used: 98844
+free: 113814
 wasted: 334
 
 */

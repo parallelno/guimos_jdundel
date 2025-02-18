@@ -180,16 +180,10 @@ mem_erase_sp_filler = @filler
 ; bc - length, must be divisible by 2
 ; a - ram-disk activation command
 
-; prep: 148cc
+; prep: 152cc
 ; loop: 60-92cc
 ; TODO: optimization: unroll the loop 4 or more times, 
 ; then start it depending on the remined:
-; start_here_if_len%4=0: COPY_WORD_MACRO()
-; start_here_if_len%4=1: COPY_WORD_MACRO()
-; start_here_if_len%4=2: COPY_WORD_MACRO()
-; start_here_if_len%4=3: COPY_WORD_MACRO()
-; dcx d
-; jnz
 
 .function mem_copy_from_ram_disk()
 			shld @source+1
@@ -197,34 +191,31 @@ mem_erase_sp_filler = @filler
 			RAM_DISK_ON_BANK()
 @source:
 			lxi sp, TEMP_ADDR
-
 			mov h, d
 			mov l, e
 			dad b
-			; hl - destination + len
-			; de - destination
+			xchg
+
+			; hl - destination
+			; de - destination + len			
 @loop2:
 			mov a, e
 @loop:
-			READ_W_SP()
-
+			; read a word
+			pop b
+			mov m, c
+			inx h
+			mov m, b
+			inx h
+			; check the end
 			cmp l
 			jnz @loop
 			mov a, d
 			cmp h
 			jnz @loop2
 
-			RAM_DISK_OFF(false)
-			;ret
+			jmp restore_sp_ret
 .endf
-
-.macro READ_W_SP()
-			pop b
-			mov m, c
-			inx h
-			mov m, b
-			inx h
-.endmacro
 
 
 ; Read a word from the ram-disk w/o blocking interruptions
@@ -296,7 +287,7 @@ set_palette:
 set_palette_int:			; call it from an interruption routine
 			mvi	a, PORT0_OUT_OUT
 			out	0
-			mvi	b, PALETTE_COLORS - 1
+			mvi	b, PALETTE_LEN - 1
 
 @loop:		mov	a, b
 			out	2
@@ -320,7 +311,7 @@ set_palette_int:			; call it from an interruption routine
 ; uses: bc, de, hl, a
 .function copy_palette_request_update()
 			lxi d, palette
-			lxi b, PALETTE_COLORS
+			lxi b, PALETTE_LEN
 			call mem_copy
 			lxi h, palette_update_request
 			mvi m, PALETTE_UPD_REQ_YES

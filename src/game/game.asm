@@ -66,6 +66,18 @@ game_init:
 			lxi h, BURNER_ADDR
 			sprite_update_labels()
 
+			;======================
+			; tiled img test
+			;======================
+			mvi a, RAM_DISK_S_TI0_DATA
+			mvi c, RAM_DISK_S_TI0_GFX
+			lxi d, TI0_DATA_ADDR
+			lxi h, TI0_GFX_ADDR
+			tiled_img_init()
+			lxi d, _ti0_title1
+			call draw_tiled_img
+
+
 		frame .var 0
 		shift .var 0
 @loop:			

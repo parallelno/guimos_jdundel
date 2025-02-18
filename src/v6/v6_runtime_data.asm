@@ -42,7 +42,7 @@ os_file_data_ptr:
 ;	GGG - 3 bit green color
 ;	RRR - 3 bit red color
 palette:
-			.storage PALETTE_COLORS
+			.storage PALETTE_LEN
 border_color_idx:
 			.storage BYTE_LEN
 scr_offset_y:

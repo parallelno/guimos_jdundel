@@ -1,3 +1,4 @@
+			.word 0 ; safety pair of bytes for reading by POP B
 ; assets\tiled_imgs/tiled/art/ti0.png
 _ti0_palette:
 			.byte %01001010, %00000001, %01011100, %00011010, 

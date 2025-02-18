@@ -51,7 +51,7 @@ palette_update_request_:
 			jz @no_palette_update
 			; set a palette
 			; hl - the addr of the last item in the palette
-			lxi h, palette + PALETTE_COLORS - 1
+			lxi h, palette + PALETTE_LEN - 1
 			call set_palette_int
 			; reset update
 			A_TO_ZERO(PALETTE_UPD_REQ_NO)
