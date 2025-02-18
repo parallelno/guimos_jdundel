@@ -341,6 +341,19 @@ BY_HL_FROM_DE	= 4
 		.endif
 .endmacro
 
+; bc = hl+bc
+; used: a
+; 40cc
+.macro BC_TO_BC_PLUS_HL()
+			mov a, c
+			add l
+			mov c, a
+			mov a, b
+			adc h
+			mov b, a
+.endmacro
+
+
 .macro LXI_H_NEG(val)
 		lxi h, $ffff - val + 1
 .endmacro
@@ -457,6 +470,8 @@ BY_HL_FROM_DE	= 4
 ; in:
 ; a - ram-disk activation command
 ; call, push, pop operations are prohibited after this macro until RAM_DISK_OFF
+; max 21*4=84cc
+; min 14*4=56cc
 .macro RAM_DISK_ON_BANK(int_on = true, ram_disk_port = RAM_DISK_PORT)
 			; store SP
 			lxi h, 0

@@ -183,7 +183,7 @@ load_file_next:
 			; bc - len
 @ram_disk_activation:
 			mvi a, TEMP_BYTE ; ram-disk activation command
-			mem_copy_sp()
+			mem_copy_to_ram_disk()
 			ret
 @rec_num:
 			.byte TEMP_BYTE
@@ -267,10 +267,10 @@ save_file:
 ; in:
 ;	hl - ptr to a filename (8 bytes name, 3 bytes extention)
 set_file_name:
-			; Set the filename
-			lxi d, CPM_FCB+1 ; file name addr
-			lxi b, FILENAME_LEN
+			; copy a filename string
 			push h
+			lxi d, CPM_FCB+1 ; file name addr
+			lxi b, FILENAME_LEN		
 			mem_copy()
 			pop h
 
@@ -289,9 +289,10 @@ set_file_name:
 			; hl - filename ptr
 			lxi b, BASENAME_LEN
 			dad b
+			lxi b, EXT_LEN
 			; hl - file ext ptr
 			; de - points to v6_os_errmsg_file_open_ext
-			lxi b, EXT_LEN
+			; bc - extention len
 			mem_copy()
 			mvi a, '\n'
 			stax d
@@ -305,8 +306,8 @@ set_file_name:
 
 			; Erase the rest of the FCB
 			lxi h, CPM_FCB + FILENAME_LEN + 1
-			mvi c, <(CMP_DMA_BUFFER - (CPM_FCB + FILENAME_LEN + 1))
-			call mem_erase_short
+			lxi b, CMP_DMA_BUFFER - (CPM_FCB + FILENAME_LEN + 1)
+			call mem_erase
 			ret
 
 ;=======================================================
