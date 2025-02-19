@@ -10,7 +10,7 @@ FONT_FILENAME_PTR:
 			.byte "    " ; filename white chars
 			.byte "BIN" ; extension
 
-; relative labels. to make it global call __text_ex_rd_init
+; relative labels. to make it global call update_labels
 _font_0 = 2
 _font_1 = 26
 _font_2 = 50

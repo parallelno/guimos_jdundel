@@ -10,7 +10,7 @@ HERO_L_FILENAME_PTR:
 			.byte "  " ; filename white chars
 			.byte "BIN" ; extension
 
-; relative labels. to make it global call __text_ex_rd_init
+; relative frame labels
 _hero_l_idle0_0 = 2
 _hero_l_idle0_1 = 188
 _hero_l_idle0_2 = 374

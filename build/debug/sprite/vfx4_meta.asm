@@ -10,7 +10,7 @@ VFX4_FILENAME_PTR:
 			.byte "    " ; filename white chars
 			.byte "BIN" ; extension
 
-; relative labels. to make it global call __text_ex_rd_init
+; relative frame labels
 _vfx4_hit0_0 = 2
 _vfx4_hit0_1 = 140
 _vfx4_hit0_2 = 278

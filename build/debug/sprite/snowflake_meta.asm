@@ -9,7 +9,7 @@ SNOWFLAK_FILENAME_PTR:
 			.byte "SNOWFLAK" ; filename
 			.byte "BIN" ; extension
 
-; relative labels. to make it global call __text_ex_rd_init
+; relative frame labels
 _snowflake_run0_0 = 2
 _snowflake_run0_1 = 68
 _snowflake_run0_2 = 194

@@ -11,6 +11,7 @@ from export import export_sprite
 from export import export_fdd
 from export import export_tiled_img_data
 from export import export_tiled_img_gfx
+from export import export_text
 
 #==============================================================================
 def export(config_j_path):
@@ -124,6 +125,18 @@ def export(config_j_path):
 						asset_j_path,
 						asm_meta_path, asm_data_path, bin_path,
 						force_export)
+				
+			case build.ASSET_TYPE_TEXT_ENG:
+				export_text.export_if_updated(
+						asset_j_path,
+						asm_meta_path, asm_data_path, bin_path,
+						force_export, build.LOCAL_ENG)
+				
+			case build.ASSET_TYPE_TEXT_RUS:
+				export_text.export_if_updated(
+						asset_j_path,
+						asm_meta_path, asm_data_path, bin_path,
+						force_export, build.LOCAL_RUS)
 
 		fdd_files[asset_j_path] = {
 			"asm_meta_path": asm_meta_path,

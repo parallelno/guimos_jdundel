@@ -6,7 +6,7 @@
 ; offset_x in bytes
 ; offset_y in pixels
 ; it uses sp to read the sprite data
-; ex. CALL_RAM_DISK_FUNC(__draw_sprite_hit_vm, __RAM_DISK_S_HERO_ATTACK01 | RAM_DISK_? | RAM_DISK_M_8F)
+; ex. CALL_RAM_DISK_FUNC(sprite_draw_hit_vm, __RAM_DISK_S_HERO_ATTACK01 | RAM_DISK_? | RAM_DISK_M_8F)
 ; input:
 ; bc	sprite data
 ; de	screen addr
@@ -38,11 +38,11 @@
 //		RAM_DISK_ON_BANK macro must not be used before calling a function!
 //		check the reqs of RAM_DISK_ON_BANK_NO_RESTORE before using it here
 /*
-draw_sprite_hit_vm:
+sprite_draw_hit_vm:	; VM stands for: V - variable height, M - mask support
 			; store SP
 			lxi h, 0
 			dad sp
-			shld draw_sprite_restore_sp_ram_disk + 1
+			shld sprite_draw_restore_sp_ram_disk + 1
 			; sp = BC
 			mov	h, b
 			mov	l, c
@@ -53,7 +53,7 @@ draw_sprite_hit_vm:
 			pop b
 			dad b
 			; store a sprite screen addr to return it from this func
-			shld draw_sprite_scr_addr_ram_disk+1
+			shld sprite_draw_scr_addr_ram_disk+1
 
 			; store sprite width and height
 			; b - width, c - height
@@ -61,7 +61,7 @@ draw_sprite_hit_vm:
 			mov d, b
 			mov e, c
 			xchg
-			shld draw_sprite_width_height_ram_disk+1
+			shld sprite_draw_width_height_ram_disk+1
 			xchg
 			mov a, b
 			rrc
@@ -83,41 +83,41 @@ draw_sprite_hit_vm:
 			sta @w16evenScr3+1
 
 @w16evenScr1:
-			DRAW_SPRITE_V_HIT_M()
+			SPRITE_DRAW_HIT_VM()
 			inr h
-			DRAW_SPRITE_V_HIT_M()
+			SPRITE_DRAW_HIT_VM()
 @w16evenScr2:
 			mov h, d
-			DRAW_SPRITE_V_HIT_M(false)
+			SPRITE_DRAW_HIT_VM(false)
 			dcr h
-			DRAW_SPRITE_V_HIT_M(false)
+			SPRITE_DRAW_HIT_VM(false)
 @w16evenScr3:
 			mvi h, TEMP_BYTE
-			DRAW_SPRITE_V_HIT_M()
+			SPRITE_DRAW_HIT_VM()
 			dcr h
-			DRAW_SPRITE_V_HIT_M()
+			SPRITE_DRAW_HIT_VM()
 			inr l
 			dcr e
-			jz draw_sprite_ret_ram_disk
+			jz sprite_draw_ret_ram_disk
 
 @w16oddScr3:
-			DRAW_SPRITE_V_HIT_M()
+			SPRITE_DRAW_HIT_VM()
 			inr h
-			DRAW_SPRITE_V_HIT_M()
+			SPRITE_DRAW_HIT_VM()
 @w16oddScr2:
 			mov h, d
-			DRAW_SPRITE_V_HIT_M(false)
+			SPRITE_DRAW_HIT_VM(false)
 			dcr h
-			DRAW_SPRITE_V_HIT_M(false)
+			SPRITE_DRAW_HIT_VM(false)
 @w16oddScr1:
 			mvi h, TEMP_BYTE
-			DRAW_SPRITE_V_HIT_M()
+			SPRITE_DRAW_HIT_VM()
 			dcr h
-			DRAW_SPRITE_V_HIT_M()
+			SPRITE_DRAW_HIT_VM()
 			inr l
 			dcr e
 			jnz @w16evenScr1
-			jmp draw_sprite_ret_ram_disk
+			jmp sprite_draw_ret_ram_disk
 ;-------------------------------------------------
 @width24:
 			; save the high screen byte to restore X
@@ -130,55 +130,55 @@ draw_sprite_hit_vm:
 			sta @w24evenScr3+1
 
 @w24evenScr1:
-			DRAW_SPRITE_V_HIT_M()
+			SPRITE_DRAW_HIT_VM()
 			inr h
-			DRAW_SPRITE_V_HIT_M()
+			SPRITE_DRAW_HIT_VM()
 			inr h
-			DRAW_SPRITE_V_HIT_M()
+			SPRITE_DRAW_HIT_VM()
 
 @w24evenScr2:
 			mov h, d
-			DRAW_SPRITE_V_HIT_M(false)
+			SPRITE_DRAW_HIT_VM(false)
 			dcr h
-			DRAW_SPRITE_V_HIT_M(false)
+			SPRITE_DRAW_HIT_VM(false)
 			dcr h
-			DRAW_SPRITE_V_HIT_M(false)
+			SPRITE_DRAW_HIT_VM(false)
 
 @w24evenScr3:
 			mvi h, TEMP_BYTE
-			DRAW_SPRITE_V_HIT_M()
+			SPRITE_DRAW_HIT_VM()
 			dcr h
-			DRAW_SPRITE_V_HIT_M()
+			SPRITE_DRAW_HIT_VM()
 			dcr h
-			DRAW_SPRITE_V_HIT_M()
+			SPRITE_DRAW_HIT_VM()
 			inr l
 			dcr e
-			jz draw_sprite_ret_ram_disk
+			jz sprite_draw_ret_ram_disk
 
 @w24oddScr3:
-			DRAW_SPRITE_V_HIT_M()
+			SPRITE_DRAW_HIT_VM()
 			inr h
-			DRAW_SPRITE_V_HIT_M()
+			SPRITE_DRAW_HIT_VM()
 			inr h
-			DRAW_SPRITE_V_HIT_M()
+			SPRITE_DRAW_HIT_VM()
 @w24oddScr2:
 			mov h, d
-			DRAW_SPRITE_V_HIT_M(false)
+			SPRITE_DRAW_HIT_VM(false)
 			dcr h
-			DRAW_SPRITE_V_HIT_M(false)
+			SPRITE_DRAW_HIT_VM(false)
 			dcr h
-			DRAW_SPRITE_V_HIT_M(false)
+			SPRITE_DRAW_HIT_VM(false)
 @w24oddScr1:
 			mvi h, TEMP_BYTE
-			DRAW_SPRITE_V_HIT_M()
+			SPRITE_DRAW_HIT_VM()
 			dcr h
-			DRAW_SPRITE_V_HIT_M()
+			SPRITE_DRAW_HIT_VM()
 			dcr h
-			DRAW_SPRITE_V_HIT_M()
+			SPRITE_DRAW_HIT_VM()
 			inr l
 			dcr e
 			jnz @w24evenScr1
-			jmp draw_sprite_ret_ram_disk
+			jmp sprite_draw_ret_ram_disk
 ;------------------------------------------------------
 @width8:
 			; save the high screen byte to restore X
@@ -190,30 +190,30 @@ draw_sprite_hit_vm:
 			sta @w8evenScr3+1
 
 @w8evenScr1:
-			DRAW_SPRITE_V_HIT_M()
+			SPRITE_DRAW_HIT_VM()
 @w8evenScr2:
 			mov h, d
-			DRAW_SPRITE_V_HIT_M(false)
+			SPRITE_DRAW_HIT_VM(false)
 @w8evenScr3:
 			mvi h, TEMP_BYTE
-			DRAW_SPRITE_V_HIT_M()
+			SPRITE_DRAW_HIT_VM()
 			inr l
 			dcr e
-			jz draw_sprite_ret_ram_disk
+			jz sprite_draw_ret_ram_disk
 @w8oddScr3:
-			DRAW_SPRITE_V_HIT_M()
+			SPRITE_DRAW_HIT_VM()
 @w8oddScr2:
 			mov h, d
-			DRAW_SPRITE_V_HIT_M(false)
+			SPRITE_DRAW_HIT_VM(false)
 @w8oddScr1:
 			mvi h, TEMP_BYTE
-			DRAW_SPRITE_V_HIT_M()
+			SPRITE_DRAW_HIT_VM()
 			inr l
 			dcr e
 			jnz @w8evenScr1
-			jmp draw_sprite_ret_ram_disk
+			jmp sprite_draw_ret_ram_disk
 			
-.macro DRAW_SPRITE_V_HIT_M(fill = true)
+.macro SPRITE_DRAW_HIT_VM(fill = true)
 			pop b
 			.if fill
 				mov a, c

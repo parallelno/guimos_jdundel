@@ -9,7 +9,7 @@ SKELETON_FILENAME_PTR:
 			.byte "SKELETON" ; filename
 			.byte "BIN" ; extension
 
-; relative labels. to make it global call __text_ex_rd_init
+; relative frame labels
 _skeleton_idle_0_0 = 2
 _skeleton_idle_0_1 = 188
 _skeleton_idle_0_2 = 464

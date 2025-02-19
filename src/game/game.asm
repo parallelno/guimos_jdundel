@@ -31,7 +31,7 @@ game_init:
 			lxi d, 0x80A0
 			lxi b, _lv0_tile0 + LV0_GFX_ADDR
 			mvi a, RAM_DISK_S_LV0_GFX
-			call draw_tile_16x16
+			call tile_draw_16x16
 
 			;======================
 			; SONG01
@@ -52,10 +52,10 @@ game_init:
 			update_labels()
 
 			; draw a test text
-			lxi d, __text_main_menu_settings
+			;lxi d, __text_main_menu_settings
 			lxi b, (0)<<8 | 100
 			lxi h, >SCR_BUFF1_ADDR
-			draw_text_ex()
+			;call text_ex_draw
 
 			ei
 
@@ -73,9 +73,9 @@ game_init:
 			mvi c, RAM_DISK_S_TI0_GFX
 			lxi d, TI0_DATA_ADDR
 			lxi h, TI0_GFX_ADDR
-			tiled_img_init()
+			call tiled_img_init
 			lxi d, _ti0_title1
-			call draw_tiled_img
+			call tiled_img_draw
 
 
 		frame .var 0
@@ -90,7 +90,7 @@ game_init:
 			;lxi h, _burner_dash_3_0 + BURNER_ADDR
 			lxi d, 0xB0A0
 			mvi a, RAM_DISK_S_BURNER
-			call draw_sprite_vm
+			call sprite_draw_vm
 			call wait
 
 			frame = 1
@@ -99,7 +99,7 @@ game_init:
 			mov b, h
 			lxi d, 0xB0A0
 			mvi a, RAM_DISK_S_BURNER
-			call draw_sprite_vm
+			call sprite_draw_vm
 			call wait
 
 			frame = 2
@@ -108,7 +108,7 @@ game_init:
 			mov b, h
 			lxi d, 0xB0A0
 			mvi a, RAM_DISK_S_BURNER
-			call draw_sprite_vm
+			call sprite_draw_vm
 			call wait
 
 			frame = 3
@@ -117,7 +117,7 @@ game_init:
 			mov b, h
 			lxi d, 0xB0A0
 			mvi a, RAM_DISK_S_BURNER
-			call draw_sprite_vm
+			call sprite_draw_vm
 			call wait			
 
 			jmp @loop		
@@ -147,11 +147,5 @@ game_draw:
 .if DEBUG
 			hlt
 .endif
-
 			ret
 
-__text_main_menu_settings:
-			TEXT("START GAME", _LINE_BREAK_)
-			TEXT("OPTIONS", _LINE_BREAK_)
-			TEXT("SCORES", _LINE_BREAK_)
-			TEXT("CREDITS", )

@@ -4,10 +4,143 @@ import json
 import utils.common as common
 import utils.build as build
 
-# the string format contains:
-#	_EOD_ at the end
-#	_LINE_BREAK_ at the end of the line
-#	_PARAG_BREAK_ at the end of the peragraph
+# string special symbols:
+#	EOD ; at the end
+#	LINE_BREAK at the end of the line
+#	PARAG_BREAK at the end of the peragraph
+
+TEXT_LEN_MAX = 512
+
+def export_if_updated(
+		asset_j_path, asm_meta_path, asm_data_path, bin_path,
+		force_export, localization_id = build.LOCAL_ENG):
+
+	if force_export or is_source_updated(asset_j_path):
+		export_asm(asset_j_path, asm_meta_path, asm_data_path, bin_path, localization_id)
+		print(f"export_font: {asset_j_path} got exported.")
+
+def is_source_updated(asset_j_path):
+	return build.is_file_updated(asset_j_path)
+
+
+def export_asm(
+		asset_j_path, asm_meta_path, asm_data_path, 
+		bin_path, localization_id = build.LOCAL_ENG):
+
+	with open(asset_j_path, "rb") as file:
+		asset_j = json.load(file)
+	
+	asset_name = common.path_to_basename(asset_j_path)
+
+	asm_ram_disk_data, data_ptrs = ramdisk_data_to_asm(asset_j_path, asset_j, localization_id)
+
+	asm_ram_data = meta_data_to_asm(data_ptrs)
+
+	# save the asm gfx
+	asm_gfx_dir = str(Path(asm_data_path).parent) + "/"
+	if not os.path.exists(asm_gfx_dir):
+		os.mkdir(asm_gfx_dir)
+	with open(asm_data_path, "w") as file:
+		file.write(asm_ram_disk_data)
+	
+	# compile and save the gfx bin files
+	build.export_fdd_file(asm_meta_path, asm_data_path, bin_path, asm_ram_data)
+
+	return True
+
+def meta_data_to_asm(data_ptrs):
+	asm = ""
+
+	asm += "; relative text labels\n"
+	for label, val in data_ptrs.items():
+		asm += f"{label} = {val}\n"
+
+	return asm
+
+def ramdisk_data_to_asm(asset_j_path, asset_j, localization_id):
+	data_local_ptrs = {}
+	text_local_addr_offset = 2 # added safety pair of bytes for reading by POP B
+	asm = ""
+
+	asm += f"LINE_BREAK = {build.LINE_BREAK}\n"
+	asm += f"PARAG_BREAK = {build.PARAG_BREAK}\n"
+	asm += f"EOD = {build.EOD}\n"
+
+	asm += ".macro TEXT (string, end_code=EOD)\n"
+	asm += ".encoding \"screencode\", \"mixed\"\n"
+	asm += "    .text string\n"
+	asm += "    .byte end_code\n"
+	asm += ".endmacro\n\n"
+
+	for comment in asset_j["text"]:
+		labels_text = asset_j["text"][comment]
+		asm += f";===================================================================================\n"
+		asm += f"; {comment}\n"
+		asm += f";===================================================================================\n"
+		for label_postfix in labels_text:
+
+			label = "_" +comment.replace(" ", "_") + "_" + label_postfix.replace(" ", "_")
+
+			text_lines = labels_text[label_postfix]
+
+			lines = len(text_lines)
+			text_block_asm = ""
+			text_block_len = 0
+			text_block = ""
+
+			for i, text_raw in enumerate(text_lines):
+
+				# because retroassembler adds EOD code anyway
+				command = "" if localization_id == build.LOCAL_ENG else build.EOD_S
+
+				parag_break = text_raw.find(build.PARAG_BREAK_S)
+				line_break = text_raw.find(build.LINE_BREAK_S)
+				text = text_raw
+				break_line = "\n"
+
+				if parag_break >= 0:
+					command = build.PARAG_BREAK_S
+					text = text_raw[:parag_break]
+
+				elif line_break >= 0 or i+1 != lines:
+					command = build.LINE_BREAK_S
+					break_line = ""
+					if line_break >= 0:
+						text = text_raw[:line_break]
+
+				if localization_id == build.LOCAL_RUS:
+					rus_text_data = rus_text_to_data(text, asset_j_path)
+					text_block_asm += common.bytes_to_asm(rus_text_data)
+					text_block_asm += f'			.byte {command})\n'
+				else:
+					text_block_asm += f'			TEXT("{text}", {command})\n'
+				
+				text_block_asm += break_line
+				text_block_len += len(text) + 1 # +1 becase there's always a key-code at the end of the string
+				text_block += text + "\n"
+
+
+			data_local_ptrs[label] = text_local_addr_offset
+			text_local_addr_offset += text_block_len
+			text_local_addr_offset += 2 # lenght
+			text_local_addr_offset += 2 # safety pair of bytes for reading by POP B
+
+			# check if the length of the text fits the requirements
+			if text_block_len > TEXT_LEN_MAX:
+				build.exit_error(f'export_text ERROR: text: \n"{text_block}"\n is "{text_block_len}" symbols long. Which is longer than TEXT_LEN_MAX="{TEXT_LEN_MAX} symbols", path: {asset_j_path}')
+
+			# the len of bytes copied from the ram-disk
+			idxs_data_copy_len = (text_block_len // 2 + text_block_len % 2) * 2
+			
+			asm += "\n			.word 0 ; safety pair of bytes for reading by POP B\n"
+			asm += f"{label}:\n"
+			asm += f"			.word {idxs_data_copy_len} ; data len to copy to ram\n"
+			asm += text_block_asm
+
+	return asm, data_local_ptrs
+
+
+#=====================================================
 
 # the custom RUS charset is described in source\sprites\font_rus.json
 rus_charset = {
@@ -100,115 +233,19 @@ rus_charset = {
 		" "	: 87
 }
 
-def rus_text_to_data(text, source_j_path):
+def rus_text_to_data(text, asset_j_path):
+	
 	result = []
 	for char_ in text:
 		if char_ not in rus_charset:
-			build.exit_error(f'export_text ERROR: unsupported char: "{char_}" в тексте: "{text}", path: {source_j_path}')
+			build.exit_error(f'export_text ERROR: unsupported char: "{char_}" в тексте: "{text}", path: {asset_j_path}')
 
 		result.append(rus_charset[char_])
 
 	return result
 
-def bytes_to_asm(data, command):
-	asm = "			.byte "
-	for byte in data:
-		asm += str(byte) + ","
-
-	asm += f" {command}\n" 
-	return asm
-
-#=====================================================
-def export_if_updated(source_path, generated_dir, force_export, localization_id = build.LOCAL_ENG):
-	source_name = common.path_to_basename(source_path)
-
-	export_path = generated_dir + source_name + "_data" + build.EXT_ASM
-	export_paths = {}
-	#export_paths["ram"] = export_path
-	#export_paths["ram_disk"] = export_path
-
-	if force_export or is_source_updated(source_path):
-		export_data( source_path, export_path, localization_id)
-			
-		print(f"export_level: {source_path} got exported.")		
-		return True, export_paths
-	else:
-		return False, export_paths
-	
-def export_data(source_j_path, export_path, localization_id = build.LOCAL_ENG):
-
-	with open(source_j_path, "rb") as file:
-		source_j = json.load(file)
-
-	#source_dir = str(Path(source_j_path).parent) + "\\"
-
-	# check if a folder exists
-	export_dir = str(Path(export_path).parent) + "\\"
-	if not os.path.exists(export_dir):
-		os.mkdir(export_dir)
-
-	if "asset_type" not in source_j or source_j["asset_type"] != build.ASSET_TYPE_TEXT :
-		build.exit_error(f'export_text ERROR: asset_type != "{build.ASSET_TYPE_TEXT}", path: {source_j_path}')
-
-	source_name = common.path_to_basename(source_j_path)
-	asm = ""
-
-	# asm = f"__RAM_DISK_S_{source_name.upper()} = RAM_DISK_S\n"
-	# asm += f"__RAM_DISK_M_{source_name.upper()} = RAM_DISK_M\n"
-	#  asm += "\n"
-
-	for comment in source_j["text"]:
-		labels_text = source_j["text"][comment]
-		asm += f";===================================================================================\n"
-		asm += f"; {comment}\n"
-		asm += f";===================================================================================\n"
-		for label in labels_text: 
-			
-			asm += f"{label}:\n"
-			if localization_id not in labels_text[label]:
-				build.exit_error(f'export_text ERROR: label {label} does not contain localization_id = {localization_id}.", path: {source_j_path}')
-
-			text_lines = labels_text[label][localization_id]
-			
-			lines = len(text_lines)
-			for i, text_raw in enumerate(text_lines):
-				
-				command_eng = ""
-				command_rus = build._EOD_
-				parag_break = text_raw.find(build._PARAG_BREAK_)
-				line_break = text_raw.find(build._LINE_BREAK_)
-				text = text_raw
-				break_line = "\n"
-				
-				if parag_break >= 0:
-					command_eng = build._PARAG_BREAK_
-					command_rus = command_eng
-					text = text_raw[:parag_break]
-					
-				elif line_break >= 0 or i+1 != lines:
-					command_eng = build._LINE_BREAK_
-					command_rus = command_eng
-					break_line = ""
-					if line_break >= 0:
-						text = text_raw[:line_break]					
-				
-				if localization_id == build.LOCAL_RUS:
-					rus_text_data = rus_text_to_data(text, source_j_path)
-					asm += bytes_to_asm(rus_text_data, command_rus) 
-				else:
-					asm += f'			TEXT("{text}", {command_eng})\n'
-				asm += break_line
 
 
-
-	with open(export_path, "w") as file:
-		file.write(asm)
-
-def is_source_updated(source_j_path):
-
-	if build.is_file_updated(source_j_path):
-		return True
-	return False
 
 
 

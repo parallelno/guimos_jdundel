@@ -1,5 +1,5 @@
 ; The sfx player for 580ВИ53 (Intel 8253) programmable interval timer
-SFX_DATA_EOF = 0 ; the marker to end the sfx data
+SFX_DATA_EOD = 0 ; the end of the sfx data
 
 setting_sfx:	.byte SETTING_ON
 
@@ -11,7 +11,7 @@ setting_sfx:	.byte SETTING_ON
 ; .word - frequency divider for channel0,  
 ; .word - frequency divider for channel1, 
 ; ...
-; .word $0 ; SFX_DATA_EOF
+; .word $0 ; SFX_DATA_EOD
 
 ; TODO: move sfx data to the ram-disk
 /*
@@ -50,7 +50,7 @@ sfx_vampire_attack:
 			.dword 2100<<16 | 2100,
 			.dword 4750<<16 | 4750,
 			.dword 5750<<16 | 5750,
-			.word SFX_DATA_EOF
+			.word SFX_DATA_EOD
 
 sfx_bomb_attack: 
 			.dword 50010<<16 | 57000,
@@ -66,7 +66,7 @@ sfx_bomb_attack:
 			.dword 4340<<16 | 2750,
 			.dword 1100<<16 | 1100,
 			.dword 11075<<16 | 6500,
-			.word SFX_DATA_EOF
+			.word SFX_DATA_EOD
 
 sfx_hero_hit:
 			.dword 50010<<16 | 57000,
@@ -77,7 +77,7 @@ sfx_hero_hit:
 			.dword 5450<<16 | 700,
 			.dword 4340<<16 | 2750,
 			.dword 11075<<16 | 6500,
-			.word SFX_DATA_EOF
+			.word SFX_DATA_EOD
 
 sfx_song_hi_pitch: 
 			.dword 242<<16 | 226,
@@ -89,7 +89,7 @@ sfx_song_hi_pitch:
 			.dword 164<<16 | 16,
 			.dword 13<<16 | 5,
 			.dword 175<<16 | 1,
-			.word SFX_DATA_EOF
+			.word SFX_DATA_EOD
 
 ; send silence to the sound chip
 v6_sfx_reg_mute:

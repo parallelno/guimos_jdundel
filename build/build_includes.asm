@@ -16,6 +16,7 @@
 .include "build/debug/sprite/vfx4_meta.asm"
 .include "build/debug/level_data/lv0_data_meta.asm"
 .include "build/debug/tiled_img_gfx/ti0_gfx_meta.asm"
+.include "build/debug/text_eng/text_lv0_meta.asm"
 
 .include "build/debug/code/loads.asm"
 

@@ -10,7 +10,7 @@ TNT_FILENAME_PTR:
 			.byte "     " ; filename white chars
 			.byte "BIN" ; extension
 
-; relative labels. to make it global call __text_ex_rd_init
+; relative frame labels
 _tnt_idle0_0 = 2
 _tnt_idle0_1 = 74
 _tnt_idle0_2 = 212

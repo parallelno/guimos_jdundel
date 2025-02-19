@@ -17,7 +17,7 @@
 
 ; this graphics is used to render level rooms
 
-draw_tile_16x16:
+tile_draw_16x16:
 			RAM_DISK_ON_BANK()
 			; sp = BC
 			mov h, b
@@ -41,11 +41,11 @@ draw_tile_16x16:
 			mov e, a
 			jnc @erase_tile_buf
 
-			DRAWTILE16x16_DRAW_BUF()
+			TILE_DRAW_16x16_DRAW_BUF()
 			jmp @next_buf
 
 @erase_tile_buf:
-			DRAWTILE16x16_ERASE_BUF()
+			TILE_DRAW_16x16_ERASE_BUF()
 @next_buf:
 			; move X to the next scr buff
 			mvi a, $20
@@ -55,10 +55,10 @@ draw_tile_16x16:
 			dcr d
 			jnz @loop
 			jmp restore_sp_ret
-draw_tile_16x16_end:
+tile_draw_16x16_end:
 			
 			
-.macro DRAWTILE16x16_DRAW_BUF()
+.macro TILE_DRAW_16x16_DRAW_BUF()
 		.loop 7
 			pop b					; (12)
 			mov m, c				; (8)
@@ -86,7 +86,7 @@ draw_tile_16x16_end:
 			dcr h					; (8) (704)		
 .endmacro
 
-.macro DRAWTILE16x16_ERASE_BUF()
+.macro TILE_DRAW_16x16_ERASE_BUF()
 			A_TO_ZERO(NULL)
 		.loop 15
 			mov m, a
@@ -108,7 +108,7 @@ draw_tile_16x16_end:
 ; out:
 ; bc - tile screen addr
 /*
-.function draw_tile_16x16_buffs()
+.function tile_draw_16x16_all_buffs()
 			; calc tile gfx ptr
 			mov l, c
 			mvi h, 0
@@ -139,7 +139,7 @@ draw_tile_16x16_end:
 			push d
 			; draw a tile on the screen
 			lda level_ram_disk_s_gfx
-			CALL_RAM_DISK_FUNC_BANK(draw_tile_16x16)
+			CALL_RAM_DISK_FUNC_BANK(tile_draw_16x16)
 			pop d
 			pop b
 			push b
@@ -147,14 +147,14 @@ draw_tile_16x16_end:
 			; draw a tile in the back buffer
 			lda level_ram_disk_s_gfx
 			ori RAM_DISK_M_BACKBUFF | RAM_DISK_M_AF
-			CALL_RAM_DISK_FUNC_BANK(draw_tile_16x16)
+			CALL_RAM_DISK_FUNC_BANK(tile_draw_16x16)
 			pop d
 			pop b
 			push d
 			; draw a tile in the back buffer2
 			lda level_ram_disk_s_gfx
 			ori RAM_DISK_M_BACKBUFF2 | RAM_DISK_M_AF
-			CALL_RAM_DISK_FUNC_BANK(draw_tile_16x16)
+			CALL_RAM_DISK_FUNC_BANK(tile_draw_16x16)
 
 			pop b
 			; ret // because of .endf

@@ -17,7 +17,8 @@ ASSET_TYPE_BACK			= "back"
 ASSET_TYPE_FONT			= "font"
 ASSET_TYPE_FONT_RD		= "font_rd" # font_gfx_ptrs.asm will be included into the main programm. it has to be included into the ram-disk asm code manually instead.
 ASSET_TYPE_SPRITE		= "sprite"
-ASSET_TYPE_TEXT			= "text"
+ASSET_TYPE_TEXT_ENG		= "text_eng"
+ASSET_TYPE_TEXT_RUS		= "text_rus"
 
 ASSET_TYPE_LEVEL		= "level"
 ASSET_TYPE_LEVEL_DATA	= "level_data"
@@ -60,9 +61,13 @@ LOCAL_SYMBOL_NAME = "LOCALIZATION"
 LOCAL_ENG	= '0'
 LOCAL_RUS	= '1'
 
-_LINE_BREAK_	= "_LINE_BREAK_"
-_PARAG_BREAK_	= "_PARAG_BREAK_"
-_EOD_			= "_EOD_"
+LINE_BREAK_S	= "LINE_BREAK"
+PARAG_BREAK_S	= "PARAG_BREAK"
+EOD_S			= "EOD"
+
+LINE_BREAK	= 0x6a # '\n'
+PARAG_BREAK	= 0xff
+EOD			= 0
 
 # global consts
 BUILD_PATH = "build/"

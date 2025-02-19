@@ -36,8 +36,7 @@ room_tiles_gfx_ptrs_end:	= room_tiles_gfx_ptrs + ROOM_TILES_GFX_PTRS_LEN
 
 ; TODO: consider increasing this buffer and combine 
 ; title1, title2, main_menu_back1, and main_menu_back2 into one image
-TILED_IMG_IDXS_LEN = $100
-tiled_img_idxs:
-	.storage TILED_IMG_IDXS_LEN
-
+TEMP_BUFF_LEN = $200
+temp_buff:
+	.storage TEMP_BUFF_LEN
 

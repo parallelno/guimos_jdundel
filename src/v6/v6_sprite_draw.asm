@@ -1,10 +1,10 @@
 ; sharetable chunk of code to restore SP and 
 ; return a couple of parameters within HL, C
-draw_sprite_ret_ram_disk:
+sprite_draw_ret_ram_disk:
 			RAM_DISK_OFF()
-draw_sprite_scr_addr_ram_disk:
+sprite_draw_scr_addr_ram_disk:
 			lxi b, TEMP_ADDR
-draw_sprite_width_height_ram_disk:
+sprite_draw_width_height_ram_disk:
 ; d - width
 ;		00 - 8pxs,
 ;		01 - 16pxs,
@@ -57,7 +57,7 @@ draw_sprite_width_height_ram_disk:
 ; y++
 ; repeat for the next lines of the art data
 
-draw_sprite_vm:
+sprite_draw_vm:	; VM stands for: V - variable height, M - mask support
 			RAM_DISK_ON_BANK()
 			; sp = BC
 			mov	h, b
@@ -69,7 +69,7 @@ draw_sprite_vm:
 			; c - offset_y			
 			dad b
 			; store a sprite screen addr to return it from this func
-			shld draw_sprite_scr_addr_ram_disk+1
+			shld sprite_draw_scr_addr_ram_disk+1
 
 			; store sprite width and height
 			pop b			
@@ -78,7 +78,7 @@ draw_sprite_vm:
 			xchg
 			; h, b - width, 
 			; l, c - height			
-			shld draw_sprite_width_height_ram_disk+1
+			shld sprite_draw_width_height_ram_disk+1
 			xchg		
 			; d, b - width, 
 			; e, c - height					
@@ -102,41 +102,41 @@ draw_sprite_vm:
 			sta @w16evenScr3+1
 
 @w16evenScr1:
-			DRAW_SPRITE_V_M()
+			SPRITE_VM_DRAW()
 			inr h
-			DRAW_SPRITE_V_M()
+			SPRITE_VM_DRAW()
 @w16evenScr2:
 			mov h, d
-			DRAW_SPRITE_V_M()
+			SPRITE_VM_DRAW()
 			dcr h
-			DRAW_SPRITE_V_M()
+			SPRITE_VM_DRAW()
 @w16evenScr3:
 			mvi h, TEMP_BYTE
-			DRAW_SPRITE_V_M()
+			SPRITE_VM_DRAW()
 			dcr h
-			DRAW_SPRITE_V_M()
+			SPRITE_VM_DRAW()
 			inr l
 			dcr e
-			jz draw_sprite_ret_ram_disk
+			jz sprite_draw_ret_ram_disk
 
 @w16oddScr3:
-			DRAW_SPRITE_V_M()
+			SPRITE_VM_DRAW()
 			inr h
-			DRAW_SPRITE_V_M()
+			SPRITE_VM_DRAW()
 @w16oddScr2:
 			mov h, d
-			DRAW_SPRITE_V_M()
+			SPRITE_VM_DRAW()
 			dcr h
-			DRAW_SPRITE_V_M()
+			SPRITE_VM_DRAW()
 @w16oddScr1:
 			mvi h, TEMP_BYTE
-			DRAW_SPRITE_V_M()
+			SPRITE_VM_DRAW()
 			dcr h
-			DRAW_SPRITE_V_M()
+			SPRITE_VM_DRAW()
 			inr l
 			dcr e
 			jnz @w16evenScr1
-			jmp draw_sprite_ret_ram_disk
+			jmp sprite_draw_ret_ram_disk
 ;-------------------------------------------------
 @width24:
 			; save the high screen byte to restore X
@@ -149,55 +149,55 @@ draw_sprite_vm:
 			sta @w24evenScr3+1
 
 @w24evenScr1:
-			DRAW_SPRITE_V_M()
+			SPRITE_VM_DRAW()
 			inr h
-			DRAW_SPRITE_V_M()
+			SPRITE_VM_DRAW()
 			inr h
-			DRAW_SPRITE_V_M()
+			SPRITE_VM_DRAW()
 
 @w24evenScr2:
 			mov h, d
-			DRAW_SPRITE_V_M()
+			SPRITE_VM_DRAW()
 			dcr h
-			DRAW_SPRITE_V_M()
+			SPRITE_VM_DRAW()
 			dcr h
-			DRAW_SPRITE_V_M()
+			SPRITE_VM_DRAW()
 
 @w24evenScr3:
 			mvi h, TEMP_BYTE
-			DRAW_SPRITE_V_M()
+			SPRITE_VM_DRAW()
 			dcr h
-			DRAW_SPRITE_V_M()
+			SPRITE_VM_DRAW()
 			dcr h
-			DRAW_SPRITE_V_M()
+			SPRITE_VM_DRAW()
 			inr l
 			dcr e
-			jz draw_sprite_ret_ram_disk
+			jz sprite_draw_ret_ram_disk
 
 @w24oddScr3:
-			DRAW_SPRITE_V_M()
+			SPRITE_VM_DRAW()
 			inr h
-			DRAW_SPRITE_V_M()
+			SPRITE_VM_DRAW()
 			inr h
-			DRAW_SPRITE_V_M()
+			SPRITE_VM_DRAW()
 @w24oddScr2:
 			mov h, d
-			DRAW_SPRITE_V_M()
+			SPRITE_VM_DRAW()
 			dcr h
-			DRAW_SPRITE_V_M()
+			SPRITE_VM_DRAW()
 			dcr h
-			DRAW_SPRITE_V_M()
+			SPRITE_VM_DRAW()
 @w24oddScr1:
 			mvi h, TEMP_BYTE
-			DRAW_SPRITE_V_M()
+			SPRITE_VM_DRAW()
 			dcr h
-			DRAW_SPRITE_V_M()
+			SPRITE_VM_DRAW()
 			dcr h
-			DRAW_SPRITE_V_M()
+			SPRITE_VM_DRAW()
 			inr l
 			dcr e
 			jnz @w24evenScr1
-			jmp draw_sprite_ret_ram_disk
+			jmp sprite_draw_ret_ram_disk
 ;------------------------------------------------------
 @width8:
 			; save the high screen byte to restore X
@@ -209,31 +209,31 @@ draw_sprite_vm:
 			sta @w8evenScr3+1
 
 @w8evenScr1:
-			DRAW_SPRITE_V_M()
+			SPRITE_VM_DRAW()
 @w8evenScr2:
 			mov h, d
-			DRAW_SPRITE_V_M()
+			SPRITE_VM_DRAW()
 @w8evenScr3:
 			mvi h, TEMP_BYTE
-			DRAW_SPRITE_V_M()
+			SPRITE_VM_DRAW()
 			inr l
 			dcr e
-			jz draw_sprite_ret_ram_disk
+			jz sprite_draw_ret_ram_disk
 @w8oddScr3:
-			DRAW_SPRITE_V_M()
+			SPRITE_VM_DRAW()
 @w8oddScr2:
 			mov h, d
-			DRAW_SPRITE_V_M()
+			SPRITE_VM_DRAW()
 @w8oddScr1:
 			mvi h, TEMP_BYTE
-			DRAW_SPRITE_V_M()
+			SPRITE_VM_DRAW()
 			inr l
 			dcr e
 			jnz @w8evenScr1
-			jmp draw_sprite_ret_ram_disk
-_draw_sprite_vm_end:
+			jmp sprite_draw_ret_ram_disk
+_sprite_vm_draw_end:
 			
-.macro DRAW_SPRITE_V_M()
+.macro SPRITE_VM_DRAW()
 			pop b
 			mov a, m
 			ana c

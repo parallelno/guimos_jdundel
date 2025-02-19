@@ -10,7 +10,7 @@ KNIGHT_FILENAME_PTR:
 			.byte "  " ; filename white chars
 			.byte "BIN" ; extension
 
-; relative labels. to make it global call __text_ex_rd_init
+; relative frame labels
 _knight_idle_0_0 = 2
 _knight_idle_0_1 = 188
 _knight_idle_0_2 = 374

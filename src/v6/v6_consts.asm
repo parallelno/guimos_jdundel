@@ -187,6 +187,11 @@ SETTING_ON	= 0xff
 ; the temporal space while before putting the data into the ram-disk
 LOADING_TEMP_ADDR = SCR_ADDR
 
+; text
+LINE_BREAK	= 0x6A ;'\n'
+PARAG_BREAK	= 0xFF
+EOD			= 0
+
 ;=======================================================
 ; V6 Debug
 ;=======================================================

@@ -1,4 +1,4 @@
-.include "src/v6/v6_draw_text_ex_consts.asm"
+.include "src/v6/v6_text_ex_consts.asm"
 
 LINE_SPACING_DEFAULT = -12
 PARAG_SPACING_DEFAULT = -24
@@ -25,6 +25,10 @@ PARAG_SPACING_DEFAULT = -24
 			;ret ; commented because of .endf
 .endf
 
+
+text_ex_init:
+
+
 ; draw a text with kerning. blend func - OR
 ; font gfx can be on the ram-disk. 
 ; the text data should be reachable by non-stack
@@ -37,7 +41,7 @@ PARAG_SPACING_DEFAULT = -24
 ; h - text gfx data ram-disk activation command
 ; l - SCR_BUFF3_ADDR or SCR_BUFF2_ADDR or SCR_BUFF1_ADDR
 
-.function draw_text_ex()	
+text_ex_draw:
 			mov a, l
 			sta @scr_buff_addr+1
 			mov a, h
@@ -129,6 +133,9 @@ PARAG_SPACING_DEFAULT = -24
 			jnz @advance_pos
 			mov l, c
 			mov h, b
+
+			; shift char gfx runtime
+			; depending on the char pos			
 @skip_dad:	jmp TEMP_ADDR
 
 @shift1:	dad h
@@ -191,4 +198,3 @@ text_ex_line_spacing:
 text_ex_restore_pos_x:
 			mvi b, TEMP_BYTE
 			jmp text_ex_next_char
-.endf

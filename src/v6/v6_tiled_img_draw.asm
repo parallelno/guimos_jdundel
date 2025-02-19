@@ -5,7 +5,6 @@ TILED_IMG_TILE_H = 8
 TILE_IMG_TILE_LEN = TILED_IMG_TILE_H * TILED_IMG_SCR_BUFFS + 2 ; 8*4 bytes + a couple of safety bytes
 
 REPEATER_CODE = $FF
-EOF_CODE = $FFFF
 
 
 ; init the tiled image drawing
@@ -14,70 +13,69 @@ EOF_CODE = $FFFF
 ; c - gfx data ram-disk activation command
 ; de - idx data ptr
 ; hl - gfx data addr
-.function tiled_img_init()
-			sta draw_tiled_img_ramdisk_access_idxs + 1
+tiled_img_init:
+			sta tiled_img_draw_ramdisk_access_idxs + 1
 			mov a, c
-			sta draw_tiled_img_ramdisk_access_gfx + 1
+			sta tiled_img_draw_ramdisk_access_gfx + 1
 			; -TILE_IMG_TILE_LEN because there is no tile_gfx associated with idx = 0
 			; + PALETTE_LEN because the pallete is palette stored before gfx data
 			; + 4 because there are 4 reserved bytes stored before gfx data
 			LXI_B(-TILE_IMG_TILE_LEN + PALETTE_LEN + 4)
 			dad b
-			shld draw_tiled_img_gfx_addr + 1
+			shld tiled_img_draw_gfx_addr + 1
 			xchg
-			shld draw_tiled_img_data_addr + 1
-			;ret
-.endf
+			shld tiled_img_draw_data_addr + 1
+			ret
 
 ;----------------------------------------------------------------
 ; draw a tiled image (8x8 tiles)
 ; input:
 ; de - idx_data addr
 
-; if called draw_tiled_img_pos_offset
+; if called tiled_img_draw_pos_offset
 ; in: 
 ; hl - scr_addr_offset
 ; de - idx_data addr
 
-draw_tiled_img:
+tiled_img_draw:
 			lxi h, 0
-draw_tiled_img_pos_offset_set:
-			shld draw_tiled_img_pos_offset + 1
+tiled_img_draw_pos_offset_set:
+			shld tiled_img_draw_pos_offset + 1
 			; de - idx data addr in the ram-disk
-draw_tiled_img_data_addr:
+tiled_img_draw_data_addr:
 			lxi h, TEMP_ADDR
 			dad d			
 			push h
 			xchg
-draw_tiled_img_ramdisk_access_idxs:	
+tiled_img_draw_ramdisk_access_idxs:	
 			mvi a, TEMP_BYTE
 			push psw
 			; a - idx data ram-disk activation command
 			; de - points to the idx data len
 			call get_word_from_ram_disk
 			; bc = idxs_data_len
-			lxi d, tiled_img_idxs
+			lxi d, temp_buff
 			pop psw
 			pop h
 			inx h
 			inx h
 
 			; hl - idxs_data addr + 2, because the first two bytes are the length
-			; de - tiled_img_idxs temp buffer addr
+			; de - temp_buff temp buffer addr
 			; bc - length
 			; a - ram-disk activation command
 			; copy an image indices into a temp buffer			
 			mem_copy_from_ram_disk()
 
-draw_tiled_img_ramdisk_access_gfx:
+tiled_img_draw_ramdisk_access_gfx:
 			mvi a, TEMP_BYTE
 			RAM_DISK_ON_BANK()
 
-			lxi h, tiled_img_idxs
+			lxi h, temp_buff
 
 			; get scr addr
 			; add scr addr offset	
-draw_tiled_img_pos_offset:
+tiled_img_draw_pos_offset:
 			lxi b, TEMP_WORD
 			mov e, m
 			inx h
@@ -90,31 +88,30 @@ draw_tiled_img_pos_offset:
 			; de - scr addr
 			; store scr_x for restoration every new line
 			mov a, d
-			sta draw_tiled_img_restore_scr_x + 1
+			sta tiled_img_draw_restore_scr_x + 1
 
 			; bc - scr addr offset
 			; store scr_y_end for checking the end of drawing
 			mov a, m
 			add c
 			inx h
-			sta draw_tiled_img_check_end + 1
+			sta tiled_img_draw_check_end + 1
 
 			; store scr_x_end for checking the end of the line
 			mov a, m
 			add b
 			inx h
-			sta draw_tiled_img_check_end_line + 1
+			sta tiled_img_draw_check_end_line + 1
 			; de - scr addr
 			; hl - tile idx data ptr
-draw_tiled_img_loop:
+tiled_img_draw_loop:
 			; get tile_idx
 			mov c, m
-.breakpoint
 			inx h
 			; skip if tile_idx = 0
 			A_TO_ZERO(NULL)
 			ora c
-			jz draw_tiled_img_skip
+			jz tiled_img_draw_skip
 			cpi REPEATER_CODE
 			jnz @it_is_idx
 
@@ -137,7 +134,7 @@ draw_tiled_img_loop:
 			mov a, d
 			add b
 			mov d, a
-			jmp draw_tiled_img_check_end_line
+			jmp tiled_img_draw_check_end_line
 @it_is_idx:
 			mvi b, 1
 
@@ -145,9 +142,9 @@ draw_tiled_img_loop:
 			; c - tile_idx
 			; b - repeating counter
 			mov a, b
-			sta draw_tiled_img_repeating_counter
+			sta tiled_img_draw_repeating_counter
 			; tile gfx ptr = tile_gfxs_ptr + tile_idx * 34
-			shld draw_tiled_img_data_ptr + 1
+			shld tiled_img_draw_data_ptr + 1
 			mov l, c
 			mvi h, 0
 			; offset = tile_idx * 32
@@ -161,7 +158,7 @@ draw_tiled_img_loop:
 			; offset += tile_idx * 2
 			dad b
 			; add tile_gfxs_ptr
-draw_tiled_img_gfx_addr:
+tiled_img_draw_gfx_addr:
 			lxi b, TEMP_ADDR
 			dad b
 			; hl - tile gfx ptr
@@ -169,7 +166,6 @@ draw_tiled_img_gfx_addr:
 @repeat:
 @tile_gfx_addr:
 			lxi h, TEMP_ADDR
-.breakpoint			
 			TILED_IMG_DRAW_TILE()
 			xchg
 			; de - screen addr + $6000
@@ -177,35 +173,35 @@ draw_tiled_img_gfx_addr:
 			adi -$60 + 1
 			mov d, a
 			; de - scr_addr
-			lxi h, draw_tiled_img_repeating_counter
+			lxi h, tiled_img_draw_repeating_counter
 			dcr m
 			jnz @repeat
 			; restore a pointer to the next tile_idx
-draw_tiled_img_data_ptr:
+tiled_img_draw_data_ptr:
 			lxi h, TEMP_ADDR
-			; decr d register because to compensate the next inc d after draw_tiled_img_skip
+			; decr d register because to compensate the next inc d after tiled_img_draw_skip
 			dcr d
-draw_tiled_img_skip:
+tiled_img_draw_skip:
 			; advance pos_x to the next tile
 			inr d
-draw_tiled_img_check_end_line:
+tiled_img_draw_check_end_line:
 			mvi a, TEMP_BYTE
 			cmp d
-			jnz draw_tiled_img_loop
-draw_tiled_img_restore_scr_x:
+			jnz tiled_img_draw_loop
+tiled_img_draw_restore_scr_x:
 			; advance pos to a new line
 			mvi d, TEMP_BYTE
 			mvi a, TILED_IMG_TILE_H
 			add e
 			mov e, a
-draw_tiled_img_check_end:
+tiled_img_draw_check_end:
 			cpi TEMP_BYTE
-			jnz draw_tiled_img_loop
+			jnz tiled_img_draw_loop
 
 			RAM_DISK_OFF()
 			ret
 
-draw_tiled_img_repeating_counter:
+tiled_img_draw_repeating_counter:
 			.byte TEMP_BYTE
 
 ; min: 42*4 = 168cc
@@ -262,7 +258,7 @@ TILED_IMG_DRAW_DOWN = false
 			sphl
 			xchg
 
-			lxi d, $2000
+			lxi d, SCR_BUFF_LEN
 			; hl - screen buff addr
 			; sp - tile_gfx data
 			; de - next scr addr offset
@@ -276,4 +272,4 @@ TILED_IMG_DRAW_DOWN = false
 			lxi sp, 0x0002 ; set SP to addr imunne to potential data corruption
 .endmacro
 
-v6_draw_tiled_img_end:
+v6_tiled_img_draw_end:

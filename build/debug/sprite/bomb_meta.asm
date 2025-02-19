@@ -10,7 +10,7 @@ BOMB_FILENAME_PTR:
 			.byte "    " ; filename white chars
 			.byte "BIN" ; extension
 
-; relative labels. to make it global call __text_ex_rd_init
+; relative frame labels
 _bomb_run0_0 = 2
 _bomb_run0_1 = 44
 _bomb_run0_2 = 86

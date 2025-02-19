@@ -10,7 +10,7 @@ BURNER_FILENAME_PTR:
 			.byte "  " ; filename white chars
 			.byte "BIN" ; extension
 
-; relative labels. to make it global call __text_ex_rd_init
+; relative frame labels
 _burner_dash_0_0 = 2
 _burner_dash_0_1 = 176
 _burner_dash_0_2 = 350

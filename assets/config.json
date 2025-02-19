@@ -17,10 +17,10 @@
 			"level_gfx" : "scripts/export/export_level_gfx.py",
 			"music" : "scripts/export/export_music.py",
 			"font" : "scripts/export/export_font.py",
-			"image" : "scripts/export/export_image.py",
 			"tiled_img_data" : "scripts/export/export_tiled_img_data.py",
 			"tiled_img_gfx" : "scripts/export/export_tiled_img_gfx.py",
-			"text" : "scripts/export/export_text.py"
+			"text_eng" : "scripts/export/export_text.py",
+			"text_rus" : "scripts/export/export_text.py"
 		},
 		"scripts" : [
 			"assets/config.json",
@@ -93,7 +93,8 @@
 				"assets/sprites/scythe.json",				
 				"assets/sprites/vfx4.json",
 				"assets/levels/lv0_data.json",				
-				"assets/tiled_imgs/ti0_gfx.json"
+				"assets/tiled_imgs/ti0_gfx.json",
+				"assets/text/text_lv0.json"
 			]
 		}
 	}

@@ -111,7 +111,7 @@ def anims_to_asm(label_prefix, asset_name, asset_j, data_ptrs, source_j_path):
 			asm += "\n"
 
 	# add the list of frame labels and their addresses
-	frame_relative_labels_asm = "; relative labels. to make it global call __text_ex_rd_init\n"
+	frame_relative_labels_asm = "; relative frame labels\n"
 	for label_name, addr in data_ptrs.items():
 		frame_relative_labels_asm += f"{label_name} = {addr}\n"
 	frame_relative_labels_asm += "\n"

@@ -9,7 +9,7 @@
 ; uses:
 ; BC, DE, HL
 .function draw_fps()
-			lhld draw_text_restore_sp+1
+			lhld text_mono_draw_restore_sp+1
 			shld @tmp_restore_sp
 			;lxi h, @fps_text
 			;call int_to_ascii_hex
@@ -20,9 +20,9 @@
 
 			lxi h, @fps_text_hi
 			lxi b, FPS_SCR_ADDR
-			call draw_text
+			call text_mono_draw
 			lhld @tmp_restore_sp
-			shld draw_text_restore_sp+1
+			shld text_mono_draw_restore_sp+1
 			ret
 @fps_text_hi: ; do not use a shared text buffer because draw_fps is called in the int func
 			.byte $30, $30, $30, 0
@@ -30,6 +30,16 @@
 			.word TEMP_ADDR
 .endf
 
+;=============================================================================
+; ascii text temp buffer with a null terminator
+text_mono_buff_len5:
+			.storage 2
+text_mono_buff_len3:
+			.storage 1
+text_mono_buff_len2:
+			.storage 2
+			.byte EOD
+			
 /*
 ; 8-bit integer to ASCII (hex)
 ; in:
@@ -97,50 +107,44 @@ int8_to_ascii_dec_decr:
 			jc @loop
 			stax d
 			inx	d
-			ret ; because of .endif
+			ret
 
 ; draw int8 as an acii text
 ; in:
 ; bc - scr addr
 ; hl - int8 ptr
-draw_text_int8_ptr:
+text_mono_draw_int8_ptr:
 			mov l, m
 ; in:
 ; l - int8
-draw_text_int8:
+text_mono_draw_int8:
 			mvi h, 0
-			lxi d, draw_text_buff_3
+			lxi d, text_mono_buff_len3
 			push b
 			call int8_to_ascii_dec
 			pop b
 			; bc - text scr addr
-			lxi h, draw_text_buff_2
-			jmp draw_text
+			lxi h, text_mono_buff_len2
+			jmp text_mono_draw
 
 ; draw int8 as an acii text
 ; in:
 ; bc - scr addr
 ; hl - int16
-draw_text_int16:
-			lxi d, draw_text_buff_5
+text_mono_draw_int16:
+			lxi d, text_mono_buff_len5
 			push b
 			call int16_to_ascii_dec
 			pop b
 			; bc - text scr addr
-			lxi h, draw_text_buff_5
-			jmp draw_text
+			lxi h, text_mono_buff_len5
+			jmp text_mono_draw
 
-; asci text buffer with a nul terminator
-draw_text_buff_5:
-			.byte $30, $30
-draw_text_buff_3:
-			.byte $30,
-draw_text_buff_2:
-			.byte $30, $30, 0
+; draw mono spaced text
 ; input:
 ; hl - text addr
 ; bc - screen addr
-draw_text:
+text_mono_draw:
 			; get a char
 			mov e, m
 			; return if its code 0
@@ -158,14 +162,14 @@ draw_text:
 			dad h
 			dad h
 			dad h
-			lxi d, test_font - 384 ; 384 - to exclude alhabet and leave only numbers
+			lxi d, font_mono - 384 ; 384 - to exclude alhabet and leave only numbers
 			dad d
 			xchg
 
 			; store SP
 			lxi h, 0
 			dad sp
-			shld draw_text_restore_sp + 1
+			shld text_mono_draw_restore_sp + 1
 			; HL - char gfx addr
 			xchg
 			; DE - scr addr
@@ -178,8 +182,8 @@ draw_text:
 			inx h
 			sphl
 			xchg
-			DRAW_CHAR()
-draw_text_restore_sp:
+			DRAW_MONO_CHAR()
+text_mono_draw_restore_sp:
 			lxi sp, TEMP_ADDR
 			; move XY to the next char pos
 			lxi b, $0106
@@ -188,9 +192,9 @@ draw_text_restore_sp:
 			mov c, l
 
 			pop h
-			jmp draw_text
+			jmp text_mono_draw
 
-.macro DRAW_CHAR()
+.macro DRAW_MONO_CHAR()
 	line .var 0
 	.loop 4
 			line = line + 1
@@ -206,7 +210,7 @@ draw_text_restore_sp:
 	.endloop
 .endmacro
 
-test_font:
+font_mono:
 .if TEXT_MONOSPACED_CHARS
 			; space ($00)
 			.byte 0,0,0,0
