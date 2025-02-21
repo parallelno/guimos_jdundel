@@ -25,34 +25,140 @@ PARAG_SPACING_DEFAULT = -24
 			;ret ; commented because of .endf
 .endf
 
+; init the text ex functionality
+; in:
+; a - text data ram-disk activation command
+; b - font gfx ram-disk activation command
+; c - low_byte - GFX_PTRS_LEN
+; hl - text data addr (points to the addr where it was loaded)
+; e - SCR_BUFF3_ADDR or SCR_BUFF2_ADDR or SCR_BUFF1_ADDR
+; stack0 - return addr
+; stack1 - font global gfx addr (points to the addr where it was loaded)
+; stack2 - font_gfx_ptrs
 
 text_ex_init:
+			; set text data ram-disk activation command
+			sta text_ex_draw_ramdisk_access_data + 1
+			; set font gfx ram-disk activation command
+			mov a, b
+			sta text_ex_draw_ramdisk_access_gfx + 1
+			; set what scr buffers to draw to (SCR_BUFF3_ADDR, SCR_BUFF2_ADDR, SCR_BUFF1_ADDR)			
+			mov a, e
+			sta text_ex_scr_buff_addr + 1
+			; set text data addr
+			shld text_ex_draw_data_addr + 1
+			; font global gfx addr
+			pop h ; func return addr
+			xthl
+			xchg
+
+			mov a, c ; temporally store GFX_PTRS_LEN to A
+			
+			; font_gfx_ptrs
+			pop h ; func return addr
+			xthl
+			LXI_B(- ADDR_LEN)
+			dad b ; font_gfx_ptrs - ADDR_LEN ; because there is no char_code = 0
+			shld text_ex_draw_font_gfx_ptrs + 1
+			
+			mov c, a ; restore GFX_PTRS_LEN
+			
+			; update gfx local labels
+			; hl - font_gfx_ptrs
+			; de - font global gfx addr
+			; c - GFX_PTRS_LEN
+			update_labels()
+			ret
 
 
-; draw a text with kerning. blend func - OR
-; font gfx can be on the ram-disk. 
-; the text data should be reachable by non-stack
-; operations.
-; char_id = 0 is EOD
-; char_id = _LINE_BREAK_ is a new line
+; draw a text with kerning
 ; in:
-; de - text addr
-; bc - pos_xy
-; h - text gfx data ram-disk activation command
-; l - SCR_BUFF3_ADDR or SCR_BUFF2_ADDR or SCR_BUFF1_ADDR
+; de - local text addr
 
+; if called text_ex_draw_pos_offset_set
+; in:
+; de - local text addr
+; hl - scr_pos offset
+
+; blend func - OR
+; chat gfx data format:
+;	.byte offset_y
+;	.byte offset_x
+;	.word 16 pxls data. the first 8 pixels are empty to support shifting
+;	.byte pos_y_offset for the next char
+;	.byte pos_x_offset for the next char
+;	because the second byte of the each char line is 0, the sufficient 
+;	condition of the end of the char data is a non zero byte which is pos_x_offset
+; chat gfx data always follows safety pair of bytes for reading by POP B
+
+; text data format:
+;	.word data len to copy to ram
+; 	.byte scr pos_x
+;	.byte scr pos_y
+;	.byte char codes where 0 is the EOD, 255 is a new paragraph, 106 is a new line
+;
+;	before rendering a text its text is copied to the ram. Copied data does not 
+;	contain the length word.
+; text data always follows safety pair of bytes for reading by POP B
 text_ex_draw:
-			mov a, l
-			sta @scr_buff_addr+1
-			mov a, h
+			lxi h, 0
+text_ex_draw_pos_offset_set:
+			shld text_ex_draw_pos_offset + 1
+			; de - text data addr in the ram-disk
+text_ex_draw_data_addr:
+			lxi h, TEMP_ADDR
+			dad d
+			push h
+			xchg
+text_ex_draw_ramdisk_access_data:
+			mvi a, TEMP_BYTE
+			push psw
+			; a - idx data ram-disk activation command
+			; de - points to the idx data len
+			call get_word_from_ram_disk
+			; bc = idxs_data_len
+			lxi d, temp_buff
+			pop psw
+			pop h
+			inx h
+			inx h
+
+			; hl - text_data addr + 2, because the first two bytes are the length
+			; de - temp_buff addr
+			; bc - length
+			; a - ram-disk activation command
+			; copy text data into a temp buffer
+			mem_copy_from_ram_disk()
+
+text_ex_draw_ramdisk_access_gfx:
+			mvi a, TEMP_BYTE
 			RAM_DISK_ON_BANK()
 
+			lxi h, temp_buff
+			; get scr pos
+			; add scr pos offset
+text_ex_draw_pos_offset:
+			lxi b, TEMP_WORD
+			mov e, m
+			inx h
+			mov d, m
+			inx h
 			xchg
-			; hl - text addr
+			dad b
+			xchg
+			; de - scr pos
+
+
 			; store pos_x
-			mov a, b
+			mov a, d
 			sta text_ex_restore_pos_x + 1
-@next_char:
+			mov b, d
+			mov c, e
+
+
+			; bc - scr pos
+			; hl - text addr			
+text_ex_draw_next_char:
 			; get a char code
 			mov e, m
 			; return if it's 0
@@ -60,6 +166,7 @@ text_ex_draw:
 			ora e
 			jz restore_sp_ret
 			inx h
+			
 			; a - char_code
 			; check if it is the end of the line
 			cpi <_LINE_BREAK_
@@ -68,27 +175,29 @@ text_ex_draw:
 			cpi <_PARAG_BREAK_
 			jz text_ex_parag_spacing
 
-			mvi d, 0
-			shld @restore_text_addr + 1  ; preserve the text data ptr
+			shld text_ex_draw_restore_text_addr + 1  ; preserve the text data ptr
 			; preserve pos_xy
 			mov a, c
-			sta @restore_pos_xy + 1
+			sta text_ex_draw_restore_pos_xy + 1
 			mov a, b
-			sta @restore_pos_xy + 2
+			sta text_ex_draw_restore_pos_xy + 2
 
 			; get a char gfx pptr
 			xchg
+ 			; l = char_idx
+			mvi h, 0
 			dad h
-			lxi d, font_gfx_ptrs - ADDR_LEN ; because there is no char_code = 0
+text_ex_draw_font_gfx_ptrs:
+			lxi d, TEMP_ADDR ; font_gfx_ptrs - ADDR_LEN ; because there is no char_code = 0
 			dad d
 			; hl points to char gfx ptr
 			; get a char gfx ptr
 			mov e, m
 			inx h
 			mov d, m
-
 			xchg
 			; hl points to a char gfx
+
 			sphl
 			mov h, b
 			mov l, c
@@ -102,8 +211,8 @@ text_ex_draw:
 			mvi a, %111
 			ana h
 			; make a ptr to skip_dad dad h
-			; de = a * 2 + @skip_dad_ptrs
-			DE_TO_AX2_PLUS_INT16(@skip_dad_ptrs)
+			; de = a * 2 + text_ex_draw_skip_dad_ptrs
+			DE_TO_AX2_PLUS_INT16(text_ex_draw_skip_dad_ptrs)
 
 			; read skip_ptr
 			xchg
@@ -111,40 +220,40 @@ text_ex_draw:
 			inx h
 			mov h, m
 			mov l, a
-			shld @skip_dad + 1
+			shld text_ex_draw_skip_dad + 1
 
 			; de - scr pos
 			; pos_xy to scr addr
 			mvi a, %11111000
 			ana d
 			RRC_(3)
-@scr_buff_addr:
+text_ex_scr_buff_addr:
 			adi TEMP_BYTE	; for ex. >SCR_BUFF1_ADDR
 			mov d, a
 
 			; draw a char
-@loop:
+text_ex_draw_loop:
 			; de - scr addr
 			; shift a pair of gfx bytes
 			pop b
 			; check if it is the end of the char gfx
 			A_TO_ZERO(NULL)
 			ora b
-			jnz @advance_pos
+			jnz text_ex_draw_advance_pos
 			mov l, c
 			mov h, b
 
 			; shift char gfx runtime
-			; depending on the char pos			
-@skip_dad:	jmp TEMP_ADDR
+			; depending on the char pos
+text_ex_draw_skip_dad:	jmp TEMP_ADDR
 
-@shift1:	dad h
-@shift2:	dad h
-@shift3:	dad h
-@shift4:	dad h
-@shift5:	dad h
-@shift6:	dad h
-@shift7:	dad h
+text_ex_draw_shift1:	dad h
+text_ex_draw_shift2:	dad h
+text_ex_draw_shift3:	dad h
+text_ex_draw_shift4:	dad h
+text_ex_draw_shift5:	dad h
+text_ex_draw_shift6:	dad h
+text_ex_draw_shift7:	dad h
 
 			ldax d
 			ora h
@@ -155,34 +264,27 @@ text_ex_draw:
 			stax d
 			dcr d
 			inr e
-			jmp @loop
+			jmp text_ex_draw_loop
 
-@shift0:
+text_ex_draw_shift0:
 			ldax d
 			ora c
 			stax d
 			inr e
-			jmp @loop
+			jmp text_ex_draw_loop
 
-@advance_pos:
+text_ex_draw_advance_pos:
 			; bc - a pos offset
-@restore_sp:
 			lxi sp, 0x0002 ; safe SP addr
-@restore_pos_xy:
+text_ex_draw_restore_pos_xy:
 			lxi h, TEMP_WORD ; restore pos_xy
 			; advance a pos_xy to the next char
 			dad b
 			mov b, h
 			mov c, l
-@restore_text_addr:
+text_ex_draw_restore_text_addr:
 			lxi h, TEMP_ADDR ; retore text addr
-
-			jmp @next_char
-@skip_dad_ptrs:
-			.word @shift0, @shift1,	@shift2, @shift3, @shift4, @shift5, @shift6, @shift7
-
-text_ex_next_char: = @next_char
-
+			jmp text_ex_draw_next_char
 
 ; move a position to the next paragraph
 text_ex_parag_spacing:
@@ -197,4 +299,7 @@ text_ex_line_spacing:
 			mov c, a
 text_ex_restore_pos_x:
 			mvi b, TEMP_BYTE
-			jmp text_ex_next_char
+			jmp text_ex_draw_next_char
+
+text_ex_draw_skip_dad_ptrs:
+			.word text_ex_draw_shift0, text_ex_draw_shift1,	text_ex_draw_shift2, text_ex_draw_shift3, text_ex_draw_shift4, text_ex_draw_shift5, text_ex_draw_shift6, text_ex_draw_shift7

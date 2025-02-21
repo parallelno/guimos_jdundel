@@ -454,7 +454,7 @@ def get_load_mem_usage_report(
 		ram_disk_load.append(load_file)
 
 		ram_disk_load_addr += file_len
-
+ 
 	# calc free space
 	ram_disk_load_free = (build.RAM_DISK_LEN - 
 					   ram_disk_bank_idx * build.RAM_DISK_BANK_LEN - 
@@ -495,6 +495,7 @@ def get_load_asm(load_name, ram_load, ram_disk_load):
 
 	for load_file in ram_load:
 		name = load_file["name"]
+		asm += f"			RAM_DISK_S_{name} = RAM_DISK_OFF_CMD\n"
 		asm += f"			{name}_ADDR = STACK_MIN_ADDR - {load_file['addr']} - {name}_FILE_LEN\n"
 		asm += f"			LOAD_FILE({name}_FILENAME_PTR, 0, {name}_ADDR, {name}_FILE_LEN)\n\n"
 

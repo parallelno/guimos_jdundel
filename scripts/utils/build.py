@@ -61,14 +61,6 @@ LOCAL_SYMBOL_NAME = "LOCALIZATION"
 LOCAL_ENG	= '0'
 LOCAL_RUS	= '1'
 
-LINE_BREAK_S	= "LINE_BREAK"
-PARAG_BREAK_S	= "PARAG_BREAK"
-EOD_S			= "EOD"
-
-LINE_BREAK	= 0x6a # '\n'
-PARAG_BREAK	= 0xff
-EOD			= 0
-
 # global consts
 BUILD_PATH = "build/"
 

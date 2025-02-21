@@ -36,7 +36,7 @@ game_init:
 			;======================
 			; SONG01
 			;======================
-			
+
 			lxi d, SONG01_ADDR
 			lxi h, SONG01_ay_reg_data_ptrs
 			call v6_gc_init_song
@@ -45,17 +45,21 @@ game_init:
 			;======================
 			; FONT
 			;======================
-	
+
+			; init the text & font
+			mvi a, RAM_DISK_S_TEXT_LV0
+			lxi b, (RAM_DISK_S_FONT<<8) | GFX_PTRS_LEN
+			lxi h, TEXT_LV0_ADDR
+			lxi d, font_gfx_ptrs
+			push d
 			lxi d, FONT_ADDR
-			mvi c, GFX_PTRS_LEN
-			lxi h, font_gfx_ptrs
-			update_labels()
+			push d
+			mvi e, >SCR_BUFF1_ADDR
+			call text_ex_init
 
 			; draw a test text
-			;lxi d, __text_main_menu_settings
-			lxi b, (0)<<8 | 100
-			lxi h, >SCR_BUFF1_ADDR
-			;call text_ex_draw
+			lxi d, _options_screen_settings_names
+			call text_ex_draw
 
 			ei
 
@@ -80,7 +84,7 @@ game_init:
 
 		frame .var 0
 		shift .var 0
-@loop:			
+@loop:
 			shift = 2
 
 			frame = 0
@@ -118,11 +122,11 @@ game_init:
 			lxi d, 0xB0A0
 			mvi a, RAM_DISK_S_BURNER
 			call sprite_draw_vm
-			call wait			
+			call wait
 
-			jmp @loop		
+			jmp @loop
 
-			
+
 			ret
 
 wait:

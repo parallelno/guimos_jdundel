@@ -2,473 +2,473 @@ _font_gfx:
 			.word 0 ; safety pair of bytes for reading by POP B
 _font_0:
 			.byte 0, 0 ; offset_y, offset_x
-			.word 112,136,136,136,136,136,136,136,112,
-			.byte 0, 6 ; next_char_offset
+			.word 0x70,0x88,0x88,0x88,0x88,0x88,0x88,0x88,0x70,
+			.byte 0, 6 ; next_char_pos_y_offset, next_char_pos_x_offset
 
 			.word 0 ; safety pair of bytes for reading by POP B
 _font_1:
 			.byte 0, 0 ; offset_y, offset_x
-			.word 64,64,64,64,64,64,64,192,64,
-			.byte 0, 3 ; next_char_offset
+			.word 0x40,0x40,0x40,0x40,0x40,0x40,0x40,0xC0,0x40,
+			.byte 0, 3 ; next_char_pos_y_offset, next_char_pos_x_offset
 
 			.word 0 ; safety pair of bytes for reading by POP B
 _font_2:
 			.byte 0, 0 ; offset_y, offset_x
-			.word 248,128,128,96,16,8,136,136,112,
-			.byte 0, 6 ; next_char_offset
+			.word 0xF8,0x80,0x80,0x60,0x10,0x8,0x88,0x88,0x70,
+			.byte 0, 6 ; next_char_pos_y_offset, next_char_pos_x_offset
 
 			.word 0 ; safety pair of bytes for reading by POP B
 _font_3:
 			.byte 0, 0 ; offset_y, offset_x
-			.word 112,136,8,8,16,8,136,136,112,
-			.byte 0, 6 ; next_char_offset
+			.word 0x70,0x88,0x8,0x8,0x10,0x8,0x88,0x88,0x70,
+			.byte 0, 6 ; next_char_pos_y_offset, next_char_pos_x_offset
 
 			.word 0 ; safety pair of bytes for reading by POP B
 _font_4:
 			.byte 0, 0 ; offset_y, offset_x
-			.word 16,16,16,16,248,144,144,80,80,
-			.byte 0, 6 ; next_char_offset
+			.word 0x10,0x10,0x10,0x10,0xF8,0x90,0x90,0x50,0x50,
+			.byte 0, 6 ; next_char_pos_y_offset, next_char_pos_x_offset
 
 			.word 0 ; safety pair of bytes for reading by POP B
 _font_5:
 			.byte 0, 0 ; offset_y, offset_x
-			.word 112,136,136,8,8,240,128,128,248,
-			.byte 0, 6 ; next_char_offset
+			.word 0x70,0x88,0x88,0x8,0x8,0xF0,0x80,0x80,0xF8,
+			.byte 0, 6 ; next_char_pos_y_offset, next_char_pos_x_offset
 
 			.word 0 ; safety pair of bytes for reading by POP B
 _font_6:
 			.byte 0, 0 ; offset_y, offset_x
-			.word 112,136,136,136,240,128,136,136,112,
-			.byte 0, 6 ; next_char_offset
+			.word 0x70,0x88,0x88,0x88,0xF0,0x80,0x88,0x88,0x70,
+			.byte 0, 6 ; next_char_pos_y_offset, next_char_pos_x_offset
 
 			.word 0 ; safety pair of bytes for reading by POP B
 _font_7:
 			.byte 0, 0 ; offset_y, offset_x
-			.word 64,64,64,64,32,16,16,16,240,
-			.byte 0, 5 ; next_char_offset
+			.word 0x40,0x40,0x40,0x40,0x20,0x10,0x10,0x10,0xF0,
+			.byte 0, 5 ; next_char_pos_y_offset, next_char_pos_x_offset
 
 			.word 0 ; safety pair of bytes for reading by POP B
 _font_8:
 			.byte 0, 0 ; offset_y, offset_x
-			.word 112,136,136,136,112,136,136,136,112,
-			.byte 0, 6 ; next_char_offset
+			.word 0x70,0x88,0x88,0x88,0x70,0x88,0x88,0x88,0x70,
+			.byte 0, 6 ; next_char_pos_y_offset, next_char_pos_x_offset
 
 			.word 0 ; safety pair of bytes for reading by POP B
 _font_9:
 			.byte 0, 0 ; offset_y, offset_x
-			.word 112,8,8,8,120,136,136,136,112,
-			.byte 0, 6 ; next_char_offset
+			.word 0x70,0x8,0x8,0x8,0x78,0x88,0x88,0x88,0x70,
+			.byte 0, 6 ; next_char_pos_y_offset, next_char_pos_x_offset
 
 			.word 0 ; safety pair of bytes for reading by POP B
 _font_space:
 			.byte 0, 0 ; offset_y, offset_x
-			.word 0,
-			.byte 0, 5 ; next_char_offset
+			.word 0x0,
+			.byte 0, 5 ; next_char_pos_y_offset, next_char_pos_x_offset
 
 			.word 0 ; safety pair of bytes for reading by POP B
 _font_exclamation:
 			.byte 0, 0 ; offset_y, offset_x
-			.word 128,0,128,128,128,128,128,128,128,128,
-			.byte 0, 2 ; next_char_offset
+			.word 0x80,0x0,0x80,0x80,0x80,0x80,0x80,0x80,0x80,0x80,
+			.byte 0, 2 ; next_char_pos_y_offset, next_char_pos_x_offset
 
 			.word 0 ; safety pair of bytes for reading by POP B
 _font_d_quote:
 			.byte 0, 0 ; offset_y, offset_x
-			.word 240,
-			.byte 0, 5 ; next_char_offset
+			.word 0xF0,
+			.byte 0, 5 ; next_char_pos_y_offset, next_char_pos_x_offset
 
 			.word 0 ; safety pair of bytes for reading by POP B
 _font_ampersand:
 			.byte 0, 0 ; offset_y, offset_x
-			.word 113,138,132,138,80,48,72,72,48,
-			.byte 0, 9 ; next_char_offset
+			.word 0x71,0x8A,0x84,0x8A,0x50,0x30,0x48,0x48,0x30,
+			.byte 0, 9 ; next_char_pos_y_offset, next_char_pos_x_offset
 
 			.word 0 ; safety pair of bytes for reading by POP B
 _font_hash:
 			.byte 0, 0 ; offset_y, offset_x
-			.word 240,
-			.byte 0, 5 ; next_char_offset
+			.word 0xF0,
+			.byte 0, 5 ; next_char_pos_y_offset, next_char_pos_x_offset
 
 			.word 0 ; safety pair of bytes for reading by POP B
 _font_dollar:
 			.byte 0, 0 ; offset_y, offset_x
-			.word 240,
-			.byte 0, 5 ; next_char_offset
+			.word 0xF0,
+			.byte 0, 5 ; next_char_pos_y_offset, next_char_pos_x_offset
 
 			.word 0 ; safety pair of bytes for reading by POP B
 _font_percent:
 			.byte 0, 0 ; offset_y, offset_x
-			.word 240,
-			.byte 0, 5 ; next_char_offset
+			.word 0xF0,
+			.byte 0, 5 ; next_char_pos_y_offset, next_char_pos_x_offset
 
 			.word 0 ; safety pair of bytes for reading by POP B
 _font_ampercent:
 			.byte 0, 0 ; offset_y, offset_x
-			.word 240,
-			.byte 0, 5 ; next_char_offset
+			.word 0xF0,
+			.byte 0, 5 ; next_char_pos_y_offset, next_char_pos_x_offset
 
 			.word 0 ; safety pair of bytes for reading by POP B
 _font_quote:
 			.byte 8, 0 ; offset_y, offset_x
-			.word 128,64,
-			.byte 0, 3 ; next_char_offset
+			.word 0x80,0x40,
+			.byte 0, 3 ; next_char_pos_y_offset, next_char_pos_x_offset
 
 			.word 0 ; safety pair of bytes for reading by POP B
 _font_parent_l:
 			.byte 0, 0 ; offset_y, offset_x
-			.word 32,64,128,128,128,128,64,32,
-			.byte 0, 4 ; next_char_offset
+			.word 0x20,0x40,0x80,0x80,0x80,0x80,0x40,0x20,
+			.byte 0, 4 ; next_char_pos_y_offset, next_char_pos_x_offset
 
 			.word 0 ; safety pair of bytes for reading by POP B
 _font_parent_r:
 			.byte 0, 0 ; offset_y, offset_x
-			.word 128,64,32,32,32,32,64,128,
-			.byte 0, 4 ; next_char_offset
+			.word 0x80,0x40,0x20,0x20,0x20,0x20,0x40,0x80,
+			.byte 0, 4 ; next_char_pos_y_offset, next_char_pos_x_offset
 
 			.word 0 ; safety pair of bytes for reading by POP B
 _font_comma:
 			.byte -1, -1 ; offset_y, offset_x
-			.word 128,64,
-			.byte 0, 3 ; next_char_offset
+			.word 0x80,0x40,
+			.byte 0, 3 ; next_char_pos_y_offset, next_char_pos_x_offset
 
 			.word 0 ; safety pair of bytes for reading by POP B
 _font_dash:
 			.byte 3, 0 ; offset_y, offset_x
-			.word 248,
-			.byte 0, 6 ; next_char_offset
+			.word 0xF8,
+			.byte 0, 6 ; next_char_pos_y_offset, next_char_pos_x_offset
 
 			.word 0 ; safety pair of bytes for reading by POP B
 _font_period:
 			.byte 0, 0 ; offset_y, offset_x
-			.word 128,
-			.byte 0, 2 ; next_char_offset
+			.word 0x80,
+			.byte 0, 2 ; next_char_pos_y_offset, next_char_pos_x_offset
 
 			.word 0 ; safety pair of bytes for reading by POP B
 _font_colon:
 			.byte 1, 0 ; offset_y, offset_x
-			.word 128,0,0,128,
-			.byte 0, 2 ; next_char_offset
+			.word 0x80,0x0,0x0,0x80,
+			.byte 0, 2 ; next_char_pos_y_offset, next_char_pos_x_offset
 
 			.word 0 ; safety pair of bytes for reading by POP B
 _font_equal:
 			.byte 0, 0 ; offset_y, offset_x
-			.word 240,
-			.byte 0, 5 ; next_char_offset
+			.word 0xF0,
+			.byte 0, 5 ; next_char_pos_y_offset, next_char_pos_x_offset
 
 			.word 0 ; safety pair of bytes for reading by POP B
 _font_question:
 			.byte 0, 0 ; offset_y, offset_x
-			.word 32,0,32,32,16,24,8,8,136,112,
-			.byte 0, 6 ; next_char_offset
+			.word 0x20,0x0,0x20,0x20,0x10,0x18,0x8,0x8,0x88,0x70,
+			.byte 0, 6 ; next_char_pos_y_offset, next_char_pos_x_offset
 
 			.word 0 ; safety pair of bytes for reading by POP B
 _font_A:
 			.byte 0, 0 ; offset_y, offset_x
-			.word 196,68,68,124,40,40,16,16,16,
-			.byte 0, 7 ; next_char_offset
+			.word 0xC4,0x44,0x44,0x7C,0x28,0x28,0x10,0x10,0x10,
+			.byte 0, 7 ; next_char_pos_y_offset, next_char_pos_x_offset
 
 			.word 0 ; safety pair of bytes for reading by POP B
 _font_B:
 			.byte 0, -1 ; offset_y, offset_x
-			.word 124,34,34,34,36,56,36,164,120,
-			.byte 0, 7 ; next_char_offset
+			.word 0x7C,0x22,0x22,0x22,0x24,0x38,0x24,0xA4,0x78,
+			.byte 0, 7 ; next_char_pos_y_offset, next_char_pos_x_offset
 
 			.word 0 ; safety pair of bytes for reading by POP B
 _font_C:
 			.byte 0, 0 ; offset_y, offset_x
-			.word 112,200,136,128,128,128,128,200,112,
-			.byte 0, 6 ; next_char_offset
+			.word 0x70,0xC8,0x88,0x80,0x80,0x80,0x80,0xC8,0x70,
+			.byte 0, 6 ; next_char_pos_y_offset, next_char_pos_x_offset
 
 			.word 0 ; safety pair of bytes for reading by POP B
 _font_D:
 			.byte 0, 0 ; offset_y, offset_x
-			.word 240,72,72,72,72,72,72,72,240,
-			.byte 0, 6 ; next_char_offset
+			.word 0xF0,0x48,0x48,0x48,0x48,0x48,0x48,0x48,0xF0,
+			.byte 0, 6 ; next_char_pos_y_offset, next_char_pos_x_offset
 
 			.word 0 ; safety pair of bytes for reading by POP B
 _font_E:
 			.byte 0, 0 ; offset_y, offset_x
-			.word 248,72,64,80,112,80,64,72,248,
-			.byte 0, 6 ; next_char_offset
+			.word 0xF8,0x48,0x40,0x50,0x70,0x50,0x40,0x48,0xF8,
+			.byte 0, 6 ; next_char_pos_y_offset, next_char_pos_x_offset
 
 			.word 0 ; safety pair of bytes for reading by POP B
 _font_F:
 			.byte 0, 0 ; offset_y, offset_x
-			.word 192,64,64,80,112,80,64,72,248,
-			.byte 0, 6 ; next_char_offset
+			.word 0xC0,0x40,0x40,0x50,0x70,0x50,0x40,0x48,0xF8,
+			.byte 0, 6 ; next_char_pos_y_offset, next_char_pos_x_offset
 
 			.word 0 ; safety pair of bytes for reading by POP B
 _font_G:
 			.byte -2, -1 ; offset_y, offset_x
-			.word 4,4,116,204,140,140,132,156,128,196,120,
-			.byte 0, 7 ; next_char_offset
+			.word 0x4,0x4,0x74,0xCC,0x8C,0x8C,0x84,0x9C,0x80,0xC4,0x78,
+			.byte 0, 7 ; next_char_pos_y_offset, next_char_pos_x_offset
 
 			.word 0 ; safety pair of bytes for reading by POP B
 _font_H:
 			.byte 0, 0 ; offset_y, offset_x
-			.word 72,72,72,72,120,72,72,72,200,
-			.byte 0, 6 ; next_char_offset
+			.word 0x48,0x48,0x48,0x48,0x78,0x48,0x48,0x48,0xC8,
+			.byte 0, 6 ; next_char_pos_y_offset, next_char_pos_x_offset
 
 			.word 0 ; safety pair of bytes for reading by POP B
 _font_I:
 			.byte 0, 0 ; offset_y, offset_x
-			.word 224,64,64,64,64,64,64,64,192,
-			.byte 0, 4 ; next_char_offset
+			.word 0xE0,0x40,0x40,0x40,0x40,0x40,0x40,0x40,0xC0,
+			.byte 0, 4 ; next_char_pos_y_offset, next_char_pos_x_offset
 
 			.word 0 ; safety pair of bytes for reading by POP B
 _font_J:
 			.byte 0, 0 ; offset_y, offset_x
-			.word 96,208,144,16,16,16,16,16,56,
-			.byte 0, 6 ; next_char_offset
+			.word 0x60,0xD0,0x90,0x10,0x10,0x10,0x10,0x10,0x38,
+			.byte 0, 6 ; next_char_pos_y_offset, next_char_pos_x_offset
 
 			.word 0 ; safety pair of bytes for reading by POP B
 _font_K:
 			.byte 0, 0 ; offset_y, offset_x
-			.word 228,76,88,112,112,80,72,72,196,
-			.byte 0, 7 ; next_char_offset
+			.word 0xE4,0x4C,0x58,0x70,0x70,0x50,0x48,0x48,0xC4,
+			.byte 0, 7 ; next_char_pos_y_offset, next_char_pos_x_offset
 
 			.word 0 ; safety pair of bytes for reading by POP B
 _font_L:
 			.byte 0, 0 ; offset_y, offset_x
-			.word 248,72,72,64,64,64,64,64,192,
-			.byte 0, 6 ; next_char_offset
+			.word 0xF8,0x48,0x48,0x40,0x40,0x40,0x40,0x40,0xC0,
+			.byte 0, 6 ; next_char_pos_y_offset, next_char_pos_x_offset
 
 			.word 0 ; safety pair of bytes for reading by POP B
 _font_M:
 			.byte 0, 0 ; offset_y, offset_x
-			.word 65,65,65,73,93,119,99,99,193,1,
-			.byte 0, 9 ; next_char_offset
+			.word 0x41,0x41,0x41,0x49,0x5D,0x77,0x63,0x63,0xC1,0x1,
+			.byte 0, 9 ; next_char_pos_y_offset, next_char_pos_x_offset
 
 			.word 0 ; safety pair of bytes for reading by POP B
 _font_N:
 			.byte 0, 0 ; offset_y, offset_x
-			.word 196,68,76,92,92,116,100,68,196,
-			.byte 0, 7 ; next_char_offset
+			.word 0xC4,0x44,0x4C,0x5C,0x5C,0x74,0x64,0x44,0xC4,
+			.byte 0, 7 ; next_char_pos_y_offset, next_char_pos_x_offset
 
 			.word 0 ; safety pair of bytes for reading by POP B
 _font_O:
 			.byte 0, 0 ; offset_y, offset_x
-			.word 48,72,132,132,180,132,132,72,48,
-			.byte 0, 7 ; next_char_offset
+			.word 0x30,0x48,0x84,0x84,0xB4,0x84,0x84,0x48,0x30,
+			.byte 0, 7 ; next_char_pos_y_offset, next_char_pos_x_offset
 
 			.word 0 ; safety pair of bytes for reading by POP B
 _font_P:
 			.byte 0, 0 ; offset_y, offset_x
-			.word 224,64,64,64,112,72,72,72,240,
-			.byte 0, 6 ; next_char_offset
+			.word 0xE0,0x40,0x40,0x40,0x70,0x48,0x48,0x48,0xF0,
+			.byte 0, 6 ; next_char_pos_y_offset, next_char_pos_x_offset
 
 			.word 0 ; safety pair of bytes for reading by POP B
 _font_Q:
 			.byte -1, -1 ; offset_y, offset_x
-			.word 12,44,88,132,132,180,132,132,72,48,
-			.byte 0, 7 ; next_char_offset
+			.word 0xC,0x2C,0x58,0x84,0x84,0xB4,0x84,0x84,0x48,0x30,
+			.byte 0, 7 ; next_char_pos_y_offset, next_char_pos_x_offset
 
 			.word 0 ; safety pair of bytes for reading by POP B
 _font_R:
 			.byte -2, -1 ; offset_y, offset_x
-			.word 7,8,200,80,80,96,80,72,72,72,240,
-			.byte 0, 6 ; next_char_offset
+			.word 0x7,0x8,0xC8,0x50,0x50,0x60,0x50,0x48,0x48,0x48,0xF0,
+			.byte 0, 6 ; next_char_pos_y_offset, next_char_pos_x_offset
 
 			.word 0 ; safety pair of bytes for reading by POP B
 _font_S:
 			.byte 0, 0 ; offset_y, offset_x
-			.word 112,200,136,16,32,64,136,136,112,
-			.byte 0, 6 ; next_char_offset
+			.word 0x70,0xC8,0x88,0x10,0x20,0x40,0x88,0x88,0x70,
+			.byte 0, 6 ; next_char_pos_y_offset, next_char_pos_x_offset
 
 			.word 0 ; safety pair of bytes for reading by POP B
 _font_T:
 			.byte 0, 0 ; offset_y, offset_x
-			.word 56,16,16,16,16,16,16,146,254,
-			.byte 0, 8 ; next_char_offset
+			.word 0x38,0x10,0x10,0x10,0x10,0x10,0x10,0x92,0xFE,
+			.byte 0, 8 ; next_char_pos_y_offset, next_char_pos_x_offset
 
 			.word 0 ; safety pair of bytes for reading by POP B
 _font_U:
 			.byte 0, 0 ; offset_y, offset_x
-			.word 48,104,68,68,68,68,68,68,198,
-			.byte 0, 8 ; next_char_offset
+			.word 0x30,0x68,0x44,0x44,0x44,0x44,0x44,0x44,0xC6,
+			.byte 0, 8 ; next_char_pos_y_offset, next_char_pos_x_offset
 
 			.word 0 ; safety pair of bytes for reading by POP B
 _font_V:
 			.byte 0, 0 ; offset_y, offset_x
-			.word 16,16,56,56,40,40,68,68,198,
-			.byte 0, 8 ; next_char_offset
+			.word 0x10,0x10,0x38,0x38,0x28,0x28,0x44,0x44,0xC6,
+			.byte 0, 8 ; next_char_pos_y_offset, next_char_pos_x_offset
 
 			.word 0 ; safety pair of bytes for reading by POP B
 _font_W:
 			.byte 0, 0 ; offset_y, offset_x
-			.word 34,34,34,119,85,73,73,73,201,
-			.byte 0, 9 ; next_char_offset
+			.word 0x22,0x22,0x22,0x77,0x55,0x49,0x49,0x49,0xC9,
+			.byte 0, 9 ; next_char_pos_y_offset, next_char_pos_x_offset
 
 			.word 0 ; safety pair of bytes for reading by POP B
 _font_X:
 			.byte 0, 0 ; offset_y, offset_x
-			.word 132,140,72,120,48,48,104,200,132,
-			.byte 0, 7 ; next_char_offset
+			.word 0x84,0x8C,0x48,0x78,0x30,0x30,0x68,0xC8,0x84,
+			.byte 0, 7 ; next_char_pos_y_offset, next_char_pos_x_offset
 
 			.word 0 ; safety pair of bytes for reading by POP B
 _font_Y:
 			.byte 0, 0 ; offset_y, offset_x
-			.word 56,16,16,16,56,40,104,68,198,
-			.byte 0, 8 ; next_char_offset
+			.word 0x38,0x10,0x10,0x10,0x38,0x28,0x68,0x44,0xC6,
+			.byte 0, 8 ; next_char_pos_y_offset, next_char_pos_x_offset
 
 			.word 0 ; safety pair of bytes for reading by POP B
 _font_Z:
 			.byte 0, 0 ; offset_y, offset_x
-			.word 252,196,64,32,32,16,72,76,252,
-			.byte 0, 7 ; next_char_offset
+			.word 0xFC,0xC4,0x40,0x20,0x20,0x10,0x48,0x4C,0xFC,
+			.byte 0, 7 ; next_char_pos_y_offset, next_char_pos_x_offset
 
 			.word 0 ; safety pair of bytes for reading by POP B
 _font_a:
 			.byte 0, 0 ; offset_y, offset_x
-			.word 136,240,144,144,80,112,
-			.byte 0, 5 ; next_char_offset
+			.word 0x88,0xF0,0x90,0x90,0x50,0x70,
+			.byte 0, 5 ; next_char_pos_y_offset, next_char_pos_x_offset
 
 			.word 0 ; safety pair of bytes for reading by POP B
 _font_b:
 			.byte 0, 0 ; offset_y, offset_x
-			.word 224,144,144,144,144,224,128,128,
-			.byte 0, 5 ; next_char_offset
+			.word 0xE0,0x90,0x90,0x90,0x90,0xE0,0x80,0x80,
+			.byte 0, 5 ; next_char_pos_y_offset, next_char_pos_x_offset
 
 			.word 0 ; safety pair of bytes for reading by POP B
 _font_c:
 			.byte 0, 0 ; offset_y, offset_x
-			.word 96,144,144,128,144,96,
-			.byte 0, 5 ; next_char_offset
+			.word 0x60,0x90,0x90,0x80,0x90,0x60,
+			.byte 0, 5 ; next_char_pos_y_offset, next_char_pos_x_offset
 
 			.word 0 ; safety pair of bytes for reading by POP B
 _font_d:
 			.byte 0, 0 ; offset_y, offset_x
-			.word 112,144,144,144,144,112,16,16,
-			.byte 0, 5 ; next_char_offset
+			.word 0x70,0x90,0x90,0x90,0x90,0x70,0x10,0x10,
+			.byte 0, 5 ; next_char_pos_y_offset, next_char_pos_x_offset
 
 			.word 0 ; safety pair of bytes for reading by POP B
 _font_e:
 			.byte 0, 0 ; offset_y, offset_x
-			.word 240,144,128,192,144,224,
-			.byte 0, 5 ; next_char_offset
+			.word 0xF0,0x90,0x80,0xC0,0x90,0xE0,
+			.byte 0, 5 ; next_char_pos_y_offset, next_char_pos_x_offset
 
 			.word 0 ; safety pair of bytes for reading by POP B
 _font_f:
 			.byte 0, 0 ; offset_y, offset_x
-			.word 64,64,64,64,64,240,64,64,60,
-			.byte 0, 5 ; next_char_offset
+			.word 0x40,0x40,0x40,0x40,0x40,0xF0,0x40,0x40,0x3C,
+			.byte 0, 5 ; next_char_pos_y_offset, next_char_pos_x_offset
 
 			.word 0 ; safety pair of bytes for reading by POP B
 _font_g:
 			.byte -2, -3 ; offset_y, offset_x
-			.word 248,4,28,36,36,36,36,28,
-			.byte 0, 5 ; next_char_offset
+			.word 0xF8,0x4,0x1C,0x24,0x24,0x24,0x24,0x1C,
+			.byte 0, 5 ; next_char_pos_y_offset, next_char_pos_x_offset
 
 			.word 0 ; safety pair of bytes for reading by POP B
 _font_h:
 			.byte 0, 0 ; offset_y, offset_x
-			.word 144,144,144,240,144,144,
-			.byte 0, 5 ; next_char_offset
+			.word 0x90,0x90,0x90,0xF0,0x90,0x90,
+			.byte 0, 5 ; next_char_pos_y_offset, next_char_pos_x_offset
 
 			.word 0 ; safety pair of bytes for reading by POP B
 _font_i:
 			.byte 0, 0 ; offset_y, offset_x
-			.word 64,64,64,64,64,192,0,64,
-			.byte 0, 3 ; next_char_offset
+			.word 0x40,0x40,0x40,0x40,0x40,0xC0,0x0,0x40,
+			.byte 0, 3 ; next_char_pos_y_offset, next_char_pos_x_offset
 
 			.word 0 ; safety pair of bytes for reading by POP B
 _font_j:
 			.byte -3, -2 ; offset_y, offset_x
-			.word 128,64,64,64,64,64,64,64,64,0,64,
-			.byte 0, 2 ; next_char_offset
+			.word 0x80,0x40,0x40,0x40,0x40,0x40,0x40,0x40,0x40,0x0,0x40,
+			.byte 0, 2 ; next_char_pos_y_offset, next_char_pos_x_offset
 
 			.word 0 ; safety pair of bytes for reading by POP B
 _font_k:
 			.byte 0, 0 ; offset_y, offset_x
-			.word 88,96,80,80,72,200,
-			.byte 0, 6 ; next_char_offset
+			.word 0x58,0x60,0x50,0x50,0x48,0xC8,
+			.byte 0, 6 ; next_char_pos_y_offset, next_char_pos_x_offset
 
 			.word 0 ; safety pair of bytes for reading by POP B
 _font_l:
 			.byte 0, 0 ; offset_y, offset_x
-			.word 240,144,128,128,128,128,
-			.byte 0, 5 ; next_char_offset
+			.word 0xF0,0x90,0x80,0x80,0x80,0x80,
+			.byte 0, 5 ; next_char_pos_y_offset, next_char_pos_x_offset
 
 			.word 0 ; safety pair of bytes for reading by POP B
 _font_m:
 			.byte 0, 0 ; offset_y, offset_x
-			.word 172,168,168,168,168,208,
-			.byte 0, 7 ; next_char_offset
+			.word 0xAC,0xA8,0xA8,0xA8,0xA8,0xD0,
+			.byte 0, 7 ; next_char_pos_y_offset, next_char_pos_x_offset
 
 			.word 0 ; safety pair of bytes for reading by POP B
 _font_n:
 			.byte 0, 0 ; offset_y, offset_x
-			.word 144,144,144,144,144,224,
-			.byte 0, 5 ; next_char_offset
+			.word 0x90,0x90,0x90,0x90,0x90,0xE0,
+			.byte 0, 5 ; next_char_pos_y_offset, next_char_pos_x_offset
 
 			.word 0 ; safety pair of bytes for reading by POP B
 _font_o:
 			.byte 0, 0 ; offset_y, offset_x
-			.word 112,136,168,136,136,112,
-			.byte 0, 6 ; next_char_offset
+			.word 0x70,0x88,0xA8,0x88,0x88,0x70,
+			.byte 0, 6 ; next_char_pos_y_offset, next_char_pos_x_offset
 
 			.word 0 ; safety pair of bytes for reading by POP B
 _font_p:
 			.byte -4, -2 ; offset_y, offset_x
-			.word 64,64,64,64,112,72,72,72,72,240,
-			.byte 0, 5 ; next_char_offset
+			.word 0x40,0x40,0x40,0x40,0x70,0x48,0x48,0x48,0x48,0xF0,
+			.byte 0, 5 ; next_char_pos_y_offset, next_char_pos_x_offset
 
 			.word 0 ; safety pair of bytes for reading by POP B
 _font_q:
 			.byte -1, -1 ; offset_y, offset_x
-			.word 4,104,144,168,136,136,112,
-			.byte 0, 6 ; next_char_offset
+			.word 0x4,0x68,0x90,0xA8,0x88,0x88,0x70,
+			.byte 0, 6 ; next_char_pos_y_offset, next_char_pos_x_offset
 
 			.word 0 ; safety pair of bytes for reading by POP B
 _font_r:
 			.byte -2, -1 ; offset_y, offset_x
-			.word 12,16,80,96,80,80,80,224,
-			.byte 0, 5 ; next_char_offset
+			.word 0xC,0x10,0x50,0x60,0x50,0x50,0x50,0xE0,
+			.byte 0, 5 ; next_char_pos_y_offset, next_char_pos_x_offset
 
 			.word 0 ; safety pair of bytes for reading by POP B
 _font_s:
 			.byte 0, 0 ; offset_y, offset_x
-			.word 224,16,16,224,128,96,
-			.byte 0, 5 ; next_char_offset
+			.word 0xE0,0x10,0x10,0xE0,0x80,0x60,
+			.byte 0, 5 ; next_char_pos_y_offset, next_char_pos_x_offset
 
 			.word 0 ; safety pair of bytes for reading by POP B
 _font_t:
 			.byte -1, -1 ; offset_y, offset_x
-			.word 48,64,64,64,64,64,240,64,64,64,
-			.byte 0, 5 ; next_char_offset
+			.word 0x30,0x40,0x40,0x40,0x40,0x40,0xF0,0x40,0x40,0x40,
+			.byte 0, 5 ; next_char_pos_y_offset, next_char_pos_x_offset
 
 			.word 0 ; safety pair of bytes for reading by POP B
 _font_u:
 			.byte 0, 0 ; offset_y, offset_x
-			.word 112,136,136,136,136,136,
-			.byte 0, 6 ; next_char_offset
+			.word 0x70,0x88,0x88,0x88,0x88,0x88,
+			.byte 0, 6 ; next_char_pos_y_offset, next_char_pos_x_offset
 
 			.word 0 ; safety pair of bytes for reading by POP B
 _font_v:
 			.byte 0, 0 ; offset_y, offset_x
-			.word 32,112,80,136,136,136,
-			.byte 0, 6 ; next_char_offset
+			.word 0x20,0x70,0x50,0x88,0x88,0x88,
+			.byte 0, 6 ; next_char_pos_y_offset, next_char_pos_x_offset
 
 			.word 0 ; safety pair of bytes for reading by POP B
 _font_w:
 			.byte 0, 0 ; offset_y, offset_x
-			.word 80,168,168,168,136,136,
-			.byte 0, 6 ; next_char_offset
+			.word 0x50,0xA8,0xA8,0xA8,0x88,0x88,
+			.byte 0, 6 ; next_char_pos_y_offset, next_char_pos_x_offset
 
 			.word 0 ; safety pair of bytes for reading by POP B
 _font_x:
 			.byte 0, 0 ; offset_y, offset_x
-			.word 144,144,96,96,144,144,
-			.byte 0, 5 ; next_char_offset
+			.word 0x90,0x90,0x60,0x60,0x90,0x90,
+			.byte 0, 5 ; next_char_pos_y_offset, next_char_pos_x_offset
 
 			.word 0 ; safety pair of bytes for reading by POP B
 _font_y:
 			.byte 0, 0 ; offset_y, offset_x
-			.word 32,32,32,80,136,136,
-			.byte 0, 6 ; next_char_offset
+			.word 0x20,0x20,0x20,0x50,0x88,0x88,
+			.byte 0, 6 ; next_char_pos_y_offset, next_char_pos_x_offset
 
 			.word 0 ; safety pair of bytes for reading by POP B
 _font_z:
 			.byte 0, 0 ; offset_y, offset_x
-			.word 240,128,64,32,16,240,
-			.byte 0, 5 ; next_char_offset
+			.word 0xF0,0x80,0x40,0x20,0x10,0xF0,
+			.byte 0, 5 ; next_char_pos_y_offset, next_char_pos_x_offset

@@ -97,7 +97,7 @@ def gfx_to_asm(label_prefix, asset_j, image):
 		asm += f"			.byte {offset_y}, {offset_x} ; offset_y, offset_x\n"
 		
 		asm += common.words_to_asm(data)
-		asm += f"			.byte 0, {width + spacing} ; next_char_offset\n"
+		asm += f"			.byte 0, {width + spacing} ; next_char_pos_y_offset, next_char_pos_x_offset\n"
 
 		char_addr_offset += 2 # safety pair of bytes for reading by POP B
 		gfx_ptrs[char_name] = char_addr_offset

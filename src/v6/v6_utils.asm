@@ -260,6 +260,8 @@ get_word_from_scr_ram_disk:
 ; c - the len of the array
 ; out:
 ; hl - points to the next byte after the array
+; c = 0
+; de - same
 
 .function update_labels()
 @loop:

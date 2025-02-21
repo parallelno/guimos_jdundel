@@ -48,7 +48,7 @@ def words_to_asm(data, numbers_in_line = 16):
 			if i != 0:
 				asm += "\n"
 			asm += "			.word "
-		asm += str(word) + ","
+		asm += f"0x{word:X},"
 	return asm + "\n"
 
 def bin_to_asm(path, out_path):

@@ -11,8 +11,8 @@ REPEATER_CODE = $FF
 ; in:
 ; a - idxs data ram-disk activation command
 ; c - gfx data ram-disk activation command
-; de - idx data ptr
-; hl - gfx data addr
+; de - idx data addr (points to the addr where it was loaded)
+; hl - gfx data addr (points to the addr where it was loaded)
 tiled_img_init:
 			sta tiled_img_draw_ramdisk_access_idxs + 1
 			mov a, c
@@ -30,12 +30,12 @@ tiled_img_init:
 ;----------------------------------------------------------------
 ; draw a tiled image (8x8 tiles)
 ; input:
-; de - idx_data addr
+; de - local idx_data addr
 
 ; if called tiled_img_draw_pos_offset
-; in: 
+; in:
 ; hl - scr_addr_offset
-; de - idx_data addr
+; de - local idx_data addr
 
 tiled_img_draw:
 			lxi h, 0
@@ -44,10 +44,10 @@ tiled_img_draw_pos_offset_set:
 			; de - idx data addr in the ram-disk
 tiled_img_draw_data_addr:
 			lxi h, TEMP_ADDR
-			dad d			
+			dad d
 			push h
 			xchg
-tiled_img_draw_ramdisk_access_idxs:	
+tiled_img_draw_ramdisk_access_idxs:
 			mvi a, TEMP_BYTE
 			push psw
 			; a - idx data ram-disk activation command
@@ -61,10 +61,10 @@ tiled_img_draw_ramdisk_access_idxs:
 			inx h
 
 			; hl - idxs_data addr + 2, because the first two bytes are the length
-			; de - temp_buff temp buffer addr
+			; de - temp_buff addr
 			; bc - length
 			; a - ram-disk activation command
-			; copy an image indices into a temp buffer			
+			; copy an image indices into a temp buffer
 			mem_copy_from_ram_disk()
 
 tiled_img_draw_ramdisk_access_gfx:
@@ -74,7 +74,7 @@ tiled_img_draw_ramdisk_access_gfx:
 			lxi h, temp_buff
 
 			; get scr addr
-			; add scr addr offset	
+			; add scr addr offset
 tiled_img_draw_pos_offset:
 			lxi b, TEMP_WORD
 			mov e, m
@@ -104,6 +104,7 @@ tiled_img_draw_pos_offset:
 			sta tiled_img_draw_check_end_line + 1
 			; de - scr addr
 			; hl - tile idx data ptr
+			
 tiled_img_draw_loop:
 			; get tile_idx
 			mov c, m
@@ -198,8 +199,7 @@ tiled_img_draw_check_end:
 			cpi TEMP_BYTE
 			jnz tiled_img_draw_loop
 
-			RAM_DISK_OFF()
-			ret
+			jmp restore_sp_ret
 
 tiled_img_draw_repeating_counter:
 			.byte TEMP_BYTE
@@ -231,7 +231,7 @@ tiled_img_draw_repeating_counter:
 			pop b
 			mov m, c
 			dcr l
-			mov m, b	
+			mov m, b
 	.endif
 		.if advace_to_next_scr
 			dad d
