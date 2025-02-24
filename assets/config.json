@@ -43,7 +43,7 @@
 	"emulator_path" : "../devector/bin/devector.exe",
 	"packer_path" : "tools/zx0salvador.exe -v -classic",
 	"build_db_path" : "build/build.db",
-	"main_asm_path" : "src/main.asm",
+	"main_asm_path" : "asm/main.asm",
 	"basefdd_path" : "assets/basefdd/rds308.fdd",
 	"ram_disk_reservations" :
 	[
@@ -75,26 +75,26 @@
 		{
 			"ram" : [],
 			"ram-disk" : [
+				"assets/sprites/knight.json",				
 				"assets/sprites/hero_l.json",
-				"assets/levels/lv0_gfx.json",
-				"assets/sprites/burner.json",
-				"assets/sprites/sword.json",
 				"assets/sprites/vfx.json",
-				"assets/sprites/snowflake.json",
-				"assets/tiled_imgs/ti0_data.json",
-
-				"assets/sprites/hero_r.json",
-				"assets/sprites/knight.json",
-				"assets/sprites/skeleton.json",
-				"assets/sprites/tnt.json",
+				"assets/sprites/scythe.json",
+				"assets/levels/lv0_gfx.json",
+				"assets/fonts/eng/font.json",				
 				"assets/sprites/bomb.json",
 
-				"assets/sprites/scythe.json",
-				"assets/sprites/vfx4.json",
+				"assets/sprites/hero_r.json", 
+				"assets/sprites/burner.json",
+				"assets/sprites/skeleton.json",
 				"assets/levels/lv0_data.json",
+				"assets/sprites/vfx4.json",
+
+				"assets/sprites/sword.json",
+				"assets/sprites/snowflake.json",
+				"assets/tiled_imgs/ti0_data.json",
+				"assets/sprites/tnt.json",
 				"assets/tiled_imgs/ti0_gfx.json",
-				"assets/text/text_lv0.json",
-				"assets/fonts/eng/font.json"
+				"assets/text/text_lv0.json"
 			]
 		}
 	}

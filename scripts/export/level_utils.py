@@ -18,9 +18,6 @@ TILEDATA_BREAKABLES	= 13*16
 BREAKABLES_UNIQUE_MAX = 16
 BREAKABLES_MAX = 1016
 
-WORD_LEN			= 2
-NULL			= "NULL"
-
 
 def is_source_updated(asset_j_path, type):
 	
@@ -70,19 +67,21 @@ def remap_index(rooms_j):
 	return remap_idxs
 
 def get_list_of_rooms(room_paths, label_prefix):
-	asm = ""
-	#asm += "\n			.word 0 ; safety pair of bytes for reading by POP B\n"
-	asm += label_prefix + "_rooms_addr:\n			.word "
+	label = "_" + label_prefix + "_rooms_addr"
+	rooms_data_ptrs_len = len(room_paths) * (build.WORD_LEN + build.SAFE_WORD_LEN)
+	rooms_data_ptrs_len += build.SAFE_WORD_LEN
 
-	for i, room_path_p in enumerate(room_paths):
+	asm = ""
+	asm += "			.word 0 ; safety pair of bytes for reading by POP B\n"
+	asm += f"{label}:\n			.word "
+
+	for room_path_p in room_paths:
 		room_path = room_path_p['path']
 		asm += get_room_data_label(room_path) + ", "
 
-		if i != len(room_paths)-1:
-			# two safety fytes
-			asm += "0, "
-	asm += "\n"
-	return asm
+	asm += "\n\n"
+
+	return asm, label, rooms_data_ptrs_len
 
 def get_room_data_label(room_path):
 	return '_' + common.path_to_basename(room_path)
@@ -91,7 +90,6 @@ def room_tiles_to_asm(room_j, remap_idxs):
 	asm = ""
 	width = room_j["width"]
 	height = room_j["height"]
-	width * height
 
 	for y in reversed(range(height)):
 		asm += "			.byte "
@@ -101,6 +99,18 @@ def room_tiles_to_asm(room_j, remap_idxs):
 			asm += str(remap_idxs[t_idx]) + ", "
 		asm += "\n"
 	return asm
+
+def room_tiles_to_bytes(room_j, remap_idxs):
+	out = []
+	width = room_j["width"]
+	height = room_j["height"]
+
+	for y in reversed(range(height)):
+		for x in range(width):
+			i = y*width + x
+			t_idx = room_j["data"][i]
+			out.append(remap_idxs[t_idx])
+	return out
 
 def room_tiles_data_to_asm(data, width, height, room_path):
 	asm = "; " + room_path + "\n"
@@ -116,6 +126,16 @@ def room_tiles_data_to_asm(data, width, height, room_path):
 			asm += str(t_idx) + ", "
 		asm += "\n"
 	return asm
+
+def room_tiles_data_to_bytes(data, width, height, room_path):
+	out = []
+
+	for y in reversed(range(height)):
+		for x in range(width):
+			i = y*width + x
+			t_idx = data[i]
+			out.append(t_idx)
+	return out
 
 def get_tiledata(bytes0, bytes1, bytes2, bytes3):
 	all_bytes = [bytes0, bytes1, bytes2, bytes3]

@@ -4,15 +4,6 @@ import utils.common as common
 from pathlib import Path
 import json
 
-RAM_LEN = 0x10000
-RAM_DISK_BANK_LEN = 0x10000
-RAM_DISK_IDX_MAX = 3
-RAM_DISK_LEN = RAM_DISK_BANK_LEN * (RAM_DISK_IDX_MAX + 1)
-
-SCR_BUFF_LEN = 0x2000
-SCR_BUFFS_LEN = SCR_BUFF_LEN * 4
-SCR_ADDR = SCR_BUFFS_LEN
-
 ASSET_TYPE_BACK			= "back"
 ASSET_TYPE_FONT			= "font"
 ASSET_TYPE_FONT_RD		= "font_rd" # font_gfx_ptrs.asm will be included into the main programm. it has to be included into the ram-disk asm code manually instead.
@@ -81,6 +72,32 @@ upkr_path = "tools/upkr.exe --z80"
 packer_path 	= ""
 packer_ext		= ""
 packer_bin_ext	= ""
+
+#================================================================================
+# hardware and game consts
+
+SAFE_WORD_LEN	= 2
+BYTE_LEN		= 1
+WORD_LEN		= 2
+NULL_S			= "NULL"
+
+RAM_LEN = 0x10000
+RAM_DISK_BANK_LEN = 0x10000
+RAM_DISKS_MAX = 4
+RAM_DISK_LEN = RAM_DISK_BANK_LEN * RAM_DISKS_MAX
+
+SCR_BUFF_LEN = 0x2000
+SCR_BUFFS_LEN = SCR_BUFF_LEN * 4
+SCR_ADDR = 0x8000
+
+STACK_LEN				= 32
+STACK_MAIN_PROGRAM_ADDR	= SCR_ADDR - 2 # minus 2 because erase funcs can let the interruption call corrupt 0x7ffe, @7fff bytes.
+STACK_INTERRUPTION_ADDR	= STACK_MAIN_PROGRAM_ADDR - STACK_LEN # it is used by the iterruption func
+STACK_MIN_ADDR			= STACK_INTERRUPTION_ADDR - STACK_LEN
+STACKS_LEN				= SCR_ADDR - STACK_MIN_ADDR
+
+
+
 # end global vars
 
 # ANSI escape codes for text color
