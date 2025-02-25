@@ -57,7 +57,7 @@ room_redraw:
 ; after copying room tiledata occupies the room_tiledata
 ; packed room data has to be stored into $8000-$FFFF segment to be properly unzipped
 room_unpack:
-			; convert a room_id into the room gfx tile_idx buffer addr like __level01_room00 or __level01_room01, etc
+			; convert a room_id into the room gfx tile_idx buffer addr like _level01_room00 or _level01_room01, etc
 			lda room_id
 			; double the room index to get an addr offset in the level01_rooms_addr array
 			rlc
@@ -282,7 +282,7 @@ room_tiledata_decal_walkable_spawn:
 
 			ADD_A(2) ; to make a JMP_4 ptr
 			sta room_decal_draw_ptr_offset+1
-			ROOM_DECAL_DRAW(__decals_walkable_gfx_ptrs - JMP_4_LEN * 2)
+			ROOM_DECAL_DRAW(_decals_walkable_gfx_ptrs - JMP_4_LEN * 2)
 			mvi a, TILEDATA_RESTORE_TILE
 			ret
 
@@ -296,7 +296,7 @@ room_tiledata_decal_walkable_spawn:
 room_tiledata_decal_collidable_spawn:
 			ADD_A(2) ; to make a JMP_4 ptr
 			sta room_decal_draw_ptr_offset+1
-			ROOM_DECAL_DRAW(__decals_collidable_gfx_ptrs)
+			ROOM_DECAL_DRAW(_decals_collidable_gfx_ptrs)
 			mvi a, TILEDATA_COLLISION
 			ret
 
@@ -315,7 +315,7 @@ room_tiledata_breakable_spawn:
 			sta room_decal_draw_ptr_offset+1
 
 			;ROOM_SPAWN_RATE_CHECK(rooms_spawn_rate_breakables, @no_spawn)
-			ROOM_DECAL_DRAW(__breakable_gfx_ptrs)
+			ROOM_DECAL_DRAW(_breakable_gfx_ptrs)
 @restore_tiledata:
 			mvi a, TEMP_BYTE
 			ret
@@ -350,7 +350,7 @@ room_tiledata_item_spawn:
 			mvi a, TILEDATA_RESTORE_TILE
 			rnz ; status != 0 means this item was picked up
 
-			ROOM_DECAL_DRAW(__items_gfx_ptrs - WORD_LEN * 2) ;  subtraction of 2*WORD_LEN needs because there is no gfx for item_id=0 and there is a safety word after every pointer. check __items_gfx_ptrs:
+			ROOM_DECAL_DRAW(_items_gfx_ptrs - WORD_LEN * 2) ;  subtraction of 2*WORD_LEN needs because there is no gfx for item_id=0 and there is a safety word after every pointer. check _items_gfx_ptrs:
 @restore_tiledata:
 			mvi a, TEMP_BYTE
 			ret
@@ -380,7 +380,7 @@ room_tiledata_resource_spawn:
 			FIND_INSTANCE(@picked_up, resources_inst_data_ptrs)
 			; resource is found, means it is not picked up
 			; c = tile_idx
-			ROOM_DECAL_DRAW(__resources_gfx_ptrs)
+			ROOM_DECAL_DRAW(_resources_gfx_ptrs)
 @restore_tiledata:
 			mvi a, TEMP_BYTE
 			ret
@@ -411,13 +411,13 @@ room_tiledata_container_spawn:
 			FIND_INSTANCE(@opened, containers_inst_data_ptrs)
 
 			; c - tile_idx in the room_tiledata array
-			ROOM_DECAL_DRAW(__containers_gfx_ptrs)
+			ROOM_DECAL_DRAW(_containers_gfx_ptrs)
 @tiledata:	mvi a, TEMP_BYTE
 			ret
 @opened:
 			; draw an opened container
 			; c - tile_idx in the room_tiledata array			
-			ROOM_DECAL_DRAW(__containers_opened_gfx_ptrs)
+			ROOM_DECAL_DRAW(_containers_opened_gfx_ptrs)
 			mvi a, TILEDATA_RESTORE_TILE
 			ret
 
@@ -448,7 +448,7 @@ room_tiledata_door_spawn:
 			jz @opened	; status == ITEM_STATUS_USED means a door is opened
 
 			; c - tile_idx in the room_tiledata array
-			ROOM_DECAL_DRAW(__doors_gfx_ptrs)
+			ROOM_DECAL_DRAW(_doors_gfx_ptrs)
 @tiledata:
 			mvi a, TEMP_BYTE
 			ret
@@ -456,7 +456,7 @@ room_tiledata_door_spawn:
 			; draw an opened door
 			; c - tile_idx in the room_tiledata array
 			push b
-			ROOM_DECAL_DRAW(__doors_opened_gfx_ptrs)
+			ROOM_DECAL_DRAW(_doors_opened_gfx_ptrs)
 			pop b
 			call draw_tile_16x16_buffs
 			mvi a, TILEDATA_RESTORE_TILE
@@ -484,7 +484,7 @@ room_copy_scr_to_backbuffs:
 ; in:
 ; c - tile_idx in the room_tiledata array.
 ; use:
-; hl - ptr to the graphics, ex. __doors_gfx_ptrs
+; hl - ptr to the graphics, ex. _doors_gfx_ptrs
 ; backbuffers = true means draw onto backbuffers as well
 .macro ROOM_DECAL_DRAW(gfx_ptrs, backbuffers = false, _jmp = false)
 			lxi h, gfx_ptrs
@@ -505,10 +505,10 @@ room_copy_scr_to_backbuffs:
 .endmacro
 
 ; draw a decal onto the screen, and backbuffers
-; ex. ROOM_DECAL_DRAW(__containers_gfx_ptrs, true)
+; ex. ROOM_DECAL_DRAW(_containers_gfx_ptrs, true)
 ; requires: store item_id*4 into room_decal_draw_ptr_offset+1 addr prior calling this
 ; in:
-; hl - ptr to the graphics, ex. __doors_gfx_ptrs
+; hl - ptr to the graphics, ex. _doors_gfx_ptrs
 ; c - tile_idx in the room_tiledata array.
 room_decal_draw:
 			; scr_y = tile_idx % ROOM_WIDTH

@@ -50,7 +50,7 @@ screen_simple_init:
 			ret
 
 screen_palette_and_frame:
-			lxi d, __ti0_palette
+			lxi d, _ti0_palette
 			mvi h, <RAM_DISK_S_TILED_IMAGES_GFX
 			call copy_palette_request_update
 

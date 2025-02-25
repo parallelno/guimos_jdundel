@@ -25,7 +25,7 @@ monsters_init:
 ; a - monster_id * 4
 ; out:
 ; a - TILEDATA_RESTORE_TILE
-;ex. MONSTER_INIT(knight_update, knight_draw, monster_impacted, KNIGHT_HEALTH, KNIGHT_STATUS_DETECT_HERO_INIT, knight_idle)
+;ex. MONSTER_INIT(knight_update, knight_draw, monster_impacted, KNIGHT_HEALTH, KNIGHT_STATUS_DETECT_HERO_INIT, _knight_idle)
 .macro MONSTER_INIT(MONSTER_UPDATE_PTR, MONSTER_DRAW_PTR, MONSTER_IMPACT_PTR, MONSTER_HEALTH, MONSTER_STATUS, MONSTER_ANIM_PTR, spawn_rate_check = True)
 		.if spawn_rate_check
 			mvi b, 1
@@ -317,7 +317,7 @@ monster_impacted:
 			; advance hl to monster_pos_y+1
 			INX_H(2)
 			mov c, m
-			lxi d, vfx4_hit
+			lxi d, _vfx4_hit
 			push h
 			call vfx_init4
 			pop h

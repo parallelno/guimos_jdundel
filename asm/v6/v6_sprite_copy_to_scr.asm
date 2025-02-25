@@ -12,7 +12,7 @@ sprite_copy_to_scr_v:
 			; store sp
 			lxi h, 0
 			dad	sp
-			shld restore__sp + 1
+			shld restore_sp + 1
 
 			; Y -= 1 because we start copying bytes with dec Y
 			inr e

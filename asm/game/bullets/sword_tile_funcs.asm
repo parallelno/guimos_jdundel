@@ -35,7 +35,7 @@ sword_func_container:
 			mvi a, TEMP_BYTE			
 			ADD_A(2) ; container_id to JMP_4 ptr
 			sta room_decal_draw_ptr_offset+1
-			ROOM_DECAL_DRAW(__containers_opened_gfx_ptrs, true)
+			ROOM_DECAL_DRAW(_containers_opened_gfx_ptrs, true)
 
 			; update a hero container
 			lxi h, hero_cont_func_tbl
@@ -103,7 +103,7 @@ sword_func_door:
 @tile_idx:
 			mvi c, TEMP_BYTE
 			; c - tile_idx in the room_tiledata array
-			ROOM_DECAL_DRAW(__doors_opened_gfx_ptrs, true, true)
+			ROOM_DECAL_DRAW(_doors_opened_gfx_ptrs, true, true)
 
 
 ; in:

@@ -155,7 +155,7 @@ burner_update_detect_hero_init:
 ; in:
 ; hl - ptr to monster_status
 burner_update_detect_hero:
-			MONSTER_UPDATE_DETECT_HERO(BURNER_DETECT_HERO_DISTANCE, BURNER_STATUS_DASH_PREP, BURNER_STATUS_DASH_PREP_TIME, burner_dash, BURNER_ANIM_SPEED_DETECT_HERO, burner_update_anim_check_collision_hero, BURNER_STATUS_MOVE_INIT, BURNER_STATUS_MOVE_TIME)
+			MONSTER_UPDATE_DETECT_HERO(BURNER_DETECT_HERO_DISTANCE, BURNER_STATUS_DASH_PREP, BURNER_STATUS_DASH_PREP_TIME, _burner_dash, BURNER_ANIM_SPEED_DETECT_HERO, burner_update_anim_check_collision_hero, BURNER_STATUS_MOVE_INIT, BURNER_STATUS_MOVE_TIME)
 
 ; in:
 ; hl - ptr to monster_status

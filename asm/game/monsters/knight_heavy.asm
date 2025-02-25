@@ -15,7 +15,7 @@ KNIGHT_QUEST_MAX_POS_Y				= 255 - 16 - 14
 ; out:
 ; a = TILEDATA_RESTORE_TILE
 knight_heavy_init:
-			MONSTER_INIT( knight_heavy_update, knight_draw, empty_func, KNIGHT_HEALTH, KNIGHT_STATUS_DETECT_HERO_INIT, knight_idle, False)
+			MONSTER_INIT( knight_heavy_update, knight_draw, empty_func, KNIGHT_HEALTH, KNIGHT_STATUS_DETECT_HERO_INIT, _knight_idle, False)
 @return:
 			mvi a, TILEDATA_RESTORE_TILE
 			ret			
@@ -126,10 +126,10 @@ knight_heavy_update_defence_init:
 			HL_ADVANCE(monster_status_timer, monster_pos_x+1, BY_BC)
 			lda hero_pos_x+1
 			cmp m
-			lxi d, knight_defence_l
+			lxi d, _knight_defence_l
 			jc @dir_x_neg
 @dir_x_positive:
-			lxi d, knight_defence_r
+			lxi d, _knight_defence_r
 @dir_x_neg:
 			; advance hl to monster_anim_ptr
 			HL_ADVANCE(monster_pos_x+1, monster_anim_ptr, BY_BC)
@@ -146,8 +146,8 @@ knight_heavy_update_defence_init:
 @speed_horiz:
 			; advance hl to monster_speed_x
 			HL_ADVANCE(monster_id, monster_speed_x, BY_BC)
-			; dir positive if e == knight_defence_r and vise versa
-			mvi a, <knight_defence_r
+			; dir positive if e == _knight_defence_r and vise versa
+			mvi a, <_knight_defence_r
 			cmp e
 			lxi d, KNIGHT_DEFENCE_SPEED_NEG
 			jnz @speed_x_neg

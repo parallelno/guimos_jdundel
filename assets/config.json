@@ -75,27 +75,29 @@
 		{
 			"ram" : [],
 			"ram-disk" : [
-				"assets/sprites/knight.json",				
+				"assets/sprites/knight.json",
 				"assets/sprites/hero_l.json",
 				"assets/sprites/vfx.json",
 				"assets/sprites/scythe.json",
 				"assets/levels/lv0_gfx.json",
-				"assets/fonts/eng/font.json",				
+				"assets/fonts/eng/font.json",
 				"assets/sprites/bomb.json",
 
-				"assets/sprites/hero_r.json", 
+				"assets/sprites/hero_r.json",
 				"assets/sprites/burner.json",
 				"assets/sprites/skeleton.json",
 				"assets/levels/lv0_data.json",
 				"assets/sprites/vfx4.json",
 
 				"assets/sprites/sword.json",
+				"assets/sprites/vampire.json",
+				"assets/tiled_imgs/ti0_gfx.json",
 				"assets/sprites/snowflake.json",
 				"assets/tiled_imgs/ti0_data.json",
 				"assets/sprites/tnt.json",
-				"assets/tiled_imgs/ti0_gfx.json",
 				"assets/text/text_lv0.json",
-				"assets/sprites/vampire.json"
+				"assets/decals/decals0.json",
+				"assets/decals/backs0.json"
 			]
 		}
 	}

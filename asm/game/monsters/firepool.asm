@@ -32,7 +32,7 @@ firepool_init:
 			CPI_WITH_ZERO(False)
 			jnz @return
 			mov a, b
-			MONSTER_INIT(firepool_update, firepool_draw, firepool_impacted, FIREPOOL_HEALTH, FIREPOOL_STATUS_IDLE, vfx_firepool, False)
+			MONSTER_INIT(firepool_update, firepool_draw, firepool_impacted, FIREPOOL_HEALTH, FIREPOOL_STATUS_IDLE, _vfx_firepool, False)
 @return:
 			mvi a, TILEDATA_RESTORE_TILE
 			ret			
@@ -73,7 +73,7 @@ firepool_impacted:
 			; advance hl to monster_pos_y+1
 			INX_H(2)
 			mov c, m
-			lxi d, vfx4_hit
+			lxi d, _vfx4_hit
 			call vfx_init4
 			pop h
 			; hl - ptr to monster_pos_x+1

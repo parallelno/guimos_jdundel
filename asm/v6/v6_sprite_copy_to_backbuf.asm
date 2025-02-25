@@ -32,7 +32,7 @@ sprite_copy_to_back_buff_v:
 			; store sp
 			lxi h, 0
 			dad	sp
-			shld restore__sp + 1
+			shld restore_sp + 1
 
 			; hl - an addr of a copy routine
 			lxi h, @copy_routine_addrs - SPRITE_COPY_TO_SCR_H_MIN * JMP_4_LEN

@@ -1,11 +1,3 @@
-/*
-; common chunk of the code to restore SP
-ret_ram_disk__:
-restore_sp_ram_disk__:
-			lxi sp, TEMP_ADDR
-			ret
-*/
-
 ; clear a N*16 pxs square on the screen,
 ; it clears 3 screen buffers from de addr and further
 ; ex. CALL_RAM_DISK_FUNC(sprite_erase, RAM_DISK_M_8F)
@@ -63,7 +55,7 @@ sprite_erase:
 @restore_sp:
 			lxi sp, TEMP_ADDR
 			ret			
-__erase_sprite_end:	
+erase_sprite_end:	
 
 .macro ERASE_SPRITE_SP_COL(next_column = true)
 
