@@ -46,9 +46,11 @@ main_menu:
 main_menu_back_draw:
 			call screen_palette_and_frame
 			; title1
-			DRAW_TILED_IMG(__RAM_DISK_S_TILED_IMAGES_DATA, __tiled_images_title1)
+			lxi d, _ti0_title1
+			call tiled_img_draw
 			; settings frame
-			DRAW_TILED_IMG(__RAM_DISK_S_TILED_IMAGES_DATA, __tiled_images_frame_main_menu)
+			lxi d, _ti0_frame_main_menu
+			call tiled_img_draw
 
 			@line_spacing = <(-SETTING_LINE_SPACING)
 			lxi b, @line_spacing<<8 | @line_spacing

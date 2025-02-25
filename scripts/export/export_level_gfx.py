@@ -52,7 +52,12 @@ def data_to_asm(level_j_path):
 	path_png = level_dir + level_j["path_png"]
 	image = Image.open(path_png)
 	
-	_, colors = common_gfx.palette_to_asm(image, level_j, path_png, "_" + level_name)
+	asm = ""
+	
+	# palette
+	palette_asm, colors = common_gfx.palette_to_asm(image, level_j, path_png, "_" + level_name)
+	asm += "			.word 0 ; safety pair of bytes for reading by POP B\n"
+	asm += palette_asm + "\n"
 
 	image = common_gfx.remap_colors(image, colors)
 	
@@ -71,7 +76,8 @@ def data_to_asm(level_j_path):
 	png_name = common.path_to_basename(path_png)
 	
 	# tile gfx data to asm
-	asm, gfx_ptrs = gfx_to_asm(rooms_j[0], image, path_png, remap_idxs, "_" + png_name)
+	gfx_asm, gfx_ptrs = gfx_to_asm(rooms_j[0], image, path_png, remap_idxs, "_" + png_name)
+	asm += gfx_asm
 
 	return asm, gfx_ptrs, remap_idxs
 
@@ -89,8 +95,8 @@ def data_ptrs_to_asm(level_j_path, data_ptrs, remap_idxs):
 	image = Image.open(path_png)
 	
 	# palette
-	palette_asm, colors = common_gfx.palette_to_asm(image, level_j, path_png, "_" + level_name)
-	asm += palette_asm + "\n"
+	# palette_asm, colors = common_gfx.palette_to_asm(image, level_j, path_png, "_" + level_name)
+	# asm += palette_asm + "\n"
 
 	
 	# list of tiles

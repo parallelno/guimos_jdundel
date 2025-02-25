@@ -1,4 +1,4 @@
-.include "asm\\bullets\\sword_tile_funcs.asm"
+.include "game/bullets/sword_tile_funcs.asm"
 
 ; statuses.
 ; a status describes what set of animations and behavior is active

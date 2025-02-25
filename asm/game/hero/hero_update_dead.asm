@@ -34,7 +34,7 @@ hero_dead_fade_gb:
 			rnc
 
 			lxi h, palette
-			mvi c, PALETTE_COLORS
+			mvi c, PALETTE_LEN
 
 @fade_gb_counter:
 			mvi a, HERO_STATUS_DEATH_FADE_GB_TIMER
@@ -95,7 +95,7 @@ hero_dead_fade_r:
 			rnc
 
 			lxi h, palette
-			mvi c, PALETTE_COLORS
+			mvi c, PALETTE_LEN
 
 @fade_r_counter:
 			mvi a, HERO_STATUS_DEATH_FADE_R_TIMER

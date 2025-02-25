@@ -59,7 +59,7 @@ temp_buff:				.storage TEMP_BUFF_LEN
 ;=============================================================================
 ; global states
 ;
-
+global_states:
 ; stores a request to manage the game and main_menu states
 global_request:			.storage BYTE_LEN
 
@@ -71,6 +71,84 @@ level_id:   			.storage BYTE_LEN
 
 ; currently shown item on the panel. range [0, ITEMS_MAX-1]
 game_ui_item_visible_addr:	.storage BYTE_LEN
+
+; a lopped counter increased every game update
+game_update_counter:	.storage BYTE_LEN
+
+; used for the movement
+char_temp_x:			.storage WORD_LEN ; temporal X
+char_temp_y:			.storage WORD_LEN ; temporal Y
+global_states_end:
+;=============================================================================
+;
+; game statuses
+GAME_STATUS_NOT_ACQUIRED	= 0
+GAME_STATUS_ACQUIRED		= 1
+GAME_STATUS_USED			= 2
+
+game_status:
+game_status_cabbage_eaten:		.storage BYTE_LEN ; contains how many cabbage were eaten
+game_status_fire_extinguished:	.storage BYTE_LEN ; contains how many fire walls were extinguished
+game_status_cabbage_healing:	.storage BYTE_LEN ; show dialog when the hero used cabbage the first time
+game_status_use_pie:			.storage BYTE_LEN ; show dialog when the hero used a pie the first time
+game_status_use_clothes:		.storage BYTE_LEN ; show dialog when the hero used a clothes the first time
+game_status_use_spoon:			.storage BYTE_LEN ; show dialog when the hero used a spoon the first time
+game_status_first_freeze:		.storage BYTE_LEN ; show dialog when the hero freeze the monster the first time
+game_status_fart:				.storage BYTE_LEN ; a status acquired for eating cabbage
+game_status_burner_quest_room:	.storage BYTE_LEN ; a status contains an index for burner_quest_room_ids array
+game_status_end:
+
+
+;=============================================================================
+; hero resources
+; 15 resources max
+
+hero_resources:
+hero_res_score:			.storage WORD_LEN
+hero_res_health:		.storage BYTE_LEN
+hero_res_sword:			.storage BYTE_LEN ; the first selectable resource
+hero_res_snowflake:		.storage BYTE_LEN
+hero_res_tnt:			.storage BYTE_LEN
+hero_res_potion_health:	.storage BYTE_LEN
+hero_res_popsicle_pie:	.storage BYTE_LEN
+hero_res_clothes:		.storage BYTE_LEN ; it is a quest resource
+hero_res_cabbage:		.storage BYTE_LEN ; it is a quest resource
+hero_res_spoon:			.storage BYTE_LEN
+hero_res_not_used_01:	.storage BYTE_LEN ; it is a quest resource
+hero_res_not_used_02:	.storage BYTE_LEN
+hero_res_not_used_03:	.storage BYTE_LEN
+hero_res_not_used_04:	.storage BYTE_LEN
+hero_res_not_used_06:	.storage BYTE_LEN
+
+; selected ui resource
+; 0000_RRRR
+;	RRRR - res_id, it is not equal to the tiledata 
+;			because hero_res_score takes two bytes
+;	0 - no resource selected
+game_ui_res_selected_id:	.storage BYTE_LEN
+hero_resources_end:
+
+RES_SELECTABLE_AVAILABLE_NONE	= 0
+RES_SELECTABLE_ID_CLOTHES		= 4
+RES_SELECTABLE_FIRST	= hero_res_sword
+RES_SELECTABLE_LAST		= hero_res_spoon
+RES_SELECTABLE_MAX		= RES_SELECTABLE_LAST - RES_SELECTABLE_FIRST + 1
+
+
+;=============================================================================
+; contains global item statuses.
+ITEM_STATUS_NOT_ACQUIRED	= 0
+ITEM_STATUS_ACQUIRED		= 1
+ITEM_STATUS_USED			= 2
+ITEMS_MAX					= 15 ; item_id = 0 is reserved for dialog tiledata
+
+; data format:
+; .loop ITEMS_MAX
+;	.byte - status of item_id = N
+; .endloop
+
+global_items:		.storage ITEMS_MAX
+global_items_end:
 
 ;=============================================================================
 ; hero runtime data
@@ -164,9 +242,28 @@ bullets_runtime_data_end_marker:	.storage WORD_LEN ; .word ACTOR_RUNTIME_DATA_EN
 bullets_runtime_data_end:
 BULLETS_RUNTIME_DATA_LEN			= bullets_runtime_data_end - bullets_runtime_data
 
+
+;=============================================================================
+; back runtime data
+.align 0x100 ; must fit inside $100 block
+backs_runtime_data:
+back_anim_ptr:			.storage ADDR_LEN ; also (back_anim_ptr+1) stores a marker of end of the data like ACTOR_RUNTIME_DATA_LAST
+back_scr_addr:			.storage ADDR_LEN
+back_anim_timer:		.storage BYTE_LEN
+back_anim_timer_speed:	.storage BYTE_LEN
+@data_end:
+BACK_RUNTIME_DATA_LEN = @data_end - backs_runtime_data
+
+.storage BACK_RUNTIME_DATA_LEN * (BACKS_MAX - 1)
+
+; the same structs for the rest of the backs
+backs_runtime_data_end_marker:	.storage WORD_LEN ;.word ACTOR_RUNTIME_DATA_END << 8
+backs_runtime_data_end:
+BACKS_RUNTIME_DATA_LEN = backs_runtime_data_end - backs_runtime_data
+
 ;=============================================================================
 ; statuses of container instances.
-; this data is aligned to $100, the length is <= $100
+.align 0x100 ; must be aligned to $100, the length is <= $100
 
 ; data format:
 ; containers_inst_data_ptrs:
@@ -191,7 +288,7 @@ containers_inst_data_ptrs:	.storage CONTAINERS_LEN
 
 ;=============================================================================
 ; statuses of resource instances placed in rooms. 
-; this data is aligned to $100, the length is <= $100
+.align 0x100 ; must be aligned to $100, the length is <= $100
 
 ; data format:
 ; resources_inst_data_ptrs:
@@ -213,3 +310,20 @@ RESOURCES_STATUS_ACQUIRED	= $ff
 
 resources_inst_data_ptrs:	.storage RESOURCES_LEN
 ;resources_inst_data:		= resources_inst_data_ptrs + used_unique_resources (can vary) + 1
+
+;=============================================================================
+; rooms spawn rates. each byte represents a spawn rate in a particular room.
+.align 0x100 ; must be aligned to $100, the length is <= $100
+; data format:
+; .loop ROOMS_MAX
+;	.byte - a monster spawn rate in the room_id = N
+; .endloop
+; .loop ROOMS_MAX
+;	.byte - a breakables spawn rate in the room_id = N
+; .endloop
+; ...
+; 0 means 100% chance to spawn a monster. 255 means no spawn
+
+rooms_spawn_rates:
+rooms_spawn_rate_monsters:		.storage ROOMS_MAX * 2
+rooms_spawn_rates_end:

@@ -32,10 +32,10 @@ Ram-disk usage:
 	SCYTHE.BIN [addr: 31110, len:1554], 
 		>>> WASTED_SPACE [addr: 32664, len:38] <<<
 		>>> RESERVED_STACK [addr: 32702, len:66] <<<
-	LV0_GFX.BIN [addr: 32768, len:5524], 
-	FONT.BIN [addr: 38292, len:1624], 
-	BOMB.BIN [addr: 39916, len:960], 
-		>>> WASTED_SPACE [addr: 40876, len:84] <<<
+	LV0_GFX.BIN [addr: 32768, len:5542], 
+	FONT.BIN [addr: 38310, len:1624], 
+	BOMB.BIN [addr: 39934, len:960], 
+		>>> WASTED_SPACE [addr: 40894, len:66] <<<
 		>>> RESERVED BACKBUFF2 <<<
 	to restore a background in the backbuffer
 
@@ -60,9 +60,9 @@ Ram-disk usage:
 	TEXT_LV0.BIN [addr: 20094, len:5190], 
 
 reserved: 49416
-used: 105822
+used: 105840
 free: 105656
-wasted: 1250
+wasted: 1232
 
 */
 ;===============================================
@@ -112,12 +112,12 @@ wasted: 1250
 
 			RAM_DISK_M_FONT = RAM_DISK_M0
 			RAM_DISK_S_FONT = RAM_DISK_S0
-			FONT_ADDR = 38292
+			FONT_ADDR = 38310
 			LOAD_FILE(FONT_FILENAME_PTR, RAM_DISK_S_FONT, FONT_ADDR, FONT_FILE_LEN)
 
 			RAM_DISK_M_BOMB = RAM_DISK_M0
 			RAM_DISK_S_BOMB = RAM_DISK_S0
-			BOMB_ADDR = 39916
+			BOMB_ADDR = 39934
 			LOAD_FILE(BOMB_FILENAME_PTR, RAM_DISK_S_BOMB, BOMB_ADDR, BOMB_FILE_LEN)
 
 			RAM_DISK_M_HERO_R = RAM_DISK_M1

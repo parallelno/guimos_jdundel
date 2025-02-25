@@ -10,7 +10,7 @@ screen_space_checking:
 
 
 screen_simple_init:
-			; clear the screen	
+			; clear the screen
 			A_TO_ZERO(RAM_DISK_OFF_CMD)
 			lxi b, 0
 			lxi d, SCR_BUFF_LEN * 4 / 32 - 1
@@ -36,7 +36,7 @@ screen_simple_init:
 			mvi a, <bullets_runtime_data_end
 			call clear_mem_short
 			; setup bullets runtime data
-			call bullets_init			
+			call bullets_init
 
 			; fill up the tile_data_buff with tiledata = 0
 			; (walkable tile, no back restore , no decal)
@@ -50,15 +50,17 @@ screen_simple_init:
 			ret
 
 screen_palette_and_frame:
-			lxi d, __tiled_images_palette
+			lxi d, __ti0_palette
 			mvi h, <__RAM_DISK_S_TILED_IMAGES_GFX
 			call copy_palette_request_update
 
 			; back1
-			DRAW_TILED_IMG(__RAM_DISK_S_TILED_IMAGES_DATA, __tiled_images_main_menu_back1)
+			lxi d, _ti0_main_menu_back1
+			call tiled_img_draw
 			; back2
-			DRAW_TILED_IMG(__RAM_DISK_S_TILED_IMAGES_DATA, __tiled_images_main_menu_back2)			
-			ret			
+			lxi d, _ti0_main_menu_back2
+			call tiled_img_draw
+			ret
 
 ; in:
 ; hl - a specific update func ptr
@@ -113,10 +115,10 @@ screen_draw_return_button_custom_text:
 
 			; braw a button
 			@pos_tiles_y = 1
-			@pos_tiles_x = 13			
+			@pos_tiles_x = 13
 			mvi c, @pos_tiles_x + @pos_tiles_y * TILE_HEIGHT
 			; dialog_press_key (tiledata = 162)
-			mvi b, 162			
+			mvi b, 162
 			; b - tiledata
 			; c - tile_idx in the room_tiledata array.
 			jmp backs_spawn

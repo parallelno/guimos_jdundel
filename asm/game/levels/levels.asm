@@ -45,8 +45,9 @@ level_init:
 
 			; erase rooms spawn data
 			lxi h, rooms_spawn_rates
+			lxi b, ROOMS_SPAWN_RATES_LEN
 			mvi a, <rooms_spawn_rates_end
-			call clear_mem_short
+			call mem_erase
 
 			; erase backs buffs
 			lxi h, backs_runtime_data
@@ -65,19 +66,17 @@ level_init:
 
 			; setup resources
 			lhld level_resources_inst_data_pptr
-			xchg
-			lxi h, level_ram_disk_s_data
-			mov h, m
-			lxi b, resources_inst_data_ptrs
-			COPY_FROM_RAM_DISK(RESOURCES_LEN)
+			lxi d, resources_inst_data_ptrs
+			lxi b, RESOURCES_LEN
+			lda level_ram_disk_s_data
+			mem_copy_from_ram_disk()
 
 			; setup containers
 			lhld level_containers_inst_data_pptr
-			xchg
-			lxi h, level_ram_disk_s_data
-			mov h, m
-			lxi b, containers_inst_data_ptrs
-			COPY_FROM_RAM_DISK(CONTAINERS_LEN)
+			lxi d, containers_inst_data_ptrs
+			lxi b, CONTAINERS_LEN
+			lda level_ram_disk_s_data
+			mem_copy_from_ram_disk()
 
 			; reset room_id
 			lhld room_id

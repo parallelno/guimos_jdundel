@@ -41,12 +41,9 @@ os_file_data_ptr:
 ;	BB - 2 bit blue color
 ;	GGG - 3 bit green color
 ;	RRR - 3 bit red color
-palette:
-			.storage PALETTE_LEN
-border_color_idx:
-			.storage BYTE_LEN
-scr_offset_y:
-			.storage BYTE_LEN
+palette:			.storage PALETTE_LEN
+border_color_idx:	.storage BYTE_LEN
+scr_offset_y:		.storage BYTE_LEN
 ; it is used to check how many updates needs to happened to sync with interruptions
 game_updates_required:
 			.storage BYTE_LEN

@@ -1,13 +1,4 @@
-.include "game/level/room_consts.asm"
-.include "game/actor/actor_consts.asm"
-.include "game/monsters/monsters_consts.asm"
 
-.include "game/level/room_macro.asm"
-.include "game/actor/actor_macro.asm"
-
-.include "game/actor/actor.asm"
-.include "game/monsters/monsters.asm"
-.include "game/level/room.asm"
 
 game_start:
 			call game_init

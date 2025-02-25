@@ -3,7 +3,6 @@ jmp v6_main_init
 
 .include "asm/v6/v6_macros.asm"
 .include "asm/v6/v6_consts.asm"
-.include "asm/game/game_consts.asm"
 .include "build/build_consts.asm"
 .include "asm/v6/v6_os.asm"
 .include "asm/v6/v6_utils.asm"

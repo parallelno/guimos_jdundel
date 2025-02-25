@@ -1,4 +1,4 @@
-.include "asm\\hero\\hero_update_dead.asm"
+.include "game/hero/hero_update_dead.asm"
 
 .macro HERO_UPDATE_ANIM(anim_speed)
 			lxi h, hero_anim_timer

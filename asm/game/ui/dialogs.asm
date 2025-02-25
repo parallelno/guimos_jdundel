@@ -59,7 +59,8 @@ dialog_draw_frame_text:
 ; TODO: fix. it deletes all backs when a dialog starts
 			call backs_init
 			; draw a frame
-			DRAW_TILED_IMG(__RAM_DISK_S_TILED_IMAGES_DATA, __tiled_images_frame_ingame_dialog)
+			lxi d, _ti0_frame_ingame_dialog
+			call tiled_img_draw
 			; draw an animated spacebar
 			; dialog_press_key (tiledata = 162)
 			mvi b, 162

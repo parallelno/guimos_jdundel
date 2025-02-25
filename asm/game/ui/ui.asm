@@ -1,9 +1,6 @@
-.include "..\\render\\text.asm"
-.include "dialogs.asm"
+HEALTH_SCR_ADDR = 0xA3FB
+HERO_SCORE_SCR_ADDR = 0xB9FB
 
-HEALTH_SCR_ADDR = $a3fb
-HERO_SCORE_SCR_ADDR = $b9fb
-FPS_SCR_ADDR = $bdfb - 16
 
 RES_TEXT_SCR_ADDR_0 = $a8fb
 RES_SELECTION_FRAME_SCR_ADDR = $a000 + (6<<8) | 30*8
@@ -48,39 +45,13 @@ game_ui_draw_score_text:
 game_ui_score_txt:
 			.byte $30, $30, $30, $30, $30, $30, 0
 
-; draw an FPS counter every second on the screen at FPS_SCR_ADDR addr
-; works only in the interruption func and in the
-; main program when the ram-disk is dismount
-; in:
-; A - fps
-; uses:
-; BC, DE, HL
-draw_fps:
-			lhld draw_text_restore_sp+1
-			shld @tmp_restore_sp
-			;lxi h, @fps_text
-			;call int_to_ascii_hex
-			mov l, a
-			mvi h, 0
-			lxi d, @fps_text_hi
-			call int8_to_ascii_dec
-
-			lxi h, @fps_text_hi
-			lxi b, FPS_SCR_ADDR
-			call draw_text
-			lhld @tmp_restore_sp
-			shld draw_text_restore_sp+1
-			ret
-@fps_text_hi: ; do not use a shared text buffer because draw_fps is called in the int func
-			.byte $30, $30, $30, 0
-@tmp_restore_sp:
-            .word TEMP_ADDR
-
 
 game_ui_draw_panel:
-			DRAW_TILED_IMG(__RAM_DISK_S_TILED_IMAGES_DATA, __tiled_images_frame_ingame_top, true)
+			lxi d, _ti0_frame_ingame_top
+			jmp tiled_img_draw
 game_ui_draw_icon_mana:
-			DRAW_TILED_IMG(__RAM_DISK_S_TILED_IMAGES_DATA, __tiled_images_res_mana, true)
+			lxi d, _ti0_res_mana
+			jmp tiled_img_draw
 
 ;==================================================================================================
 ;
@@ -258,7 +229,7 @@ game_ui_draw_res:
 
 @draw_empty_res_icon:
 			; c - displayed res counter
-			lxi d, __tiled_images_res_empty
+			lxi d, _ti0_res_empty
 			; de - tiled image data ptr
 			; make the scr addr offset
 			mvi a, RES_DISPLAYED_MAX
@@ -296,14 +267,14 @@ game_ui_draw_res:
 			ret
 
 @tiled_img_ptrs:
-			.word __tiled_images_res_sword
-			.word __tiled_images_res_mana
-			.word __tiled_images_res_tnt
-			.word __tiled_images_res_potion_health
-			.word __tiled_images_res_potion_mana
-			.word __tiled_images_res_clothes
-			.word __tiled_images_res_cabbage
-			.word __tiled_images_res_spoon
+			.word _ti0_res_sword
+			.word _ti0_res_mana
+			.word _ti0_res_tnt
+			.word _ti0_res_potion_health
+			.word _ti0_res_potion_mana
+			.word _ti0_res_clothes
+			.word _ti0_res_cabbage
+			.word _ti0_res_spoon
 
 ;==================================================================================================
 ;
@@ -339,7 +310,7 @@ game_ui_draw_items:
 			dcr b
 			jnz @loop
 			; no available items
-			lxi d, __tiled_images_item_empty
+			lxi d, _ti0_item_empty
 			jmp @draw_icon
 @draw:
 			mov m, e
@@ -361,9 +332,9 @@ game_ui_draw_items:
 @delay:		.byte TEMP_WORD
 
 @tiled_img_ptrs:
-			.word __tiled_images_item_key_0	; item_id = 1
-			.word __tiled_images_item_key_1	; item_id = 2
-			.word __tiled_images_item_key_1	; item_id = 3
-			.word __tiled_images_item_key_2	; item_id = 4
-			.word __tiled_images_item_key_3	; item_id = 5
-			.word __tiled_images_item_key_0 ; tmp ; id = 6
+			.word _ti0_item_key_0	; item_id = 1
+			.word _ti0_item_key_1	; item_id = 2
+			.word _ti0_item_key_1	; item_id = 3
+			.word _ti0_item_key_2	; item_id = 4
+			.word _ti0_item_key_3	; item_id = 5
+			.word _ti0_item_key_0 ; tmp ; id = 6
