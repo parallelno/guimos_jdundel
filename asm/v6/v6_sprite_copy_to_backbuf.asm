@@ -8,11 +8,7 @@
 ;		10 - 24pxs,
 ;		11 - 32pxs
 ; l - height
-//		IT IS NOT RECOMMENDED TO USE
-//		BECAUSE OF THE RISK OF DATA CORRUPTION
-//		RAM_DISK_ON_BANK macro must not be used before calling a function!
-//		check the reqs of RAM_DISK_ON_BANK_NO_RESTORE before using it here
-/*
+
 ; TODO: this func is giant. the size of this func is 1219 bytes. think of a better solution
 sprite_copy_to_back_buff_v:
 			; Y -= 1 because we start copying bytes with dec Y
@@ -150,4 +146,3 @@ sprite_copy_to_back_buff_v:
 			jp @next_column
 			jmp restore_sp
 .endmacro
-*/

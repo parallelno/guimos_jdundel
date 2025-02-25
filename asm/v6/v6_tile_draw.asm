@@ -108,7 +108,7 @@ draw_tile_16x16_end:
 			dcr h		
 .endmacro
 
-/*
+
 ; draws a tile into the screen, a backbuffer, a backbuffer2
 ; in:
 ; c - tile_idx
@@ -152,16 +152,15 @@ draw_tile_16x16_buffs:
 			push d
 			; draw a tile in the back buffer
 			lda level_ram_disk_s_gfx
-			ori __RAM_DISK_M_BACKBUFF | RAM_DISK_M_AF
+			ori RAM_DISK_M_BACKBUFF | RAM_DISK_M_AF
 			CALL_RAM_DISK_FUNC_BANK(draw_tile_16x16)
 			pop d
 			pop b
 			push d
 			; draw a tile in the back buffer2
 			lda level_ram_disk_s_gfx
-			ori __RAM_DISK_M_BACKBUFF2 | RAM_DISK_M_AF
+			ori RAM_DISK_M_BACKBUFF2 | RAM_DISK_M_AF
 			CALL_RAM_DISK_FUNC_BANK(draw_tile_16x16)
 
 			pop b
 			ret
-*/

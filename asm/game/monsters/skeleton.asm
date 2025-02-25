@@ -94,7 +94,7 @@ SKELETON_DETECT_HERO_DISTANCE = 60
 ; out:
 ; a = TILEDATA_RESTORE_TILE
 skeleton_init:
-			MONSTER_INIT(skeleton_update, skeleton_draw, monster_impacted, SKELETON_HEALTH, SKELETON_STATUS_DETECT_HERO_INIT, skeleton_idle)
+			MONSTER_INIT(skeleton_update, skeleton_draw, monster_impacted, SKELETON_HEALTH, SKELETON_STATUS_DETECT_HERO_INIT, _skeleton_idle)
 
 ;========================================================
 ; anim and a gameplay logic update
@@ -131,15 +131,15 @@ skeleton_update_detect_hero_init:
 			inx h
 			mvi m, SKELETON_STATUS_DETECT_HERO_TIME
 			HL_ADVANCE(monster_status_timer, monster_anim_ptr)
-			mvi m, <skeleton_idle
+			mvi m, <_skeleton_idle
 			inx h
-			mvi m, >skeleton_idle
+			mvi m, >_skeleton_idle
 			ret
 
 ; in:
 ; hl - ptr to monster_status
 skeleton_update_detect_hero:
-			MONSTER_UPDATE_DETECT_HERO(SKELETON_DETECT_HERO_DISTANCE, SKELETON_STATUS_SHOOT_PREP, SKELETON_STATUS_SHOOT_PREP_TIME, skeleton_idle, SKELETON_ANIM_SPEED_DETECT_HERO, skeleton_update_anim_check_collision_hero, SKELETON_STATUS_MOVE_INIT, SKELETON_STATUS_MOVE_TIME)
+			MONSTER_UPDATE_DETECT_HERO(SKELETON_DETECT_HERO_DISTANCE, SKELETON_STATUS_SHOOT_PREP, SKELETON_STATUS_SHOOT_PREP_TIME, _skeleton_idle, SKELETON_ANIM_SPEED_DETECT_HERO, skeleton_update_anim_check_collision_hero, SKELETON_STATUS_MOVE_INIT, SKELETON_STATUS_MOVE_TIME)
 
 ; in:
 ; hl - ptr to monster_status
@@ -196,17 +196,17 @@ skeleton_update_move_init:
 			HL_ADVANCE(monster_speed_y+1, monster_anim_ptr, BY_BC)
 			; a = rnd
 			CPI_WITH_ZERO(0)
-			; if rnd is positive (up or right movement), then play skeleton_run_r anim
+			; if rnd is positive (up or right movement), then play _skeleton_run_r anim
 			jp @set_anim_run_r
 @set_anim_run_l:
-			mvi m, <skeleton_run_l
+			mvi m, <_skeleton_run_l
 			inx h
-			mvi m, >skeleton_run_l
+			mvi m, >_skeleton_run_l
 			ret
 @set_anim_run_r:
-			mvi m, <skeleton_run_r
+			mvi m, <_skeleton_run_r
 			inx h
-			mvi m, >skeleton_run_r
+			mvi m, >_skeleton_run_r
             ret
 
 ; in:
@@ -333,4 +333,4 @@ skeleton_update_anim_check_collision_hero:
 ; in:
 ; de - ptr to monster_draw_ptr 
 skeleton_draw:
-			ACTOR_DRAW(sprite_get_scr_addr_skeleton, __RAM_DISK_S_SKELETON, false)
+			ACTOR_DRAW(sprite_get_scr_addr_skeleton, RAM_DISK_S_SKELETON, false)

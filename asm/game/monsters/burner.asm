@@ -104,7 +104,7 @@ BURNER_DETECT_HERO_DISTANCE = 60
 ; out:
 ; a = TILEDATA_RESTORE_TILE
 burner_init:
-			MONSTER_INIT(burner_update, burner_draw, monster_impacted, BURNER_HEALTH, BURNER_STATUS_DETECT_HERO_INIT, burner_idle)
+			MONSTER_INIT(burner_update, burner_draw, monster_impacted, BURNER_HEALTH, BURNER_STATUS_DETECT_HERO_INIT, _burner_idle)
 
 ; uppdate for BURNER_ID
 ; anim and a gameplay logic update
@@ -147,9 +147,9 @@ burner_update_detect_hero_init:
 			inx h
 			mvi m, BURNER_STATUS_DETECT_HERO_TIME
 			HL_ADVANCE(monster_status_timer, monster_anim_ptr)
-			mvi m, <burner_idle
+			mvi m, <_burner_idle
 			inx h
-			mvi m, >burner_idle
+			mvi m, >_burner_idle
 			ret
 
 ; in:
@@ -216,14 +216,14 @@ burner_update_move_init:
 			; if rnd is positive (up or right movement), then play burner_run_r anim
 			jp @set_anim_run_r
 @set_anim_run_l:
-			mvi m, <burner_run_l
+			mvi m, <_burner_run_l
 			inx h
-			mvi m, >burner_run_l
+			mvi m, >_burner_run_l
 			ret
 @set_anim_run_r:
-			mvi m, <burner_run_r
+			mvi m, <_burner_run_r
 			inx h
-			mvi m, >burner_run_r
+			mvi m, >_burner_run_r
             ret
 
 ; in:
@@ -395,4 +395,4 @@ burner_update_anim_check_collision_hero:
 ; in:
 ; de - ptr to monster_draw_ptr 
 burner_draw:
-			ACTOR_DRAW(sprite_get_scr_addr_burner, __RAM_DISK_S_BURNER, false)
+			ACTOR_DRAW(sprite_get_scr_addr_burner, RAM_DISK_S_BURNER, false)

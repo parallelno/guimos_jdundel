@@ -263,7 +263,7 @@ actor_erase:
 			pop h
 
 			jnz sprite_copy_to_back_buff_v ; restore a background
-			CALL_RAM_DISK_FUNC(__erase_sprite, __RAM_DISK_S_BACKBUFF | __RAM_DISK_M_ERASE_SPRITE | RAM_DISK_M_8F)
+			CALL_RAM_DISK_FUNC(sprite_erase, RAM_DISK_S_BACKBUFF | RAM_DISK_M_8F)
 			ret
 @set_empty:
 			; hl - ptr to actor_update_ptr+1 

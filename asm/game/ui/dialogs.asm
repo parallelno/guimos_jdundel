@@ -71,11 +71,11 @@ dialog_draw_frame_text:
 			; c - tile_idx in the room_tiledata array.			
 			call backs_spawn
 
-			CALL_RAM_DISK_FUNC(__text_ex_rd_reset_spacing, __RAM_DISK_S_FONT | __RAM_DISK_M_TEXT_EX)
-			lxi b, $102d	; text pos
-			pop h
-			; hl - text ptr
-			CALL_RAM_DISK_FUNC(__text_ex_rd_scr3, __RAM_DISK_S_FONT | __RAM_DISK_M_TEXT_EX)
+			call text_ex_rd_reset_spacing
+			;lxi h, $102d	; text pos
+			pop d
+			; de - text ptr
+			call text_ex_draw_pos_offset_set
 
 			; pause to prevent closing a dialog right after opening
 			lxi h, 500
@@ -103,18 +103,18 @@ STORYTELLING_TEXT_ENTITY_LEN = 4
 
 ; this array contains all dialogs statues (shown, not shown) and text ptrs
 dialog_storytelling_texts_ptrs:
-			STORYTELLING_TEXT_ENTITY(LEVEL_ID_0, ROOM_ID_0, __text_storytelling_home)
-			STORYTELLING_TEXT_ENTITY(LEVEL_ID_0, ROOM_ID_1, __text_storytelling_farm_fence)
-			STORYTELLING_TEXT_ENTITY(LEVEL_ID_0, ROOM_ID_2, __text_storytelling_road_to_friends_home)
-			STORYTELLING_TEXT_ENTITY(LEVEL_ID_0, ROOM_ID_3, __text_storytelling_friends_home)
-			STORYTELLING_TEXT_ENTITY(LEVEL_ID_0, ROOM_ID_4, __text_storytelling_friends_backyard)
-			STORYTELLING_TEXT_ENTITY(LEVEL_ID_0, ROOM_ID_5, __text_storytelling_friends_secret_place)
-			STORYTELLING_TEXT_ENTITY(LEVEL_ID_0, ROOM_ID_6, __text_storytelling_crossroad)
-			STORYTELLING_TEXT_ENTITY(LEVEL_ID_0, ROOM_ID_9, __text_storytelling_loop)
-			STORYTELLING_TEXT_ENTITY(LEVEL_ID_0, ROOM_ID_12, __text_storytelling_lost_coins)
-			STORYTELLING_TEXT_ENTITY(LEVEL_ID_0, ROOM_ID_7, __text_storytelling_farm_entrance)
-			STORYTELLING_TEXT_ENTITY(LEVEL_ID_0, ROOM_ID_8, __text_storytelling_farm_storage)
-			STORYTELLING_TEXT_ENTITY(LEVEL_ID_0, ROOM_ID_10, __text_storytelling_dugeon_entrance)
+			STORYTELLING_TEXT_ENTITY(LEVEL_ID_0, ROOM_ID_0, _storytelling_storytelling_home)
+			STORYTELLING_TEXT_ENTITY(LEVEL_ID_0, ROOM_ID_1, _storytelling_storytelling_farm_fence)
+			STORYTELLING_TEXT_ENTITY(LEVEL_ID_0, ROOM_ID_2, _storytelling_storytelling_road_to_friends_home)
+			STORYTELLING_TEXT_ENTITY(LEVEL_ID_0, ROOM_ID_3, _storytelling_storytelling_friends_home)
+			STORYTELLING_TEXT_ENTITY(LEVEL_ID_0, ROOM_ID_4, _storytelling_storytelling_friends_backyard)
+			STORYTELLING_TEXT_ENTITY(LEVEL_ID_0, ROOM_ID_5, _storytelling_storytelling_friends_secret_place)
+			STORYTELLING_TEXT_ENTITY(LEVEL_ID_0, ROOM_ID_6, _storytelling_storytelling_crossroad)
+			STORYTELLING_TEXT_ENTITY(LEVEL_ID_0, ROOM_ID_9, _storytelling_storytelling_loop)
+			STORYTELLING_TEXT_ENTITY(LEVEL_ID_0, ROOM_ID_12, _storytelling_storytelling_lost_coins)
+			STORYTELLING_TEXT_ENTITY(LEVEL_ID_0, ROOM_ID_7, _storytelling_storytelling_farm_entrance)
+			STORYTELLING_TEXT_ENTITY(LEVEL_ID_0, ROOM_ID_8, _storytelling_storytelling_farm_storage)
+			STORYTELLING_TEXT_ENTITY(LEVEL_ID_0, ROOM_ID_10, _storytelling_storytelling_dugeon_entrance)
 @end_data:
 STORYTELLING_TEXT_COUNT = (@end_data - dialog_storytelling_texts_ptrs) / STORYTELLING_TEXT_ENTITY_LEN
 

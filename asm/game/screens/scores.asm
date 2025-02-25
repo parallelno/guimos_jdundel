@@ -22,17 +22,17 @@ scores_screen:
 			jmp	@loop
 
 scores_screen_text_draw:
-			lxi b, SCORES_TITLE_POS
-			lxi h, __text_score_title
-			CALL_RAM_DISK_FUNC(__text_ex_rd_scr1, __RAM_DISK_S_FONT | __RAM_DISK_M_TEXT_EX)
+			;lxi h, SCORES_TITLE_POS
+			lxi d, _scores_screen_score_title
+			call text_ex_draw
 
 			mvi e, SCORES_MAX
 			lxi b, SCORES_POS
 @loop:
 			push b
 			push d
-			lxi h, __text_buff
-			CALL_RAM_DISK_FUNC(__text_ex_rd_scr1, __RAM_DISK_S_FONT | __RAM_DISK_M_TEXT_EX)
+			lxi d, _scores_screen_buff
+			call text_ex_draw
 			pop d
 			pop b
 

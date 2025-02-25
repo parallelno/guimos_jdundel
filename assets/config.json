@@ -94,7 +94,8 @@
 				"assets/tiled_imgs/ti0_data.json",
 				"assets/sprites/tnt.json",
 				"assets/tiled_imgs/ti0_gfx.json",
-				"assets/text/text_lv0.json"
+				"assets/text/text_lv0.json",
+				"assets/sprites/vampire.json"
 			]
 		}
 	}

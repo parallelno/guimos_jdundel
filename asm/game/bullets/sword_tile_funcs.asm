@@ -26,7 +26,7 @@ sword_func_container:
 			call draw_tile_16x16_buffs
 			; draw vfx
 			; bc - tile screen addr
-			lxi d, vfx_reward
+			lxi d, _vfx_reward
 			call vfx_init
 
 			pop b
@@ -47,7 +47,7 @@ sword_func_container:
 			; add score points
 			; e - container_id
 			mvi d, TILEDATA_FUNC_ID_CONTAINERS
-			CALL_RAM_DISK_FUNC(__game_score_add, __RAM_DISK_S_SCORE | __RAM_DISK_M_TEXT_EX)
+			call game_score_add
 			call game_ui_draw_score_text
 			pop h
 			; hl - a container handler func ptr
@@ -84,7 +84,7 @@ sword_func_door:
 			push b
 			mov e, b
 			mvi d, TILEDATA_FUNC_ID_DOORS
-			CALL_RAM_DISK_FUNC(__game_score_add, __RAM_DISK_S_SCORE)
+			call game_score_add
 			call game_ui_draw_score_text
 			pop b
 
@@ -130,7 +130,7 @@ sword_func_breakable:
 			push b
 			; e - breakable_id			
 			mvi d, TILEDATA_FUNC_ID_BREAKABLES
-			CALL_RAM_DISK_FUNC(__game_score_add, __RAM_DISK_S_SCORE)
+			call game_score_add
 			call game_ui_draw_score_text
 			pop b
 

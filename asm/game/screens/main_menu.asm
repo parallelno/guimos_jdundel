@@ -54,17 +54,17 @@ main_menu_back_draw:
 
 			@line_spacing = <(-SETTING_LINE_SPACING)
 			lxi b, @line_spacing<<8 | @line_spacing
-			CALL_RAM_DISK_FUNC(__text_ex_rd_set_spacing, __RAM_DISK_S_FONT | __RAM_DISK_M_TEXT_EX)
+			call text_ex_rd_set_spacing
 			; draw main menu settings
-			lxi b, SETTING_POS
-			lxi h, __text_main_menu_settings
-			CALL_RAM_DISK_FUNC(__text_ex_rd_scr1, __RAM_DISK_S_FONT | __RAM_DISK_M_TEXT_EX)
+			;lxi h, SETTING_POS
+			lxi d, _main_menu_settings
+			call text_ex_draw
 
 			; draw licensing
 			@licensing_pos = $1a20			
-			lxi b, @licensing_pos
-			lxi h, __text_license
-			CALL_RAM_DISK_FUNC(__text_ex_rd_scr1, __RAM_DISK_S_FONT | __RAM_DISK_M_TEXT_EX)
+			;lxi h, @licensing_pos
+			lxi d, _main_menu_license
+			call text_ex_draw
 			ret
 main_menu_cursor_update:
 			; spawn vfx
@@ -196,7 +196,7 @@ main_menu_cursor_update:
 			jmp @vfx_init
 
 @vfx_init:
-			lxi d, vfx_reward
+			lxi d, _vfx_reward
 			jmp vfx_init
 @space_handling:
 			lda main_menu_cursor_option_id

@@ -2,7 +2,7 @@
 
 ; shared chunk of code to restore SP
 ; and dismount the ram-disk
-restore_sp_ret:
+restore_sp:
 			lxi sp, TEMP_ADDR
 			RAM_DISK_OFF()
 			ret
@@ -24,6 +24,7 @@ mem_fill:
 			BC_TO_BC_PLUS_HL()
 			; hl - source
 			; bc - source + len
+mem_fill_bc_end:
 @loop2:
 			mov a, c
 @loop:
@@ -66,7 +67,7 @@ mem_erase_sp:
 			RAM_DISK_ON_BANK()
 			lxi h, 0x0000
 			dad sp
-			shld restore_sp_ret + 1
+			shld restore_sp + 1
 @buff_end:	
 			lxi sp, TEMP_ADDR
 @filler:
@@ -78,7 +79,7 @@ mem_erase_sp:
 			dcx d
 			cmp d
 			jnz @loop
-			jmp restore_sp_ret
+			jmp restore_sp
 mem_erase_sp_filler = @filler
 
 ; copy a memory buffer (ram to ram )
@@ -199,7 +200,7 @@ mem_erase_sp_filler = @filler
 			RAM_DISK_ON_BANK()
 			lxi h, 0x0000
 			dad sp
-			shld restore_sp_ret + 1
+			shld restore_sp + 1
 
 @source:
 			lxi sp, TEMP_ADDR
@@ -226,7 +227,7 @@ mem_erase_sp_filler = @filler
 			cmp h
 			jnz @loop2
 
-			jmp restore_sp_ret
+			jmp restore_sp
 .endf
 
 
@@ -246,14 +247,14 @@ get_word_from_ram_disk:
 			; store sp
 			lxi h, $0000
 			dad sp
-			shld restore_sp_ret+1
+			shld restore_sp+1
 
 			; copy unpacked data into the ram_disk
 			xchg
 			sphl
 			pop b ; bc has to be used when interruptions is on
 
-			jmp restore_sp_ret
+			jmp restore_sp
 
 ; a special version of a func above for accessing addr $8000 and higher
 ; cc = 100

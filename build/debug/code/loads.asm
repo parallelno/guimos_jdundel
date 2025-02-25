@@ -32,10 +32,10 @@ Ram-disk usage:
 	SCYTHE.BIN [addr: 31110, len:1554], 
 		>>> WASTED_SPACE [addr: 32664, len:38] <<<
 		>>> RESERVED_STACK [addr: 32702, len:66] <<<
-	LV0_GFX.BIN [addr: 32768, len:5542], 
-	FONT.BIN [addr: 38310, len:1624], 
-	BOMB.BIN [addr: 39934, len:960], 
-		>>> WASTED_SPACE [addr: 40894, len:66] <<<
+	LV0_GFX.BIN [addr: 32768, len:5524], 
+	FONT.BIN [addr: 38292, len:1624], 
+	BOMB.BIN [addr: 39916, len:960], 
+		>>> WASTED_SPACE [addr: 40876, len:84] <<<
 		>>> RESERVED BACKBUFF2 <<<
 	to restore a background in the backbuffer
 
@@ -58,11 +58,14 @@ Ram-disk usage:
 	TNT.BIN [addr: 10860, len:1056], 
 	TI0_GFX.BIN [addr: 11916, len:8178], 
 	TEXT_LV0.BIN [addr: 20094, len:5190], 
+		>>> WASTED_SPACE [addr: 25284, len:7418] <<<
+		>>> RESERVED_STACK [addr: 32702, len:66] <<<
+	VAMPIRE.BIN [addr: 32768, len:7440], 
 
 reserved: 49416
-used: 105840
-free: 105656
-wasted: 1232
+used: 113262
+free: 90798
+wasted: 8668
 
 */
 ;===============================================
@@ -112,12 +115,12 @@ wasted: 1232
 
 			RAM_DISK_M_FONT = RAM_DISK_M0
 			RAM_DISK_S_FONT = RAM_DISK_S0
-			FONT_ADDR = 38310
+			FONT_ADDR = 38292
 			LOAD_FILE(FONT_FILENAME_PTR, RAM_DISK_S_FONT, FONT_ADDR, FONT_FILE_LEN)
 
 			RAM_DISK_M_BOMB = RAM_DISK_M0
 			RAM_DISK_S_BOMB = RAM_DISK_S0
-			BOMB_ADDR = 39934
+			BOMB_ADDR = 39916
 			LOAD_FILE(BOMB_FILENAME_PTR, RAM_DISK_S_BOMB, BOMB_ADDR, BOMB_FILE_LEN)
 
 			RAM_DISK_M_HERO_R = RAM_DISK_M1
@@ -174,6 +177,11 @@ wasted: 1232
 			RAM_DISK_S_TEXT_LV0 = RAM_DISK_S2
 			TEXT_LV0_ADDR = 20094
 			LOAD_FILE(TEXT_LV0_FILENAME_PTR, RAM_DISK_S_TEXT_LV0, TEXT_LV0_ADDR, TEXT_LV0_FILE_LEN)
+
+			RAM_DISK_M_VAMPIRE = RAM_DISK_M2
+			RAM_DISK_S_VAMPIRE = RAM_DISK_S2
+			VAMPIRE_ADDR = 32768
+			LOAD_FILE(VAMPIRE_FILENAME_PTR, RAM_DISK_S_VAMPIRE, VAMPIRE_ADDR, VAMPIRE_FILE_LEN)
 
 .endf
 LOADED_DATA_START_ADDR = 32702

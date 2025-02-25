@@ -158,7 +158,7 @@ sparker_update:
 			add c
 			mov c, a
 
-			lxi d, vfx_reward
+			lxi d, _vfx_reward
 			call vfx_init
 			ret
 @die:

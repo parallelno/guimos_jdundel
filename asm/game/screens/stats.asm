@@ -28,16 +28,16 @@ stats_screen:
 			jmp	@loop
 
 stats_screen_text_draw:
-			CALL_RAM_DISK_FUNC(__text_ex_rd_reset_spacing, __RAM_DISK_S_FONT | __RAM_DISK_M_TEXT_EX)
+			call text_ex_rd_reset_spacing
 			; draw a text
-			lxi b, END_GAME_TEXT_POS
-			lxi h, __text_game_stats
-			CALL_RAM_DISK_FUNC(__text_ex_rd_scr1, __RAM_DISK_S_FONT | __RAM_DISK_M_TEXT_EX)
+			;lxi h, END_GAME_TEXT_POS
+			lxi d, _stats_game_stats
+			call text_ex_draw
 
 			
 			; draw monsters stats 
 			mvi c, TILEDATA_FUNC_ID_MONSTERS
-			CALL_RAM_DISK_FUNC(__game_stats_get, __RAM_DISK_S_SCORE)
+			call game_stats_get
 			xchg
 			; hl - stats
 			lxi b, STATS_NUMBERS_SCR_ADDR
@@ -45,7 +45,7 @@ stats_screen_text_draw:
 
 			; draw items stats 
 			mvi c, TILEDATA_FUNC_ID_ITEMS
-			CALL_RAM_DISK_FUNC(__game_stats_get, __RAM_DISK_S_SCORE)
+			call game_stats_get
 			xchg
 			; hl - stats
 			lxi b, STATS_NUMBERS_SCR_ADDR - END_GAME_LINE_SPACING * 1
@@ -53,7 +53,7 @@ stats_screen_text_draw:
 
 			; draw coins stats 
 			mvi c, TILEDATA_FUNC_ID_RESOURCES
-			CALL_RAM_DISK_FUNC(__game_stats_get, __RAM_DISK_S_SCORE)
+			call game_stats_get
 			xchg
 			; hl - stats
 			lxi b, STATS_NUMBERS_SCR_ADDR - END_GAME_LINE_SPACING * 2
@@ -61,7 +61,7 @@ stats_screen_text_draw:
 
 			; draw containers stats 
 			mvi c, TILEDATA_FUNC_ID_CONTAINERS
-			CALL_RAM_DISK_FUNC(__game_stats_get, __RAM_DISK_S_SCORE)
+			call game_stats_get
 			xchg
 			; hl - stats
 			lxi b, STATS_NUMBERS_SCR_ADDR - END_GAME_LINE_SPACING * 3
@@ -69,7 +69,7 @@ stats_screen_text_draw:
 
 			; draw doors stats 
 			mvi c, TILEDATA_FUNC_ID_DOORS
-			CALL_RAM_DISK_FUNC(__game_stats_get, __RAM_DISK_S_SCORE)
+			call game_stats_get
 			xchg
 			; hl - stats
 			lxi b, STATS_NUMBERS_SCR_ADDR - END_GAME_LINE_SPACING * 4
@@ -77,7 +77,7 @@ stats_screen_text_draw:
 
 			; draw breakables stats 
 			mvi c, TILEDATA_FUNC_ID_BREAKABLES
-			CALL_RAM_DISK_FUNC(__game_stats_get, __RAM_DISK_S_SCORE)
+			call game_stats_get
 			xchg
 			; hl - stats
 			lxi b, STATS_NUMBERS_SCR_ADDR - END_GAME_LINE_SPACING * 5

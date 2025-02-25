@@ -531,14 +531,14 @@ room_decal_draw_ptr_offset:
 			dad d
 			xchg
 			; de pptr to a sprite
-			mvi a, <__RAM_DISK_S_DECALS
+			mvi a, <RAM_DISK_S_DECALS
 			call get_word_from_ram_disk
 			pop d
 			; bc - sprite addr
 			; de - scr addr
 			push b
 			push d
-			CALL_RAM_DISK_FUNC(draw_decal_v, <__RAM_DISK_S_DECALS)
+			CALL_RAM_DISK_FUNC(draw_decal_v, <RAM_DISK_S_DECALS)
 			pop d
 			pop b
 room_decal_draw_backbuffers:
@@ -546,10 +546,10 @@ room_decal_draw_backbuffers:
 
 			push b
 			push d
-			CALL_RAM_DISK_FUNC(draw_decal_v, <__RAM_DISK_S_DECALS | __RAM_DISK_M_BACKBUFF | RAM_DISK_M_AF)
+			CALL_RAM_DISK_FUNC(draw_decal_v, <RAM_DISK_S_DECALS | RAM_DISK_M_BACKBUFF | RAM_DISK_M_AF)
 			pop d
 			pop b
-			CALL_RAM_DISK_FUNC(draw_decal_v, <__RAM_DISK_S_DECALS | __RAM_DISK_M_BACKBUFF2 | RAM_DISK_M_AF)
+			CALL_RAM_DISK_FUNC(draw_decal_v, <RAM_DISK_S_DECALS | RAM_DISK_M_BACKBUFF2 | RAM_DISK_M_AF)
 			ret
 
 ;=========================================================

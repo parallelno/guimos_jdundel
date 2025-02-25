@@ -4,11 +4,16 @@
 ;=============================================================================
 ; level init data ptr and ram-disk access commands
 level_init_tbl:
-level_resources_inst_data_pptr:		.storage 2
-level_containers_inst_data_pptr:	.storage 2
-level_start_pos_ptr:				.storage 2
-level_rooms_pptr:					.storage 2 ; pptr to the level tile_gfx_idxs + tiledata
-level_tiles_pptr:					.storage 2 ; pptr to the level tile gfx data
+level_ram_disk_s_data:				.storage BYTE_LEN	; .byte RAM_DISK_S_LEVEL00_DATA
+level_ram_disk_m_data: 				.storage BYTE_LEN		; .byte RAM_DISK_M_LEVEL00_DATA
+level_ram_disk_s_gfx:				.storage BYTE_LEN		; .byte RAM_DISK_S_LEVEL00_GFX
+level_ram_disk_m_gfx:				.storage BYTE_LEN		; .byte RAM_DISK_M_LEVEL00_GFX
+level_palette_ptr:					.storage ADDR_LEN	; .word __level00_palette
+level_resources_inst_data_pptr:		.storage ADDR_LEN		; .word __level00_resources_inst_data_ptrs
+level_containers_inst_data_pptr:	.storage ADDR_LEN		; .word __level00_containers_inst_data_ptrs
+level_start_pos_ptr:				.storage ADDR_LEN		; .word __level00_start_pos
+level_rooms_pptr:					.storage ADDR_LEN		; .word __level00_rooms_addr
+level_tiles_pptr:					.storage ADDR_LEN		; .word __level00_tiles_addr
 @data_end:
 LEVEL_INIT_TBL_LEN = @data_end - level_init_tbl
 
@@ -327,3 +332,34 @@ resources_inst_data_ptrs:	.storage RESOURCES_LEN
 rooms_spawn_rates:
 rooms_spawn_rate_monsters:		.storage ROOMS_MAX * 2
 rooms_spawn_rates_end:
+
+;=============================================================================
+; contains statuss of breakables. 
+.align 0x100 ; TODO: check if it must be aligned to $100
+; should be reseted every game start and after hero respawns
+; this structure can contain statuses for 1016 breakables across off levels
+; each room can contain variable amount of breakables
+; TODO: supports only level 0 and level 1 now
+; data format:
+; breakables_status_buffer_ptrs:
+;	 .byte a low byte pointer to a breakables statuses in breakables_status_buffers for a room_id_0 in level_id_0
+;	 .byte a low byte pointer to a breakables statuses in breakables_status_buffers for a room_id_1 in level_id_0
+;	... similar for the rest rooms, ROOMS_MAX total
+;	 .byte a low byte pointer to a breakables statuses in breakables_status_buffers for a room_id_0 in level_id_1
+;	 .byte a low byte pointer to a breakables statuses in breakables_status_buffers for a room_id_1 in level_id_1
+;	... similar for the rest rooms, ROOMS_MAX total
+;
+; breakables_status_buffers:
+;	.loop as many, as many rooms contain breakables and visited by player
+;		Set of bytes where every byte contains statuses of 8 breakables in the room starting from the tile_id=0
+;			Bit = 0 means a breakable is not broken, and vise versa
+;			Example: if the room contains nine breakables with tile_id=A, tile_id=B, tile_id=C, tile_id=J, tile_id=K, tile_id=O, tile_id=P, tile_id=X, tile_id=Z
+;			their statuses will be packed into two bytes:
+;			.byte XPOKJCBA
+;			.byte 0000000Z
+;	.endloop
+BREAKABLES_MAX							= 1016 ; (256-1-128)*8
+breakables_status_buffer_available_ptr:	.storage BYTE_LEN ; contains the pointer
+breakables_status_buffer_ptrs:			.storage ROOMS_MAX * LEVELS_MAX
+breakables_status_buffers:				.storage 0x100 - ROOMS_MAX * LEVELS_MAX ;  TODO: check if this LEN is correct
+breakables_statuses_end:

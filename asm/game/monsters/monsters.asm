@@ -333,7 +333,7 @@ monster_impacted:
 			HL_ADVANCE(monster_health, monster_id)
 			mov e, m
 			mvi d, TILEDATA_FUNC_ID_MONSTERS
-			CALL_RAM_DISK_FUNC(__game_score_add, __RAM_DISK_S_SCORE)
+			call game_score_add
 			call game_ui_draw_score_text
 			pop h
 
@@ -361,7 +361,7 @@ monster_impacted:
 			; init a dialog
 			mvi a, GAME_REQ_PAUSE
 			lxi h, dialog_callback_room_redraw
-			lxi d, __text_hero_freeze_monster
+			lxi d, _storytelling_hero_freeze_monster
 			jmp dialog_init
 
 

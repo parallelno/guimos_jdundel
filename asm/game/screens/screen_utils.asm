@@ -16,7 +16,7 @@ screen_simple_init:
 			lxi d, SCR_BUFF_LEN * 4 / 32 - 1
 			call clear_mem_sp
 			; clear the backbuffer2
-			mvi a, __RAM_DISK_S_BACKBUFF
+			mvi a, RAM_DISK_S_BACKBUFF
 			lxi b, 0
 			lxi d, SCR_BUFF_LEN * 3 / 32 - 1
 			call clear_mem_sp
@@ -51,7 +51,7 @@ screen_simple_init:
 
 screen_palette_and_frame:
 			lxi d, __ti0_palette
-			mvi h, <__RAM_DISK_S_TILED_IMAGES_GFX
+			mvi h, <RAM_DISK_S_TILED_IMAGES_GFX
 			call copy_palette_request_update
 
 			; back1
@@ -97,21 +97,21 @@ screen_simple_draw:
 			ret
 
 ; draw a space button as a back object
-; draw a text referenced by __text_return label
+; draw a text referenced by _options_screen_return label
 screen_draw_return_text_button:
 			; draw a text
 			@text_return_pos = $5819
 			lxi b, @text_return_pos
-			lxi h, __text_return
+			lxi h, _options_screen_return
 
 ; draw a space button as a back object
 ; and a custom text at the custom pos
 ; in:
 ; hl - screen_pos
-; bc - text_addr
+; de - text_addr
 
 screen_draw_return_button_custom_text:
-			CALL_RAM_DISK_FUNC(__text_ex_rd_scr1, __RAM_DISK_S_FONT | __RAM_DISK_M_TEXT_EX)
+			call text_ex_draw_pos_offset_set
 
 			; braw a button
 			@pos_tiles_y = 1

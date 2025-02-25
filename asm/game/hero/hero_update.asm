@@ -85,7 +85,7 @@ hero_update:
 			ori HERO_DIR_RIGHT
 			mov m, a
 
-			lxi h, hero_r_run
+			lxi h, _hero_r_run
 			shld hero_anim_addr
 			jmp hero_update_temp_pos
 
@@ -99,7 +99,7 @@ hero_update:
 
 			mvi a, HERO_DIR_RIGHT | HERO_DIR_UP
 			sta hero_dir
-			lxi h, hero_r_run
+			lxi h, _hero_r_run
 			shld hero_anim_addr
 			jmp hero_update_temp_pos
 
@@ -114,7 +114,7 @@ hero_update:
 
 			mvi a, HERO_DIR_RIGHT | HERO_DIR_DOWN
 			sta hero_dir
-			lxi h, hero_r_run
+			lxi h, _hero_r_run
 			shld hero_anim_addr
 			jmp hero_update_temp_pos
 
@@ -133,7 +133,7 @@ hero_update:
 			ori HERO_DIR_LEFT
 			mov m, a
 
-			lxi h, hero_l_run
+			lxi h, _hero_l_run
 			shld hero_anim_addr
 			jmp hero_update_temp_pos
 
@@ -148,7 +148,7 @@ hero_update:
 
 			mvi a, HERO_DIR_LEFT | HERO_DIR_UP
 			sta hero_dir
-			lxi h, hero_l_run
+			lxi h, _hero_l_run
 			shld hero_anim_addr
 			jmp hero_update_temp_pos
 
@@ -162,7 +162,7 @@ hero_update:
 
 			mvi a, HERO_DIR_LEFT | HERO_DIR_DOWN
 			sta hero_dir
-			lxi h, hero_l_run
+			lxi h, _hero_l_run
 			shld hero_anim_addr
 			jmp hero_update_temp_pos
 
@@ -183,11 +183,11 @@ hero_update:
 			rrc
 			jnc @setAnimRunUfaceL
 
-			lxi h, hero_r_run
+			lxi h, _hero_r_run
 			shld hero_anim_addr
 			jmp hero_update_temp_pos
 @setAnimRunUfaceL:
-			lxi h, hero_l_run
+			lxi h, _hero_l_run
 			shld hero_anim_addr
 			jmp hero_update_temp_pos
 @setAnimRunD:
@@ -207,11 +207,11 @@ hero_update:
 			rrc
 			jnc @setAnimRunDfaceL
 
-			lxi h, hero_r_run
+			lxi h, _hero_r_run
 			shld hero_anim_addr
 			jmp hero_update_temp_pos
 @setAnimRunDfaceL:
-			lxi h, hero_l_run
+			lxi h, _hero_l_run
 			shld hero_anim_addr
 
 hero_update_temp_pos:
@@ -358,7 +358,7 @@ hero_attack_start:
 			; init a dialog
 			mvi a, GAME_REQ_PAUSE
 			lxi h, @cabbage_callback
-			lxi d, __text_hero_use_cabbage
+			lxi d, _storytelling_hero_use_cabbage
 			jmp dialog_init
 @cabbage_callback:
 			call dialog_callback_room_redraw
@@ -378,7 +378,7 @@ hero_attack_start:
 			mov c, m
 			inx h
 			mov b, m
-			lxi d, vfx_reward
+			lxi d, _vfx_reward
 			call vfx_init
 @no_vfx:
 
@@ -397,7 +397,7 @@ hero_attack_start:
 			; init a dialog
 			mvi a, GAME_REQ_PAUSE
 			lxi h, @pie_callback
-			lxi d, __text_hero_use_pie
+			lxi d, _dialogs_hero_use_pie
 			jmp dialog_init
 @pie_callback:
 			call dialog_callback_room_redraw			
@@ -417,7 +417,7 @@ hero_attack_start:
 			; init a dialog
 			mvi a, GAME_REQ_PAUSE
 			lxi h, @clothes_callback
-			lxi d, __text_hero_use_clothes
+			lxi d, _dialogs_hero_use_clothes
 			jmp dialog_init
 @clothes_callback:
 			call dialog_callback_room_redraw				
@@ -448,7 +448,7 @@ hero_attack_start:
 			; init a dialog
 			mvi a, GAME_REQ_PAUSE
 			lxi h, @spoon_callback
-			lxi d, __text_hero_use_spoon
+			lxi d, _storytelling_hero_use_spoon
 			jmp dialog_init
 @spoon_callback:
 			call dialog_callback_room_redraw				
@@ -463,11 +463,11 @@ hero_attack_start:
 			rrc
 			jnc @set_anim_attk_l
 
-			lxi h, hero_r_attk
+			lxi h, _hero_r_attk
 			shld hero_anim_addr
 			jmp sword_init
 @set_anim_attk_l:
-			lxi h, hero_l_attk
+			lxi h, _hero_l_attk
 			shld hero_anim_addr
 			jmp sword_init
 
@@ -496,11 +496,11 @@ hero_idle_start:
 			rrc
 			jnc @setAnimIdleL
 
-			lxi h, hero_r_idle
+			lxi h, _hero_r_idle
 			shld hero_anim_addr
 			ret
 @setAnimIdleL:
-			lxi h, hero_l_idle
+			lxi h, _hero_l_idle
 			shld hero_anim_addr
 			ret
 
@@ -551,8 +551,8 @@ hero_impacted:
 			cpi HERO_STATUS_IMPACTED ; to handle it once per upcomming damage. it is also invincible
 			rz
 
-			lxi h, __sfx_bomb_attack
-			CALL_RAM_DISK_FUNC(__sfx_play, __RAM_DISK_M_SOUND | RAM_DISK_M_8F)
+			lxi h, sfx_bomb_attack
+			call v6_sfx_play
 
 			call hero_impacted_start
 

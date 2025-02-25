@@ -282,7 +282,7 @@
 .endmacro
 
 ; draw an actor sprite into a backbuffer
-; ex. ACTOR_DRAW(sprite_get_scr_addr_scythe, __RAM_DISK_S_SCYTHE)
+; ex. ACTOR_DRAW(sprite_get_scr_addr_scythe, RAM_DISK_S_SCYTHE)
 ; requires  ((bullet_draw_ptr - bullet_status) == (monster_draw_ptr - monster_status))
 ; requires  (bullet_status - bullet_pos_x+1) == (monster_status - monster_pos_x+1)
 ; requires  ((bullet_draw_ptr - bullet_pos_x+1) == (monster_draw_ptr - monster_pos_x+1))
@@ -291,7 +291,7 @@
 ; in:
 ; de - ptr to actor_draw_ptr 
 ; TODO: try to convert it into a function
-.macro ACTOR_DRAW(sprite_get_scr_addr_actor, __ram_disk_s, check_invis = true)
+.macro ACTOR_DRAW(sprite_get_scr_addr_actor, RAM_DISK_S, check_invis = true)
 			; validation
 		.if ~((bullet_draw_ptr - bullet_status) == (monster_draw_ptr - monster_status))
 			.error "actor_erase func fails because !((bullet_draw_ptr - bullet_status) == (monster_draw_ptr - monster_status))"
@@ -339,7 +339,7 @@
 			; c - preshifted sprite idx*2 offset
 			call sprite_get_addr
 			
-			CALL_RAM_DISK_FUNC(__draw_sprite_vm, __ram_disk_s | __RAM_DISK_M_DRAW_SPRITE_VM | RAM_DISK_M_8F)
+			CALL_RAM_DISK_FUNC(sprite_draw_vm, RAM_DISK_S | RAM_DISK_M_8F)
 			pop h			
 			inx h
 			; d - width

@@ -79,7 +79,7 @@ hero_dead_fade_gb:
 			mov b, m
 			INX_H(2)
 			mov c, m
-			lxi d, vfx4_hero_death
+			lxi d, _vfx4_hero_death
 			call vfx_init4
 			ret
 

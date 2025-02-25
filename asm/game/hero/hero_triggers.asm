@@ -7,7 +7,7 @@ trigger_hero_no_health:
 
 			; init a dialog
 			lxi h, @callback
-			lxi d, __text_no_health
+			lxi d, _dialogs_no_health
 			A_TO_ZERO(GLOBAL_REQ_NONE)
 			jmp dialog_init
 
@@ -37,7 +37,7 @@ trigger_hero_knocks_his_home_door:
 			; init a dialog
 			mvi a, GAME_REQ_PAUSE
 			lxi h, dialog_callback_room_redraw
-			lxi d, __text_knocked_his_home_door
+			lxi d, _dialogs_knocked_his_home_door
 			jmp dialog_init
 
 ;===========================================================================
@@ -58,13 +58,13 @@ trigger_hero_knocks_his_friend_door:
 			mvi m, ITEM_STATUS_ACQUIRED
 			
 			lxi d, TILEDATA_FUNC_ID_ITEMS<<8 | ITEM_ID_KEY_0
-			CALL_RAM_DISK_FUNC(__game_score_add, __RAM_DISK_S_SCORE)
+			call game_score_add
 			call game_ui_draw_score_text
 
 			; init a dialog
 			mvi a, GAME_REQ_PAUSE
 			lxi h, dialog_callback_room_redraw
-			lxi d, __text_knocked_his_friend_door
+			lxi d, _dialogs_knocked_his_friend_door
 			jmp dialog_init
 
 @check_clothes:
@@ -78,7 +78,7 @@ trigger_hero_knocks_his_friend_door:
 			; the hero returns without clothes
 			mvi a, GAME_REQ_PAUSE
 			lxi h, dialog_callback_room_redraw
-			lxi d, __text_knocked_his_friend_door_no_clothes
+			lxi d, _dialogs_knocked_his_friend_door_no_clothes
 			jmp dialog_init
 
 @clothes_acquired:
@@ -92,13 +92,13 @@ trigger_hero_knocks_his_friend_door:
 			call game_ui_res_select_and_draw
 
 			lxi d, TILEDATA_FUNC_ID_RESOURCES<<8 | RES_ID_PIE
-			CALL_RAM_DISK_FUNC(__game_score_add, __RAM_DISK_S_SCORE)
+			call game_score_add
 			call game_ui_draw_score_text
 
 			; init a dialog
 			mvi a, GAME_REQ_PAUSE
 			lxi h, dialog_callback_room_redraw
-			lxi d, __text_knocked_his_friend_door_clothes_returns
+			lxi d, _dialogs_knocked_his_friend_door_clothes_returns
 			jmp dialog_init
 			
 ;===========================================================================
@@ -107,7 +107,7 @@ trigger_hero_knocks_his_friend_door:
 trigger_hero_knocks_dungeon_entrance:
 			mvi a, GAME_REQ_PAUSE
 			lxi h, @callback
-			lxi d, __text_knocked_dungeon_entrance
+			lxi d, _dialogs_knocked_dungeon_entrance
 			jmp dialog_init
 
 @callback:

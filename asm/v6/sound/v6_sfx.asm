@@ -113,7 +113,6 @@ v6_sfx_player_init:
 			ret
 
 ; start the next sfx to play
-; ex. CALL_RAM_DISK_FUNC(v6_sfx_play, __RAM_DISK_M_SOUND | RAM_DISK_M_8F)
 ; in:
 ; hl - sfx pointer
 v6_sfx_play:
@@ -165,7 +164,6 @@ v6_sfx_update_ptr: = @song_ptr
 
 ; to mute the sfx player. It can continue the sfx after unmute
 ; to call from this module: call v6_sfx_mute
-; to call outside: CALL_RAM_DISK_FUNC(v6_sfx_mute, __RAM_DISK_M_SOUND | RAM_DISK_M_8F)
 v6_sfx_mute:
 			call v6_sfx_reg_mute
 			; disable the updates
@@ -175,7 +173,6 @@ v6_sfx_mute:
 
 ; to unmute the sfx player after being muted. It continues the sfx from where it has been stopped
 ; to call from this module: call v6_sfx_unmute
-; to call outside: CALL_RAM_DISK_FUNC(v6_sfx_unmute, __RAM_DISK_M_SOUND | RAM_DISK_M_8F)
 v6_sfx_unmute:
 			mvi a, SETTING_ON
 			sta setting_sfx
@@ -183,7 +180,6 @@ v6_sfx_unmute:
 
 ; to flip mute/unmute
 ; to call from this module: call v6_sfx_flip_mute
-; to call outside: CALL_RAM_DISK_FUNC(v6_sfx_flip_mute, __RAM_DISK_M_SOUND | RAM_DISK_M_8F)
 v6_sfx_flip_mute:
 			lxi h, setting_sfx
 			mov a, m
@@ -195,7 +191,6 @@ v6_sfx_flip_mute:
 
 ; return setting_sfx value
 ; to call from this module: call v6_sfx_get_setting
-; to call outside: CALL_RAM_DISK_FUNC(v6_sfx_get_setting, __RAM_DISK_M_SOUND | RAM_DISK_M_8F)
 ; out:
 ; c - setting_sfx value
 v6_sfx_get_setting:

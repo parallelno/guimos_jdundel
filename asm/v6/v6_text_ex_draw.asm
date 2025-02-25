@@ -135,7 +135,7 @@ text_ex_draw_ramdisk_access_gfx:
 			RAM_DISK_ON_BANK()
 			lxi h, 0x0000
 			dad sp
-			shld restore_sp_ret + 1
+			shld restore_sp + 1
 
 			lxi h, temp_buff
 			; get scr pos
@@ -167,7 +167,7 @@ text_ex_draw_next_char:
 			; return if it's 0
 			A_TO_ZERO(NULL)
 			ora e
-			jz restore_sp_ret
+			jz restore_sp
 			inx h
 			
 			; a - char_code

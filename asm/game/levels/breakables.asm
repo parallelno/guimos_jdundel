@@ -3,8 +3,8 @@ breakables_init:
 			lxi h, breakables_status_buffer_available_ptr
 			mvi m, <breakables_status_buffers ; ptr to the first available buffer
 			inx h ; advance hl to breakables_status_buffer_ptrs
-			mvi a, <breakables_statuses_end
-			jmp clear_mem_short
+			lxi b, breakables_statuses_end - breakables_status_buffer_ptrs
+			jmp mem_erase
 
 ; init the bleakables status buffer for the current room
 ; it requires room_tiledata_backup executed upfront this func

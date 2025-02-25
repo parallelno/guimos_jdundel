@@ -219,8 +219,8 @@ def export(source_j_path, asmSpritePath):
 	image = common_gfx.remap_colors(image, colors)
 
 	asm = "; " + source_j_path + "\n"
-	asm += f"__RAM_DISK_S_{source_name.upper()} = RAM_DISK_S" + "\n"
-	asm += f"__RAM_DISK_M_{source_name.upper()} = RAM_DISK_M" + "\n\n"
+	asm += f"RAM_DISK_S_{source_name.upper()} = RAM_DISK_S" + "\n"
+	asm += f"RAM_DISK_M_{source_name.upper()} = RAM_DISK_M" + "\n\n"
 	asm += lists_of_sprites_ptrs_to_asm("__" + source_name, source_j)
 	asm += gfx_to_asm("__" + source_name, source_j, image)
 

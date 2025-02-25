@@ -7,10 +7,10 @@ hero_draw:
 
 			lda hero_dir
 			rrc
-			mvi l, <(__RAM_DISK_S_HERO_R | __RAM_DISK_M_DRAW_SPRITE_VM | RAM_DISK_M_8F)
+			mvi l, <(RAM_DISK_S_HERO_R | RAM_DISK_M_8F)
 			jc @spriteR
 @spriteL:
-			mvi l, <(__RAM_DISK_S_HERO_L | __RAM_DISK_M_DRAW_SPRITE_VM | RAM_DISK_M_8F)
+			mvi l, <(RAM_DISK_S_HERO_L | RAM_DISK_M_8F)
 @spriteR:
 
 			lda hero_status
@@ -23,7 +23,7 @@ hero_draw:
 @draw:
 			mov a, l
 			; TODO: optimize. consider using unrolled loops in DrawSpriteVM for sprites 15 pxs tall
-			CALL_RAM_DISK_FUNC_BANK(__draw_sprite_vm)
+			CALL_RAM_DISK_FUNC_BANK(sprite_draw_vm)
 			; d - width
 			;		00 - 8pxs,
 			;		01 - 16pxs,
@@ -49,7 +49,7 @@ hero_draw:
 			jc @draw
 @invis:
 			mov a, l
-			CALL_RAM_DISK_FUNC_BANK(__draw_sprite_invis_vm)
+			CALL_RAM_DISK_FUNC_BANK(sprite_draw_invis_vm)
 			jmp @save_params
 
 hero_copy_to_scr:
@@ -120,5 +120,5 @@ hero_erase:
 
 
 			jnz sprite_copy_to_back_buff_v ; restore a background
-			CALL_RAM_DISK_FUNC(__erase_sprite, __RAM_DISK_S_BACKBUFF | __RAM_DISK_M_ERASE_SPRITE | RAM_DISK_M_8F)
+			CALL_RAM_DISK_FUNC(sprite_erase, RAM_DISK_S_BACKBUFF | RAM_DISK_M_8F)
 			ret

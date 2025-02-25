@@ -7,11 +7,7 @@
 ;		10 - 24pxs,
 ;		11 - 32pxs
 ; c - height
-//		IT IS NOT RECOMMENDED TO USE
-//		BECAUSE OF THE RISK OF DATA CORRUPTION
-//		RAM_DISK_ON_BANK macro must not be used before calling a function!
-//		check the reqs of RAM_DISK_ON_BANK_NO_RESTORE before using it here
-/*
+
 sprite_copy_to_scr_v:
 			; store sp
 			lxi h, 0
@@ -165,4 +161,3 @@ sprite_copy_to_scr_v:
 			jp @next_column
 			jmp restore_sp
 .endmacro
-*/

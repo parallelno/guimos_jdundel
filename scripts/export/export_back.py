@@ -172,8 +172,8 @@ def export(source_j_path, asm_anim_path, asm_sprite_path):
 
 	asm = "; " + source_j_path + "\n"
 	asm_anims = asm + anims_to_asm(source_name, source_j)
-	asm_sprites = asm + f"__RAM_DISK_S_{source_name.upper()} = RAM_DISK_S" + "\n"
-	asm_sprites += asm + f"__RAM_DISK_M_{source_name.upper()} = RAM_DISK_M" + "\n"
+	asm_sprites = asm + f"RAM_DISK_S_{source_name.upper()} = RAM_DISK_S" + "\n"
+	asm_sprites += asm + f"RAM_DISK_M_{source_name.upper()} = RAM_DISK_M" + "\n"
 	asm_sprites += gfx_to_asm("__" + source_name, source_j, image) 
 
 	# save asm

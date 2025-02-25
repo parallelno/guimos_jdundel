@@ -32,7 +32,7 @@ hero_tile_func_item:
 			; add score points
 			push b
 			mvi d, TILEDATA_FUNC_ID_ITEMS
-			CALL_RAM_DISK_FUNC(__game_score_add, __RAM_DISK_S_SCORE)
+			call game_score_add
 			call game_ui_draw_score_text
 			pop b
 			
@@ -40,7 +40,7 @@ hero_tile_func_item:
 			call draw_tile_16x16_buffs
 			; draw vfx
 			; bc - tile screen addr			
-			lxi d, vfx_reward
+			lxi d, _vfx_reward
 			jmp vfx_init
 
 ; handler func for resources
@@ -71,7 +71,7 @@ hero_tile_func_resource:
 			call draw_tile_16x16_buffs
 			; draw vfx
 			; bc - tile screen addr			
-			lxi d, vfx_reward
+			lxi d, _vfx_reward
 			call vfx_init
 
 			; update a hero resource
@@ -82,7 +82,7 @@ hero_tile_func_resource:
 			push psw
 			mov e, a
 			mvi d, TILEDATA_FUNC_ID_RESOURCES
-			CALL_RAM_DISK_FUNC(__game_score_add, __RAM_DISK_S_SCORE)
+			call game_score_add
 			call game_ui_draw_score_text
 			pop psw
 
@@ -190,7 +190,7 @@ hero_cont_func_chest_sword:
 			; init a dialog
 			mvi a, GAME_REQ_PAUSE
 			lxi h, dialog_callback_room_redraw
-			lxi d, __text_hero_gets_sword
+			lxi d, _dialogs_hero_gets_sword
 			jmp dialog_init
 
 hero_cont_func_chest_spoon:
@@ -200,13 +200,13 @@ hero_cont_func_chest_spoon:
 			call game_ui_res_select_and_draw
 	
 			lxi d, TILEDATA_FUNC_ID_RESOURCES<<8 | RES_ID_SPOON
-			CALL_RAM_DISK_FUNC(__game_score_add, __RAM_DISK_S_SCORE)
+			call game_score_add
 			call game_ui_draw_score_text
 
 			; init a dialog
 			mvi a, GAME_REQ_PAUSE
 			lxi h, @callback
-			lxi d, __text_hero_gets_spoon
+			lxi d, _dialogs_hero_gets_spoon
 			jmp dialog_init
 @callback:
 			call dialog_callback_room_redraw

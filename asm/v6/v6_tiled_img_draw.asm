@@ -72,7 +72,7 @@ tiled_img_draw_ramdisk_access_gfx:
 			RAM_DISK_ON_BANK()
 			lxi h, 0x0000
 			dad sp
-			shld restore_sp_ret + 1
+			shld restore_sp + 1
 
 			lxi h, temp_buff
 
@@ -202,7 +202,7 @@ tiled_img_draw_check_end:
 			cpi TEMP_BYTE
 			jnz tiled_img_draw_loop
 
-			jmp restore_sp_ret
+			jmp restore_sp
 
 tiled_img_draw_repeating_counter:
 			.byte TEMP_BYTE

@@ -240,7 +240,7 @@ game_ui_draw_res:
 			; hl - scr adr offset
 @draw_icon:
 			; de - ptr to an img
-			mvi a, <__RAM_DISK_S_TILED_IMAGES_DATA
+			mvi a, <RAM_DISK_S_TILED_IMAGES_DATA
 			jmp draw_tiled_img_pos_offset
 
 @draw_selection:
@@ -255,8 +255,8 @@ game_ui_draw_res:
 			mvi e, <RES_SELECTION_FRAME_SCR_ADDR
 			; de - scr addr
 			; draw selection frame on a resouce
-			lxi b, __vfx_selection_0
-			CALL_RAM_DISK_FUNC(__draw_sprite_vm, __RAM_DISK_S_VFX | __RAM_DISK_M_DRAW_SPRITE_VM | RAM_DISK_M_89)
+			lxi b, _vfx_selection_0
+			CALL_RAM_DISK_FUNC(sprite_draw_vm, RAM_DISK_S_VFX | RAM_DISK_M_89)
 			; d - width
 			;		00 - 8pxs,
 			;		01 - 16pxs,
@@ -326,7 +326,7 @@ game_ui_draw_items:
 			mov d, m
 @draw_icon:
 			; de - ptr to an img
-			mvi a, <__RAM_DISK_S_TILED_IMAGES_DATA
+			mvi a, <RAM_DISK_S_TILED_IMAGES_DATA
 			jmp draw_tiled_img
 
 @delay:		.byte TEMP_WORD

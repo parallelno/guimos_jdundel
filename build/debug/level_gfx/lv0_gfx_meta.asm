@@ -2,13 +2,20 @@
 ; asm data file: build/debug/level_gfx/lv0_gfx_data.asm
 ; bin file: build/debug/bin/LV0_GFX.BIN
 
-LV0_GFX_FILE_LEN = 5542
-LV0_GFX_LAST_RECORD_LEN = 38
+LV0_GFX_FILE_LEN = 5524
+LV0_GFX_LAST_RECORD_LEN = 20
 
 LV0_GFX_FILENAME_PTR:
 			.byte "LV0_GFX" ; filename
 			.byte " " ; filename white chars
 			.byte "BIN" ; extension
+
+; assets\levels/tiled/art/lv0.png
+_lv0_palette:
+			.byte %01100101, %01010010, %01011100, %01101011, 
+			.byte %10100100, %01101100, %10110111, %01101111, 
+			.byte %10011011, %11111101, %10101111, %01011111, 
+			.byte %11111111, %11100010, %01100010, %00011111, 
 
 _lv0_tile0 = 2
 _lv0_tile1 = 134

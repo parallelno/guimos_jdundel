@@ -24,6 +24,7 @@
 
 .include "game/game_macros.asm"
 
+.include "game/game_score_data.asm"
 .include "game/levels/levels_data.asm"
 
 .include "game/actor/actor.asm"
@@ -38,4 +39,6 @@
 .include "game/ui/dialogs.asm"
 .include "game/ui/ui.asm"
 
+.include "game/game_score.asm"
+.include "game/game_utils.asm"
 .include "game/game.asm"

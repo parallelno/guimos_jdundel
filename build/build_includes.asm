@@ -17,6 +17,7 @@
 .include "build/debug/sprite/tnt_meta.asm"
 .include "build/debug/tiled_img_gfx/ti0_gfx_meta.asm"
 .include "build/debug/text_eng/text_lv0_meta.asm"
+.include "build/debug/sprite/vampire_meta.asm"
 
 .include "build/debug/code/loads.asm"
 

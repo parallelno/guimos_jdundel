@@ -95,7 +95,7 @@ VAMPIRE_DETECT_HERO_DISTANCE = 90
 ; out:
 ; a = TILEDATA_RESTORE_TILE
 vampire_init:
-			MONSTER_INIT(vampire_update, vampire_draw, monster_impacted, VAMPIRE_HEALTH, VAMPIRE_STATUS_DETECT_HERO_INIT, vampire_idle)
+			MONSTER_INIT(vampire_update, vampire_draw, monster_impacted, VAMPIRE_HEALTH, VAMPIRE_STATUS_DETECT_HERO_INIT, _vampire_idle)
 
 ;========================================================
 ; anim and a gameplay logic update
@@ -130,15 +130,15 @@ vampire_update_detect_hero_init:
 			inx h
 			mvi m, VAMPIRE_STATUS_DETECT_HERO_TIME
 			HL_ADVANCE(monster_status_timer, monster_anim_ptr)
-			mvi m, <vampire_idle
+			mvi m, <_vampire_idle
 			inx h
-			mvi m, >vampire_idle
+			mvi m, >_vampire_idle
 			ret
 
 ; in:
 ; hl - ptr to monster_status
 vampire_update_detect_hero:
-MONSTER_UPDATE_DETECT_HERO(VAMPIRE_DETECT_HERO_DISTANCE, VAMPIRE_STATUS_SHOOT_PREP, VAMPIRE_STATUS_SHOOT_PREP_TIME, vampire_cast, VAMPIRE_ANIM_SPEED_DETECT_HERO, vampire_update_anim_check_collision_hero, VAMPIRE_STATUS_MOVE_INIT, VAMPIRE_STATUS_MOVE_TIME)
+MONSTER_UPDATE_DETECT_HERO(VAMPIRE_DETECT_HERO_DISTANCE, VAMPIRE_STATUS_SHOOT_PREP, VAMPIRE_STATUS_SHOOT_PREP_TIME, _vampire_cast, VAMPIRE_ANIM_SPEED_DETECT_HERO, vampire_update_anim_check_collision_hero, VAMPIRE_STATUS_MOVE_INIT, VAMPIRE_STATUS_MOVE_TIME)
 
 ; in:
 ; hl - ptr to monster_status
@@ -195,17 +195,17 @@ vampire_update_move_init:
 			HL_ADVANCE(monster_speed_y+1, monster_anim_ptr, BY_BC)
 			; a = rnd
 			CPI_WITH_ZERO(0)
-			; if rnd is positive (up or right movement), then play vampire_run_r anim
+			; if rnd is positive (up or right movement), then play _vampire_run_r anim
 			jp @set_anim_run_r
 @set_anim_run_l:
-			mvi m, <vampire_run_l
+			mvi m, <_vampire_run_l
 			inx h
-			mvi m, >vampire_run_l
+			mvi m, >_vampire_run_l
 			ret
 @set_anim_run_r:
-			mvi m, <vampire_run_r
+			mvi m, <_vampire_run_r
 			inx h
-			mvi m, >vampire_run_r
+			mvi m, >_vampire_run_r
             ret
 
 ; in:
@@ -276,8 +276,8 @@ vampire_update_shoot_prep:
 			dcx h
 			mvi m, VAMPIRE_STATUS_SHOOT
 			
-			lxi h, __sfx_vampire_attack
-			CALL_RAM_DISK_FUNC(__sfx_play, __RAM_DISK_M_SOUND | RAM_DISK_M_8F)
+			lxi h, sfx_vampire_attack
+			call v6_sfx_play
 			ret
 
 ; in:
@@ -307,4 +307,4 @@ vampire_update_anim_check_collision_hero:
 ; in:
 ; de - ptr to monster_draw_ptr 
 vampire_draw:
-			ACTOR_DRAW(sprite_get_scr_addr_vampire, __RAM_DISK_S_VAMPIRE, false)
+			ACTOR_DRAW(sprite_get_scr_addr_vampire, RAM_DISK_S_VAMPIRE, false)

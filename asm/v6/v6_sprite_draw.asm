@@ -1,11 +1,11 @@
 ; sharetable chunk of code to restore SP and 
 ; return a couple of parameters within HL, C
-draw_sprite_ret_ram_disk__:
-draw_sprite_restore_sp_ram_disk__:
+draw_sprite_ret:
+draw_sprite_restore_sp:
 			lxi sp, TEMP_ADDR
-draw_sprite_scr_addr_ram_disk__:
+draw_sprite_scr_addr:
 			lxi b, TEMP_ADDR
-draw_sprite_width_height_ram_disk__:
+draw_sprite_width_height:
 ; d - width
 ;		00 - 8pxs,
 ;		01 - 16pxs,
@@ -63,7 +63,7 @@ sprite_draw_vm:	; VM stands for: V - variable height, M - mask support
 			; store SP
 			lxi h, 0
 			dad sp
-			shld draw_sprite_restore_sp_ram_disk__ + 1
+			shld draw_sprite_restore_sp + 1
 			; sp = BC
 			mov	h, b
 			mov	l, c
@@ -74,7 +74,7 @@ sprite_draw_vm:	; VM stands for: V - variable height, M - mask support
 			; c - offset_y			
 			dad b
 			; store a sprite screen addr to return it from this func
-			shld draw_sprite_scr_addr_ram_disk__+1
+			shld draw_sprite_scr_addr+1
 
 			; store sprite width and height
 			pop b			
@@ -83,7 +83,7 @@ sprite_draw_vm:	; VM stands for: V - variable height, M - mask support
 			xchg
 			; h, b - width, 
 			; l, c - height			
-			shld draw_sprite_width_height_ram_disk__+1
+			shld draw_sprite_width_height+1
 			xchg		
 			; d, b - width, 
 			; e, c - height					
@@ -122,7 +122,7 @@ sprite_draw_vm:	; VM stands for: V - variable height, M - mask support
 			DRAW_SPRITE_V_M()
 			inr l
 			dcr e
-			jz draw_sprite_ret_ram_disk__
+			jz draw_sprite_ret
 
 @w16oddScr3:
 			DRAW_SPRITE_V_M()
@@ -141,7 +141,7 @@ sprite_draw_vm:	; VM stands for: V - variable height, M - mask support
 			inr l
 			dcr e
 			jnz @w16evenScr1
-			jmp draw_sprite_ret_ram_disk__
+			jmp draw_sprite_ret
 ;-------------------------------------------------
 @width24:
 			; save the high screen byte to restore X
@@ -177,7 +177,7 @@ sprite_draw_vm:	; VM stands for: V - variable height, M - mask support
 			DRAW_SPRITE_V_M()
 			inr l
 			dcr e
-			jz draw_sprite_ret_ram_disk__
+			jz draw_sprite_ret
 
 @w24oddScr3:
 			DRAW_SPRITE_V_M()
@@ -202,7 +202,7 @@ sprite_draw_vm:	; VM stands for: V - variable height, M - mask support
 			inr l
 			dcr e
 			jnz @w24evenScr1
-			jmp draw_sprite_ret_ram_disk__
+			jmp draw_sprite_ret
 ;------------------------------------------------------
 @width8:
 			; save the high screen byte to restore X
@@ -223,7 +223,7 @@ sprite_draw_vm:	; VM stands for: V - variable height, M - mask support
 			DRAW_SPRITE_V_M()
 			inr l
 			dcr e
-			jz draw_sprite_ret_ram_disk__
+			jz draw_sprite_ret
 @w8oddScr3:
 			DRAW_SPRITE_V_M()
 @w8oddScr2:
@@ -235,8 +235,8 @@ sprite_draw_vm:	; VM stands for: V - variable height, M - mask support
 			inr l
 			dcr e
 			jnz @w8evenScr1
-			jmp draw_sprite_ret_ram_disk__
-draw_sprite_vm_end:
+			jmp draw_sprite_ret
+sprite_draw_vm_end:
 
 .macro DRAW_SPRITE_V_M()
 			pop b

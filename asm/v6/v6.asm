@@ -13,6 +13,7 @@ jmp v6_main_init
 .include "asm/v6/sound/v6_sound.asm"
 .include "asm/v6/v6_tile_draw.asm"
 .include "asm/v6/v6_sprite.asm"
+.include "asm/v6/v6_sprite_erase.asm"
 .include "asm/v6/v6_sprite_copy_to_scr.asm"
 .include "asm/v6/v6_sprite_copy_to_backbuf.asm"
 .include "asm/v6/v6_sprite_draw.asm"

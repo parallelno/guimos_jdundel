@@ -200,10 +200,10 @@ sprite_get_scr_addr_vfx:
 ; in:
 ; de - ptr to bullet_draw_ptr 
 vfx_draw:
-			ACTOR_DRAW(sprite_get_scr_addr_vfx, __RAM_DISK_S_VFX, false)
+			ACTOR_DRAW(sprite_get_scr_addr_vfx, RAM_DISK_S_VFX, false)
 
 ; draw a sprite into a backbuffer
 ; in:
 ; de - ptr to bullet_draw_ptr 
 vfx_draw4:
-			ACTOR_DRAW(sprite_get_scr_addr_vfx4, __RAM_DISK_S_VFX4, false)
+			ACTOR_DRAW(sprite_get_scr_addr_vfx4, RAM_DISK_S_VFX4, false)
