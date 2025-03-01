@@ -33,7 +33,7 @@ sprite_get_scr_addr_bomb = sprite_get_scr_addr4
 _bomb_preshifted_sprites:
 			.byte 4
 _bomb_anims:
-			.word _bomb_run, _bomb_dmg, EOD, 
+			.word _bomb_run, _bomb_dmg, EOD
 _bomb_run:
 			.byte 9, 0 ; offset to the next frame
 			.word _bomb_run0_0, _bomb_run0_1, _bomb_run0_2, _bomb_run0_3, 

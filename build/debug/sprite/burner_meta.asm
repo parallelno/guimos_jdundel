@@ -65,7 +65,7 @@ sprite_get_scr_addr_burner = sprite_get_scr_addr4
 _burner_preshifted_sprites:
 			.byte 4
 _burner_anims:
-			.word _burner_idle, _burner_run_r, _burner_run_l, _burner_dash, EOD, 
+			.word _burner_idle, _burner_run_r, _burner_run_l, _burner_dash, EOD
 _burner_idle:
 			.byte 9, 0 ; offset to the next frame
 			.word _burner_run_r0_0, _burner_run_r0_1, _burner_run_r0_2, _burner_run_r0_3, 

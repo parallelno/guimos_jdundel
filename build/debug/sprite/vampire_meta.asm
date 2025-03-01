@@ -53,7 +53,7 @@ sprite_get_scr_addr_vampire = sprite_get_scr_addr4
 _vampire_preshifted_sprites:
 			.byte 4
 _vampire_anims:
-			.word _vampire_idle, _vampire_run_r, _vampire_run_l, _vampire_cast, EOD, 
+			.word _vampire_idle, _vampire_run_r, _vampire_run_l, _vampire_cast, EOD
 _vampire_idle:
 			.byte 9, 0 ; offset to the next frame
 			.word _vampire_run_r0_0, _vampire_run_r0_1, _vampire_run_r0_2, _vampire_run_r0_3, 

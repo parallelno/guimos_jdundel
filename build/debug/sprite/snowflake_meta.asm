@@ -28,7 +28,7 @@ sprite_get_scr_addr_snowflake = sprite_get_scr_addr4
 _snowflake_preshifted_sprites:
 			.byte 4
 _snowflake_anims:
-			.word _snowflake_run, EOD, 
+			.word _snowflake_run, EOD
 _snowflake_run:
 			.byte 9, 0 ; offset to the next frame
 			.word _snowflake_run0_0, _snowflake_run0_1, _snowflake_run0_2, _snowflake_run0_3, 

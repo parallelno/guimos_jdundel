@@ -25,7 +25,7 @@ _backs0_dialog_press_key1 = 560
 _backs0_preshifted_sprites:
 			.byte 1
 _backs0_anims:
-			.word _backs0_torch_front, _backs0_flag_front, _backs0_dialog_press_key, EOD, 
+			.word _backs0_torch_front, _backs0_flag_front, _backs0_dialog_press_key, EOD
 _backs0_torch_front:
 			.byte 3, 0 ; offset to the next frame
 			.word _backs0_torch_front0, 

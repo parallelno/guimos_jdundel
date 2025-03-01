@@ -41,6 +41,7 @@ v6_gc_init_song:
 
 ; uses to start a new song or to repeat a finished song
 ; requires a call v6_gc_init_song upfront!
+CALL_RAM_DISK_FUNC_NO_RESTORE(v6_gc_start, RAM_DISK_S_SONG01 | RAM_DISK_M_SONG01 | RAM_DISK_M_8F)
 v6_gc_start:
 			call v6_gc_tasks_init
 			call v6_gc_scheduler_init
@@ -58,6 +59,7 @@ v6_gc_start:
 
 
 ; called by the unterruption routine
+; ex. CALL_RAM_DISK_FUNC_NO_RESTORE(v6_gc_update, RAM_DISK_M_SONG01 | RAM_DISK_M_8F)
 v6_gc_update:
 			; return if muted
 			lda setting_music

@@ -18,7 +18,7 @@ game_init:
 			hlt
 			di
 
-;			call v6_sound_init
+			call v6_sound_init
 //==========================================================
 
 			load_permanent()
@@ -49,7 +49,6 @@ game_init:
 			;======================
 			; BACKS0
 			;======================
-.breakpoint			
 			lxi d, _backs0_preshifted_sprites
 			lxi h, BACKS0_ADDR
 			call sprite_update_labels
@@ -57,11 +56,10 @@ game_init:
 			;======================
 			; SONG01
 			;======================
-
-			// lxi d, SONG01_ADDR
-			// lxi h, SONG01_ay_reg_data_ptrs
-			// call v6_gc_init_song
-			// call v6_gc_start
+			lxi d, SONG01_ADDR
+			lxi h, SONG01_ay_reg_data_ptrs
+			call v6_gc_init_song
+			CALL_RAM_DISK_FUNC_NO_RESTORE(v6_gc_start, RAM_DISK_S_SONG01 | RAM_DISK_M_SONG01 | RAM_DISK_M_8F)
 
 			;======================
 			; FONT

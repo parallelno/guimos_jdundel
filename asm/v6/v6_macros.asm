@@ -348,9 +348,9 @@ BY_HL_FROM_DE	= 4
 .endmacro
 
 ; mount the ram-disk w/o storing mode
-.macro RAM_DISK_ON_NO_RESTORE(command)
+.macro RAM_DISK_ON_NO_RESTORE(command, ram_disk_port = RAM_DISK_PORT)
 			mvi a, <command
-			out $10
+			out ram_disk_port
 .endmacro
 
 ; mount the ram-disk
