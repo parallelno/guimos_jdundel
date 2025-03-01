@@ -33,7 +33,7 @@ sprite_get_scr_addr_scythe = sprite_get_scr_addr4
 _scythe_preshifted_sprites:
 			.byte 4
 _scythe_anims:
-			.word _scythe_run, 0, 
+			.word _scythe_run, EOD, 
 _scythe_run:
 			.byte 9, 0 ; offset to the next frame
 			.word _scythe_run0_0, _scythe_run0_1, _scythe_run0_2, _scythe_run0_3, 

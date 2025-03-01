@@ -16,7 +16,7 @@ CURSOR_ANIM_SPEED_MOVE	= 30
 ; bc - pos
 ; movement speed based on the hero pos. it goes to that direction.
 cursor_init:
-			BULLET_INIT(cursor_update, bomb_draw, CURSOR_STATUS_IDLE, CURSOR_STATUS_IDLE_TIME, bomb_run, empty_func)
+			BULLET_INIT(cursor_update, bomb_draw, CURSOR_STATUS_IDLE, CURSOR_STATUS_IDLE_TIME, _bomb_run, empty_func)
 			
 ; anim and a gameplay logic update
 ; in:

@@ -10,7 +10,7 @@
 ; in:
 ; de - compressed data
 ; bc - decompressed data
-.function dzx0()
+dzx0:
 			lxi h, 0xFFFF
 			push h
 			inx h
@@ -81,8 +81,7 @@
 			jnz @ldir1
 			pop psw
 			add a
-			;ret
-.endf
+			ret
 
 
 /*

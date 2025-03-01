@@ -29,7 +29,7 @@ game_ui_update:
 game_ui_draw_health_text:
 			lxi h, hero_res_health
 			lxi b, HEALTH_SCR_ADDR
-			jmp draw_text_int8_ptr
+			jmp text_mono_draw_int8_ptr
 
 
 game_ui_draw_score_text:
@@ -41,7 +41,7 @@ game_ui_draw_score_text:
 			pop h
 			; hl = game_ui_score_txt
 			lxi b, HERO_SCORE_SCR_ADDR
-			jmp draw_text
+			jmp text_mono_draw
 game_ui_score_txt:
 			.byte $30, $30, $30, $30, $30, $30, 0
 
@@ -215,7 +215,7 @@ game_ui_draw_res:
 			adi >RES_TEXT_SCR_ADDR_0
 			mov b, a
 			mvi c, <RES_TEXT_SCR_ADDR_0
-			jmp draw_text_int8_ptr
+			jmp text_mono_draw_int8_ptr
 
 @erase_all:
 			mvi c, RES_DISPLAYED_MAX
@@ -240,8 +240,8 @@ game_ui_draw_res:
 			; hl - scr adr offset
 @draw_icon:
 			; de - ptr to an img
-			mvi a, <RAM_DISK_S_TILED_IMAGES_DATA
-			jmp draw_tiled_img_pos_offset
+			mvi a, <RAM_DISK_S_TI0_DATA
+			jmp tiled_img_draw_pos_offset_set
 
 @draw_selection:
 			mvi c, TEMP_BYTE 
@@ -326,8 +326,8 @@ game_ui_draw_items:
 			mov d, m
 @draw_icon:
 			; de - ptr to an img
-			mvi a, <RAM_DISK_S_TILED_IMAGES_DATA
-			jmp draw_tiled_img
+			mvi a, <RAM_DISK_S_TI0_DATA
+			jmp tiled_img_draw
 
 @delay:		.byte TEMP_WORD
 

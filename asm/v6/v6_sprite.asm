@@ -88,9 +88,9 @@ sprite_get_scr_addr1:
 
 ; updates sprite label addrs
 ; in:
-; de - _hero_l_preshifted_sprites
+; de - preshifted_sprites ptrs i.e. _hero_l_preshifted_sprites
 ; hl - sprite gfx addr (_hero_l_sprites)
-.function sprite_update_labels()
+sprite_update_labels:
 			shld @gfx_addr+1
 			xchg
 			; hl - _hero_l_preshifted_sprites
@@ -133,17 +133,9 @@ sprite_get_scr_addr1:
 			; hl - points to the array of ptrs to the data
 			; de - the data addr
 			; c - the len of the array
-			update_labels()
+			call update_labels
 			pop psw
 			; if a < 0, we updated the last frame in the animation
 			ora a
 			jp @update_frame_labels
-			;ret
-.endf
-
-
-
-
-
-
-			
+			ret

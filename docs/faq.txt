@@ -67,3 +67,16 @@ games.
 If you want to jump between separate ram-disk data segments (font elements 
 for example), use lxi sp, 0x0002 safe addr before the next lxi sp, ADDR or 
 sphl operation. Check the draw_text_ex func for implementation details.
+
+;===========================================================================
+; Why some subroutines are .function, and others not
+;===========================================================================
+Retroassembler provides a handy functionality with .function tag. If a function
+isn't used in the code, it is not included into assembly.
+But that .function has disadvanages. Firstly, it add RET instruction at the end,
+no matter if it's needed. The second, you execute a call to a label inside the 
+func. The lastly, you can conditionaly call a .function.
+With all of it been said, I decided to only use .functions in the utils assembly
+where not all subroutines are required for the particular game. If you do not
+need functionality, lets say, tiled images, it's more meaninful to exclude the 
+whole asm module.

@@ -28,7 +28,7 @@ stats_screen:
 			jmp	@loop
 
 stats_screen_text_draw:
-			call text_ex_rd_reset_spacing
+			call text_ex_reset_spacing
 			; draw a text
 			;lxi h, END_GAME_TEXT_POS
 			lxi d, _stats_game_stats

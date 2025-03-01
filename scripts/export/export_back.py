@@ -3,8 +3,175 @@ from pathlib import Path
 from PIL import Image
 import json
 import utils.common as common
-import utils.common as common_gfx
+import utils.common_gfx as common_gfx
 import utils.build as build
+
+
+def export_if_updated(
+		asset_j_path, asm_meta_path, asm_data_path, bin_path,
+		force_export): 
+	
+	if force_export or is_source_updated(asset_j_path):
+		export_asm(asset_j_path, asm_meta_path, asm_data_path, bin_path)
+		print(f"export_sprite: {asset_j_path} got exported.")
+
+
+def is_source_updated(asset_j_path):
+	with open(asset_j_path, "rb") as file:
+		asset_j = json.load(file)
+	
+	asset_dir = str(Path(asset_j_path).parent) + "/"
+	path_png = asset_dir + asset_j["path_png"]
+
+	if build.is_file_updated(asset_j_path) | build.is_file_updated(path_png):
+		return True
+	return False
+
+
+def export_asm(asset_j_path, asm_meta_path, asm_data_path, bin_path):
+	
+	with open(asset_j_path, "rb") as file:
+		asset_j = json.load(file)
+
+	asset_name = common.path_to_basename(asset_j_path)
+	asset_dir = str(Path(asset_j_path).parent) + "/"
+	path_png = asset_dir + asset_j["path_png"]
+	image = Image.open(path_png)
+	_, colors = common_gfx.palette_to_asm(image, asset_j)
+	image = common_gfx.remap_colors(image, colors)
+
+	asm_ram_disk_data, data_ptrs = gfx_to_asm("_", asset_name, asset_j, image, asset_j_path)
+	asm_ram_data = anims_to_asm("_", asset_name, asset_j, data_ptrs, asset_j_path)
+
+	# save the asm gfx
+	asm_gfx_dir = str(Path(asm_data_path).parent) + "/"
+	if not os.path.exists(asm_gfx_dir):
+		os.mkdir(asm_gfx_dir)
+	with open(asm_data_path, "w") as file:
+		file.write(asm_ram_disk_data)
+
+	# compile and save the gfx bin files
+	build.export_fdd_file(asm_meta_path, asm_data_path, bin_path, asm_ram_data)
+
+	return True
+
+
+def gfx_to_asm(label_prefix, asset_name, asset_j, image, asset_j_path):
+
+	sprites_j = asset_j["sprites"]
+	data_ptrs = {}
+	sprite_data_relative_addr = 2 # safety pair of bytes for reading by POP B
+	asm = f"{label_prefix}{asset_name}_sprites:"
+
+	
+	for sprite in sprites_j:
+		sprite_name = sprite["name"]
+		x = sprite["x"]
+		y = sprite["y"]
+		width = sprite["width"]
+		height = sprite["height"]
+		offset_x = sprite.get("offset_x", 0)
+		offset_y = sprite.get("offset_y", 0)
+
+		# get a sprite as a color index 2d array
+		sprite_img = []
+		for py in reversed(range(y, y + height)) : # Y is reversed because it is from bottomto top in the game
+			line = []
+			for px in range(x, x+width) :
+				color_idx = image.getpixel((px, py))
+				line.append(color_idx)
+
+			sprite_img.append(line)
+
+		# convert indexes into bit lists.
+		bits0, bits1, bits2, bits3 = common_gfx.indexes_to_bit_lists(sprite_img)
+
+		# combite bits into byte lists
+		bytes0 = common.combine_bits_to_bytes(bits0) # 8000-9FFF # from left to right, from bottom to top
+		bytes1 = common.combine_bits_to_bytes(bits1) # A000-BFFF
+		bytes2 = common.combine_bits_to_bytes(bits2) # C000-DFFF
+		bytes3 = common.combine_bits_to_bytes(bits3) # E000-FFFF
+
+		# to support a sprite render function
+		data = sprite_data(bytes0, bytes1, bytes2, bytes3, width, height)
+		frame_label = f"{label_prefix}{asset_name}_{sprite_name}"
+		asm += "\n"
+		#asm += f"			.word 0  ; safety pair of bytes for reading by POP B\n"
+		asm += frame_label + ":\n"
+
+		width_packed = width//8 - 1
+		offset_x_packed = offset_x//8
+		asm += "			.byte " + str( offset_y ) + ", " +  str( offset_x_packed ) + "; offset_y, offset_x\n"
+		asm += "			.byte " + str( height ) + ", " +  str( width_packed ) + "; height, width\n"
+		asm += common.bytes_to_asm(data) 
+		asm += "\n"
+
+		# collect a label and its relative addr
+		frame_data_len = len(data) 
+		frame_data_len += 2 # safety pair of bytes
+		frame_data_len += 2 # offset_y, offset_x
+		frame_data_len += 2 # height, width
+		data_ptrs[frame_label] = sprite_data_relative_addr
+		sprite_data_relative_addr += frame_data_len
+
+	return asm, data_ptrs
+
+
+def anims_to_asm(label_prefix, asset_name, asset_j, data_ptrs, asset_j_path):
+	asm = ""
+
+	preshifted_sprites = 1 # means no preshifted sprites
+	asm += f"{label_prefix}{asset_name}_preshifted_sprites:\n"
+	asm += f"			.byte {str(preshifted_sprites)}\n"
+
+	# make a list of anim_names
+	asm += f"{label_prefix}{asset_name}_anims:\n"
+	asm += "			.word "
+	for anim_name in asset_j["anims"]:
+		asm += f"{label_prefix}{asset_name}_{anim_name}, "
+	asm += "EOD\n"
+
+	# make a list of sprites for an every anim
+	for anim_name in asset_j["anims"]:
+
+		asm += f"{label_prefix}{asset_name}_{anim_name}:\n"
+ 
+		anims = asset_j["anims"][anim_name]["frames"]
+		loop = asset_j["anims"][anim_name]["loop"]
+		frame_count = len(asset_j["anims"][anim_name]["frames"])
+		for i, frame in enumerate(anims):
+
+			if i < frame_count-1:
+				next_frame_offset = preshifted_sprites * 2 # every frame consists of preshifted_sprites pointers
+				next_frame_offset += 1 # increase the offset to save one instruction in the game code
+				asm += f"			.byte {next_frame_offset}, 0 ; offset to the next frame\n"
+			else:
+				next_frame_offset_hi_str = "$ff"
+				if loop == False:
+					next_frame_offset_low = -1
+				else:
+					offset_addr = 1
+					next_frame_offset_low = 255 - (frame_count - 1) * (preshifted_sprites + offset_addr) * 2 + 1
+					next_frame_offset_low -= 1 # decrease the offset to save one instruction in the game code
+					
+				asm += f"			.byte {next_frame_offset_low}, {next_frame_offset_hi_str} ; offset to the first frame\n"
+
+			asm += "			.word "
+			for i in range(preshifted_sprites):
+				frame_label = f"{label_prefix}{asset_name}_{frame}"
+				asm += f"{frame_label}, "
+			asm += "\n"
+
+	# add the list of frame labels and their addresses
+	frame_relative_labels_asm = "; relative frame labels\n"
+	for label_name, addr in data_ptrs.items():
+		frame_relative_labels_asm += f"{label_name} = {addr}\n"
+	frame_relative_labels_asm += "\n"
+	asm = frame_relative_labels_asm + asm
+
+	return asm
+
+
 
 def sprite_data(bytes0, bytes1, bytes2, bytes3, w, h):
 	# data format is described in draw_back.asm
@@ -41,163 +208,6 @@ def sprite_data(bytes0, bytes1, bytes2, bytes3, w, h):
 				i = y*width+width-x-1		
 				data.append(bytes0[i])
 
-	return [data]
-
-def anims_to_asm(label_prefix, source_j):
-	asm = ""
-
-	# make a list of anim_names
-	asm += label_prefix + "_anims:\n"
-	asm += "			.word "
-	for anim_name in source_j["anims"]:
-		asm += label_prefix + "_" + anim_name + ", "
-	asm += "\n"
-	
-	preshifted_sprites = 1 # means no preshifted sprites
-
-	# make a list of sprites for an every anim
-	for anim_name in source_j["anims"]:
-
-		asm += f"{label_prefix}_{anim_name}:\n"
- 
-		anims = source_j["anims"][anim_name]["frames"]
-		loop = source_j["anims"][anim_name]["loop"]
-		frame_count = len(source_j["anims"][anim_name]["frames"])
-		for i, frame in enumerate(anims):
-
-			if i < frame_count-1:
-				next_frame_offset = preshifted_sprites * 2 # every frame consists of preshifted_sprites pointers
-				next_frame_offset += 1 # increase the offset to save one instruction in the game code
-				asm += f"			.byte {next_frame_offset}, 0 ; offset to the next frame\n"
-			else:
-				next_frame_offset_hi_str = "$ff"
-				if loop == False:
-					next_frame_offset_low = -1
-				else:
-					offset_addr = 1
-					next_frame_offset_low = 255 - (frame_count - 1) * (preshifted_sprites + offset_addr) * 2 + 1
-					next_frame_offset_low -= 1 # decrease the offset to save one instruction in the game code
-					
-				asm += f"			.byte {next_frame_offset_low}, {next_frame_offset_hi_str} ; offset to the first frame\n"
-
-			asm += "			.word "
-			for i in range(preshifted_sprites):
-				asm += f"__{label_prefix}_{frame}, "
-			asm += "\n"
-
-	return asm
-
-def gfx_to_asm(label_prefix, source_j, image):
-	sprites_j = source_j["sprites"]
-	asm = label_prefix + "_sprites:"
-
-	for sprite in sprites_j:
-		sprite_name = sprite["name"]
-		x = sprite["x"]
-		y = sprite["y"]
-		width = sprite["width"]
-		height = sprite["height"]
-		offset_x = sprite.get("offset_x", 0)
-		offset_y = sprite.get("offset_y", 0)
-
-		# get a sprite as a color index 2d array
-		sprite_img = []
-		for py in reversed(range(y, y + height)) : # Y is reversed because it is from bottomto top in the game
-			line = []
-			for px in range(x, x+width) :
-				color_idx = image.getpixel((px, py))
-				line.append(color_idx)
-
-			sprite_img.append(line)
-
-		# convert indexes into bit lists.
-		bits0, bits1, bits2, bits3 = common_gfx.indexes_to_bit_lists(sprite_img)
-
-		# combite bits into byte lists
-		bytes0 = common.combine_bits_to_bytes(bits0) # 8000-9FFF # from left to right, from bottom to top
-		bytes1 = common.combine_bits_to_bytes(bits1) # A000-BFFF
-		bytes2 = common.combine_bits_to_bytes(bits2) # C000-DFFF
-		bytes3 = common.combine_bits_to_bytes(bits3) # E000-FFFF
-
-		# to support a sprite render function
-		data = sprite_data(bytes0, bytes1, bytes2, bytes3, width, height)
-
-		asm += "\n"
-		asm += f"			.word 0  ; safety pair of bytes for reading by POP B\n"
-		asm += f"{label_prefix}_{sprite_name}:\n"
-
-		width_packed = width//8 - 1
-		offset_x_packed = offset_x//8
-		asm += "			.byte " + str( offset_y ) + ", " +  str( offset_x_packed ) + "; offset_y, offset_x\n"
-		asm += "			.byte " + str( height ) + ", " +  str( width_packed ) + "; height, width\n"
-		asm += common.bytes_to_asm(data)
-		asm += "\n"
-
-	return asm
-
-def export_if_updated(source_path, generated_dir, force_export):
-	source_name = common.path_to_basename(source_path)
-
-	anim_path = generated_dir + source_name + "_anim" + build.EXT_ASM
-	sprite_path = generated_dir + source_name + "_sprites" + build.EXT_ASM
-
-	export_paths = {"ram" : anim_path, "ram_disk" : sprite_path }
-
-	if force_export or is_source_updated(source_path):
-		export(	source_path, anim_path, sprite_path)
-
-		print(f"export_back: {source_path} got exported.")
-		return True, export_paths
-	else:
-		return False, export_paths
-
-def export(source_j_path, asm_anim_path, asm_sprite_path):
-	source_name = common.path_to_basename(source_j_path)
-	source_dir = str(Path(source_j_path).parent) + "\\"
-	asm_anim_dir = str(Path(asm_anim_path).parent) + "\\"
-	asm_sprite_dir = str(Path(asm_sprite_path).parent) + "\\"
-
-	with open(source_j_path, "rb") as file:
-		source_j = json.load(file)
-
-	if "asset_type" not in source_j or source_j["asset_type"] != build.ASSET_TYPE_BACK :
-		build.exit_error(f'export_back ERROR: asset_type != "{build.ASSET_TYPE_BACK}", path: {source_j_path}')
-
-	path_png = source_dir + source_j["path_png"]
-	image = Image.open(path_png)
-
-	_, colors = common_gfx.palette_to_asm(image, source_j)
-
-	image = common_gfx.remap_colors(image, colors)
-
-	asm = "; " + source_j_path + "\n"
-	asm_anims = asm + anims_to_asm(source_name, source_j)
-	asm_sprites = asm + f"RAM_DISK_S_{source_name.upper()} = RAM_DISK_S" + "\n"
-	asm_sprites += asm + f"RAM_DISK_M_{source_name.upper()} = RAM_DISK_M" + "\n"
-	asm_sprites += gfx_to_asm("__" + source_name, source_j, image) 
-
-	# save asm
-	if not os.path.exists(asm_anim_dir):
-		os.mkdir(asm_anim_dir)
-
-	with open(asm_anim_path, "w") as file:
-		file.write(asm_anims)
-
-	if not os.path.exists(asm_sprite_dir):
-		os.mkdir(asm_sprite_dir)
-
-	with open(asm_sprite_path, "w") as file:
-		file.write(asm_sprites)
-
-def is_source_updated(source_j_path):
-	with open(source_j_path, "rb") as file:
-		source_j = json.load(file)
-	
-	source_dir = str(Path(source_j_path).parent) + "\\"
-	path_png = source_dir + source_j["path_png"]
-
-	if build.is_file_updated(source_j_path) | build.is_file_updated(path_png):
-		return True
-	return False
+	return data
 
 

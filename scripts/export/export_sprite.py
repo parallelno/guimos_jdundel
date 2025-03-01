@@ -55,86 +55,19 @@ def export_asm(asset_j_path, asm_meta_path, asm_data_path, bin_path):
 
 	return True
 
+def gfx_to_asm(label_prefix, asset_name, asset_j, image, asset_j_path):
 
-def anims_to_asm(label_prefix, asset_name, asset_j, data_ptrs, source_j_path):
-	asm = ""
-
-	preshifted_sprites = asset_j.get("preshifted_sprites", 1)
-
-	if (preshifted_sprites != 1 and
-		preshifted_sprites != 4 and preshifted_sprites != 8):
-		build.exit_error(f'export_sprite ERROR: preshifted_sprites can be only equal 1, 4, 8", path: {source_j_path}')
-
-	if preshifted_sprites == 4 or preshifted_sprites == 8:
-		asm += f"sprite_get_scr_addr_{asset_name} = sprite_get_scr_addr{preshifted_sprites}\n\n"
-		asm += f"{label_prefix}{asset_name}_preshifted_sprites:\n"
-		asm += f"			.byte {str(preshifted_sprites)}\n"
-
-	# make a list of anim_names
-	asm += f"{label_prefix}{asset_name}_anims:\n"
-	asm += "			.word "
-	for anim_name in asset_j["anims"]:
-		asm += f"{label_prefix}{asset_name}_{anim_name}, "
-	asm += "0, \n"
-
-	# make a list of sprites for an every anim
-	for anim_name in asset_j["anims"]:
-
-		asm += f"{label_prefix}{asset_name}_{anim_name}:\n"
-
-		frames = asset_j["anims"][anim_name]["frames"]
-		loop = asset_j["anims"][anim_name]["loop"]
-		frame_count = len(frames)
-		for i, frame in enumerate(frames):
-
-			if i < frame_count-1:
-				next_frame_offset = preshifted_sprites * 2 # every frame consists of preshifted_sprites pointers
-				next_frame_offset += 1 # increase the offset to save one instruction in the game code
-				asm += f"			.byte {str(next_frame_offset)}, 0 ; offset to the next frame\n"
-			else:
-				next_frame_offset_hi_str = "$ff"
-				if loop == False:
-					next_frame_offset_low = -1
-					comment = "offset to the same last frame"
-				else:
-					offset_addr = 1
-					next_frame_offset_low = 255 - (frame_count - 1) * (preshifted_sprites + offset_addr) * 2 + 1
-					next_frame_offset_low -= 1 # decrease the offset to save one instruction in the game code
-					comment = "offset to the first frame"
-
-				asm += f"			.byte {next_frame_offset_low}, {next_frame_offset_hi_str} ; {comment}\n"
-
-			asm += "			.word "
-			for i in range(preshifted_sprites):
-				frame_label = f"{label_prefix}{asset_name}_{str(frame)}_{str(i)}"
-				asm += frame_label + ", "
-			asm += "\n"
-
-	# add the list of frame labels and their addresses
-	frame_relative_labels_asm = "; relative frame labels\n"
-	for label_name, addr in data_ptrs.items():
-		frame_relative_labels_asm += f"{label_name} = {addr}\n"
-	frame_relative_labels_asm += "\n"
-	asm = frame_relative_labels_asm + asm
-
-	return asm
-
-
-def gfx_to_asm(label_prefix, asset_name, asset_j, image, source_j_path):
-
-	sprites_j = asset_j["sprites"]
 	mask_flag = 1 if "mask" in asset_j and asset_j["mask"] == True else 0
-
-	asm = f"{label_prefix}{asset_name}_sprites:"
-
-	data_ptrs = {}
-	sprite_data_relative_addr = 2 # safety pair of bytes for reading by POP B
-
 	preshifted_sprites_num = asset_j.get("preshifted_sprites", 1)
 
+	sprites_j = asset_j["sprites"]
+	data_ptrs = {}
+	sprite_data_relative_addr = 2 # safety pair of bytes for reading by POP B
+	asm = f"{label_prefix}{asset_name}_sprites:"
+	
 	if (preshifted_sprites_num != 1 and
 		preshifted_sprites_num != 4 and preshifted_sprites_num != 8):
-		build.exit_error(f'export_sprite ERROR: preshifted_sprites can be only equal 1, 4, 8. Path: {source_j_path}')
+		build.exit_error(f'export_sprite ERROR: preshifted_sprites can be only equal 1, 4, 8. Path: {asset_j_path}')
 
 	for sprite in sprites_j:
 
@@ -192,6 +125,71 @@ def gfx_to_asm(label_prefix, asset_name, asset_j, image, source_j_path):
 			sprite_data_relative_addr += frame_data_len
 
 	return asm, data_ptrs
+
+
+def anims_to_asm(label_prefix, asset_name, asset_j, data_ptrs, asset_j_path):
+	asm = ""
+
+	preshifted_sprites = asset_j.get("preshifted_sprites", 1)
+
+	if (preshifted_sprites != 1 and
+		preshifted_sprites != 4 and preshifted_sprites != 8):
+		build.exit_error(f'export_sprite ERROR: preshifted_sprites can be only equal 1, 4, 8", path: {asset_j_path}')
+
+	if preshifted_sprites == 4 or preshifted_sprites == 8:
+		asm += f"sprite_get_scr_addr_{asset_name} = sprite_get_scr_addr{preshifted_sprites}\n\n"
+		asm += f"{label_prefix}{asset_name}_preshifted_sprites:\n"
+		asm += f"			.byte {str(preshifted_sprites)}\n"
+
+	# make a list of anim_names
+	asm += f"{label_prefix}{asset_name}_anims:\n"
+	asm += "			.word "
+	for anim_name in asset_j["anims"]:
+		asm += f"{label_prefix}{asset_name}_{anim_name}, "
+	asm += "EOD\n"
+
+	# make a list of sprites for an every anim
+	for anim_name in asset_j["anims"]:
+
+		asm += f"{label_prefix}{asset_name}_{anim_name}:\n"
+
+		frames = asset_j["anims"][anim_name]["frames"]
+		loop = asset_j["anims"][anim_name]["loop"]
+		frame_count = len(frames)
+		for i, frame in enumerate(frames):
+
+			if i < frame_count-1:
+				next_frame_offset = preshifted_sprites * 2 # every frame consists of preshifted_sprites pointers
+				next_frame_offset += 1 # increase the offset to save one instruction in the game code
+				asm += f"			.byte {str(next_frame_offset)}, 0 ; offset to the next frame\n"
+			else:
+				next_frame_offset_hi_str = "$ff"
+				if loop == False:
+					next_frame_offset_low = -1
+					comment = "offset to the same last frame"
+				else:
+					offset_addr = 1
+					next_frame_offset_low = 255 - (frame_count - 1) * (preshifted_sprites + offset_addr) * 2 + 1
+					next_frame_offset_low -= 1 # decrease the offset to save one instruction in the game code
+					comment = "offset to the first frame"
+
+				asm += f"			.byte {next_frame_offset_low}, {next_frame_offset_hi_str} ; {comment}\n"
+
+			asm += "			.word "
+			for i in range(preshifted_sprites):
+				frame_label = f"{label_prefix}{asset_name}_{str(frame)}_{str(i)}"
+				asm += frame_label + ", "
+			asm += "\n"
+
+	# add the list of frame labels and their addresses
+	frame_relative_labels_asm = "; relative frame labels\n"
+	for label_name, addr in data_ptrs.items():
+		frame_relative_labels_asm += f"{label_name} = {addr}\n"
+	frame_relative_labels_asm += "\n"
+	asm = frame_relative_labels_asm + asm
+
+	return asm
+
 
 def img_to_preshifted_sprite(
 		frame_label, sprite_img, mask_bits,

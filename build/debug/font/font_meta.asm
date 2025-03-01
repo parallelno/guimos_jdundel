@@ -91,7 +91,7 @@ _font_x = 1572
 _font_y = 1590
 _font_z = 1608
 font_gfx_ptrs:
-GFX_PTRS_LEN = 90
+FONT_GFX_PTRS_LEN = 90
 			.word _font_a, _font_b, _font_c, _font_d, _font_e, _font_f, _font_g, _font_h, _font_i, _font_j, _font_k, _font_l, _font_m, _font_n, _font_o, _font_p, 
 			.word _font_q, _font_r, _font_s, _font_t, _font_u, _font_v, _font_w, _font_x, _font_y, _font_z, _font_space, _font_space, _font_space, _font_space, _font_space, _font_space, 
 			.word _font_exclamation, _font_quote, _font_space, _font_space, _font_space, _font_ampersand, _font_quote, _font_parent_l, _font_parent_r, _font_space, _font_space, _font_comma, _font_dash, _font_period, _font_space, _font_0, 

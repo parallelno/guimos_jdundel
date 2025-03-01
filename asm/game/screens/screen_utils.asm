@@ -26,15 +26,15 @@ screen_simple_init:
 
 			; erase backs buffs
 			lxi h, backs_runtime_data
-			mvi a, <backs_runtime_data_end
-			call clear_mem_short
+			lxi b, backs_runtime_data_end
+			call mem_erase
 			; setup backs runtime data
 			call backs_init
 
 			; erase bullets buffs
 			lxi h, bullets_runtime_data
-			mvi a, <bullets_runtime_data_end
-			call clear_mem_short
+			lxi b, bullets_runtime_data_end
+			call mem_erase
 			; setup bullets runtime data
 			call bullets_init
 

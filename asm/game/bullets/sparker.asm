@@ -47,7 +47,7 @@ sparker_init:
 			mov l, c
 			mov h, b
 			shld sparker_init_speed + 1
-			BULLET_INIT(sparker_update, vfx_draw4, SPARKER_STATUS_MOVE, SPARKER_STATUS_MOVE_TIME, vfx4_spark, sparker_init_speed)
+			BULLET_INIT(sparker_update, vfx_draw4, SPARKER_STATUS_MOVE, SPARKER_STATUS_MOVE_TIME, _vfx4_spark, sparker_init_speed)
 
 ; bullet_speed_x and bullet_speed_y are aimed toward the hero pos.
 ; in:
@@ -136,7 +136,7 @@ sparker_update:
 			mvi m, VFX_SPAWN_RATE
 			; draw vfx
 			; bc - vfx scr_xy
-			; de - vfx_anim_ptr (ex. vfx_puff)
+			; de - vfx_anim_ptr (ex. _vfx_puff)
 @sparker_pos_ptr:
 			lxi h, TEMP_ADDR
 			; hl points to bullet_pos_x+1			

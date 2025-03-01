@@ -25,7 +25,7 @@ sprite_get_scr_addr_tnt = sprite_get_scr_addr4
 _tnt_preshifted_sprites:
 			.byte 4
 _tnt_anims:
-			.word _tnt_run, 0, 
+			.word _tnt_run, EOD, 
 _tnt_run:
 			.byte 9, 0 ; offset to the next frame
 			.word _tnt_idle0_0, _tnt_idle0_1, _tnt_idle0_2, _tnt_idle0_3, 

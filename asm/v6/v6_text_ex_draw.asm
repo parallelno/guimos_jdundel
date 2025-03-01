@@ -4,32 +4,30 @@ LINE_SPACING_DEFAULT = -12
 PARAG_SPACING_DEFAULT = -24
 
 ; set a default line and a paragraph spacing
-.function text_ex_reset_spacing()
+text_ex_reset_spacing:
 			mvi a, LINE_SPACING_DEFAULT
 			sta text_ex_line_spacing + 1
 
 			mvi a, PARAG_SPACING_DEFAULT
 			sta text_ex_parag_spacing + 1
-			;ret ; commented because of .endf
-.endf
+			ret
 
 ; set a line and a paragraph spacing
 ; in:
 ; c - line spacing
 ; b - paragraph spacing
-.function text_ex_set_spacing()
+text_ex_set_spacing:
 			lxi h, text_ex_line_spacing + 1
 			mov m, c
 			lxi h, text_ex_parag_spacing + 1
 			mov m, b
-			;ret ; commented because of .endf
-.endf
+			ret
 
 ; init the text ex functionality
 ; in:
 ; a - text data ram-disk activation command
 ; b - font gfx ram-disk activation command
-; c - low_byte - GFX_PTRS_LEN
+; c - low_byte - FONT_GFX_PTRS_LEN
 ; hl - text data addr (points to the addr where it was loaded)
 ; e - SCR_BUFF3_ADDR or SCR_BUFF2_ADDR or SCR_BUFF1_ADDR
 ; stack0 - return addr
@@ -52,7 +50,7 @@ text_ex_init:
 			xthl
 			xchg
 
-			mov a, c ; temporally store GFX_PTRS_LEN to A
+			mov a, c ; temporally store FONT_GFX_PTRS_LEN to A
 			
 			; font_gfx_ptrs
 			pop h ; func return addr
@@ -61,13 +59,13 @@ text_ex_init:
 			dad b ; font_gfx_ptrs - ADDR_LEN ; because there is no char_code = 0
 			shld text_ex_draw_font_gfx_ptrs + 1
 			
-			mov c, a ; restore GFX_PTRS_LEN
+			mov c, a ; restore FONT_GFX_PTRS_LEN
 			
 			; update gfx local labels
 			; hl - font_gfx_ptrs
 			; de - font global gfx addr
-			; c - GFX_PTRS_LEN
-			update_labels()
+			; c - FONT_GFX_PTRS_LEN
+			call update_labels
 			ret
 
 

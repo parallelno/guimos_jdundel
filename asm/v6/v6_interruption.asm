@@ -36,7 +36,7 @@ interruption:
 			push b
 			push d
 
-			call v6_sound_update
+			;CALL_RAM_DISK_FUNC_NO_RESTORE(v6_sound_update, RAM_DISK_M_SONG01 | RAM_DISK_M_8F)
 
 ;======================================================================================================================			
 ;

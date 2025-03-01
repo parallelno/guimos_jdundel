@@ -8,8 +8,9 @@
 hero_game_init:
 			; erase hero runtime data
 			lxi h, hero_runtime_data
-			lxi b, hero_runtime_data_end - hero_runtime_data
+			lxi b, hero_runtime_data_end
 			call mem_erase
+			
 			lxi h, hero_update
 			shld hero_update_ptr
 			lxi h, hero_draw
@@ -19,7 +20,7 @@ hero_game_init:
 						
 			; erase hero resources buffs
 			lxi h, hero_resources
-			lxi b, hero_resources_end - hero_resources
+			lxi b, hero_resources_end
 			jmp mem_erase
 
 hero_respawn:

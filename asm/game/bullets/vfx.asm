@@ -1,7 +1,7 @@
 ; init a preshifted VFX
 ; in:
 ; bc - vfx pos_xy
-; de - vfx_anim_ptr (ex. vfx_puff)
+; de - vfx_anim_ptr (ex. _vfx_puff)
 ; it utilizes bullet runtime data
 ; cc 496
 vfx_init4:
@@ -83,7 +83,7 @@ vfx_init4:
 ; Init for non-preshifted VFX (x coord aligned to 8 pixels )
 ; in:
 ; bc - vfx screen addr
-; de - vfx_anim_ptr (ex. vfx_puff)
+; de - vfx_anim_ptr (ex. _vfx_puff)
 ; it utilizes bullet runtime data
 ; cc 568
 vfx_init:

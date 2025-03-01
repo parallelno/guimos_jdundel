@@ -73,7 +73,7 @@ sprite_get_scr_addr_hero_r = sprite_get_scr_addr8
 _hero_r_preshifted_sprites:
 			.byte 8
 _hero_r_anims:
-			.word _hero_r_idle, _hero_r_run, _hero_r_attk, 0, 
+			.word _hero_r_idle, _hero_r_run, _hero_r_attk, EOD, 
 _hero_r_idle:
 			.byte 17, 0 ; offset to the next frame
 			.word _hero_r_idle0_0, _hero_r_idle0_1, _hero_r_idle0_2, _hero_r_idle0_3, _hero_r_idle0_4, _hero_r_idle0_5, _hero_r_idle0_6, _hero_r_idle0_7, 

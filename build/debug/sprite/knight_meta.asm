@@ -89,7 +89,7 @@ sprite_get_scr_addr_knight = sprite_get_scr_addr4
 _knight_preshifted_sprites:
 			.byte 4
 _knight_anims:
-			.word _knight_idle, _knight_run_r, _knight_run_l, _knight_defence_r, _knight_defence_l, 0, 
+			.word _knight_idle, _knight_run_r, _knight_run_l, _knight_defence_r, _knight_defence_l, EOD, 
 _knight_idle:
 			.byte 9, 0 ; offset to the next frame
 			.word _knight_idle_0_0, _knight_idle_0_1, _knight_idle_0_2, _knight_idle_0_3, 

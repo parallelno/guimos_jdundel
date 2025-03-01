@@ -26,7 +26,7 @@ _vfx_firepool1_0 = 1760
 _vfx_firepool2_0 = 1958
 
 _vfx_anims:
-			.word _vfx_puff, _vfx_puff_loop, _vfx_reward, _vfx_firepool, 0, 
+			.word _vfx_puff, _vfx_puff_loop, _vfx_reward, _vfx_firepool, EOD, 
 _vfx_puff:
 			.byte 3, 0 ; offset to the next frame
 			.word _vfx_puff0_0, 

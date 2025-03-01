@@ -18,7 +18,7 @@ game_init:
 			hlt
 			di
 
-			call v6_sound_init
+;			call v6_sound_init
 //==========================================================
 
 			load_permanent()
@@ -38,17 +38,30 @@ game_init:
 			; LV0 room 0
 			;======================
 
-			
+			;======================
+			; DECALS0
+			;======================
+			lxi h, decals0_gfx_ptrs
+			lxi d, DECALS0_ADDR			
+			lxi b, DECALS0_GFX_PTRS_LEN			
+			call update_labels
 
+			;======================
+			; BACKS0
+			;======================
+.breakpoint			
+			lxi d, _backs0_preshifted_sprites
+			lxi h, BACKS0_ADDR
+			call sprite_update_labels
 
 			;======================
 			; SONG01
 			;======================
 
-			lxi d, SONG01_ADDR
-			lxi h, SONG01_ay_reg_data_ptrs
-			call v6_gc_init_song
-			call v6_gc_start
+			// lxi d, SONG01_ADDR
+			// lxi h, SONG01_ay_reg_data_ptrs
+			// call v6_gc_init_song
+			// call v6_gc_start
 
 			;======================
 			; FONT
@@ -56,7 +69,7 @@ game_init:
 
 			; init the text & font
 			mvi a, RAM_DISK_S_TEXT_LV0
-			lxi b, (RAM_DISK_S_FONT<<8) | GFX_PTRS_LEN
+			lxi b, (RAM_DISK_S_FONT<<8) | FONT_GFX_PTRS_LEN
 			lxi h, TEXT_LV0_ADDR
 			lxi d, font_gfx_ptrs
 			push d
@@ -76,7 +89,7 @@ game_init:
 			;======================
 			lxi d, _burner_preshifted_sprites
 			lxi h, BURNER_ADDR
-			sprite_update_labels()
+			call sprite_update_labels
 
 			;======================
 			; tiled img test

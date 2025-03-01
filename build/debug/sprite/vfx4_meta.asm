@@ -41,7 +41,7 @@ sprite_get_scr_addr_vfx4 = sprite_get_scr_addr4
 _vfx4_preshifted_sprites:
 			.byte 4
 _vfx4_anims:
-			.word _vfx4_hit, _vfx4_hero_death, _vfx4_spark, 0, 
+			.word _vfx4_hit, _vfx4_hero_death, _vfx4_spark, EOD, 
 _vfx4_hit:
 			.byte 9, 0 ; offset to the next frame
 			.word _vfx4_hit0_0, _vfx4_hit0_1, _vfx4_hit0_2, _vfx4_hit0_3, 

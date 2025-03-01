@@ -25,7 +25,7 @@ credits_screen:
 			jmp	@loop
 
 credits_screen_text_draw:
-			call text_ex_rd_reset_spacing
+			call text_ex_reset_spacing
 			; credits
 			;lxi h, CREDITS_POS
 			lxi d, _credits_screen_credits

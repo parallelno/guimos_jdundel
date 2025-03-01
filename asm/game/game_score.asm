@@ -39,7 +39,7 @@ game_score_add:
 ; init for in-game score data
 game_stats_init:
 			lxi h, game_stats
-			lxi b, game_stats_end - game_stats
+			lxi b, game_stats_end
 			call mem_erase
 			ret
 

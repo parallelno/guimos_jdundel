@@ -33,7 +33,7 @@ sword_func_container:
 			; c - tile_idx in the room_tiledata array
 @restore_container_id:
 			mvi a, TEMP_BYTE			
-			ADD_A(2) ; container_id to JMP_4 ptr
+			ADD_A(1) ; container_id to WORD ptr
 			sta room_decal_draw_ptr_offset+1
 			ROOM_DECAL_DRAW(_containers_opened_gfx_ptrs, true)
 
@@ -74,7 +74,7 @@ sword_func_door:
 			rz	; if status == ITEM_STATUS_NOT_ACQUIRED, means a hero does't have a proper key to open the door
 
 			mov a, b
-			ADD_A(2) ; to make a JMP_4 ptr
+			ADD_A(1) ; to make a WORD ptr
 			sta room_decal_draw_ptr_offset+1 ; store door_id in case we need to draw an opened version of it
 
 			; update the key status
@@ -97,7 +97,7 @@ sword_func_door:
 			call draw_tile_16x16_buffs
 			; draw vfx
 			; bc - tile screen addr
-			lxi d, vfx_puff
+			lxi d, _vfx_puff
 			call vfx_init
 
 @tile_idx:
@@ -143,7 +143,7 @@ sword_func_breakable:
 			call draw_tile_16x16_buffs
 			; draw vfx
 			; bc - tile screen addr
-			lxi d, vfx_puff
+			lxi d, _vfx_puff
 			call vfx_init
 			jmp game_ui_draw_res
 

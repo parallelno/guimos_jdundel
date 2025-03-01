@@ -14,8 +14,7 @@ level_containers_inst_data_pptr:	.storage ADDR_LEN		; .word _level00_containers_
 level_start_pos_ptr:				.storage ADDR_LEN		; .word _level00_start_pos
 level_rooms_pptr:					.storage ADDR_LEN		; .word _level00_rooms_addr
 level_tiles_pptr:					.storage ADDR_LEN		; .word _level00_tiles_addr
-@data_end:
-LEVEL_INIT_TBL_LEN = @data_end - level_init_tbl
+level_init_tbl_end:
 
 ;=============================================================================
 ; tile graphics pointer table.
@@ -48,7 +47,7 @@ room_tiledata_end:
 ;=============================================================================
 ;	it's a copy of the room tiledata stored by room_draw
 ;	it's used in room_redraw for storing states of breakable objects, and restoring states of doors and containers
-ROOM_TILEDATA_BACKUP_LEN			= ROOM_WIDTH * ROOM_HEIGHT
+ROOM_TILEDATA_BACKUP_LEN			= ROOM_TILEDATA_LEN
 room_tiledata_backup:				.storage ROOM_TILEDATA_BACKUP_LEN
 room_tiledata_backup_end:
 
@@ -216,7 +215,6 @@ MONSTER_RUNTIME_DATA_LEN = @data_end - monsters_runtime_data
 ; the same structs for the rest of the monsters
 monsters_runtime_data_end_marker:	.storage WORD_LEN ; .word ACTOR_RUNTIME_DATA_END << 8
 monsters_runtime_data_end:
-MONSTERS_RUNTIME_DATA_LEN			= monsters_runtime_data_end - monsters_runtime_data_sorted
 
 ;=============================================================================
 ; bullets runtime data

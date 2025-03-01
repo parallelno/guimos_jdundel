@@ -56,7 +56,7 @@ sprite_get_scr_addr_skeleton = sprite_get_scr_addr4
 _skeleton_preshifted_sprites:
 			.byte 4
 _skeleton_anims:
-			.word _skeleton_idle, _skeleton_run_r, _skeleton_run_l, 0, 
+			.word _skeleton_idle, _skeleton_run_r, _skeleton_run_l, EOD, 
 _skeleton_idle:
 			.byte 9, 0 ; offset to the next frame
 			.word _skeleton_idle_0_0, _skeleton_idle_0_1, _skeleton_idle_0_2, _skeleton_idle_0_3, 

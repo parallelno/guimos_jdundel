@@ -88,8 +88,8 @@ room_unpack:
 backup_tiledata:
 			lxi h, room_tiledata
 			lxi d, room_tiledata_backup
-			lxi b, ROOM_TILEDATA_BACKUP_LEN
-			jmp copy_mem
+			lxi b, room_tiledata_end
+			jmp mem_copy
 
 ; copies door and containr tiledata from room_tiledata_backup to room_tiledata
 restore_doors_containers_tiledata:
@@ -280,9 +280,9 @@ room_tiledata_decal_walkable_spawn:
 			cpi TILEDATA_RESTORE_TILE + 1
 			jc room_tiledata_copy
 
-			ADD_A(2) ; to make a JMP_4 ptr
+			ADD_A(1) ; to make a WORD ptr
 			sta room_decal_draw_ptr_offset+1
-			ROOM_DECAL_DRAW(_decals_walkable_gfx_ptrs - JMP_4_LEN * 2)
+			ROOM_DECAL_DRAW(_decals_walkable_gfx_ptrs - WORD_LEN * 2)
 			mvi a, TILEDATA_RESTORE_TILE
 			ret
 
@@ -294,7 +294,7 @@ room_tiledata_decal_walkable_spawn:
 ; out:
 ; a - tiledata that will be saved back into room_tiledata
 room_tiledata_decal_collidable_spawn:
-			ADD_A(2) ; to make a JMP_4 ptr
+			ADD_A(1) ; to make a WORD ptr
 			sta room_decal_draw_ptr_offset+1
 			ROOM_DECAL_DRAW(_decals_collidable_gfx_ptrs)
 			mvi a, TILEDATA_COLLISION
@@ -311,7 +311,7 @@ room_tiledata_breakable_spawn:
 			lxi h, @restore_tiledata+1
 			mov m, b
 
-			ADD_A(2) ; to make a JMP_4 ptr
+			ADD_A(1) ; to make a WORD ptr
 			sta room_decal_draw_ptr_offset+1
 
 			;ROOM_SPAWN_RATE_CHECK(rooms_spawn_rate_breakables, @no_spawn)
@@ -337,12 +337,12 @@ room_tiledata_item_spawn:
 			CPI_WITH_ZERO(TILEDATA_STORYTELLING)
 			jz @restore_tiledata
 
-			ADD_A(2) ; to make a JMP_4 ptr
+			ADD_A(1) ; to make a WORD ptr
 			sta room_decal_draw_ptr_offset+1
 
 			; check global item status
 			mvi h, >global_items
-			RRC_(2)
+			RRC_(1)
 			adi <global_items - 1 ; because the first item_id = 1
 			mov l, a
 			mov a, m
@@ -350,7 +350,7 @@ room_tiledata_item_spawn:
 			mvi a, TILEDATA_RESTORE_TILE
 			rnz ; status != 0 means this item was picked up
 
-			ROOM_DECAL_DRAW(_items_gfx_ptrs - WORD_LEN * 2) ;  subtraction of 2*WORD_LEN needs because there is no gfx for item_id=0 and there is a safety word after every pointer. check _items_gfx_ptrs:
+			ROOM_DECAL_DRAW(_items_gfx_ptrs - WORD_LEN) ;  subtraction of 2*WORD_LEN needs because there is no gfx for item_id=0. check _items_gfx_ptrs:
 @restore_tiledata:
 			mvi a, TEMP_BYTE
 			ret
@@ -370,7 +370,7 @@ room_tiledata_resource_spawn:
 			mov d, m
 
 			mov l, a
-			ADD_A(2) ; res_id to JMP_4 ptr
+			ADD_A(1) ; res_id to WORD ptr
 			sta room_decal_draw_ptr_offset+1
 
 			; find a resource
@@ -404,7 +404,7 @@ room_tiledata_container_spawn:
 			mov d, m
 
 			mov l, a
-			ADD_A(2) ; container_id to JMP_4 ptr
+			ADD_A(1) ; container_id to WORD ptr
 			sta room_decal_draw_ptr_offset+1
 
 			; find a container
@@ -433,16 +433,15 @@ room_tiledata_door_spawn:
 			mov m, b
 
 			; requirement for ROOM_DECAL_DRAW
-			ADD_A(2) ; to make a JMP_4 ptr
+			ADD_A(1) ; to make a WORD ptr
 			sta room_decal_draw_ptr_offset + 1
 
 			; check the global item status
-			mvi a, %00001110
-			ana b
-			rrc
-			adi <global_items ; because the first door_id = 0
+			mvi a, <global_items ; because the first door_id = 0
+			add b
 			mov l, a
 			mvi h, >global_items
+
 			mov a, m
 			cpi <ITEM_STATUS_USED
 			jz @opened	; status == ITEM_STATUS_USED means a door is opened
@@ -464,23 +463,23 @@ room_tiledata_door_spawn:
 
 room_copy_scr_to_backbuffs:
 			; copy $a000-$ffff scr buffs to the ram-disk back buffer
-			lxi d, 0; SCR_BUFF1_ADDR + SCR_BUFF_LEN * 3
+			lxi d, SCR_BUFF1_ADDR
 			lxi h, 0; SCR_BUFF1_ADDR + SCR_BUFF_LEN * 3
-			lxi b, SCR_BUFF_LEN * 3 / 32
+			lxi b, SCR_BUFF_LEN * 3
 			mvi a, RAM_DISK_S_BACKBUFF
-			call copy_to_ram_disk32
+			call mem_copy_to_ram_disk
 
 			; copy $a000-$ffff scr buffs to the ram-disk back buffer2 (to restore the background in the back buffer)
-			lxi d, 0; SCR_BUFF1_ADDR + SCR_BUFF_LEN * 3
+			lxi d, SCR_BUFF1_ADDR
 			lxi h, 0; SCR_BUFF1_ADDR + SCR_BUFF_LEN * 3
-			lxi b, SCR_BUFF_LEN * 3 / 32
+			lxi b, SCR_BUFF_LEN * 3
 			mvi a, RAM_DISK_S_BACKBUFF2
-			call copy_to_ram_disk32
+			call mem_copy_to_ram_disk
 			ret
 
 ;=========================================================
 ; draw a decal onto the screen, and backbuffers
-; requires: store entity_id*4 into room_decal_draw_ptr_offset+1 addr prior calling this
+; requires: store entity_id*2 into room_decal_draw_ptr_offset+1 addr prior to calling this
 ; in:
 ; c - tile_idx in the room_tiledata array.
 ; use:
@@ -506,7 +505,7 @@ room_copy_scr_to_backbuffs:
 
 ; draw a decal onto the screen, and backbuffers
 ; ex. ROOM_DECAL_DRAW(_containers_gfx_ptrs, true)
-; requires: store item_id*4 into room_decal_draw_ptr_offset+1 addr prior calling this
+; requires: store item_id*2 into room_decal_draw_ptr_offset+1 addr prior calling this
 ; in:
 ; hl - ptr to the graphics, ex. _doors_gfx_ptrs
 ; c - tile_idx in the room_tiledata array.
@@ -525,20 +524,23 @@ room_decal_draw:
 			; de - scr addr
 			push d
 
-; requires: store item_id*4 into room_decal_draw_ptr_offset+1 addr prior calling this
+; requires: store item_id*2 into room_decal_draw_ptr_offset+1 addr prior to calling this
 room_decal_draw_ptr_offset:
 			lxi d, TEMP_WORD
 			dad d
-			xchg
-			; de pptr to a sprite
-			mvi a, <RAM_DISK_S_DECALS
-			call get_word_from_ram_disk
+			
+			; hl - pptr to a sprite
+			; get ptr to sprite
+			mov c, m
+			inx h
+			mov b, m
+
 			pop d
 			; bc - sprite addr
 			; de - scr addr
 			push b
 			push d
-			CALL_RAM_DISK_FUNC(draw_decal_v, <RAM_DISK_S_DECALS)
+			CALL_RAM_DISK_FUNC(draw_decal_v, <RAM_DISK_S_DECALS0)
 			pop d
 			pop b
 room_decal_draw_backbuffers:
@@ -546,10 +548,10 @@ room_decal_draw_backbuffers:
 
 			push b
 			push d
-			CALL_RAM_DISK_FUNC(draw_decal_v, <RAM_DISK_S_DECALS | RAM_DISK_M_BACKBUFF | RAM_DISK_M_AF)
+			CALL_RAM_DISK_FUNC(draw_decal_v, <RAM_DISK_S_DECALS0 | RAM_DISK_M_BACKBUFF | RAM_DISK_M_AF)
 			pop d
 			pop b
-			CALL_RAM_DISK_FUNC(draw_decal_v, <RAM_DISK_S_DECALS | RAM_DISK_M_BACKBUFF2 | RAM_DISK_M_AF)
+			CALL_RAM_DISK_FUNC(draw_decal_v, <RAM_DISK_S_DECALS0 | RAM_DISK_M_BACKBUFF2 | RAM_DISK_M_AF)
 			ret
 
 ;=========================================================
@@ -904,7 +906,8 @@ room_get_tiledata:
 ; in:
 ; c - tiledata to fill
 room_fill_tiledata:
+			mov e, c
 			lxi h, room_tiledata
-			mvi a, <room_tiledata_end
-			call fill_mem_short
+			lxi b, room_tiledata_end
+			call mem_fill
 			ret

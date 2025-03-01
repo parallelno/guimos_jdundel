@@ -37,13 +37,13 @@ fill_buff_black:
 			; set SCR_BUFF0, SCR_BUFF1, SCR_BUFF2 to zero
 			lxi b, SCR_BUFF3_ADDR
 			push psw
-			call clear_mem_sp
+			call mem_erase_sp
 			pop psw
 			; set SCR_BUFF3 to $ff
 			lxi h, $FFFF
 			lxi b, 0
 			lxi d, SCR_BUFF_LEN / 32 - 1
-			jmp fill_mem_sp
+			jmp mem_fill_sp
 
 reset_game_updates_required_counter:
 			A_TO_ZERO(NULL)

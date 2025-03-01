@@ -71,7 +71,7 @@ dialog_draw_frame_text:
 			; c - tile_idx in the room_tiledata array.			
 			call backs_spawn
 
-			call text_ex_rd_reset_spacing
+			call text_ex_reset_spacing
 			;lxi h, $102d	; text pos
 			pop d
 			; de - text ptr

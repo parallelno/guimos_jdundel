@@ -42,3 +42,16 @@
 .include "game/game_score.asm"
 .include "game/game_utils.asm"
 .include "game/game.asm"
+
+executible_end:
+RAM_FREE_SPACE = LOADED_DATA_START_ADDR - executible_end
+
+.if executible_end >= STACK_MIN_ADDR
+	.error "Runtime data buffer overlaps the stack buffer at addr (" runtime_data_end ")." 
+	.error "It must be within the range " BUFFERS_END_ADDR "."
+.endif
+
+.if executible_end >= LOADED_DATA_START_ADDR
+	.error "Runtime data buffer overlaps the loaded data at addr (" runtime_data_end ")." 
+	.error "It must be within the range " LOADED_DATA_START_ADDR "."
+.endif

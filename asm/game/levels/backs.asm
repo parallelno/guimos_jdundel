@@ -37,7 +37,7 @@ backs_spawn:
 			dcx h
 			push h
 			; back_id to back_anim_ptr
-			lxi h, backs_anims
+			lxi h, _backs0_anims
 			mov a, b
 			ani TILEDATA_ARG_MASK
 			add a ; make a ptr to an anim which depends on back_id
@@ -191,6 +191,6 @@ backs_draw:
 			mov e, m
 			inx h
 			mov d, m
-			CALL_RAM_DISK_FUNC(draw_back_v, RAM_DISK_S_BACKS)
+			CALL_RAM_DISK_FUNC(draw_back_v, RAM_DISK_S_BACKS0)
 			ret
 back_runtime_data_ptr_draw: = backs_draw + 1

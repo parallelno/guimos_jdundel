@@ -7,12 +7,12 @@ levels_init:
 
 			; erase global item statuses
 			lxi h, global_items
-			mvi a, <global_items_end
-			call clear_mem_short
+			lxi b, global_items_end
+			call mem_erase
 			; erase game statuses
 			lxi h, game_status
-			mvi a, <game_status_end
-			call clear_mem_short
+			lxi b, game_status_end
+			call mem_erase
 
 			call breakables_init
 
@@ -33,8 +33,8 @@ level_init:
 			; hl - source
 			; copy a level init data
 			lxi d, level_init_tbl
-			lxi b, LEVEL_INIT_TBL_LEN
-			call copy_mem
+			lxi b, level_init_tbl_end
+			call mem_copy
 
 			; init the screen
 			call level_init_palette
@@ -45,24 +45,23 @@ level_init:
 
 			; erase rooms spawn data
 			lxi h, rooms_spawn_rates
-			lxi b, ROOMS_SPAWN_RATES_LEN
-			mvi a, <rooms_spawn_rates_end
+			lxi b, rooms_spawn_rates_end
 			call mem_erase
 
 			; erase backs buffs
 			lxi h, backs_runtime_data
-			mvi a, <backs_runtime_data_end
-			call clear_mem_short
+			lxi b, backs_runtime_data_end
+			call mem_erase
 
 			; erase bullets buffs
 			lxi h, bullets_runtime_data
-			mvi a, <bullets_runtime_data_end
-			call clear_mem_short
+			lxi b, bullets_runtime_data_end
+			call mem_erase
 
 			; erase monsters buffs
 			lxi h, monsters_runtime_data_sorted
-			lxi b, MONSTERS_RUNTIME_DATA_LEN
-			call clear_mem
+			lxi b, monsters_runtime_data_end
+			call mem_erase
 
 			; setup resources
 			lhld level_resources_inst_data_pptr

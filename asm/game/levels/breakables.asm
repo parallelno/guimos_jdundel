@@ -3,7 +3,7 @@ breakables_init:
 			lxi h, breakables_status_buffer_available_ptr
 			mvi m, <breakables_status_buffers ; ptr to the first available buffer
 			inx h ; advance hl to breakables_status_buffer_ptrs
-			lxi b, breakables_statuses_end - breakables_status_buffer_ptrs
+			lxi b, breakables_statuses_end
 			jmp mem_erase
 
 ; init the bleakables status buffer for the current room

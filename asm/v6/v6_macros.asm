@@ -222,8 +222,8 @@ BY_HL_FROM_DE	= 4
 		.endif
 .endmacro
 
-; bc = hl+bc
-; used: a
+; bc += hl
+; uses: a
 ; 40cc
 .macro BC_TO_BC_PLUS_HL()
 			mov a, c
@@ -231,6 +231,18 @@ BY_HL_FROM_DE	= 4
 			mov c, a
 			mov a, b
 			adc h
+			mov b, a
+.endmacro
+
+; bc += de
+; uses: a
+; 40cc
+.macro BC_TO_BC_PLUS_DE()
+			mov a, c
+			add e
+			mov c, a
+			mov a, b
+			adc d
 			mov b, a
 .endmacro
 

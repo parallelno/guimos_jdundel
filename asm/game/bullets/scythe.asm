@@ -62,7 +62,7 @@ SCYTHE_COLLISION_HEIGHT	= 12
 ; a - direction (BULLET_DIR_*)
 scythe_init:
 			sta scythe_init_speed + 1 ; 
-			BULLET_INIT(scythe_update, scythe_draw, SCYTHE_STATUS_MOVE_THROW, SCYTHE_STATUS_MOVE_TIME, scythe_run, scythe_init_speed)
+			BULLET_INIT(scythe_update, scythe_draw, SCYTHE_STATUS_MOVE_THROW, SCYTHE_STATUS_MOVE_TIME, _scythe_run, scythe_init_speed)
 
 ; in:
 ; de - ptr to bullet_speed_x

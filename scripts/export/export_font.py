@@ -128,7 +128,7 @@ def gfx_ptrs_to_asm(label_prefix, asset_j, gfx_ptrs):
 	asm += f"{label_prefix}_gfx_ptrs:\n"
 
 	gfx_ptrs_len = len(asset_j["gfx_ptrs"])
-	asm += f"GFX_PTRS_LEN = {gfx_ptrs_len}\n"
+	asm += f"{label_prefix.upper()}_GFX_PTRS_LEN = {gfx_ptrs_len}\n"
 	
 	numbers_in_line = 16 
 	for i, char_name in enumerate(asset_j["gfx_ptrs"]):

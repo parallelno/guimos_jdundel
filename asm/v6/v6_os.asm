@@ -147,7 +147,7 @@ load_file_next:
 			jnz @copy
 			; it's the last record
 @restore_last_rec_len:
-			mvi e, TEMP_WORD
+			mvi e, TEMP_WORD ; set the last record len
 @copy:
 			call @copy_record
 
@@ -169,21 +169,18 @@ load_file_next:
 			push d ; len
 			; advance os_file_data_ptr by the loaded chunk
 			lhld os_file_data_ptr
-			xchg
 			dad d
 			shld os_file_data_ptr
 
 			; copy the data
-			xchg
 			lxi d, CMP_DMA_BUFFER
 			pop b
-@even:
 			; de - dma buffer
-			; hl - loading destination addr
+			; hl - loading destination addr + len
 			; bc - len
 @ram_disk_activation:
 			mvi a, TEMP_BYTE ; ram-disk activation command
-			mem_copy_to_ram_disk()
+			call mem_copy_to_ram_disk
 			ret
 @rec_num:
 			.byte TEMP_BYTE
@@ -271,7 +268,7 @@ set_file_name:
 			push h
 			lxi d, CPM_FCB+1 ; file name addr
 			lxi b, FILENAME_LEN		
-			mem_copy()
+			call mem_copy_bc_len
 			pop h
 
 			push h
@@ -293,7 +290,7 @@ set_file_name:
 			; hl - file ext ptr
 			; de - points to v6_os_errmsg_file_open_ext
 			; bc - extention len
-			mem_copy()
+			call mem_copy_bc_len
 			mvi a, '\n'
 			stax d
 			inx d
@@ -306,7 +303,7 @@ set_file_name:
 
 			; Erase the rest of the FCB
 			lxi h, CPM_FCB + FILENAME_LEN + 1
-			lxi b, CMP_DMA_BUFFER - (CPM_FCB + FILENAME_LEN + 1)
+			lxi b, CMP_DMA_BUFFER
 			call mem_erase
 			ret
 

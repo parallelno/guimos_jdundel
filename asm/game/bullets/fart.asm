@@ -18,7 +18,7 @@ fart_init:
 			inx h
 			mov b, m
 
-			BULLET_INIT(fart_update, vfx_draw, FART_STATUS_LIFE, FART_STATUS_LIFE_TIME, vfx_puff_loop, fart_init_post)
+			BULLET_INIT(fart_update, vfx_draw, FART_STATUS_LIFE, FART_STATUS_LIFE_TIME, _vfx_puff_loop, fart_init_post)
 			ret			
 
 ; vfx_draw func used for this fart bullet requires a specific pos_y and pos_x format

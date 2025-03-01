@@ -57,7 +57,7 @@ sprite_get_scr_addr_sword = sprite_get_scr_addr8
 _sword_preshifted_sprites:
 			.byte 8
 _sword_anims:
-			.word _sword_delay, _sword_attk_r, _sword_attk_l, 0, 
+			.word _sword_delay, _sword_attk_r, _sword_attk_l, EOD, 
 _sword_delay:
 			.byte -1, $ff ; offset to the same last frame
 			.word _sword_sword_delay_0, _sword_sword_delay_1, _sword_sword_delay_2, _sword_sword_delay_3, _sword_sword_delay_4, _sword_sword_delay_5, _sword_sword_delay_6, _sword_sword_delay_7, 
