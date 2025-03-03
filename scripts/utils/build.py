@@ -76,27 +76,27 @@ packer_bin_ext	= ""
 #================================================================================
 # hardware and game consts
 
-SAFE_WORD_LEN	= 2
-BYTE_LEN		= 1
-WORD_LEN		= 2
+SAFE_WORD_LEN : int	= 2
+BYTE_LEN : int		= 1
+WORD_LEN : int		= 2
 NULL_S			= "NULL"
 
-RAM_LEN = 0x10000
-RAM_DISK_BANK_LEN = 0x10000
-RAM_DISKS_MAX = 4
-RAM_DISK_LEN = RAM_DISK_BANK_LEN * RAM_DISKS_MAX
+RAM_LEN : int				= 0x10000
+RAM_DISK_BANK_LEN : int		= 0x10000
+RAM_DISK_BANKS_MAX : int	= 4
+RAM_DISK_LEN				= RAM_DISK_BANK_LEN * RAM_DISK_BANKS_MAX
 
-SCR_BUFF_LEN = 0x2000
-SCR_BUFFS_LEN = SCR_BUFF_LEN * 4
-SCR_ADDR = 0x8000
+SCR_BUFF_LEN : int	= 0x2000
+SCR_BUFFS_LEN : int	= SCR_BUFF_LEN * 4
+SCR_ADDR : int 		= 0x8000
 
-STACK_LEN				= 32
-STACK_MAIN_PROGRAM_ADDR	= SCR_ADDR - 2 # minus 2 because erase funcs can let the interruption call corrupt 0x7ffe, @7fff bytes.
-STACK_INTERRUPTION_ADDR	= STACK_MAIN_PROGRAM_ADDR - STACK_LEN # it is used by the iterruption func
-STACK_MIN_ADDR			= STACK_INTERRUPTION_ADDR - STACK_LEN
-STACKS_LEN				= SCR_ADDR - STACK_MIN_ADDR
+STACK_LEN : int 		= 32
+STACK_MAIN_PROGRAM_ADDR : int	= SCR_ADDR - 2 # minus 2 because erase funcs can let the interruption call corrupt 0x7ffe, @7fff bytes.
+STACK_INTERRUPTION_ADDR : int	= STACK_MAIN_PROGRAM_ADDR - STACK_LEN # it is used by the iterruption func
+STACK_MIN_ADDR : int			= STACK_INTERRUPTION_ADDR - STACK_LEN
+STACKS_LEN : int				= SCR_ADDR - STACK_MIN_ADDR
 
-
+RAM_DISK_SEGMENT_LEN  : int = RAM_DISK_BANK_LEN // 2
 
 # end global vars
 

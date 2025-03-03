@@ -7,7 +7,7 @@ import utils.common_gfx as common_gfx
 import utils.build as build
 
 
-def export_if_updated(
+def export_if_updated( 
 		asset_j_path, asm_meta_path, asm_data_path, bin_path,
 		force_export):
 

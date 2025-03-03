@@ -8,6 +8,12 @@
 ; Original player code was written by svofski 2022
 ; Zx0 decompression port to i8080 was made by ivagor 2022
 
+; !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+; !!!              MUSIC DATA MUST BE LOADED             !!!
+; !!!       INTO THE RAM DISK $8000-$FFFF SEGMENT        !!!
+; !!! BECAUSE IT'S ACCESSED VIA THE NON_STACK OPERATIONS !!!
+; !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
 .include "asm/v6/sound/v6_gc_consts.asm"
 
 setting_music:

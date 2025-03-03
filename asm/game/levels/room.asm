@@ -51,10 +51,22 @@ room_redraw:
 			sta room_handle_room_tiledata_check
 			ret
 
-; uncompress room gfx tile_idx buffer + room tiledata buffer into the room_tiles_gfx_ptrs + offset
-; offset = (size of room_tiles_gfx_ptrs buffer) / 2. the result of the copy operation is
-; after copying room tile_idxs occupy the second half of the room_tiles_gfx_ptrs, and
-; after copying room tiledata occupies the room_tiledata
+; uncompress the room data (graphics tile indeces and the room tiledata)
+; destination_addr = room_tiles_gfx_ptrs + offset
+; offset = (size of room_tiles_gfx_ptrs buffer) / 2
+; after uncompression: 
+; * the room tile_idxs occupies the second half of the room_tiles_gfx_ptrs
+; * the room tiledata occupies the room_tiledata
+
+; we keep room tile_idxs in the second half to further convert into the
+; tile gfx ptrs.
+
+; !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+; !!! ROOT DATA (tile idxs and the tiledata) MUST BE LOADED !!!
+; !!!         INTO THE RAM DISK $8000-$FFFF SEGMENT         !!!
+; !!!   BECAUSE IT'S ACCESSED VIA THE NON_STACK OPERATIONS  !!!
+; !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
 ; packed room data has to be stored into $8000-$FFFF segment to be properly unzipped
 room_unpack:
 			; convert a room_id into the room gfx tile_idx buffer addr like _level01_room00 or _level01_room01, etc

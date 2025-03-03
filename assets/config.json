@@ -25,6 +25,7 @@
 		"scripts" : [
 			"assets/config.json",
 			"scripts/export/export_config.py",
+			"scripts/export/config_utils.py",
 			"scripts/build_and_run.py",
 			"scripts/utils/build.py",
 			"scripts/utils/common.py",
@@ -45,60 +46,52 @@
 	"build_db_path" : "build/build.db",
 	"main_asm_path" : "asm/main.asm",
 	"basefdd_path" : "assets/basefdd/rds308.fdd",
-	"ram_disk_reservations" :
+	"ram_disk_reserve" :
 	[
 		{
 			"name" : "BACKBUFF2",
 			"bank_idx" : 0,
 			"addr" : "0xA000",
-			"length" : "0x6000",
+			"len" : "0x6000",
 			"comment" : "to restore a background in the backbuffer"
 		},
 		{
 			"name" : "BACKBUFF",
 			"bank_idx" : 1,
 			"addr" : "0xA000",
-			"length" : "0x6000",
+			"len" : "0x6000",
 			"comment" : "to avoid sprite flickering when it's consecutively erased/rendered"
 		}
 	],
 	"permanent_load_name" : "permanent",
 	"loads" : {
 		"permanent" :
-		{
-			"ram" : [
-			],
-			"ram-disk" : []
-		},
+		[
+			"assets/fonts/eng/font.json"
+		],
 		"level0" :
-		{
-			"ram" : [],
-			"ram-disk" : [
-				"assets/sprites/knight.json",
-				"assets/sprites/hero_l.json",
-				"assets/sprites/vfx.json",
-				"assets/sprites/scythe.json",
-				"assets/levels/lv0_gfx.json",
-				"assets/fonts/eng/font.json",
-				"assets/sprites/bomb.json",
-
-				"assets/sprites/hero_r.json",
-				"assets/sprites/burner.json",
-				"assets/sprites/skeleton.json",
-				"assets/backs/backs0.json",
-				"assets/levels/lv0_data.json",
-				"assets/decals/decals0.json",
-
-				"assets/sprites/sword.json",
-				"assets/sprites/vampire.json",
-				"assets/tiled_imgs/ti0_gfx.json",
-				"assets/text/text_lv0.json",
-				"assets/sprites/snowflake.json",
-				"assets/sprites/tnt.json",				
-				"assets/tiled_imgs/ti0_data.json",
-				"assets/sprites/vfx4.json",
-				"assets/music/song01.json"
-			]
-		}
+		[
+			"assets/sprites/knight.json",
+			"assets/sprites/hero_l.json",
+			"assets/sprites/vfx.json",
+			"assets/sprites/scythe.json",
+			"assets/levels/lv0_gfx.json",
+			"assets/sprites/bomb.json",
+			"assets/sprites/hero_r.json",
+			"assets/sprites/burner.json",
+			"assets/sprites/skeleton.json",
+			"assets/backs/backs0.json",
+			"assets/levels/lv0_data.json",
+			"assets/decals/decals0.json",
+			"assets/sprites/sword.json",
+			"assets/sprites/vampire.json",
+			"assets/tiled_imgs/ti0_gfx.json",
+			"assets/text/text_lv0.json",
+			"assets/sprites/snowflake.json",
+			"assets/sprites/tnt.json",				
+			"assets/tiled_imgs/ti0_data.json",
+			"assets/sprites/vfx4.json",
+			"assets/music/song01.json"
+		]
 	}
 }
