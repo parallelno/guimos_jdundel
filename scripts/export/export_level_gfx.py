@@ -99,10 +99,19 @@ def data_ptrs_to_asm(level_j_path, data_ptrs, remap_idxs):
 	asm += "\n"
 	
 	png_name = common.path_to_basename(path_png)
-	asm += common_gfx.get_list_of_tiles(remap_idxs, "_" + level_name, png_name)
+	asm += get_list_of_tiles(remap_idxs, "_" + level_name, png_name)
+	asm += f"{level_name.upper()}_TILES_PTRS_LEN = {len(remap_idxs)}\n"
 
 	return asm
 
+def get_list_of_tiles(remap_idxs, label_prefix, pngLabelPrefix):
+	asm = ""
+	#asm += "\n			.word 0 ; safety pair of bytes for reading by POP B\n"
+	asm += label_prefix + "_tiles_ptrs:\n			.word "
+	for i, t_idx in enumerate(remap_idxs):
+		asm += "_" + pngLabelPrefix + "_tile" + str(remap_idxs[t_idx]) + ", "
+	asm += "\n\n"
+	return asm
 
 def gfx_to_asm(room_j, image, path, remap_idxs, label_prefix):
 	asm = "; " + path + "\n"

@@ -67,7 +67,7 @@ def remap_index(rooms_j):
 	return remap_idxs
 
 def get_list_of_rooms(room_paths, label_prefix):
-	label = "_" + label_prefix + "_rooms_addr"
+	label = "_" + label_prefix + "_rooms_ptrs"
 	rooms_data_ptrs_len = len(room_paths) * (build.WORD_LEN + build.SAFE_WORD_LEN)
 	rooms_data_ptrs_len += build.SAFE_WORD_LEN
 

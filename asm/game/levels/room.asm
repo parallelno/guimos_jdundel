@@ -568,7 +568,6 @@ room_decal_draw_backbuffers:
 
 ;=========================================================
 ; draw a room tiles. It might be a main screen, or a back buffer
-; call ex. call room_draw_tiles
 room_draw_tiles:
 			mvi a, ROOM_HEIGHT * TILE_HEIGHT
 ; in:

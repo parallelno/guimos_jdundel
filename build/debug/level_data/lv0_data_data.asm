@@ -5,7 +5,7 @@ _lv0_start_pos:					; a hero starting pos
 			.byte 120			; pos_x
 
 			.word 0 ; safety pair of bytes for reading by POP B
-_lv0_rooms_addr:
+_lv0_rooms_ptrs:
 			.word _lv0_home, _lv0_farm_fence, _lv0_road_to_friends_home, _lv0_friends_home, _lv0_friends_home_backyard, _lv0_friends_secret_place, _lv0_crossroad, _lv0_farm_entrance, _lv0_farm_storage, _lv0_loop, _lv0_dungeon_entrance, _lv0_abandoned_home, _lv0_lost_coins, 
 
 			.word 0 ; safety pair of bytes for reading by POP B

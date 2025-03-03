@@ -13,7 +13,7 @@ level_resources_inst_data_pptr:		.storage ADDR_LEN		; .word _level00_resources_i
 level_containers_inst_data_pptr:	.storage ADDR_LEN		; .word _level00_containers_inst_data_ptrs
 level_start_pos_ptr:				.storage ADDR_LEN		; .word _level00_start_pos
 level_rooms_pptr:					.storage ADDR_LEN		; .word _level00_rooms_addr
-level_tiles_pptr:					.storage ADDR_LEN		; .word _level00_tiles_addr
+level_tiles_pptr:					.storage ADDR_LEN		; .word _level00_tiles_pptr
 level_init_tbl_end:
 
 ;=============================================================================

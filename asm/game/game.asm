@@ -26,17 +26,22 @@ game_init:
 
 
 			;======================
-			; LV0 tile 0
-			;======================
-			// lxi d, 0x80A0
-			// lxi b, _lv0_tile0 + LV0_GFX_ADDR
-			// mvi a, RAM_DISK_S_LV0_GFX
-			// call tile_draw_16x16
-
-
-			;======================
 			; LV0 room 0
 			;======================
+			// lxi h, _lv0_tiles_ptrs
+			// lxi d, LV0_GFX_ADDR		
+			// lxi b, LV0_TILES_PTRS_LEN		
+			// call update_labels
+
+			// lxi h, level00_init_tbls
+			// lxi d, level_init_tbl
+			// lxi b, level00_init_tbls_end
+			// call mem_copy_bc_len
+			
+			// call room_unpack
+			// call room_init_tiles_gfx
+			// call room_draw_tiles
+
 
 			;======================
 			; DECALS0

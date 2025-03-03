@@ -10,7 +10,7 @@ LV0_DATA_FILENAME_PTR:
 			.byte "BIN" ; extension
 
 _lv0_start_pos = 2
-_lv0_rooms_addr = 6
+_lv0_rooms_ptrs = 6
 _lv0_resources_inst_data_ptrs = 60
 _lv0_containers_inst_data_ptrs = 183
 _lv0_home = 192

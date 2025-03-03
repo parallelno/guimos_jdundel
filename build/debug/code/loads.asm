@@ -26,7 +26,7 @@ Used: 32454, Free: 248
 --- bank0 addr8000 -----------------
 	LV0_GFX.BIN: addr: 34392, len: 5524
 	TI0_DATA.BIN: addr: 39916, len: 960
-Used: 6484, Free: 1708
+Used: 6484, Free: 84
 
 --- bank1 addr0 -----------------
 	TEXT_LV0.BIN: addr: 0, len: 5190

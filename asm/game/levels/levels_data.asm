@@ -31,8 +31,9 @@ levels_palette_ptr:					.word _lv0_palette
 levels_resources_inst_data_pptr:	.word _lv0_resources_inst_data_ptrs
 levels_containers_inst_data_pptr:	.word _lv0_containers_inst_data_ptrs
 levels_start_pos_ptr:				.word _lv0_start_pos
-levels_rooms_pptr:					.word _lv0_rooms_addr
-levels_tiles_pptr:					.word _lv0_tiles_addr
+levels_rooms_ptrs:					.word _lv0_rooms_ptrs
+levels_tiles_ptrs:					.word _lv0_tiles_ptrs
+level00_init_tbls_end:
 ; level01 init tbl
 level01_init_tbls:
 									.byte 0

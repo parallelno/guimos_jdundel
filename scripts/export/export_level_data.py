@@ -153,7 +153,7 @@ def data_to_asm(level_j_path):
 	asm += data_asm
 	
 	local_ptrs[label] = local_addrs
-	local_addrs += data_len
+	local_addrs += data_len 
 	
 	#=====================================================================
 	# containers data

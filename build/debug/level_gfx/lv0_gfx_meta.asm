@@ -63,6 +63,7 @@ _lv0_tile42 = 5130
 _lv0_tile43 = 5262
 _lv0_tile44 = 5394
 
-_lv0_tiles_addr:
-			.word _lv0_tile0, 0, _lv0_tile1, 0, _lv0_tile2, 0, _lv0_tile3, 0, _lv0_tile4, 0, _lv0_tile5, 0, _lv0_tile6, 0, _lv0_tile7, 0, _lv0_tile8, 0, _lv0_tile9, 0, _lv0_tile10, 0, _lv0_tile11, 0, _lv0_tile12, 0, _lv0_tile13, 0, _lv0_tile14, 0, _lv0_tile15, 0, _lv0_tile16, 0, _lv0_tile17, 0, _lv0_tile18, 0, _lv0_tile19, 0, _lv0_tile20, 0, _lv0_tile21, 0, _lv0_tile22, 0, _lv0_tile23, 0, _lv0_tile24, 0, _lv0_tile25, 0, _lv0_tile26, 0, _lv0_tile27, 0, _lv0_tile28, 0, _lv0_tile29, 0, _lv0_tile30, 0, _lv0_tile31, 0, _lv0_tile32, 0, _lv0_tile33, 0, _lv0_tile34, 0, _lv0_tile35, 0, _lv0_tile36, 0, _lv0_tile37, 0, _lv0_tile38, 0, _lv0_tile39, 0, _lv0_tile40, 0, _lv0_tile41, 0, _lv0_tile42, 0, _lv0_tile43, 0, _lv0_tile44, 
+_lv0_tiles_ptrs:
+			.word _lv0_tile0, _lv0_tile1, _lv0_tile2, _lv0_tile3, _lv0_tile4, _lv0_tile5, _lv0_tile6, _lv0_tile7, _lv0_tile8, _lv0_tile9, _lv0_tile10, _lv0_tile11, _lv0_tile12, _lv0_tile13, _lv0_tile14, _lv0_tile15, _lv0_tile16, _lv0_tile17, _lv0_tile18, _lv0_tile19, _lv0_tile20, _lv0_tile21, _lv0_tile22, _lv0_tile23, _lv0_tile24, _lv0_tile25, _lv0_tile26, _lv0_tile27, _lv0_tile28, _lv0_tile29, _lv0_tile30, _lv0_tile31, _lv0_tile32, _lv0_tile33, _lv0_tile34, _lv0_tile35, _lv0_tile36, _lv0_tile37, _lv0_tile38, _lv0_tile39, _lv0_tile40, _lv0_tile41, _lv0_tile42, _lv0_tile43, _lv0_tile44, 
 
+LV0_TILES_PTRS_LEN = 45
