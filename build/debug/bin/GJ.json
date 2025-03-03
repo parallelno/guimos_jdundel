@@ -1744,12 +1744,12 @@
         "game_init": "0x6D7F",
         "frame": "0x3",
         "shift": "0x2",
-        "@loop_29": "0x6DFD",
-        "wait": "0x6E6D",
-        "@loop_30": "0x6E70",
-        "game_update": "0x6E77",
-        "game_draw": "0x6E78",
-        "executible_end": "0x6E81"
+        "@loop_29": "0x6E1E",
+        "wait": "0x6E8E",
+        "@loop_30": "0x6E91",
+        "game_update": "0x6E98",
+        "game_draw": "0x6E99",
+        "executible_end": "0x6EA2"
     },
     "consts": {
         "BY_BC": "0x1",
@@ -2543,7 +2543,7 @@
         "RES_SELECTION_FRAME_SCR_ADDR": "0xA6F0",
         "RES_DISPLAYED_MAX": "0x3",
         "GAME_UI_ITEM_UPDATE_DELAY": "0x50",
-        "RAM_FREE_SPACE": "0x113D"
+        "RAM_FREE_SPACE": "0x111C"
     },
     "breakpoints": []
 }

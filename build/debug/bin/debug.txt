@@ -3309,10 +3309,10 @@ game_start $6d73
 game_init $6d7f
 frame $0003
 shift $0002
-@loop_29 $6dfd
-wait $6e6d
-@loop_30 $6e70
-game_update $6e77
-game_draw $6e78
-executible_end $6e81
-RAM_FREE_SPACE $113d
+@loop_29 $6e1e
+wait $6e8e
+@loop_30 $6e91
+game_update $6e98
+game_draw $6e99
+executible_end $6ea2
+RAM_FREE_SPACE $111c
