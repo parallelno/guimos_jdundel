@@ -33,11 +33,17 @@ game_init:
 			lxi b, LV0_TILES_PTRS_LEN	
 			call update_labels
 
+			lxi h, _lv0_rooms_ptrs
+			lxi d, LV0_DATA_ADDR		
+			lxi b, LV0_ROOMS_PTRS_LEN	
+			call update_labels
+
 			lxi h, level00_init_tbls
 			lxi d, level_init_tbl
 			lxi b, level00_init_tbls_end
 			call mem_copy
-			
+.breakpoint
+
 			call room_unpack
 			call room_init_tiles_gfx
 			call room_draw_tiles

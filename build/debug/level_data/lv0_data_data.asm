@@ -1,39 +1,3 @@
-
-			.word 0 ; safety pair of bytes for reading by POP B
-_lv0_start_pos:					; a hero starting pos
-			.byte 140			; pos_y
-			.byte 120			; pos_x
-
-			.word 0 ; safety pair of bytes for reading by POP B
-_lv0_rooms_ptrs:
-			.word _lv0_home, _lv0_farm_fence, _lv0_road_to_friends_home, _lv0_friends_home, _lv0_friends_home_backyard, _lv0_friends_secret_place, _lv0_crossroad, _lv0_farm_entrance, _lv0_farm_storage, _lv0_loop, _lv0_dungeon_entrance, _lv0_abandoned_home, _lv0_lost_coins, 
-
-			.word 0 ; safety pair of bytes for reading by POP B
-_lv0_resources_inst_data_ptrs:
-			.byte 9, 109, 109, 109, 109, 109, 109, 111, 121, 
-_lv0_resources_inst_data:
-;			tiledata = 112, data below is pairs of tile_idx, room_id
-			.byte 98,0,99,0,82,0,215,2,216,2,217,2,198,2,199,2,
-			.byte 201,2,202,2,184,5,167,5,169,5,36,5,37,5,19,5,
-			.byte 20,5,104,6,87,6,73,6,27,6,196,9,197,9,205,9,
-			.byte 180,9,181,9,73,10,56,10,57,10,59,10,179,11,180,11,
-			.byte 181,11,182,11,179,12,180,12,162,12,163,12,138,12,139,12,
-			.byte 122,12,123,12,88,12,73,12,52,12,53,12,36,12,37,12,
-			.byte 38,12,39,12,
-;			tiledata = 118, data below is pairs of tile_idx, room_id
-			.byte 200,2,
-;			tiledata = 119, data below is pairs of tile_idx, room_id
-			.byte 125,0,94,0,134,4,135,4,101,4,
-
-			.word 0 ; safety pair of bytes for reading by POP B
-_lv0_containers_inst_data_ptrs:
-			.byte 3, 5, 7, 
-_lv0_containers_inst_data:
-;			tiledata = 176, data below is pairs of tile_idx, room_id
-			.byte 168,5,
-;			tiledata = 177, data below is pairs of tile_idx, room_id
-			.byte 178,11,
-
 			.word 0 ; safety pair of bytes for reading by POP B
 ; tiled/lv0_home.tmj
 _lv0_home:
@@ -55,6 +19,7 @@ _lv0_home:
 			.byte 127,142,208,129,146,17,251,43,2,209,231,96,208,208,209,159,
 			.byte 224,48,136,160,160,126,143,22,61,254,134,224,208,0,255,0,
 			.byte 21,48,0,8,
+
 			.word 0 ; safety pair of bytes for reading by POP B
 ; tiled/lv0_farm_fence.tmj
 _lv0_farm_fence:
@@ -75,6 +40,7 @@ _lv0_farm_fence:
 			.byte 250,96,243,224,135,0,250,252,225,1,74,0,90,1,23,206,
 			.byte 86,224,79,180,63,128,159,192,226,60,96,239,24,196,60,224,
 			.byte 110,32,254,15,102,192,0,32,
+
 			.word 0 ; safety pair of bytes for reading by POP B
 ; tiled/lv0_road_to_friends_home.tmj
 _lv0_road_to_friends_home:
@@ -96,6 +62,7 @@ _lv0_road_to_friends_home:
 			.byte 254,144,225,8,254,4,230,124,43,200,196,255,198,199,212,108,
 			.byte 115,198,191,25,166,218,224,209,134,112,112,118,112,112,6,63,
 			.byte 208,208,223,221,131,192,248,88,128,48,0,8,
+
 			.word 0 ; safety pair of bytes for reading by POP B
 ; tiled/lv0_friends_home.tmj
 _lv0_friends_home:
@@ -116,6 +83,7 @@ _lv0_friends_home:
 			.byte 193,144,239,178,176,254,226,112,120,171,185,161,161,162,227,208,
 			.byte 222,254,176,229,226,254,62,192,94,31,143,208,222,27,255,108,
 			.byte 0,135,64,0,0,128,
+
 			.word 0 ; safety pair of bytes for reading by POP B
 ; tiled/lv0_friends_home_backyard.tmj
 _lv0_friends_home_backyard:
@@ -136,6 +104,7 @@ _lv0_friends_home_backyard:
 			.byte 89,153,137,25,243,96,2,37,160,249,156,192,230,190,255,119,
 			.byte 174,126,27,1,134,224,227,210,255,1,208,134,62,236,208,224,
 			.byte 151,186,158,110,254,17,192,0,32,
+
 			.word 0 ; safety pair of bytes for reading by POP B
 ; tiled/lv0_friends_secret_place.tmj
 _lv0_friends_secret_place:
@@ -159,6 +128,7 @@ _lv0_friends_secret_place:
 			.byte 15,16,139,96,2,247,117,224,224,222,229,0,112,176,112,224,
 			.byte 134,1,208,112,209,1,3,239,120,209,227,223,160,154,62,43,
 			.byte 224,91,0,56,96,140,42,42,0,2,
+
 			.word 0 ; safety pair of bytes for reading by POP B
 ; tiled/lv0_crossroad.tmj
 _lv0_crossroad:
@@ -180,6 +150,7 @@ _lv0_crossroad:
 			.byte 255,58,6,207,224,192,204,246,185,41,192,186,96,254,235,208,
 			.byte 144,100,206,224,128,104,0,95,124,225,128,142,255,34,254,227,
 			.byte 232,0,0,128,
+
 			.word 0 ; safety pair of bytes for reading by POP B
 ; tiled/lv0_farm_entrance.tmj
 _lv0_farm_entrance:
@@ -200,6 +171,7 @@ _lv0_farm_entrance:
 			.byte 208,251,171,128,134,224,254,1,67,64,135,1,142,194,54,59,
 			.byte 36,168,64,209,50,246,51,192,63,160,232,224,0,28,248,204,
 			.byte 226,127,224,36,98,187,33,254,131,224,0,0,128,
+
 			.word 0 ; safety pair of bytes for reading by POP B
 ; tiled/lv0_farm_storage.tmj
 _lv0_farm_storage:
@@ -220,6 +192,7 @@ _lv0_farm_storage:
 			.byte 132,187,0,158,207,2,224,167,0,249,29,27,69,131,208,208,
 			.byte 255,200,224,134,209,209,252,208,130,251,190,225,98,248,34,20,
 			.byte 228,240,254,130,34,28,0,2,
+
 			.word 0 ; safety pair of bytes for reading by POP B
 ; tiled/lv0_loop.tmj
 _lv0_loop:
@@ -242,6 +215,7 @@ _lv0_loop:
 			.byte 254,19,163,224,130,2,162,44,112,112,160,224,242,160,234,209,
 			.byte 224,2,31,209,243,207,132,220,192,150,66,60,37,37,75,0,
 			.byte 2,
+
 			.word 0 ; safety pair of bytes for reading by POP B
 ; tiled/lv0_dungeon_entrance.tmj
 _lv0_dungeon_entrance:
@@ -263,6 +237,7 @@ _lv0_dungeon_entrance:
 			.byte 255,45,100,62,219,65,57,224,0,38,63,250,147,224,191,71,
 			.byte 25,225,222,14,159,33,3,0,107,16,239,130,224,160,127,31,
 			.byte 68,111,224,194,61,130,61,224,34,162,162,92,0,2,
+
 			.word 0 ; safety pair of bytes for reading by POP B
 ; tiled/lv0_abandoned_home.tmj
 _lv0_abandoned_home:
@@ -283,6 +258,7 @@ _lv0_abandoned_home:
 			.byte 225,162,227,224,194,195,180,230,13,224,62,255,3,195,50,58,
 			.byte 67,32,11,16,185,136,222,186,2,224,59,177,112,254,255,193,
 			.byte 206,155,243,176,198,127,113,53,53,140,200,102,12,0,2,
+
 			.word 0 ; safety pair of bytes for reading by POP B
 ; tiled/lv0_lost_coins.tmj
 _lv0_lost_coins:
@@ -305,3 +281,4 @@ _lv0_lost_coins:
 			.byte 193,223,6,204,51,246,191,208,8,254,10,1,160,111,41,3,
 			.byte 254,163,202,191,131,96,142,254,42,123,158,222,254,224,66,140,
 			.byte 41,0,2,
+

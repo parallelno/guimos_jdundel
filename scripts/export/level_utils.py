@@ -72,7 +72,6 @@ def get_list_of_rooms(room_paths, label_prefix):
 	rooms_data_ptrs_len += build.SAFE_WORD_LEN
 
 	asm = ""
-	asm += "			.word 0 ; safety pair of bytes for reading by POP B\n"
 	asm += f"{label}:\n			.word "
 
 	for room_path_p in room_paths:
@@ -80,6 +79,8 @@ def get_list_of_rooms(room_paths, label_prefix):
 		asm += get_room_data_label(room_path) + ", "
 
 	asm += "\n\n"
+	asm += f"{label_prefix.upper()}_ROOMS_PTRS_LEN = {len(room_paths)}\n"
+	asm += "\n"
 
 	return asm, label, rooms_data_ptrs_len
 

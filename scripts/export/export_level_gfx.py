@@ -26,8 +26,8 @@ def export_asm(asset_j_path, asm_meta_path, asm_data_path, bin_path):
 	asset_dir = str(Path(asset_j_path).parent) + "/"
 	level_j_path = asset_dir + asset_j["path_level"]
 
-	asm_ram_disk_data, data_ptrs, remap_idxs = data_to_asm(level_j_path)
-	asm_ram_data = data_ptrs_to_asm(level_j_path, data_ptrs, remap_idxs)
+	asm_ram_disk_data, data_ptrs, remap_idxs = ram_disk_data_to_asm(level_j_path)
+	asm_ram_data = ram_data_to_asm(level_j_path, data_ptrs, remap_idxs)
 
 	# save the asm gfx
 	asm_data_dir = str(Path(asm_data_path).parent) + "/"
@@ -41,7 +41,7 @@ def export_asm(asset_j_path, asm_meta_path, asm_data_path, bin_path):
 
 	return True
 
-def data_to_asm(level_j_path):
+def ram_disk_data_to_asm(level_j_path):
 
 	with open(level_j_path, "rb") as file:
 		level_j = json.load(file)
@@ -75,7 +75,7 @@ def data_to_asm(level_j_path):
 
 	return asm, gfx_ptrs, remap_idxs
 
-def data_ptrs_to_asm(level_j_path, data_ptrs, remap_idxs):
+def ram_data_to_asm(level_j_path, data_ptrs, remap_idxs):
 	
 	with open(level_j_path, "rb") as file:
 		level_j = json.load(file)

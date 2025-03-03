@@ -69,25 +69,22 @@ room_redraw:
 
 ; packed room data has to be stored into $8000-$FFFF segment to be properly unzipped
 room_unpack:
-			; convert a room_id into the room gfx tile_idx buffer addr like _level01_room00 or _level01_room01, etc
+			lhld level_rooms_ptrs
+			; convert a room_id into the addr of the room data (gfx tile idxs & tiledata)
+			; like _lv0_home or _lv0_farm_fence, etc
 			lda room_id
-			; double the room index to get an addr offset in the level01_rooms_addr array
-			rlc
-			; double it again because there are two safety bytes in front of every room pointer
+			; double the room idx to get an addr offset in the _lv0_rooms_ptrs array
 			rlc
 			mov c, a
 			mvi b, 0
-			lhld level_rooms_pptr
 			dad b
 
-			; load a pointer to a room gfx tile_idx buffer
-			xchg
-			lda level_ram_disk_s_data
-			call get_word_from_ram_disk
-			mov d, b
-			mov e, c
+			; load a pointer to the room data
+			mov e, m
+			inx h
+			mov d, m
 
-			; copy room gfx tile_idxs + room tiledata into the room_tiles_gfx_ptrs + offset
+			; copy the room data into the room_tiles_gfx_ptrs + offset
 			; offset = ROOM_TILES_GFX_PTRS_LEN / 2
 			lxi b, room_tiles_gfx_ptrs + ROOM_TILES_GFX_PTRS_LEN / 2
 			lda level_ram_disk_m_data
@@ -130,49 +127,41 @@ restore_doors_containers_tiledata_ex:
 
 ; convert room gfx tile_idxs into room gfx tile ptrs
 room_init_tiles_gfx:
-			lhld level_tiles_pptr
-			shld @gfx_tiles_addr + 1
-			lda level_ram_disk_s_gfx
-			sta @ram_disk_s_gfx + 1
+			lhld level_tiles_ptrs
+			shld @gfx_tiles_ptrs + 1
 
 			lxi h, room_tiles_gfx_ptrs + ROOM_TILES_GFX_PTRS_LEN / 2
-			lxi b, room_tiles_gfx_ptrs
+			lxi d, room_tiles_gfx_ptrs
 			mvi a, ROOM_WIDTH * ROOM_HEIGHT
 			; hl - current room gfx tile_idxs
-			; bc - current room gfx tile ptrs
+			; de - current room gfx tile ptrs
 			; a - counter
 @loop:
-			; de gets the tile index
+			; bc gets the tile idx
 			push psw
-			mov e, m
-			mvi d, 0
+			mov c, m
+			mvi b, 0
 			inx h
 			push h
+			; convert the tile gfx idx into the tile gfx ptr
+@gfx_tiles_ptrs:
+			lxi h, TEMP_WORD
+			dad b
+			dad b ; second addition becasue the tile gfx ptr is 2 bytes long
+			; hl - points to the tile gfx ptr
+			
+			; read the tile gfx ptr
+			mov c, m
+			inx h
+			mov b, m
+			; bc - current room current tile gfx ptrs
+			; store it into the room gfx ptrs table
 			xchg
-			; double the tile index to get a tile graphics pointer
-			dad h
-			; double it again because there are two safety bytes in front of every pointer
-			dad h
-@gfx_tiles_addr:
-			lxi d, TEMP_WORD
-			; hl gets the tile graphics ponter
-			dad d
-
-			; copy the tile graphics addr to the current room tile graphics table
-			push b
+			mov m, c
+			inx h
+			mov m, b
+			inx h
 			xchg
-@ram_disk_s_gfx:
-			mvi a, TEMP_BYTE
-			call get_word_from_ram_disk
-			mov a, c
-			mov e, b
-			pop b
-
-			stax b
-			inx b
-			mov a, e
-			stax b
-			inx b
 			pop h
 			pop psw
 			dcr a
@@ -598,7 +587,7 @@ room_draw_tiles_ex:
 			pop h
 			pop d
 
-			; x = x + 2
+			; x += 2
 			INR_D(2)
 			; repeat if x reaches the high byte of the second screen buffer addr
 			mvi a, >SCR_BUFF1_ADDR
