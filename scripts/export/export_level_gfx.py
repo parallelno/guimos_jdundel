@@ -107,7 +107,7 @@ def ram_data_to_asm(level_j_path, data_ptrs, remap_idxs):
 def get_list_of_tiles(remap_idxs, label_prefix, pngLabelPrefix):
 	asm = ""
 	#asm += "\n			.word 0 ; safety pair of bytes for reading by POP B\n"
-	asm += label_prefix + "_tiles_ptrs:\n			.word "
+	asm += label_prefix + "_gfx_tiles_ptrs:\n			.word "
 	for i, t_idx in enumerate(remap_idxs):
 		asm += "_" + pngLabelPrefix + "_tile" + str(remap_idxs[t_idx]) + ", "
 	asm += "\n\n"

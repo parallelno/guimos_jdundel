@@ -8,7 +8,6 @@ _snowflake_run0_0:
 			.byte 193,28,193,255,148,235,148,235,148,0,128,0,128,73,128,93,
 			.byte 227,28,227,28,227,0,247,0,247,8,247,8,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _snowflake_run0_1:
 			.byte 2, 0; offset_y, offset_x
@@ -21,7 +20,6 @@ _snowflake_run0_1:
 			.byte 63,0,229,0,224,0,63,0,63,64,224,18,63,64,224,23,
 			.byte 248,7,255,0,255,0,248,7,255,0,248,0,253,0,255,0,
 			.byte 255,0,253,2,255,0,253,2,
-
 
 			.word 0  ; safety pair of bytes for reading by POP B
 _snowflake_run0_2:
@@ -36,7 +34,6 @@ _snowflake_run0_2:
 			.byte 254,1,63,192,63,192,254,1,63,0,254,0,255,0,127,0,
 			.byte 127,128,255,0,127,128,255,0,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _snowflake_run0_3:
 			.byte 2, 0; offset_y, offset_x
@@ -50,7 +47,6 @@ _snowflake_run0_3:
 			.byte 255,0,143,112,143,112,255,0,143,0,255,0,255,0,223,0,
 			.byte 223,32,255,0,223,32,255,0,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _snowflake_run1_0:
 			.byte 2, 0; offset_y, offset_x
@@ -59,7 +55,6 @@ _snowflake_run1_0:
 			.byte 128,0,148,0,148,107,148,107,193,62,193,42,193,0,193,0,
 			.byte 193,28,193,62,148,107,148,42,148,0,128,0,128,107,128,127,
 			.byte 227,28,227,28,227,0,247,0,247,8,247,8,
-
 
 			.word 0  ; safety pair of bytes for reading by POP B
 _snowflake_run1_1:
@@ -74,7 +69,6 @@ _snowflake_run1_1:
 			.byte 248,7,255,0,255,0,248,7,255,0,248,0,253,0,255,0,
 			.byte 255,0,253,2,255,0,253,2,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _snowflake_run1_2:
 			.byte 2, 0; offset_y, offset_x
@@ -87,7 +81,6 @@ _snowflake_run1_2:
 			.byte 79,0,249,0,248,0,15,0,15,176,248,6,15,240,248,7,
 			.byte 254,1,63,192,63,192,254,1,63,0,254,0,255,0,127,0,
 			.byte 127,128,255,0,127,128,255,0,
-
 
 			.word 0  ; safety pair of bytes for reading by POP B
 _snowflake_run1_3:
@@ -102,7 +95,6 @@ _snowflake_run1_3:
 			.byte 255,0,143,112,143,112,255,0,143,0,255,0,255,0,223,0,
 			.byte 223,32,255,0,223,32,255,0,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _snowflake_run2_0:
 			.byte 2, 0; offset_y, offset_x
@@ -112,7 +104,6 @@ _snowflake_run2_0:
 			.byte 227,12,227,28,193,62,193,28,193,0,193,0,193,42,193,62,
 			.byte 227,28,227,28,227,0,247,0,247,8,247,8,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _snowflake_run2_1:
 			.byte 2, 0; offset_y, offset_x
@@ -121,7 +112,6 @@ _snowflake_run2_1:
 			.byte 240,0,248,0,248,7,248,7,248,7,248,6,248,0,248,0,
 			.byte 248,3,248,7,240,15,240,7,240,0,240,0,240,10,240,15,
 			.byte 248,7,248,7,248,0,253,0,253,2,253,2,
-
 
 			.word 0  ; safety pair of bytes for reading by POP B
 _snowflake_run2_2:
@@ -136,7 +126,6 @@ _snowflake_run2_2:
 			.byte 254,1,63,192,63,192,254,1,63,0,254,0,255,0,127,0,
 			.byte 127,128,255,0,127,128,255,0,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _snowflake_run2_3:
 			.byte 2, 1; offset_y, offset_x
@@ -145,4 +134,3 @@ _snowflake_run2_3:
 			.byte 7,0,143,0,143,112,143,112,143,112,143,96,143,0,143,0,
 			.byte 143,48,143,112,7,248,7,112,7,0,7,0,7,168,7,248,
 			.byte 143,112,143,112,143,0,223,0,223,32,223,32,
-

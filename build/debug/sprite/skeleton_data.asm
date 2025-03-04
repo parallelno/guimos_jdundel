@@ -16,7 +16,6 @@ _skeleton_idle_0_0:
 			.byte 63,128,224,8,63,0,224,7,240,0,127,0,127,0,240,0,
 			.byte 127,128,240,15,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _skeleton_idle_0_1:
 			.byte 0, 0; offset_y, offset_x
@@ -38,7 +37,6 @@ _skeleton_idle_0_1:
 			.byte 7,0,240,4,255,0,7,8,240,8,248,4,15,16,255,0,
 			.byte 255,0,15,32,248,2,255,0,15,192,248,1,252,0,31,0,
 			.byte 255,0,255,0,31,0,252,0,255,0,31,224,252,3,
-
 
 			.word 0  ; safety pair of bytes for reading by POP B
 _skeleton_idle_0_2:
@@ -62,7 +60,6 @@ _skeleton_idle_0_2:
 			.byte 255,0,3,136,254,0,255,0,3,112,254,0,255,0,7,0,
 			.byte 255,0,255,0,7,0,255,0,255,0,7,248,255,0,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _skeleton_idle_0_3:
 			.byte 0, 0; offset_y, offset_x
@@ -85,7 +82,6 @@ _skeleton_idle_0_3:
 			.byte 255,0,128,34,255,0,255,0,128,28,255,0,255,0,193,0,
 			.byte 255,0,255,0,193,0,255,0,255,0,193,62,255,0,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _skeleton_idle_1_0:
 			.byte 0, 0; offset_y, offset_x
@@ -102,7 +98,6 @@ _skeleton_idle_1_0:
 			.byte 128,63,63,0,63,128,128,0,63,64,128,64,192,32,127,128,
 			.byte 127,0,192,17,127,0,192,14,224,0,255,0,255,0,224,0,
 			.byte 255,0,224,31,
-
 
 			.word 0  ; safety pair of bytes for reading by POP B
 _skeleton_idle_1_1:
@@ -126,7 +121,6 @@ _skeleton_idle_1_1:
 			.byte 255,0,31,64,240,4,255,0,31,128,240,3,248,0,63,0,
 			.byte 255,0,255,0,63,0,248,0,255,0,63,192,248,7,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _skeleton_idle_1_2:
 			.byte 0, 0; offset_y, offset_x
@@ -148,7 +142,6 @@ _skeleton_idle_1_2:
 			.byte 3,8,248,0,255,0,3,4,248,4,252,2,7,8,255,0,
 			.byte 255,0,7,16,252,1,255,0,7,224,252,0,254,0,15,0,
 			.byte 255,0,255,0,15,0,254,0,255,0,15,240,254,1,
-
 
 			.word 0  ; safety pair of bytes for reading by POP B
 _skeleton_idle_1_3:
@@ -172,7 +165,6 @@ _skeleton_idle_1_3:
 			.byte 255,0,1,68,255,0,255,0,1,56,255,0,255,0,131,0,
 			.byte 255,0,255,0,131,0,255,0,255,0,131,124,255,0,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _skeleton_run_r0_0:
 			.byte 0, 0; offset_y, offset_x
@@ -189,7 +181,6 @@ _skeleton_run_r0_0:
 			.byte 192,15,31,192,31,0,192,16,31,32,192,32,224,16,63,64,
 			.byte 63,128,224,8,63,0,224,7,240,0,127,0,127,0,240,0,
 			.byte 127,128,240,15,
-
 
 			.word 0  ; safety pair of bytes for reading by POP B
 _skeleton_run_r0_1:
@@ -213,7 +204,6 @@ _skeleton_run_r0_1:
 			.byte 255,0,15,32,248,2,255,0,15,192,248,1,252,0,31,0,
 			.byte 255,0,255,0,31,0,252,0,255,0,31,224,252,3,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _skeleton_run_r0_2:
 			.byte 0, 0; offset_y, offset_x
@@ -235,7 +225,6 @@ _skeleton_run_r0_2:
 			.byte 1,0,252,1,255,0,1,2,252,2,254,1,3,4,255,0,
 			.byte 255,0,3,136,254,0,255,0,3,112,254,0,255,0,7,0,
 			.byte 255,0,255,0,7,0,255,0,255,0,7,248,255,0,
-
 
 			.word 0  ; safety pair of bytes for reading by POP B
 _skeleton_run_r0_3:
@@ -259,7 +248,6 @@ _skeleton_run_r0_3:
 			.byte 255,0,128,34,255,0,255,0,128,28,255,0,255,0,193,0,
 			.byte 255,0,255,0,193,0,255,0,255,0,193,62,255,0,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _skeleton_run_r1_0:
 			.byte 0, 0; offset_y, offset_x
@@ -276,7 +264,6 @@ _skeleton_run_r1_0:
 			.byte 192,15,31,192,31,0,192,16,31,32,192,32,224,16,63,64,
 			.byte 63,128,224,8,63,0,224,7,240,0,127,0,127,0,240,0,
 			.byte 127,128,240,15,
-
 
 			.word 0  ; safety pair of bytes for reading by POP B
 _skeleton_run_r1_1:
@@ -300,7 +287,6 @@ _skeleton_run_r1_1:
 			.byte 255,0,15,32,248,2,255,0,15,192,248,1,252,0,31,0,
 			.byte 255,0,255,0,31,0,252,0,255,0,31,224,252,3,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _skeleton_run_r1_2:
 			.byte 0, 0; offset_y, offset_x
@@ -322,7 +308,6 @@ _skeleton_run_r1_2:
 			.byte 1,0,252,1,255,0,1,2,252,2,254,1,3,4,255,0,
 			.byte 255,0,3,136,254,0,255,0,3,112,254,0,255,0,7,0,
 			.byte 255,0,255,0,7,0,255,0,255,0,7,248,255,0,
-
 
 			.word 0  ; safety pair of bytes for reading by POP B
 _skeleton_run_r1_3:
@@ -346,7 +331,6 @@ _skeleton_run_r1_3:
 			.byte 255,0,128,34,255,0,255,0,128,28,255,0,255,0,193,0,
 			.byte 255,0,255,0,193,0,255,0,255,0,193,62,255,0,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _skeleton_run_r2_0:
 			.byte 0, 0; offset_y, offset_x
@@ -363,7 +347,6 @@ _skeleton_run_r2_0:
 			.byte 192,15,31,192,31,0,192,16,31,32,192,32,224,16,63,64,
 			.byte 63,128,224,8,63,0,224,7,240,0,127,0,127,0,240,0,
 			.byte 127,128,240,15,
-
 
 			.word 0  ; safety pair of bytes for reading by POP B
 _skeleton_run_r2_1:
@@ -387,7 +370,6 @@ _skeleton_run_r2_1:
 			.byte 255,0,15,32,248,2,255,0,15,192,248,1,252,0,31,0,
 			.byte 255,0,255,0,31,0,252,0,255,0,31,224,252,3,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _skeleton_run_r2_2:
 			.byte 0, 0; offset_y, offset_x
@@ -409,7 +391,6 @@ _skeleton_run_r2_2:
 			.byte 1,0,252,1,255,0,1,2,252,2,254,1,3,4,255,0,
 			.byte 255,0,3,136,254,0,255,0,3,112,254,0,255,0,7,0,
 			.byte 255,0,255,0,7,0,255,0,255,0,7,248,255,0,
-
 
 			.word 0  ; safety pair of bytes for reading by POP B
 _skeleton_run_r2_3:
@@ -433,7 +414,6 @@ _skeleton_run_r2_3:
 			.byte 255,0,128,34,255,0,255,0,128,28,255,0,255,0,193,0,
 			.byte 255,0,255,0,193,0,255,0,255,0,193,62,255,0,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _skeleton_run_r3_0:
 			.byte 0, 0; offset_y, offset_x
@@ -450,7 +430,6 @@ _skeleton_run_r3_0:
 			.byte 192,15,31,192,31,0,192,16,31,32,192,32,224,16,63,64,
 			.byte 63,128,224,8,63,0,224,7,240,0,127,0,127,0,240,0,
 			.byte 127,128,240,15,
-
 
 			.word 0  ; safety pair of bytes for reading by POP B
 _skeleton_run_r3_1:
@@ -474,7 +453,6 @@ _skeleton_run_r3_1:
 			.byte 255,0,15,32,248,2,255,0,15,192,248,1,252,0,31,0,
 			.byte 255,0,255,0,31,0,252,0,255,0,31,224,252,3,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _skeleton_run_r3_2:
 			.byte 0, 0; offset_y, offset_x
@@ -496,7 +474,6 @@ _skeleton_run_r3_2:
 			.byte 1,0,252,1,255,0,1,2,252,2,254,1,3,4,255,0,
 			.byte 255,0,3,136,254,0,255,0,3,112,254,0,255,0,7,0,
 			.byte 255,0,255,0,7,0,255,0,255,0,7,248,255,0,
-
 
 			.word 0  ; safety pair of bytes for reading by POP B
 _skeleton_run_r3_3:
@@ -520,7 +497,6 @@ _skeleton_run_r3_3:
 			.byte 255,0,128,34,255,0,255,0,128,28,255,0,255,0,193,0,
 			.byte 255,0,255,0,193,0,255,0,255,0,193,62,255,0,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _skeleton_run_l0_0:
 			.byte 0, 0; offset_y, offset_x
@@ -538,7 +514,6 @@ _skeleton_run_l0_0:
 			.byte 7,16,252,1,7,224,252,0,254,0,15,0,15,0,254,0,
 			.byte 15,240,254,1,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _skeleton_run_l0_1:
 			.byte 0, 0; offset_y, offset_x
@@ -555,7 +530,6 @@ _skeleton_run_l0_1:
 			.byte 254,0,0,252,0,2,254,0,0,1,254,1,255,0,1,130,
 			.byte 1,68,255,0,1,56,255,0,255,0,131,0,131,0,255,0,
 			.byte 131,124,255,0,
-
 
 			.word 0  ; safety pair of bytes for reading by POP B
 _skeleton_run_l0_2:
@@ -579,7 +553,6 @@ _skeleton_run_l0_2:
 			.byte 127,0,192,17,255,0,127,0,192,14,255,0,255,0,224,0,
 			.byte 255,0,255,0,224,0,255,0,255,0,224,31,255,0,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _skeleton_run_l0_3:
 			.byte 0, 0; offset_y, offset_x
@@ -602,7 +575,6 @@ _skeleton_run_l0_3:
 			.byte 31,64,240,4,255,0,31,128,240,3,255,0,255,0,248,0,
 			.byte 63,0,63,0,248,0,255,0,63,192,248,7,255,0,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _skeleton_run_l1_0:
 			.byte 0, 0; offset_y, offset_x
@@ -620,7 +592,6 @@ _skeleton_run_l1_0:
 			.byte 7,16,252,1,7,224,252,0,254,0,15,0,15,0,254,0,
 			.byte 15,240,254,1,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _skeleton_run_l1_1:
 			.byte 0, 0; offset_y, offset_x
@@ -637,7 +608,6 @@ _skeleton_run_l1_1:
 			.byte 254,0,0,252,0,2,254,0,0,1,254,1,255,0,1,130,
 			.byte 1,68,255,0,1,56,255,0,255,0,131,0,131,0,255,0,
 			.byte 131,124,255,0,
-
 
 			.word 0  ; safety pair of bytes for reading by POP B
 _skeleton_run_l1_2:
@@ -661,7 +631,6 @@ _skeleton_run_l1_2:
 			.byte 127,0,192,17,255,0,127,0,192,14,255,0,255,0,224,0,
 			.byte 255,0,255,0,224,0,255,0,255,0,224,31,255,0,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _skeleton_run_l1_3:
 			.byte 0, 0; offset_y, offset_x
@@ -684,7 +653,6 @@ _skeleton_run_l1_3:
 			.byte 31,64,240,4,255,0,31,128,240,3,255,0,255,0,248,0,
 			.byte 63,0,63,0,248,0,255,0,63,192,248,7,255,0,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _skeleton_run_l2_0:
 			.byte 0, 0; offset_y, offset_x
@@ -701,7 +669,6 @@ _skeleton_run_l2_0:
 			.byte 248,3,3,240,3,8,248,0,3,4,248,4,252,2,7,8,
 			.byte 7,16,252,1,7,224,252,0,254,0,15,0,15,0,254,0,
 			.byte 15,240,254,1,
-
 
 			.word 0  ; safety pair of bytes for reading by POP B
 _skeleton_run_l2_1:
@@ -725,7 +692,6 @@ _skeleton_run_l2_1:
 			.byte 255,0,1,68,255,0,255,0,1,56,255,0,255,0,131,0,
 			.byte 255,0,255,0,131,0,255,0,255,0,131,124,255,0,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _skeleton_run_l2_2:
 			.byte 0, 0; offset_y, offset_x
@@ -747,7 +713,6 @@ _skeleton_run_l2_2:
 			.byte 128,0,255,0,63,64,128,64,255,0,255,0,192,32,127,128,
 			.byte 127,0,192,17,255,0,127,0,192,14,255,0,255,0,224,0,
 			.byte 255,0,255,0,224,0,255,0,255,0,224,31,255,0,
-
 
 			.word 0  ; safety pair of bytes for reading by POP B
 _skeleton_run_l2_3:
@@ -771,7 +736,6 @@ _skeleton_run_l2_3:
 			.byte 31,64,240,4,255,0,31,128,240,3,255,0,255,0,248,0,
 			.byte 63,0,63,0,248,0,255,0,63,192,248,7,255,0,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _skeleton_run_l3_0:
 			.byte 0, 0; offset_y, offset_x
@@ -789,7 +753,6 @@ _skeleton_run_l3_0:
 			.byte 7,16,252,1,7,224,252,0,254,0,15,0,15,0,254,0,
 			.byte 15,240,254,1,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _skeleton_run_l3_1:
 			.byte 0, 0; offset_y, offset_x
@@ -806,7 +769,6 @@ _skeleton_run_l3_1:
 			.byte 254,0,0,252,0,2,254,0,0,1,254,1,255,0,1,130,
 			.byte 1,68,255,0,1,56,255,0,255,0,131,0,131,0,255,0,
 			.byte 131,124,255,0,
-
 
 			.word 0  ; safety pair of bytes for reading by POP B
 _skeleton_run_l3_2:
@@ -830,7 +792,6 @@ _skeleton_run_l3_2:
 			.byte 127,0,192,17,255,0,127,0,192,14,255,0,255,0,224,0,
 			.byte 255,0,255,0,224,0,255,0,255,0,224,31,255,0,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _skeleton_run_l3_3:
 			.byte 0, 0; offset_y, offset_x
@@ -852,4 +813,3 @@ _skeleton_run_l3_3:
 			.byte 224,0,255,0,15,16,224,16,255,0,255,0,240,8,31,32,
 			.byte 31,64,240,4,255,0,31,128,240,3,255,0,255,0,248,0,
 			.byte 63,0,63,0,248,0,255,0,63,192,248,7,255,0,
-

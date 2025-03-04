@@ -208,31 +208,64 @@ def get_load_asm(load_name, allocation, segments):
 	for seg_name, seg in allocation.items():
 		for asset in seg:
 			bank_idx = segments[seg_name]["bank_idx"]
-			name = common.path_to_basename(asset["bin_path"]).upper()
+			NAME = common.path_to_basename(asset["bin_path"]).upper()
+			name_low = common.path_to_basename(asset["asset_j_path"])
 
-			const_ram_disk_m = f"RAM_DISK_M_{name}"
-			const_ram_disk_s = f"RAM_DISK_S_{name}"
-			const_addr = f"{name}_ADDR"
+			const_ram_disk_m = f"RAM_DISK_M_{NAME}"
+			const_ram_disk_s = f"RAM_DISK_S_{NAME}"
+			const_addr = f"{NAME}_ADDR"
 			
-			asm += f"			; load\n"
 			asm += f"			{const_ram_disk_m} = RAM_DISK_M{bank_idx}\n"
 			asm += f"			{const_ram_disk_s} = RAM_DISK_S{bank_idx}\n"
 			asm += f"			{const_addr} = {asset['addr']}\n"
-			asm += f"			LOAD_FILE({name}_FILENAME_PTR, {const_ram_disk_s}, {const_addr}, {name}_FILE_LEN)\n\n"
+			asm += f"			LOAD_FILE({NAME}_FILENAME_PTR, {const_ram_disk_s}, {const_addr}, {NAME}_FILE_LEN)\n"
 
-			# asm += f"			; init\n"
-			# asset_type = asset["type"]
-			# match asset_type:
-			# 	case build.ASSET_TYPE_FONT:
-			# 		asm += f"			mvi a, {const_ram_disk_s}\n"
-			# 		asm += f"			mvi c, {const_gfx_ptrs_len}\n"
-			# 		asm += f"			lxi h, TEXT_LV0_ADDR\n"
-			# 		asm += f"			lxi d, font_gfx_ptrs\n"
-			# 		asm += f"			push d\n"
-			# 		asm += f"			lxi d, {const_addr}\n"
-			# 		asm += f"			push d\n"
-			# 		asm += f"			mvi e, >SCR_BUFF1_ADDR\n"
-			# 		asm += f"			call text_ex_init\n"
+			asset_type = asset["type"]
+			match asset_type:
+				case build.ASSET_TYPE_FONT:
+					asm += f"			mvi a, {const_ram_disk_s}\n"
+					asm += f"			lxi h, {name_low}_gfx_ptrs\n"
+					asm += f"			lxi b, {const_addr}\n"
+					asm += f"			call text_ex_init_font\n"
+
+				case build.ASSET_TYPE_TEXT_ENG:
+					asm += f"			mvi a, {const_ram_disk_s}\n"
+					asm += f"			lxi h, {const_addr}\n"
+					asm += f"			call text_ex_init_text\n"
+				
+				case build.ASSET_TYPE_MUSIC:
+					asm += f"			lxi d, {const_addr}\n"
+					asm += f"			lxi h, {NAME}_ay_reg_data_ptrs\n"
+					asm += f"			call v6_gc_init_song\n"
+					asm += f"			CALL_RAM_DISK_FUNC_NO_RESTORE(v6_gc_start, {const_ram_disk_s} | {const_ram_disk_m} | RAM_DISK_M_8F)\n"
+
+				case build.ASSET_TYPE_LEVEL_DATA:
+					asm += f"			lxi h, _{name_low}_rooms_ptrs\n"
+					asm += f"			lxi b, {const_addr}\n"
+					asm += f"			call update_labels_eod\n"
+
+				case build.ASSET_TYPE_LEVEL_GFX:
+					asm += f"			lxi h, _{name_low}_tiles_ptrs\n"
+					asm += f"			lxi b, {const_addr}\n"
+					asm += f"			call update_labels_eod\n"
+
+				case build.ASSET_TYPE_SPRITE:
+					asm += f"			lxi d, _{name_low}_preshifted_sprites\n"
+					asm += f"			lxi h, {const_addr}\n"
+					asm += f"			call sprite_update_labels\n"
+
+				case build.ASSET_TYPE_TILED_IMG_DATA:
+					asm += f"			mvi a, {const_ram_disk_s}\n"
+					asm += f"			lxi h, {const_addr}\n"
+					asm += f"			call tiled_img_init_idxs\n"
+
+				case build.ASSET_TYPE_TILED_IMG_GFX:
+					asm += f"			mvi a, {const_ram_disk_s}\n"
+					asm += f"			lxi h, {const_addr}\n"
+					asm += f"			call tiled_img_init_gfx\n"					
+
+			
+			asm += f"\n"
 
 	asm += f".endf\n"
 	return asm

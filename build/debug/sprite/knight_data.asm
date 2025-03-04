@@ -16,7 +16,6 @@ _knight_idle_0_0:
 			.byte 15,0,240,0,15,224,240,7,248,0,31,0,31,0,248,0,
 			.byte 31,224,248,7,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _knight_idle_0_1:
 			.byte 0, 0; offset_y, offset_x
@@ -33,7 +32,6 @@ _knight_idle_0_1:
 			.byte 248,3,3,0,3,0,248,0,3,252,248,6,252,3,3,4,
 			.byte 3,0,252,0,3,248,252,1,254,0,7,0,7,0,254,0,
 			.byte 7,248,254,1,
-
 
 			.word 0  ; safety pair of bytes for reading by POP B
 _knight_idle_0_2:
@@ -57,7 +55,6 @@ _knight_idle_0_2:
 			.byte 255,0,0,0,255,0,255,0,0,126,255,0,255,0,129,0,
 			.byte 255,0,255,0,129,0,255,0,255,0,129,126,255,0,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _knight_idle_0_3:
 			.byte 0, 0; offset_y, offset_x
@@ -80,7 +77,6 @@ _knight_idle_0_3:
 			.byte 63,0,192,0,255,0,63,128,192,31,255,0,255,0,224,0,
 			.byte 127,0,127,0,224,0,255,0,127,128,224,31,255,0,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _knight_idle_1_0:
 			.byte 0, 0; offset_y, offset_x
@@ -97,7 +93,6 @@ _knight_idle_1_0:
 			.byte 192,0,15,96,15,0,192,0,15,144,192,63,224,16,31,96,
 			.byte 31,0,224,0,31,192,224,15,240,0,63,0,63,0,240,0,
 			.byte 63,192,240,15,
-
 
 			.word 0  ; safety pair of bytes for reading by POP B
 _knight_idle_1_1:
@@ -116,7 +111,6 @@ _knight_idle_1_1:
 			.byte 7,0,248,0,7,240,248,3,252,0,15,0,15,0,252,0,
 			.byte 15,240,252,3,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _knight_idle_1_2:
 			.byte 0, 0; offset_y, offset_x
@@ -133,7 +127,6 @@ _knight_idle_1_2:
 			.byte 252,0,0,6,0,0,252,0,0,249,252,3,254,1,1,6,
 			.byte 1,0,254,0,1,252,254,0,255,0,3,0,3,0,255,0,
 			.byte 3,252,255,0,
-
 
 			.word 0  ; safety pair of bytes for reading by POP B
 _knight_idle_1_3:
@@ -157,7 +150,6 @@ _knight_idle_1_3:
 			.byte 127,0,128,0,255,0,127,0,128,63,255,0,255,0,192,0,
 			.byte 255,0,255,0,192,0,255,0,255,0,192,63,255,0,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _knight_run_r0_0:
 			.byte 0, 0; offset_y, offset_x
@@ -174,7 +166,6 @@ _knight_run_r0_0:
 			.byte 240,7,15,224,15,0,240,0,15,16,240,12,248,7,31,224,
 			.byte 31,0,248,0,31,0,248,0,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _knight_run_r0_1:
 			.byte 0, 0; offset_y, offset_x
@@ -190,7 +181,6 @@ _knight_run_r0_1:
 			.byte 1,254,248,4,248,6,3,252,3,0,248,0,3,0,248,3,
 			.byte 252,1,3,248,3,0,252,0,3,4,252,3,254,1,7,248,
 			.byte 7,0,254,0,7,0,254,0,
-
 
 			.word 0  ; safety pair of bytes for reading by POP B
 _knight_run_r0_2:
@@ -213,7 +203,6 @@ _knight_run_r0_2:
 			.byte 0,0,255,0,255,0,0,193,255,0,255,0,129,126,255,0,
 			.byte 255,0,129,0,255,0,255,0,129,0,255,0,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _knight_run_r0_3:
 			.byte 0, 0; offset_y, offset_x
@@ -235,7 +224,6 @@ _knight_run_r0_3:
 			.byte 192,0,255,0,63,64,192,48,255,0,255,0,224,31,127,128,
 			.byte 127,0,224,0,255,0,127,0,224,0,255,0,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _knight_run_r1_0:
 			.byte 0, 0; offset_y, offset_x
@@ -252,7 +240,6 @@ _knight_run_r1_0:
 			.byte 224,12,15,0,15,0,224,0,15,240,224,27,240,12,15,16,
 			.byte 15,0,240,0,15,224,240,7,248,0,31,0,31,0,248,0,
 			.byte 31,224,248,7,
-
 
 			.word 0  ; safety pair of bytes for reading by POP B
 _knight_run_r1_1:
@@ -271,7 +258,6 @@ _knight_run_r1_1:
 			.byte 3,0,252,0,3,248,252,1,254,0,7,0,7,0,254,0,
 			.byte 7,248,254,1,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _knight_run_r1_2:
 			.byte 0, 0; offset_y, offset_x
@@ -288,7 +274,6 @@ _knight_run_r1_2:
 			.byte 254,0,0,192,0,0,254,0,0,191,254,1,255,0,0,193,
 			.byte 0,0,255,0,0,126,255,0,255,0,129,0,129,0,255,0,
 			.byte 129,126,255,0,
-
 
 			.word 0  ; safety pair of bytes for reading by POP B
 _knight_run_r1_3:
@@ -307,7 +292,6 @@ _knight_run_r1_3:
 			.byte 63,0,192,0,63,128,192,31,224,0,127,0,127,0,224,0,
 			.byte 127,128,224,31,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _knight_run_r2_0:
 			.byte 0, 0; offset_y, offset_x
@@ -324,7 +308,6 @@ _knight_run_r2_0:
 			.byte 224,12,15,0,15,0,224,0,15,240,224,27,240,12,15,16,
 			.byte 15,0,240,0,15,224,240,7,248,0,31,0,31,0,248,0,
 			.byte 31,224,248,7,
-
 
 			.word 0  ; safety pair of bytes for reading by POP B
 _knight_run_r2_1:
@@ -343,7 +326,6 @@ _knight_run_r2_1:
 			.byte 3,0,252,0,3,248,252,1,254,0,7,0,7,0,254,0,
 			.byte 7,248,254,1,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _knight_run_r2_2:
 			.byte 0, 0; offset_y, offset_x
@@ -360,7 +342,6 @@ _knight_run_r2_2:
 			.byte 254,0,0,192,0,0,254,0,0,191,254,1,255,0,0,193,
 			.byte 0,0,255,0,0,126,255,0,255,0,129,0,129,0,255,0,
 			.byte 129,126,255,0,
-
 
 			.word 0  ; safety pair of bytes for reading by POP B
 _knight_run_r2_3:
@@ -384,7 +365,6 @@ _knight_run_r2_3:
 			.byte 63,0,192,0,255,0,63,128,192,31,255,0,255,0,224,0,
 			.byte 127,0,127,0,224,0,255,0,127,128,224,31,255,0,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _knight_run_r3_0:
 			.byte 0, 0; offset_y, offset_x
@@ -401,7 +381,6 @@ _knight_run_r3_0:
 			.byte 240,4,15,0,15,0,240,0,15,240,240,15,248,7,31,224,
 			.byte 31,0,248,0,31,0,248,0,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _knight_run_r3_1:
 			.byte 0, 0; offset_y, offset_x
@@ -417,7 +396,6 @@ _knight_run_r3_1:
 			.byte 1,254,248,5,248,6,1,254,1,0,248,0,1,80,248,3,
 			.byte 252,1,3,0,3,0,252,0,3,252,252,3,254,1,7,248,
 			.byte 7,0,254,0,7,0,254,0,
-
 
 			.word 0  ; safety pair of bytes for reading by POP B
 _knight_run_r3_2:
@@ -440,7 +418,6 @@ _knight_run_r3_2:
 			.byte 0,0,255,0,255,0,0,255,255,0,255,0,129,126,255,0,
 			.byte 255,0,129,0,255,0,255,0,129,0,255,0,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _knight_run_r3_3:
 			.byte 0, 0; offset_y, offset_x
@@ -462,7 +439,6 @@ _knight_run_r3_3:
 			.byte 192,0,255,0,63,192,192,63,255,0,255,0,224,31,127,128,
 			.byte 127,0,224,0,255,0,127,0,224,0,255,0,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _knight_run_l0_0:
 			.byte 0, 0; offset_y, offset_x
@@ -479,7 +455,6 @@ _knight_run_l0_0:
 			.byte 224,15,31,192,31,0,224,0,31,96,224,16,240,15,63,192,
 			.byte 63,0,240,0,63,0,240,0,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _knight_run_l0_1:
 			.byte 0, 0; offset_y, offset_x
@@ -495,7 +470,6 @@ _knight_run_l0_1:
 			.byte 3,228,240,15,248,7,3,236,3,0,248,0,3,24,248,0,
 			.byte 248,3,7,240,7,0,248,0,7,24,248,4,252,3,15,240,
 			.byte 15,0,252,0,15,0,252,0,
-
 
 			.word 0  ; safety pair of bytes for reading by POP B
 _knight_run_l0_2:
@@ -518,7 +492,6 @@ _knight_run_l0_2:
 			.byte 1,0,254,0,255,0,1,6,254,1,255,0,3,252,255,0,
 			.byte 255,0,3,0,255,0,255,0,3,0,255,0,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _knight_run_l0_3:
 			.byte 0, 0; offset_y, offset_x
@@ -540,7 +513,6 @@ _knight_run_l0_3:
 			.byte 128,0,255,0,127,128,128,65,255,0,255,0,192,63,255,0,
 			.byte 255,0,192,0,255,0,255,0,192,0,255,0,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _knight_run_l1_0:
 			.byte 0, 0; offset_y, offset_x
@@ -557,7 +529,6 @@ _knight_run_l1_0:
 			.byte 224,0,15,96,15,0,224,0,15,176,224,31,224,16,31,96,
 			.byte 31,0,224,0,31,192,224,15,240,0,63,0,63,0,240,0,
 			.byte 63,192,240,15,
-
 
 			.word 0  ; safety pair of bytes for reading by POP B
 _knight_run_l1_1:
@@ -576,7 +547,6 @@ _knight_run_l1_1:
 			.byte 7,0,248,0,7,240,248,3,252,0,15,0,15,0,252,0,
 			.byte 15,240,252,3,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _knight_run_l1_2:
 			.byte 0, 0; offset_y, offset_x
@@ -593,7 +563,6 @@ _knight_run_l1_2:
 			.byte 254,0,0,6,0,0,254,0,0,251,254,1,254,1,1,6,
 			.byte 1,0,254,0,1,252,254,0,255,0,3,0,3,0,255,0,
 			.byte 3,252,255,0,
-
 
 			.word 0  ; safety pair of bytes for reading by POP B
 _knight_run_l1_3:
@@ -612,7 +581,6 @@ _knight_run_l1_3:
 			.byte 127,0,128,0,127,0,128,63,192,0,255,0,255,0,192,0,
 			.byte 255,0,192,63,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _knight_run_l2_0:
 			.byte 0, 0; offset_y, offset_x
@@ -630,7 +598,6 @@ _knight_run_l2_0:
 			.byte 31,0,224,0,31,192,224,15,240,0,63,0,63,0,240,0,
 			.byte 63,192,240,15,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _knight_run_l2_1:
 			.byte 0, 0; offset_y, offset_x
@@ -647,7 +614,6 @@ _knight_run_l2_1:
 			.byte 248,0,3,24,3,0,248,0,3,236,248,7,248,4,7,24,
 			.byte 7,0,248,0,7,240,248,3,252,0,15,0,15,0,252,0,
 			.byte 15,240,252,3,
-
 
 			.word 0  ; safety pair of bytes for reading by POP B
 _knight_run_l2_2:
@@ -671,7 +637,6 @@ _knight_run_l2_2:
 			.byte 255,0,1,0,254,0,255,0,1,252,254,0,255,0,3,0,
 			.byte 255,0,255,0,3,0,255,0,255,0,3,252,255,0,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _knight_run_l2_3:
 			.byte 0, 1; offset_y, offset_x
@@ -689,7 +654,6 @@ _knight_run_l2_3:
 			.byte 127,0,128,0,127,0,128,63,192,0,255,0,255,0,192,0,
 			.byte 255,0,192,63,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _knight_run_l3_0:
 			.byte 0, 0; offset_y, offset_x
@@ -706,7 +670,6 @@ _knight_run_l3_0:
 			.byte 224,0,31,64,31,0,224,0,31,224,224,31,240,15,63,192,
 			.byte 63,0,240,0,63,0,240,0,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _knight_run_l3_1:
 			.byte 0, 0; offset_y, offset_x
@@ -722,7 +685,6 @@ _knight_run_l3_1:
 			.byte 3,244,240,15,240,15,3,236,3,0,240,0,3,88,240,1,
 			.byte 248,0,7,16,7,0,248,0,7,248,248,7,252,3,15,240,
 			.byte 15,0,252,0,15,0,252,0,
-
 
 			.word 0  ; safety pair of bytes for reading by POP B
 _knight_run_l3_2:
@@ -745,7 +707,6 @@ _knight_run_l3_2:
 			.byte 1,0,254,0,255,0,1,254,254,1,255,0,3,252,255,0,
 			.byte 255,0,3,0,255,0,255,0,3,0,255,0,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _knight_run_l3_3:
 			.byte 0, 0; offset_y, offset_x
@@ -767,7 +728,6 @@ _knight_run_l3_3:
 			.byte 128,0,255,0,127,128,128,127,255,0,255,0,192,63,255,0,
 			.byte 255,0,192,0,255,0,255,0,192,0,255,0,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _knight_defence_r0_0:
 			.byte 0, 0; offset_y, offset_x
@@ -783,7 +743,6 @@ _knight_defence_r0_0:
 			.byte 7,248,224,19,224,27,15,240,15,0,224,0,15,0,224,12,
 			.byte 240,7,15,224,15,0,240,0,15,16,240,12,248,7,31,224,
 			.byte 31,0,248,0,31,0,248,0,
-
 
 			.word 0  ; safety pair of bytes for reading by POP B
 _knight_defence_r0_1:
@@ -806,7 +765,6 @@ _knight_defence_r0_1:
 			.byte 3,0,252,0,255,0,3,4,252,3,254,1,7,248,255,0,
 			.byte 255,0,7,0,254,0,255,0,7,0,254,0,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _knight_defence_r0_2:
 			.byte 0, 0; offset_y, offset_x
@@ -827,7 +785,6 @@ _knight_defence_r0_2:
 			.byte 254,0,255,0,0,192,254,0,255,0,0,126,255,0,255,0,
 			.byte 0,0,255,0,255,0,0,193,255,0,255,0,129,126,255,0,
 			.byte 255,0,129,0,255,0,255,0,129,0,255,0,
-
 
 			.word 0  ; safety pair of bytes for reading by POP B
 _knight_defence_r0_3:
@@ -850,7 +807,6 @@ _knight_defence_r0_3:
 			.byte 192,0,255,0,63,64,192,48,255,0,255,0,224,31,127,128,
 			.byte 127,0,224,0,255,0,127,0,224,0,255,0,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _knight_defence_r1_0:
 			.byte 0, 0; offset_y, offset_x
@@ -867,7 +823,6 @@ _knight_defence_r1_0:
 			.byte 240,7,15,224,15,0,240,0,15,16,240,12,248,7,31,224,
 			.byte 31,0,248,0,31,0,248,0,255,0,255,0,255,0,255,0,
 			.byte 255,0,255,0,
-
 
 			.word 0  ; safety pair of bytes for reading by POP B
 _knight_defence_r1_1:
@@ -891,7 +846,6 @@ _knight_defence_r1_1:
 			.byte 255,0,7,0,254,0,255,0,7,0,254,0,255,0,255,0,
 			.byte 255,0,255,0,255,0,255,0,255,0,255,0,255,0,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _knight_defence_r1_2:
 			.byte 0, 0; offset_y, offset_x
@@ -914,7 +868,6 @@ _knight_defence_r1_2:
 			.byte 255,0,129,0,255,0,255,0,129,0,255,0,255,0,255,0,
 			.byte 255,0,255,0,255,0,255,0,255,0,255,0,255,0,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _knight_defence_r1_3:
 			.byte 0, 1; offset_y, offset_x
@@ -932,7 +885,6 @@ _knight_defence_r1_3:
 			.byte 127,0,224,0,127,0,224,0,255,0,255,0,255,0,255,0,
 			.byte 255,0,255,0,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _knight_defence_r2_0:
 			.byte 0, 0; offset_y, offset_x
@@ -949,7 +901,6 @@ _knight_defence_r2_0:
 			.byte 224,12,15,0,15,0,224,0,15,240,224,27,240,12,15,16,
 			.byte 15,0,240,0,15,224,240,7,248,0,31,0,31,0,248,0,
 			.byte 31,224,248,7,
-
 
 			.word 0  ; safety pair of bytes for reading by POP B
 _knight_defence_r2_1:
@@ -973,7 +924,6 @@ _knight_defence_r2_1:
 			.byte 255,0,3,0,252,0,255,0,3,248,252,1,254,0,7,0,
 			.byte 255,0,255,0,7,0,254,0,255,0,7,248,254,1,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _knight_defence_r2_2:
 			.byte 0, 0; offset_y, offset_x
@@ -995,7 +945,6 @@ _knight_defence_r2_2:
 			.byte 0,0,254,0,255,0,0,191,254,1,255,0,0,193,255,0,
 			.byte 255,0,0,0,255,0,255,0,0,126,255,0,255,0,129,0,
 			.byte 255,0,255,0,129,0,255,0,255,0,129,126,255,0,
-
 
 			.word 0  ; safety pair of bytes for reading by POP B
 _knight_defence_r2_3:
@@ -1019,7 +968,6 @@ _knight_defence_r2_3:
 			.byte 63,0,192,0,255,0,63,128,192,31,255,0,255,0,224,0,
 			.byte 127,0,127,0,224,0,255,0,127,128,224,31,255,0,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _knight_defence_r3_0:
 			.byte 0, 0; offset_y, offset_x
@@ -1035,7 +983,6 @@ _knight_defence_r3_0:
 			.byte 1,254,224,23,224,27,7,248,7,0,224,0,7,64,224,13,
 			.byte 240,4,15,0,15,0,240,0,15,240,240,15,248,7,31,224,
 			.byte 31,0,248,0,31,0,248,0,
-
 
 			.word 0  ; safety pair of bytes for reading by POP B
 _knight_defence_r3_1:
@@ -1058,7 +1005,6 @@ _knight_defence_r3_1:
 			.byte 3,0,252,0,255,0,3,252,252,3,254,1,7,248,255,0,
 			.byte 255,0,7,0,254,0,255,0,7,0,254,0,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _knight_defence_r3_2:
 			.byte 0, 0; offset_y, offset_x
@@ -1079,7 +1025,6 @@ _knight_defence_r3_2:
 			.byte 254,0,127,0,0,212,254,0,255,0,0,64,255,0,255,0,
 			.byte 0,0,255,0,255,0,0,255,255,0,255,0,129,126,255,0,
 			.byte 255,0,129,0,255,0,255,0,129,0,255,0,
-
 
 			.word 0  ; safety pair of bytes for reading by POP B
 _knight_defence_r3_3:
@@ -1102,7 +1047,6 @@ _knight_defence_r3_3:
 			.byte 192,0,255,0,63,192,192,63,255,0,255,0,224,31,127,128,
 			.byte 127,0,224,0,255,0,127,0,224,0,255,0,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _knight_defence_l0_0:
 			.byte 0, 0; offset_y, offset_x
@@ -1119,7 +1063,6 @@ _knight_defence_l0_0:
 			.byte 240,7,15,224,15,0,240,0,15,48,240,8,248,7,31,224,
 			.byte 31,0,248,0,31,0,248,0,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _knight_defence_l0_1:
 			.byte 0, 0; offset_y, offset_x
@@ -1135,7 +1078,6 @@ _knight_defence_l0_1:
 			.byte 1,242,248,7,252,3,1,246,1,0,252,0,1,12,252,0,
 			.byte 252,1,3,248,3,0,252,0,3,12,252,2,254,1,7,248,
 			.byte 7,0,254,0,7,0,254,0,
-
 
 			.word 0  ; safety pair of bytes for reading by POP B
 _knight_defence_l0_2:
@@ -1158,7 +1100,6 @@ _knight_defence_l0_2:
 			.byte 0,0,255,0,255,0,0,131,255,0,255,0,129,126,255,0,
 			.byte 255,0,129,0,255,0,255,0,129,0,255,0,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _knight_defence_l0_3:
 			.byte 0, 0; offset_y, offset_x
@@ -1180,7 +1121,6 @@ _knight_defence_l0_3:
 			.byte 192,0,255,0,63,192,192,32,255,0,255,0,224,31,127,128,
 			.byte 127,0,224,0,255,0,127,0,224,0,255,0,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _knight_defence_l1_0:
 			.byte 0, 0; offset_y, offset_x
@@ -1198,7 +1138,6 @@ _knight_defence_l1_0:
 			.byte 31,0,248,0,31,0,248,0,255,0,255,0,255,0,255,0,
 			.byte 255,0,255,0,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _knight_defence_l1_1:
 			.byte 0, 0; offset_y, offset_x
@@ -1215,7 +1154,6 @@ _knight_defence_l1_1:
 			.byte 252,1,3,248,3,0,252,0,3,12,252,2,254,1,7,248,
 			.byte 7,0,254,0,7,0,254,0,255,0,255,0,255,0,255,0,
 			.byte 255,0,255,0,
-
 
 			.word 0  ; safety pair of bytes for reading by POP B
 _knight_defence_l1_2:
@@ -1239,7 +1177,6 @@ _knight_defence_l1_2:
 			.byte 255,0,129,0,255,0,255,0,129,0,255,0,255,0,255,0,
 			.byte 255,0,255,0,255,0,255,0,255,0,255,0,255,0,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _knight_defence_l1_3:
 			.byte 0, 0; offset_y, offset_x
@@ -1262,7 +1199,6 @@ _knight_defence_l1_3:
 			.byte 127,0,224,0,255,0,127,0,224,0,255,0,255,0,255,0,
 			.byte 255,0,255,0,255,0,255,0,255,0,255,0,255,0,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _knight_defence_l2_0:
 			.byte 0, 0; offset_y, offset_x
@@ -1280,7 +1216,6 @@ _knight_defence_l2_0:
 			.byte 15,0,240,0,15,224,240,7,248,0,31,0,31,0,248,0,
 			.byte 31,224,248,7,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _knight_defence_l2_1:
 			.byte 0, 0; offset_y, offset_x
@@ -1297,7 +1232,6 @@ _knight_defence_l2_1:
 			.byte 252,0,1,12,1,0,252,0,1,246,252,3,252,2,3,12,
 			.byte 3,0,252,0,3,248,252,1,254,0,7,0,7,0,254,0,
 			.byte 7,248,254,1,
-
 
 			.word 0  ; safety pair of bytes for reading by POP B
 _knight_defence_l2_2:
@@ -1321,7 +1255,6 @@ _knight_defence_l2_2:
 			.byte 255,0,0,0,255,0,255,0,0,126,255,0,255,0,129,0,
 			.byte 255,0,255,0,129,0,255,0,255,0,129,126,255,0,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _knight_defence_l2_3:
 			.byte 0, 0; offset_y, offset_x
@@ -1344,7 +1277,6 @@ _knight_defence_l2_3:
 			.byte 63,0,192,0,255,0,63,128,192,31,255,0,255,0,224,0,
 			.byte 127,0,127,0,224,0,255,0,127,128,224,31,255,0,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _knight_defence_l3_0:
 			.byte 0, 0; offset_y, offset_x
@@ -1361,7 +1293,6 @@ _knight_defence_l3_0:
 			.byte 240,0,15,32,15,0,240,0,15,240,240,15,248,7,31,224,
 			.byte 31,0,248,0,31,0,248,0,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _knight_defence_l3_1:
 			.byte 0, 0; offset_y, offset_x
@@ -1377,7 +1308,6 @@ _knight_defence_l3_1:
 			.byte 1,250,224,31,248,7,1,246,1,0,248,0,1,172,248,0,
 			.byte 252,0,3,8,3,0,252,0,3,252,252,3,254,1,7,248,
 			.byte 7,0,254,0,7,0,254,0,
-
 
 			.word 0  ; safety pair of bytes for reading by POP B
 _knight_defence_l3_2:
@@ -1400,7 +1330,6 @@ _knight_defence_l3_2:
 			.byte 0,0,255,0,255,0,0,255,255,0,255,0,129,126,255,0,
 			.byte 255,0,129,0,255,0,255,0,129,0,255,0,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _knight_defence_l3_3:
 			.byte 0, 0; offset_y, offset_x
@@ -1421,4 +1350,3 @@ _knight_defence_l3_3:
 			.byte 255,0,31,192,128,10,255,0,255,0,192,0,63,128,63,0,
 			.byte 192,0,255,0,63,192,192,63,255,0,255,0,224,31,127,128,
 			.byte 127,0,224,0,255,0,127,0,224,0,255,0,
-

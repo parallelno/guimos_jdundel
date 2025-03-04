@@ -136,10 +136,9 @@ def anims_to_asm(label_prefix, asset_name, asset_j, data_ptrs, asset_j_path):
 		preshifted_sprites != 4 and preshifted_sprites != 8):
 		build.exit_error(f'export_sprite ERROR: preshifted_sprites can be only equal 1, 4, 8", path: {asset_j_path}')
 
-	if preshifted_sprites == 4 or preshifted_sprites == 8:
-		asm += f"sprite_get_scr_addr_{asset_name} = sprite_get_scr_addr{preshifted_sprites}\n\n"
-		asm += f"{label_prefix}{asset_name}_preshifted_sprites:\n"
-		asm += f"			.byte {str(preshifted_sprites)}\n"
+	asm += f"sprite_get_scr_addr_{asset_name} = sprite_get_scr_addr{preshifted_sprites}\n\n"
+	asm += f"{label_prefix}{asset_name}_preshifted_sprites:\n"
+	asm += f"			.byte {str(preshifted_sprites)}\n"
 
 	# make a list of anim_names
 	asm += f"{label_prefix}{asset_name}_anims:\n"
@@ -234,12 +233,17 @@ def img_to_preshifted_sprite(
 	new_w = (new_w_unrounded // 8) * 8 
 	if (new_w_unrounded % 8) > 0:
 		new_w += 8
-	
-	bits1 = crop_bits(bits1, w, h, new_w, local_offset_x)
-	bits2 = crop_bits(bits2, w, h, new_w, local_offset_x)
-	bits3 = crop_bits(bits3, w, h, new_w, local_offset_x)
-	if mask_bits:
-		mask_bits = crop_bits(mask_bits, w, h, new_w, local_offset_x)
+
+	# fixing the issue with completely transparent sprites
+	if new_w <= 0:
+		new_w = 8
+		local_offset_x = 0
+	else:	
+		bits1 = crop_bits(bits1, w, h, new_w, local_offset_x)
+		bits2 = crop_bits(bits2, w, h, new_w, local_offset_x)
+		bits3 = crop_bits(bits3, w, h, new_w, local_offset_x)
+		if mask_bits:
+			mask_bits = crop_bits(mask_bits, w, h, new_w, local_offset_x)
 
 
 	# combine bits into byte lists
@@ -263,7 +267,6 @@ def img_to_preshifted_sprite(
 	asm += f"			.byte {str( offset_y )}, {str( offset_x_packed )}; offset_y, offset_x\n"
 	asm += f"			.byte {str( h )}, {str( new_w_packed )}; h, w\n"
 	asm += common.bytes_to_asm(data)
-	asm += "\n"
 
 	frame_data_len = len(data)
 	frame_data_len += 2 # safety pair of bytes for reading by POP B

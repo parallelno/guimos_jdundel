@@ -1,10 +1,10 @@
 _vfx_sprites:
 			.word 0  ; safety pair of bytes for reading by POP B
 _vfx_invis_0:
-			.byte 0, 1; offset_y, offset_x
-			.byte 5, -2; h, w
-
-
+			.byte 0, 0; offset_y, offset_x
+			.byte 5, 0; h, w
+			.byte 255,3,255,12,255,0,255,0,255,16,255,15,255,6,255,25,
+			.byte 255,0,255,0,255,15,255,0,255,0,255,0,255,0,
 
 			.word 0  ; safety pair of bytes for reading by POP B
 _vfx_puff0_0:
@@ -19,7 +19,6 @@ _vfx_puff0_0:
 			.byte 224,6,3,248,3,4,224,25,3,0,224,0,240,0,3,0,
 			.byte 3,140,240,15,3,112,240,0,255,0,135,0,135,120,255,0,
 			.byte 135,0,255,0,
-
 
 			.word 0  ; safety pair of bytes for reading by POP B
 _vfx_puff1_0:
@@ -38,7 +37,6 @@ _vfx_puff1_0:
 			.byte 255,254,255,24,255,0,255,0,255,0,255,0,255,124,255,0,
 			.byte 255,0,255,0,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _vfx_puff2_0:
 			.byte 0, 0; offset_y, offset_x
@@ -55,7 +53,6 @@ _vfx_puff2_0:
 			.byte 255,0,135,0,135,3,255,192,135,0,255,0,255,0,255,0,
 			.byte 255,135,255,100,255,0,255,0,255,0,255,0,255,78,255,56,
 			.byte 255,0,255,0,
-
 
 			.word 0  ; safety pair of bytes for reading by POP B
 _vfx_puff3_0:
@@ -74,7 +71,6 @@ _vfx_puff3_0:
 			.byte 255,0,255,64,255,0,255,0,255,0,255,0,255,130,255,32,
 			.byte 255,0,255,0,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _vfx_reward0_0:
 			.byte 0, 0; offset_y, offset_x
@@ -91,7 +87,6 @@ _vfx_reward0_0:
 			.byte 223,32,247,8,247,0,223,0,247,0,223,0,254,0,255,0,
 			.byte 255,0,254,0,255,0,254,1,254,1,255,0,255,0,254,0,
 			.byte 255,0,254,0,
-
 
 			.word 0  ; safety pair of bytes for reading by POP B
 _vfx_reward1_0:
@@ -110,7 +105,6 @@ _vfx_reward1_0:
 			.byte 223,0,222,0,223,32,222,33,254,1,255,0,255,0,254,0,
 			.byte 255,0,254,1,254,0,255,0,255,0,254,0,255,0,254,1,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _vfx_reward2_0:
 			.byte 1, 0; offset_y, offset_x
@@ -126,7 +120,6 @@ _vfx_reward2_0:
 			.byte 239,0,238,0,255,0,255,0,255,0,255,0,255,0,255,0,
 			.byte 254,1,255,0,255,0,254,0,255,0,254,0,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _vfx_reward3_0:
 			.byte 3, 0; offset_y, offset_x
@@ -138,7 +131,6 @@ _vfx_reward3_0:
 			.byte 255,0,254,0,255,0,254,1,254,1,255,0,255,0,254,0,
 			.byte 255,0,254,0,255,0,255,0,255,0,255,0,255,0,255,0,
 			.byte 254,1,255,0,255,0,254,0,255,0,254,1,
-
 
 			.word 0  ; safety pair of bytes for reading by POP B
 _vfx_selection_0:
@@ -157,7 +149,6 @@ _vfx_selection_0:
 			.byte 240,7,15,224,240,7,15,224,31,0,248,0,248,0,31,0,
 			.byte 248,0,31,0,255,0,255,0,255,0,255,0,255,0,255,0,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _vfx_firepool0_0:
 			.byte 0, 0; offset_y, offset_x
@@ -174,7 +165,6 @@ _vfx_firepool0_0:
 			.byte 63,192,193,36,193,36,63,192,193,62,63,192,175,80,243,8,
 			.byte 243,12,175,80,243,12,175,80,238,16,247,8,247,8,238,16,
 			.byte 247,8,238,16,255,0,63,64,63,64,255,0,63,64,255,0,
-
 
 			.word 0  ; safety pair of bytes for reading by POP B
 _vfx_firepool1_0:
@@ -193,7 +183,6 @@ _vfx_firepool1_0:
 			.byte 131,112,175,0,131,112,175,0,234,0,215,32,215,32,234,0,
 			.byte 215,32,234,0,215,32,51,4,51,4,215,32,51,4,215,32,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _vfx_firepool2_0:
 			.byte 0, 0; offset_y, offset_x
@@ -210,4 +199,3 @@ _vfx_firepool2_0:
 			.byte 54,136,64,36,64,36,54,136,64,11,54,137,166,9,3,132,
 			.byte 3,0,166,25,3,0,166,25,168,16,151,64,151,64,168,16,
 			.byte 151,64,168,80,211,4,19,32,19,32,211,0,19,32,211,0,
-

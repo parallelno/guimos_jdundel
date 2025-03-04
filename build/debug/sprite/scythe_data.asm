@@ -8,7 +8,6 @@ _scythe_run0_0:
 			.byte 15,224,240,11,0,248,15,32,15,192,0,7,15,48,0,0,
 			.byte 7,0,207,16,207,0,7,120,207,48,7,128,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _scythe_run0_1:
 			.byte 4, 0; offset_y, offset_x
@@ -18,7 +17,6 @@ _scythe_run0_1:
 			.byte 3,248,252,2,192,62,3,8,3,240,192,1,3,12,192,0,
 			.byte 193,0,243,4,243,0,193,30,243,12,193,32,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _scythe_run0_2:
 			.byte 4, 0; offset_y, offset_x
@@ -27,7 +25,6 @@ _scythe_run0_2:
 			.byte 185,0,255,0,185,2,255,0,255,0,0,3,0,64,255,0,
 			.byte 0,190,255,0,240,15,0,130,0,124,240,0,0,3,240,0,
 			.byte 240,0,124,1,124,128,240,7,124,3,240,8,
-
 
 			.word 0  ; safety pair of bytes for reading by POP B
 _scythe_run0_3:
@@ -40,7 +37,6 @@ _scythe_run0_3:
 			.byte 252,0,63,192,0,0,252,0,252,0,31,0,63,64,63,0,
 			.byte 31,224,252,1,63,192,31,0,252,2,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _scythe_run1_0:
 			.byte 0, 0; offset_y, offset_x
@@ -50,7 +46,6 @@ _scythe_run1_0:
 			.byte 252,2,252,0,248,0,248,2,248,5,248,1,248,6,248,0,
 			.byte 254,0,254,1,254,0,254,0,254,1,254,0,254,0,254,1,
 			.byte 254,0,254,0,254,1,254,0,
-
 
 			.word 0  ; safety pair of bytes for reading by POP B
 _scythe_run1_1:
@@ -66,7 +61,6 @@ _scythe_run1_1:
 			.byte 159,64,255,0,159,0,255,0,255,0,159,0,159,64,255,0,
 			.byte 159,32,255,0,255,0,159,32,159,64,255,0,159,0,255,0,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _scythe_run1_2:
 			.byte 0, 0; offset_y, offset_x
@@ -81,7 +75,6 @@ _scythe_run1_2:
 			.byte 231,16,255,0,231,0,255,0,255,0,231,0,231,16,255,0,
 			.byte 231,8,255,0,255,0,231,8,231,16,255,0,231,0,255,0,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _scythe_run1_3:
 			.byte 0, 1; offset_y, offset_x
@@ -91,7 +84,6 @@ _scythe_run1_3:
 			.byte 243,8,243,0,227,0,227,8,227,20,227,4,227,24,227,0,
 			.byte 249,0,249,4,249,2,249,2,249,4,249,0,249,0,249,4,
 			.byte 249,2,249,2,249,4,249,0,
-
 
 			.word 0  ; safety pair of bytes for reading by POP B
 _scythe_run2_0:
@@ -103,7 +95,6 @@ _scythe_run2_0:
 			.byte 159,64,255,0,255,0,159,0,255,0,159,96,223,32,255,0,
 			.byte 255,0,223,0,255,0,223,32,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _scythe_run2_1:
 			.byte 4, 0; offset_y, offset_x
@@ -114,7 +105,6 @@ _scythe_run2_1:
 			.byte 231,16,255,0,255,0,231,0,255,0,231,24,247,8,255,0,
 			.byte 255,0,247,0,255,0,247,8,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _scythe_run2_2:
 			.byte 4, 0; offset_y, offset_x
@@ -124,7 +114,6 @@ _scythe_run2_2:
 			.byte 15,16,240,0,241,10,207,16,207,32,241,0,207,0,241,12,
 			.byte 249,4,255,0,255,0,249,0,255,0,249,6,253,2,255,0,
 			.byte 255,0,253,0,255,0,253,2,
-
 
 			.word 0  ; safety pair of bytes for reading by POP B
 _scythe_run2_3:
@@ -137,7 +126,6 @@ _scythe_run2_3:
 			.byte 252,0,255,0,115,0,252,3,254,1,127,0,255,0,255,0,
 			.byte 127,0,254,0,255,0,127,128,254,1,255,0,127,128,255,0,
 			.byte 255,0,127,0,255,0,255,0,127,128,255,0,
-
 
 			.word 0  ; safety pair of bytes for reading by POP B
 _scythe_run3_0:
@@ -153,7 +141,6 @@ _scythe_run3_0:
 			.byte 63,0,252,2,63,64,252,0,248,3,127,128,127,0,248,0,
 			.byte 127,128,248,4,248,7,255,0,255,0,248,0,255,0,248,7,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _scythe_run3_1:
 			.byte 0, 0; offset_y, offset_x
@@ -168,7 +155,6 @@ _scythe_run3_1:
 			.byte 15,128,255,0,15,16,255,0,254,0,31,224,31,0,254,0,
 			.byte 31,32,254,1,254,1,63,192,63,0,254,0,63,192,254,1,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _scythe_run3_2:
 			.byte 0, 1; offset_y, offset_x
@@ -179,7 +165,6 @@ _scythe_run3_2:
 			.byte 203,0,203,32,203,20,195,28,195,32,195,4,135,56,135,0,
 			.byte 135,72,143,112,143,0,143,112,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _scythe_run3_3:
 			.byte 0, 1; offset_y, offset_x
@@ -189,4 +174,3 @@ _scythe_run3_3:
 			.byte 241,12,241,0,243,0,243,8,243,4,243,4,243,8,243,0,
 			.byte 242,0,242,8,242,5,240,7,240,8,240,1,225,14,225,0,
 			.byte 225,18,227,28,227,0,227,28,
-

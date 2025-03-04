@@ -15,7 +15,6 @@ _vampire_run_r0_0:
 			.byte 240,0,15,0,15,0,240,0,15,240,240,15,248,7,31,224,
 			.byte 31,0,248,0,31,0,248,0,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _vampire_run_r0_1:
 			.byte 0, 0; offset_y, offset_x
@@ -32,7 +31,6 @@ _vampire_run_r0_1:
 			.byte 252,0,3,0,3,0,252,0,3,252,252,3,254,1,7,248,
 			.byte 7,0,254,0,7,0,254,0,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _vampire_run_r0_2:
 			.byte 0, 0; offset_y, offset_x
@@ -48,7 +46,6 @@ _vampire_run_r0_2:
 			.byte 0,247,254,1,254,1,0,255,0,4,254,0,0,0,254,0,
 			.byte 255,0,0,0,0,0,255,0,0,255,255,0,255,0,129,126,
 			.byte 129,0,255,0,129,0,255,0,
-
 
 			.word 0  ; safety pair of bytes for reading by POP B
 _vampire_run_r0_3:
@@ -71,7 +68,6 @@ _vampire_run_r0_3:
 			.byte 192,0,255,0,63,192,192,63,255,0,255,0,224,31,127,128,
 			.byte 127,0,224,0,255,0,127,0,224,0,255,0,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _vampire_run_r1_0:
 			.byte 0, 0; offset_y, offset_x
@@ -87,7 +83,6 @@ _vampire_run_r1_0:
 			.byte 7,120,224,31,224,31,15,240,15,64,224,0,15,0,224,0,
 			.byte 240,0,15,0,15,0,240,0,15,240,240,15,248,7,31,224,
 			.byte 31,0,248,0,31,0,248,0,
-
 
 			.word 0  ; safety pair of bytes for reading by POP B
 _vampire_run_r1_1:
@@ -105,7 +100,6 @@ _vampire_run_r1_1:
 			.byte 252,0,3,0,3,0,252,0,3,252,252,3,254,1,7,248,
 			.byte 7,0,254,0,7,0,254,0,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _vampire_run_r1_2:
 			.byte 0, 0; offset_y, offset_x
@@ -121,7 +115,6 @@ _vampire_run_r1_2:
 			.byte 0,247,254,1,254,1,0,255,0,4,254,0,0,0,254,0,
 			.byte 255,0,0,0,0,0,255,0,0,255,255,0,255,0,129,126,
 			.byte 129,0,255,0,129,0,255,0,
-
 
 			.word 0  ; safety pair of bytes for reading by POP B
 _vampire_run_r1_3:
@@ -144,7 +137,6 @@ _vampire_run_r1_3:
 			.byte 192,0,255,0,63,192,192,63,255,0,255,0,224,31,127,128,
 			.byte 127,0,224,0,255,0,127,0,224,0,255,0,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _vampire_run_r2_0:
 			.byte 0, 0; offset_y, offset_x
@@ -161,7 +153,6 @@ _vampire_run_r2_0:
 			.byte 224,0,15,0,15,64,224,0,15,240,224,31,240,15,15,240,
 			.byte 15,0,240,0,15,0,240,0,248,0,31,0,31,0,248,0,
 			.byte 31,224,248,7,
-
 
 			.word 0  ; safety pair of bytes for reading by POP B
 _vampire_run_r2_1:
@@ -180,7 +171,6 @@ _vampire_run_r2_1:
 			.byte 3,0,252,0,3,0,252,0,254,0,7,0,7,0,254,0,
 			.byte 7,248,254,1,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _vampire_run_r2_2:
 			.byte 0, 0; offset_y, offset_x
@@ -197,7 +187,6 @@ _vampire_run_r2_2:
 			.byte 254,0,0,0,0,4,254,0,0,255,254,1,255,0,0,255,
 			.byte 0,0,255,0,0,0,255,0,255,0,129,0,129,0,255,0,
 			.byte 129,126,255,0,
-
 
 			.word 0  ; safety pair of bytes for reading by POP B
 _vampire_run_r2_3:
@@ -221,7 +210,6 @@ _vampire_run_r2_3:
 			.byte 63,0,192,0,255,0,63,0,192,0,255,0,255,0,224,0,
 			.byte 127,0,127,0,224,0,255,0,127,128,224,31,255,0,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _vampire_run_r3_0:
 			.byte 0, 0; offset_y, offset_x
@@ -238,7 +226,6 @@ _vampire_run_r3_0:
 			.byte 224,0,15,0,15,64,224,0,15,240,224,31,240,15,15,240,
 			.byte 15,0,240,0,15,0,240,0,248,0,31,0,31,0,248,0,
 			.byte 31,224,248,7,
-
 
 			.word 0  ; safety pair of bytes for reading by POP B
 _vampire_run_r3_1:
@@ -257,7 +244,6 @@ _vampire_run_r3_1:
 			.byte 3,0,252,0,3,0,252,0,254,0,7,0,7,0,254,0,
 			.byte 7,248,254,1,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _vampire_run_r3_2:
 			.byte 0, 0; offset_y, offset_x
@@ -274,7 +260,6 @@ _vampire_run_r3_2:
 			.byte 254,0,0,0,0,4,254,0,0,255,254,1,255,0,0,255,
 			.byte 0,0,255,0,0,0,255,0,255,0,129,0,129,0,255,0,
 			.byte 129,126,255,0,
-
 
 			.word 0  ; safety pair of bytes for reading by POP B
 _vampire_run_r3_3:
@@ -298,7 +283,6 @@ _vampire_run_r3_3:
 			.byte 63,0,192,0,255,0,63,0,192,0,255,0,255,0,224,0,
 			.byte 127,0,127,0,224,0,255,0,127,128,224,31,255,0,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _vampire_run_l0_0:
 			.byte 0, 0; offset_y, offset_x
@@ -315,7 +299,6 @@ _vampire_run_l0_0:
 			.byte 224,0,31,0,31,0,224,0,31,224,224,31,240,15,63,192,
 			.byte 63,0,240,0,63,0,240,0,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _vampire_run_l0_1:
 			.byte 0, 0; offset_y, offset_x
@@ -331,7 +314,6 @@ _vampire_run_l0_1:
 			.byte 3,124,240,15,248,7,3,252,3,0,248,1,3,0,248,0,
 			.byte 248,0,7,0,7,0,248,0,7,248,248,7,252,3,15,240,
 			.byte 15,0,252,0,15,0,252,0,
-
 
 			.word 0  ; safety pair of bytes for reading by POP B
 _vampire_run_l0_2:
@@ -354,7 +336,6 @@ _vampire_run_l0_2:
 			.byte 1,0,254,0,255,0,1,254,254,1,255,0,3,252,255,0,
 			.byte 255,0,3,0,255,0,255,0,3,0,255,0,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _vampire_run_l0_3:
 			.byte 0, 1; offset_y, offset_x
@@ -370,7 +351,6 @@ _vampire_run_l0_3:
 			.byte 63,192,0,247,128,127,63,192,63,0,128,16,63,0,128,0,
 			.byte 128,0,127,0,127,0,128,0,127,128,128,127,192,63,255,0,
 			.byte 255,0,192,0,255,0,192,0,
-
 
 			.word 0  ; safety pair of bytes for reading by POP B
 _vampire_run_l1_0:
@@ -388,7 +368,6 @@ _vampire_run_l1_0:
 			.byte 224,0,31,0,31,0,224,0,31,224,224,31,240,15,63,192,
 			.byte 63,0,240,0,63,0,240,0,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _vampire_run_l1_1:
 			.byte 0, 0; offset_y, offset_x
@@ -404,7 +383,6 @@ _vampire_run_l1_1:
 			.byte 3,124,240,15,248,7,3,252,3,0,248,1,3,0,248,0,
 			.byte 248,0,7,0,7,0,248,0,7,248,248,7,252,3,15,240,
 			.byte 15,0,252,0,15,0,252,0,
-
 
 			.word 0  ; safety pair of bytes for reading by POP B
 _vampire_run_l1_2:
@@ -427,7 +405,6 @@ _vampire_run_l1_2:
 			.byte 1,0,254,0,255,0,1,254,254,1,255,0,3,252,255,0,
 			.byte 255,0,3,0,255,0,255,0,3,0,255,0,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _vampire_run_l1_3:
 			.byte 0, 1; offset_y, offset_x
@@ -443,7 +420,6 @@ _vampire_run_l1_3:
 			.byte 63,192,0,247,128,127,63,192,63,0,128,16,63,0,128,0,
 			.byte 128,0,127,0,127,0,128,0,127,128,128,127,192,63,255,0,
 			.byte 255,0,192,0,255,0,192,0,
-
 
 			.word 0  ; safety pair of bytes for reading by POP B
 _vampire_run_l2_0:
@@ -462,7 +438,6 @@ _vampire_run_l2_0:
 			.byte 31,0,224,0,31,0,224,0,240,0,63,0,63,0,240,0,
 			.byte 63,192,240,15,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _vampire_run_l2_1:
 			.byte 0, 0; offset_y, offset_x
@@ -479,7 +454,6 @@ _vampire_run_l2_1:
 			.byte 248,0,3,0,3,0,248,1,3,252,248,7,248,7,7,248,
 			.byte 7,0,248,0,7,0,248,0,252,0,15,0,15,0,252,0,
 			.byte 15,240,252,3,
-
 
 			.word 0  ; safety pair of bytes for reading by POP B
 _vampire_run_l2_2:
@@ -503,7 +477,6 @@ _vampire_run_l2_2:
 			.byte 255,0,1,0,254,0,255,0,1,0,254,0,255,0,3,0,
 			.byte 255,0,255,0,3,0,255,0,255,0,3,252,255,0,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _vampire_run_l2_3:
 			.byte 0, 1; offset_y, offset_x
@@ -520,7 +493,6 @@ _vampire_run_l2_3:
 			.byte 128,0,63,0,63,0,128,16,63,192,128,127,128,127,127,128,
 			.byte 127,0,128,0,127,0,128,0,192,0,255,0,255,0,192,0,
 			.byte 255,0,192,63,
-
 
 			.word 0  ; safety pair of bytes for reading by POP B
 _vampire_run_l3_0:
@@ -539,7 +511,6 @@ _vampire_run_l3_0:
 			.byte 31,0,224,0,31,0,224,0,240,0,63,0,63,0,240,0,
 			.byte 63,192,240,15,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _vampire_run_l3_1:
 			.byte 0, 0; offset_y, offset_x
@@ -556,7 +527,6 @@ _vampire_run_l3_1:
 			.byte 248,0,3,0,3,0,248,1,3,252,248,7,248,7,7,248,
 			.byte 7,0,248,0,7,0,248,0,252,0,15,0,15,0,252,0,
 			.byte 15,240,252,3,
-
 
 			.word 0  ; safety pair of bytes for reading by POP B
 _vampire_run_l3_2:
@@ -580,7 +550,6 @@ _vampire_run_l3_2:
 			.byte 255,0,1,0,254,0,255,0,1,0,254,0,255,0,3,0,
 			.byte 255,0,255,0,3,0,255,0,255,0,3,252,255,0,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _vampire_run_l3_3:
 			.byte 0, 1; offset_y, offset_x
@@ -597,7 +566,6 @@ _vampire_run_l3_3:
 			.byte 128,0,63,0,63,0,128,16,63,192,128,127,128,127,127,128,
 			.byte 127,0,128,0,127,0,128,0,192,0,255,0,255,0,192,0,
 			.byte 255,0,192,63,
-
 
 			.word 0  ; safety pair of bytes for reading by POP B
 _vampire_cast_0_0:
@@ -616,7 +584,6 @@ _vampire_cast_0_0:
 			.byte 15,128,224,0,15,0,224,0,240,0,31,0,31,0,240,0,
 			.byte 31,224,240,15,248,7,63,192,63,0,248,0,63,0,248,0,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _vampire_cast_0_1:
 			.byte 0, 0; offset_y, offset_x
@@ -633,7 +600,6 @@ _vampire_cast_0_1:
 			.byte 232,16,2,0,2,241,232,17,2,252,232,7,248,7,3,252,
 			.byte 3,32,248,0,3,0,248,0,252,0,7,0,7,0,252,0,
 			.byte 7,248,252,3,254,1,15,240,15,0,254,0,15,0,254,0,
-
 
 			.word 0  ; safety pair of bytes for reading by POP B
 _vampire_cast_0_2:
@@ -658,7 +624,6 @@ _vampire_cast_0_2:
 			.byte 255,0,255,0,1,0,255,0,255,0,1,254,255,0,255,0,
 			.byte 131,124,255,0,255,0,131,0,255,0,255,0,131,0,255,0,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _vampire_cast_0_3:
 			.byte 0, 0; offset_y, offset_x
@@ -681,4 +646,3 @@ _vampire_cast_0_3:
 			.byte 63,0,128,2,255,0,63,0,128,0,255,0,255,0,192,0,
 			.byte 127,0,127,0,192,0,255,0,127,128,192,63,255,0,255,0,
 			.byte 224,31,255,0,255,0,224,0,255,0,255,0,224,0,255,0,
-

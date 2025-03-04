@@ -188,7 +188,7 @@ vfx_update:
 ; c - preshifted sprite idx*2 offset based on pos_x then +2
 ; hl - ptr to pos_y+1
 ; use: a		
-sprite_get_scr_addr_vfx:
+sprite_get_scr_addr1_vfx:
 			mov d, m 
 			inx h 
 			mov c, m ; (pos_y) contains an anim ptr offset to get a proper preshifted frame
@@ -200,7 +200,7 @@ sprite_get_scr_addr_vfx:
 ; in:
 ; de - ptr to bullet_draw_ptr 
 vfx_draw:
-			ACTOR_DRAW(sprite_get_scr_addr_vfx, RAM_DISK_S_VFX, false)
+			ACTOR_DRAW(sprite_get_scr_addr1_vfx, RAM_DISK_S_VFX, false)
 
 ; draw a sprite into a backbuffer
 ; in:

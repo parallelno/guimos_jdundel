@@ -2,8 +2,8 @@
 ; asm data file: build/debug/sprite/sword_data.asm
 ; bin file: build/debug/bin/SWORD.BIN
 
-SWORD_FILE_LEN = 8688
-SWORD_LAST_RECORD_LEN = 112
+SWORD_FILE_LEN = 8928
+SWORD_LAST_RECORD_LEN = 96
 
 SWORD_FILENAME_PTR:
 			.byte "SWORD" ; filename
@@ -12,45 +12,45 @@ SWORD_FILENAME_PTR:
 
 ; relative frame labels
 _sword_sword_delay_0 = 2
-_sword_sword_delay_1 = 8
-_sword_sword_delay_2 = 14
-_sword_sword_delay_3 = 20
-_sword_sword_delay_4 = 26
-_sword_sword_delay_5 = 32
-_sword_sword_delay_6 = 38
-_sword_sword_delay_7 = 44
-_sword_sword_r0_0 = 50
-_sword_sword_r0_1 = 248
-_sword_sword_r0_2 = 446
-_sword_sword_r0_3 = 740
-_sword_sword_r0_4 = 1034
-_sword_sword_r0_5 = 1328
-_sword_sword_r0_6 = 1622
-_sword_sword_r0_7 = 1916
-_sword_sword_r1_0 = 2210
-_sword_sword_r1_1 = 2408
-_sword_sword_r1_2 = 2606
-_sword_sword_r1_3 = 2900
-_sword_sword_r1_4 = 3194
-_sword_sword_r1_5 = 3488
-_sword_sword_r1_6 = 3782
-_sword_sword_r1_7 = 4076
-_sword_sword_l0_0 = 4370
-_sword_sword_l0_1 = 4568
-_sword_sword_l0_2 = 4766
-_sword_sword_l0_3 = 5060
-_sword_sword_l0_4 = 5354
-_sword_sword_l0_5 = 5648
-_sword_sword_l0_6 = 5942
-_sword_sword_l0_7 = 6236
-_sword_sword_l1_0 = 6530
-_sword_sword_l1_1 = 6728
-_sword_sword_l1_2 = 6926
-_sword_sword_l1_3 = 7220
-_sword_sword_l1_4 = 7514
-_sword_sword_l1_5 = 7808
-_sword_sword_l1_6 = 8102
-_sword_sword_l1_7 = 8396
+_sword_sword_delay_1 = 38
+_sword_sword_delay_2 = 74
+_sword_sword_delay_3 = 110
+_sword_sword_delay_4 = 146
+_sword_sword_delay_5 = 182
+_sword_sword_delay_6 = 218
+_sword_sword_delay_7 = 254
+_sword_sword_r0_0 = 290
+_sword_sword_r0_1 = 488
+_sword_sword_r0_2 = 686
+_sword_sword_r0_3 = 980
+_sword_sword_r0_4 = 1274
+_sword_sword_r0_5 = 1568
+_sword_sword_r0_6 = 1862
+_sword_sword_r0_7 = 2156
+_sword_sword_r1_0 = 2450
+_sword_sword_r1_1 = 2648
+_sword_sword_r1_2 = 2846
+_sword_sword_r1_3 = 3140
+_sword_sword_r1_4 = 3434
+_sword_sword_r1_5 = 3728
+_sword_sword_r1_6 = 4022
+_sword_sword_r1_7 = 4316
+_sword_sword_l0_0 = 4610
+_sword_sword_l0_1 = 4808
+_sword_sword_l0_2 = 5006
+_sword_sword_l0_3 = 5300
+_sword_sword_l0_4 = 5594
+_sword_sword_l0_5 = 5888
+_sword_sword_l0_6 = 6182
+_sword_sword_l0_7 = 6476
+_sword_sword_l1_0 = 6770
+_sword_sword_l1_1 = 6968
+_sword_sword_l1_2 = 7166
+_sword_sword_l1_3 = 7460
+_sword_sword_l1_4 = 7754
+_sword_sword_l1_5 = 8048
+_sword_sword_l1_6 = 8342
+_sword_sword_l1_7 = 8636
 
 sprite_get_scr_addr_sword = sprite_get_scr_addr8
 

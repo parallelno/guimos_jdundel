@@ -7,7 +7,6 @@ _bomb_run0_0:
 			.byte 3,132,3,132,3,120,3,120,135,48,135,48,135,72,207,48,
 			.byte 207,0,207,0,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _bomb_run0_1:
 			.byte 4, 0; offset_y, offset_x
@@ -15,7 +14,6 @@ _bomb_run0_1:
 			.byte 243,0,243,0,243,12,225,18,225,12,225,12,192,30,192,30,
 			.byte 192,33,192,33,192,30,192,30,225,12,225,12,225,18,243,12,
 			.byte 243,0,243,0,
-
 
 			.word 0  ; safety pair of bytes for reading by POP B
 _bomb_run0_2:
@@ -27,7 +25,6 @@ _bomb_run0_2:
 			.byte 248,3,127,0,127,0,248,3,127,128,248,4,252,3,255,0,
 			.byte 255,0,252,0,255,0,252,0,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _bomb_run0_3:
 			.byte 4, 0; offset_y, offset_x
@@ -38,7 +35,6 @@ _bomb_run0_3:
 			.byte 254,0,31,192,31,192,254,0,31,32,254,1,255,0,63,192,
 			.byte 63,0,255,0,63,0,255,0,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _bomb_run1_0:
 			.byte 4, 0; offset_y, offset_x
@@ -47,7 +43,6 @@ _bomb_run1_0:
 			.byte 3,132,3,132,3,120,3,0,135,0,135,48,135,72,207,48,
 			.byte 207,0,207,0,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _bomb_run1_1:
 			.byte 4, 0; offset_y, offset_x
@@ -55,7 +50,6 @@ _bomb_run1_1:
 			.byte 243,0,243,0,243,12,225,18,225,12,225,0,192,0,192,30,
 			.byte 192,33,192,33,192,30,192,0,225,0,225,12,225,18,243,12,
 			.byte 243,0,243,0,
-
 
 			.word 0  ; safety pair of bytes for reading by POP B
 _bomb_run1_2:
@@ -67,7 +61,6 @@ _bomb_run1_2:
 			.byte 248,0,127,0,127,0,248,3,127,128,248,4,252,3,255,0,
 			.byte 255,0,252,0,255,0,252,0,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _bomb_run1_3:
 			.byte 4, 0; offset_y, offset_x
@@ -78,7 +71,6 @@ _bomb_run1_3:
 			.byte 254,0,31,0,31,192,254,0,31,32,254,1,255,0,63,192,
 			.byte 63,0,255,0,63,0,255,0,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _bomb_dmg0_0:
 			.byte 4, 0; offset_y, offset_x
@@ -87,7 +79,6 @@ _bomb_dmg0_0:
 			.byte 3,252,3,252,3,120,3,120,135,48,135,48,135,120,207,48,
 			.byte 207,0,207,0,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _bomb_dmg0_1:
 			.byte 4, 0; offset_y, offset_x
@@ -95,7 +86,6 @@ _bomb_dmg0_1:
 			.byte 243,0,243,0,243,12,225,30,225,12,225,12,192,30,192,30,
 			.byte 192,63,192,63,192,30,192,30,225,12,225,12,225,30,243,12,
 			.byte 243,0,243,0,
-
 
 			.word 0  ; safety pair of bytes for reading by POP B
 _bomb_dmg0_2:
@@ -107,7 +97,6 @@ _bomb_dmg0_2:
 			.byte 248,3,127,0,127,0,248,3,127,128,248,7,252,3,255,0,
 			.byte 255,0,252,0,255,0,252,0,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _bomb_dmg0_3:
 			.byte 4, 0; offset_y, offset_x
@@ -118,7 +107,6 @@ _bomb_dmg0_3:
 			.byte 254,0,31,192,31,192,254,0,31,224,254,1,255,0,63,192,
 			.byte 63,0,255,0,63,0,255,0,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _bomb_dmg1_0:
 			.byte 4, 0; offset_y, offset_x
@@ -127,7 +115,6 @@ _bomb_dmg1_0:
 			.byte 3,252,3,252,3,132,3,132,135,72,135,72,135,120,207,48,
 			.byte 207,48,207,48,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _bomb_dmg1_1:
 			.byte 4, 0; offset_y, offset_x
@@ -135,7 +122,6 @@ _bomb_dmg1_1:
 			.byte 243,12,243,12,243,12,225,30,225,18,225,18,192,33,192,33,
 			.byte 192,63,192,63,192,33,192,33,225,18,225,18,225,30,243,12,
 			.byte 243,12,243,12,
-
 
 			.word 0  ; safety pair of bytes for reading by POP B
 _bomb_dmg1_2:
@@ -147,7 +133,6 @@ _bomb_dmg1_2:
 			.byte 248,4,127,128,127,128,248,4,127,128,248,7,252,3,255,0,
 			.byte 255,0,252,3,255,0,252,3,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _bomb_dmg1_3:
 			.byte 4, 0; offset_y, offset_x
@@ -157,4 +142,3 @@ _bomb_dmg1_3:
 			.byte 15,240,252,3,252,3,15,240,15,16,252,2,15,16,252,2,
 			.byte 254,1,31,32,31,32,254,1,31,224,254,1,255,0,63,192,
 			.byte 63,192,255,0,63,192,255,0,
-

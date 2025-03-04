@@ -9,7 +9,6 @@ _tnt_idle0_0:
 			.byte 253,2,253,2,253,2,246,0,246,9,246,9,253,2,253,2,
 			.byte 253,0,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _tnt_idle0_1:
 			.byte 4, 0; offset_y, offset_x
@@ -23,7 +22,6 @@ _tnt_idle0_1:
 			.byte 255,0,127,128,127,128,255,0,127,128,255,0,253,0,191,0,
 			.byte 191,64,253,2,191,64,253,2,255,0,127,128,127,128,255,0,
 			.byte 127,0,255,0,
-
 
 			.word 0  ; safety pair of bytes for reading by POP B
 _tnt_idle0_2:
@@ -39,7 +37,6 @@ _tnt_idle0_2:
 			.byte 111,144,255,0,111,144,255,0,255,0,223,32,223,32,255,0,
 			.byte 223,0,255,0,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _tnt_idle0_3:
 			.byte 4, 0; offset_y, offset_x
@@ -54,7 +51,6 @@ _tnt_idle0_3:
 			.byte 219,36,255,0,219,36,255,0,255,0,247,8,247,8,255,0,
 			.byte 247,0,255,0,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _tnt_idle1_0:
 			.byte 4, 0; offset_y, offset_x
@@ -64,7 +60,6 @@ _tnt_idle1_0:
 			.byte 0,8,0,114,129,48,129,8,129,52,195,8,195,4,195,0,
 			.byte 247,8,247,8,247,8,190,65,190,65,190,65,255,0,255,0,
 			.byte 255,0,251,4,251,4,251,4,223,32,223,32,223,32,
-
 
 			.word 0  ; safety pair of bytes for reading by POP B
 _tnt_idle1_1:
@@ -81,7 +76,6 @@ _tnt_idle1_1:
 			.byte 255,0,255,0,254,1,255,0,255,0,254,1,255,0,254,1,
 			.byte 247,8,255,0,255,0,247,8,255,0,247,8,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _tnt_idle1_2:
 			.byte 4, 0; offset_y, offset_x
@@ -97,7 +91,6 @@ _tnt_idle1_2:
 			.byte 255,0,255,0,255,0,191,64,191,64,255,0,191,64,255,0,
 			.byte 253,2,255,0,255,0,253,2,255,0,253,2,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _tnt_idle1_3:
 			.byte 4, 0; offset_y, offset_x
@@ -112,4 +105,3 @@ _tnt_idle1_3:
 			.byte 251,4,254,1,251,4,254,1,255,0,255,0,255,0,255,0,
 			.byte 255,0,255,0,255,0,239,16,239,16,255,0,239,16,255,0,
 			.byte 255,0,127,128,127,128,255,0,127,128,255,0,
-

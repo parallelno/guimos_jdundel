@@ -18,9 +18,10 @@ Ram-disk usage:
 --- bank0 addr0 -----------------
 	SKELETON.BIN: addr: 0, len: 9870
 	BURNER.BIN: addr: 9870, len: 9030
-	SWORD.BIN: addr: 18900, len: 8688
-	DECALS0.BIN: addr: 27588, len: 4266
-Used: 31854, Free: 848
+	SWORD.BIN: addr: 18900, len: 8928
+	DECALS0.BIN: addr: 27828, len: 4266
+	BACKS0.BIN: addr: 32094, len: 600
+Used: 32694, Free: 8
 
 --- bank0 addr8000 -----------------
 	LV0_GFX.BIN: addr: 34392, len: 5524
@@ -50,11 +51,10 @@ Used: 32728, Free: 40
 	LV0_DATA.BIN: addr: 32768, len: 3638
 	HERO_L.BIN: addr: 36406, len: 13176
 	HERO_R.BIN: addr: 49582, len: 13176
-	VFX.BIN: addr: 62758, len: 2154
-	BACKS0.BIN: addr: 64912, len: 600
-Used: 32744, Free: 24
+	VFX.BIN: addr: 62758, len: 2184
+Used: 32174, Free: 594
 
-Permanent load: 1624, Current Load: 124888, Free Space: 86216
+Permanent load: 1624, Current Load: 125158, Free Space: 85946
 
 */
 
@@ -63,11 +63,14 @@ Permanent load: 1624, Current Load: 124888, Free Space: 86216
 ;===============================================
 .function load_permanent
 			; ram-disk:
-			; load
 			RAM_DISK_M_FONT = RAM_DISK_M0
 			RAM_DISK_S_FONT = RAM_DISK_S0
 			FONT_ADDR = 32768
 			LOAD_FILE(FONT_FILENAME_PTR, RAM_DISK_S_FONT, FONT_ADDR, FONT_FILE_LEN)
+			mvi a, RAM_DISK_S_FONT
+			lxi h, font_gfx_ptrs
+			lxi b, FONT_ADDR
+			call text_ex_init_font
 
 .endf
 ;===============================================
@@ -75,130 +78,167 @@ Permanent load: 1624, Current Load: 124888, Free Space: 86216
 ;===============================================
 .function load_level0
 			; ram-disk:
-			; load
 			RAM_DISK_M_SKELETON = RAM_DISK_M0
 			RAM_DISK_S_SKELETON = RAM_DISK_S0
 			SKELETON_ADDR = 0
 			LOAD_FILE(SKELETON_FILENAME_PTR, RAM_DISK_S_SKELETON, SKELETON_ADDR, SKELETON_FILE_LEN)
+			lxi d, _skeleton_preshifted_sprites
+			lxi h, SKELETON_ADDR
+			call sprite_update_labels
 
-			; load
 			RAM_DISK_M_BURNER = RAM_DISK_M0
 			RAM_DISK_S_BURNER = RAM_DISK_S0
 			BURNER_ADDR = 9870
 			LOAD_FILE(BURNER_FILENAME_PTR, RAM_DISK_S_BURNER, BURNER_ADDR, BURNER_FILE_LEN)
+			lxi d, _burner_preshifted_sprites
+			lxi h, BURNER_ADDR
+			call sprite_update_labels
 
-			; load
 			RAM_DISK_M_SWORD = RAM_DISK_M0
 			RAM_DISK_S_SWORD = RAM_DISK_S0
 			SWORD_ADDR = 18900
 			LOAD_FILE(SWORD_FILENAME_PTR, RAM_DISK_S_SWORD, SWORD_ADDR, SWORD_FILE_LEN)
+			lxi d, _sword_preshifted_sprites
+			lxi h, SWORD_ADDR
+			call sprite_update_labels
 
-			; load
 			RAM_DISK_M_DECALS0 = RAM_DISK_M0
 			RAM_DISK_S_DECALS0 = RAM_DISK_S0
-			DECALS0_ADDR = 27588
+			DECALS0_ADDR = 27828
 			LOAD_FILE(DECALS0_FILENAME_PTR, RAM_DISK_S_DECALS0, DECALS0_ADDR, DECALS0_FILE_LEN)
 
-			; load
+			RAM_DISK_M_BACKS0 = RAM_DISK_M0
+			RAM_DISK_S_BACKS0 = RAM_DISK_S0
+			BACKS0_ADDR = 32094
+			LOAD_FILE(BACKS0_FILENAME_PTR, RAM_DISK_S_BACKS0, BACKS0_ADDR, BACKS0_FILE_LEN)
+
 			RAM_DISK_M_LV0_GFX = RAM_DISK_M0
 			RAM_DISK_S_LV0_GFX = RAM_DISK_S0
 			LV0_GFX_ADDR = 34392
 			LOAD_FILE(LV0_GFX_FILENAME_PTR, RAM_DISK_S_LV0_GFX, LV0_GFX_ADDR, LV0_GFX_FILE_LEN)
+			lxi h, _lv0_gfx_tiles_ptrs
+			lxi b, LV0_GFX_ADDR
+			call update_labels_eod
 
-			; load
 			RAM_DISK_M_TI0_DATA = RAM_DISK_M0
 			RAM_DISK_S_TI0_DATA = RAM_DISK_S0
 			TI0_DATA_ADDR = 39916
 			LOAD_FILE(TI0_DATA_FILENAME_PTR, RAM_DISK_S_TI0_DATA, TI0_DATA_ADDR, TI0_DATA_FILE_LEN)
+			mvi a, RAM_DISK_S_TI0_DATA
+			lxi h, TI0_DATA_ADDR
+			call tiled_img_init_idxs
 
-			; load
 			RAM_DISK_M_TEXT_LV0 = RAM_DISK_M1
 			RAM_DISK_S_TEXT_LV0 = RAM_DISK_S1
 			TEXT_LV0_ADDR = 0
 			LOAD_FILE(TEXT_LV0_FILENAME_PTR, RAM_DISK_S_TEXT_LV0, TEXT_LV0_ADDR, TEXT_LV0_FILE_LEN)
+			mvi a, RAM_DISK_S_TEXT_LV0
+			lxi h, TEXT_LV0_ADDR
+			call text_ex_init_text
 
-			; load
 			RAM_DISK_M_VFX4 = RAM_DISK_M1
 			RAM_DISK_S_VFX4 = RAM_DISK_S1
 			VFX4_ADDR = 5190
 			LOAD_FILE(VFX4_FILENAME_PTR, RAM_DISK_S_VFX4, VFX4_ADDR, VFX4_FILE_LEN)
+			lxi d, _vfx4_preshifted_sprites
+			lxi h, VFX4_ADDR
+			call sprite_update_labels
 
-			; load
 			RAM_DISK_M_SCYTHE = RAM_DISK_M1
 			RAM_DISK_S_SCYTHE = RAM_DISK_S1
 			SCYTHE_ADDR = 9078
 			LOAD_FILE(SCYTHE_FILENAME_PTR, RAM_DISK_S_SCYTHE, SCYTHE_ADDR, SCYTHE_FILE_LEN)
+			lxi d, _scythe_preshifted_sprites
+			lxi h, SCYTHE_ADDR
+			call sprite_update_labels
 
-			; load
 			RAM_DISK_M_SNOWFLAK = RAM_DISK_M1
 			RAM_DISK_S_SNOWFLAK = RAM_DISK_S1
 			SNOWFLAK_ADDR = 10632
 			LOAD_FILE(SNOWFLAK_FILENAME_PTR, RAM_DISK_S_SNOWFLAK, SNOWFLAK_ADDR, SNOWFLAK_FILE_LEN)
+			lxi d, _snowflake_preshifted_sprites
+			lxi h, SNOWFLAK_ADDR
+			call sprite_update_labels
 
-			; load
 			RAM_DISK_M_TNT = RAM_DISK_M1
 			RAM_DISK_S_TNT = RAM_DISK_S1
 			TNT_ADDR = 11844
 			LOAD_FILE(TNT_FILENAME_PTR, RAM_DISK_S_TNT, TNT_ADDR, TNT_FILE_LEN)
+			lxi d, _tnt_preshifted_sprites
+			lxi h, TNT_ADDR
+			call sprite_update_labels
 
-			; load
 			RAM_DISK_M_TI0_GFX = RAM_DISK_M1
 			RAM_DISK_S_TI0_GFX = RAM_DISK_S1
 			TI0_GFX_ADDR = 32768
 			LOAD_FILE(TI0_GFX_FILENAME_PTR, RAM_DISK_S_TI0_GFX, TI0_GFX_ADDR, TI0_GFX_FILE_LEN)
+			mvi a, RAM_DISK_S_TI0_GFX
+			lxi h, TI0_GFX_ADDR
+			call tiled_img_init_gfx
 
-			; load
 			RAM_DISK_M_SONG01 = RAM_DISK_M2
 			RAM_DISK_S_SONG01 = RAM_DISK_S2
 			SONG01_ADDR = 32768
 			LOAD_FILE(SONG01_FILENAME_PTR, RAM_DISK_S_SONG01, SONG01_ADDR, SONG01_FILE_LEN)
+			lxi d, SONG01_ADDR
+			lxi h, SONG01_ay_reg_data_ptrs
+			call v6_gc_init_song
+			CALL_RAM_DISK_FUNC_NO_RESTORE(v6_gc_start, RAM_DISK_S_SONG01 | RAM_DISK_M_SONG01 | RAM_DISK_M_8F)
 
-			; load
 			RAM_DISK_M_KNIGHT = RAM_DISK_M2
 			RAM_DISK_S_KNIGHT = RAM_DISK_S2
 			KNIGHT_ADDR = 41316
 			LOAD_FILE(KNIGHT_FILENAME_PTR, RAM_DISK_S_KNIGHT, KNIGHT_ADDR, KNIGHT_FILE_LEN)
+			lxi d, _knight_preshifted_sprites
+			lxi h, KNIGHT_ADDR
+			call sprite_update_labels
 
-			; load
 			RAM_DISK_M_VAMPIRE = RAM_DISK_M2
 			RAM_DISK_S_VAMPIRE = RAM_DISK_S2
 			VAMPIRE_ADDR = 57096
 			LOAD_FILE(VAMPIRE_FILENAME_PTR, RAM_DISK_S_VAMPIRE, VAMPIRE_ADDR, VAMPIRE_FILE_LEN)
+			lxi d, _vampire_preshifted_sprites
+			lxi h, VAMPIRE_ADDR
+			call sprite_update_labels
 
-			; load
 			RAM_DISK_M_BOMB = RAM_DISK_M2
 			RAM_DISK_S_BOMB = RAM_DISK_S2
 			BOMB_ADDR = 64536
 			LOAD_FILE(BOMB_FILENAME_PTR, RAM_DISK_S_BOMB, BOMB_ADDR, BOMB_FILE_LEN)
+			lxi d, _bomb_preshifted_sprites
+			lxi h, BOMB_ADDR
+			call sprite_update_labels
 
-			; load
 			RAM_DISK_M_LV0_DATA = RAM_DISK_M3
 			RAM_DISK_S_LV0_DATA = RAM_DISK_S3
 			LV0_DATA_ADDR = 32768
 			LOAD_FILE(LV0_DATA_FILENAME_PTR, RAM_DISK_S_LV0_DATA, LV0_DATA_ADDR, LV0_DATA_FILE_LEN)
+			lxi h, _lv0_data_rooms_ptrs
+			lxi b, LV0_DATA_ADDR
+			call update_labels_eod
 
-			; load
 			RAM_DISK_M_HERO_L = RAM_DISK_M3
 			RAM_DISK_S_HERO_L = RAM_DISK_S3
 			HERO_L_ADDR = 36406
 			LOAD_FILE(HERO_L_FILENAME_PTR, RAM_DISK_S_HERO_L, HERO_L_ADDR, HERO_L_FILE_LEN)
+			lxi d, _hero_l_preshifted_sprites
+			lxi h, HERO_L_ADDR
+			call sprite_update_labels
 
-			; load
 			RAM_DISK_M_HERO_R = RAM_DISK_M3
 			RAM_DISK_S_HERO_R = RAM_DISK_S3
 			HERO_R_ADDR = 49582
 			LOAD_FILE(HERO_R_FILENAME_PTR, RAM_DISK_S_HERO_R, HERO_R_ADDR, HERO_R_FILE_LEN)
+			lxi d, _hero_r_preshifted_sprites
+			lxi h, HERO_R_ADDR
+			call sprite_update_labels
 
-			; load
 			RAM_DISK_M_VFX = RAM_DISK_M3
 			RAM_DISK_S_VFX = RAM_DISK_S3
 			VFX_ADDR = 62758
 			LOAD_FILE(VFX_FILENAME_PTR, RAM_DISK_S_VFX, VFX_ADDR, VFX_FILE_LEN)
-
-			; load
-			RAM_DISK_M_BACKS0 = RAM_DISK_M3
-			RAM_DISK_S_BACKS0 = RAM_DISK_S3
-			BACKS0_ADDR = 64912
-			LOAD_FILE(BACKS0_FILENAME_PTR, RAM_DISK_S_BACKS0, BACKS0_ADDR, BACKS0_FILE_LEN)
+			lxi d, _vfx_preshifted_sprites
+			lxi h, VFX_ADDR
+			call sprite_update_labels
 
 .endf

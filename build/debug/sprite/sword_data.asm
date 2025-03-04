@@ -1,59 +1,59 @@
 _sword_sprites:
 			.word 0  ; safety pair of bytes for reading by POP B
 _sword_sword_delay_0:
-			.byte 0, 1; offset_y, offset_x
-			.byte 5, -2; h, w
-
-
+			.byte 0, 0; offset_y, offset_x
+			.byte 5, 0; h, w
+			.byte 255,0,255,0,255,255,255,255,255,0,255,0,255,0,255,0,
+			.byte 255,255,255,255,255,0,255,0,255,0,255,0,255,255,
 
 			.word 0  ; safety pair of bytes for reading by POP B
 _sword_sword_delay_1:
-			.byte 0, 2; offset_y, offset_x
-			.byte 5, -3; h, w
-
-
+			.byte 0, 0; offset_y, offset_x
+			.byte 5, 0; h, w
+			.byte 255,0,255,0,255,127,255,128,255,0,255,0,255,0,255,0,
+			.byte 255,127,255,128,255,0,255,0,255,0,255,0,255,127,
 
 			.word 0  ; safety pair of bytes for reading by POP B
 _sword_sword_delay_2:
-			.byte 0, 2; offset_y, offset_x
-			.byte 5, -3; h, w
-
-
+			.byte 0, 0; offset_y, offset_x
+			.byte 5, 0; h, w
+			.byte 255,0,255,0,255,63,255,192,255,0,255,0,255,0,255,0,
+			.byte 255,63,255,192,255,0,255,0,255,0,255,0,255,63,
 
 			.word 0  ; safety pair of bytes for reading by POP B
 _sword_sword_delay_3:
-			.byte 0, 2; offset_y, offset_x
-			.byte 5, -3; h, w
-
-
+			.byte 0, 0; offset_y, offset_x
+			.byte 5, 0; h, w
+			.byte 255,0,255,0,255,31,255,224,255,0,255,0,255,0,255,0,
+			.byte 255,31,255,224,255,0,255,0,255,0,255,0,255,31,
 
 			.word 0  ; safety pair of bytes for reading by POP B
 _sword_sword_delay_4:
-			.byte 0, 2; offset_y, offset_x
-			.byte 5, -3; h, w
-
-
+			.byte 0, 0; offset_y, offset_x
+			.byte 5, 0; h, w
+			.byte 255,0,255,0,255,15,255,240,255,0,255,0,255,0,255,0,
+			.byte 255,15,255,240,255,0,255,0,255,0,255,0,255,15,
 
 			.word 0  ; safety pair of bytes for reading by POP B
 _sword_sword_delay_5:
-			.byte 0, 2; offset_y, offset_x
-			.byte 5, -3; h, w
-
-
+			.byte 0, 0; offset_y, offset_x
+			.byte 5, 0; h, w
+			.byte 255,0,255,0,255,7,255,248,255,0,255,0,255,0,255,0,
+			.byte 255,7,255,248,255,0,255,0,255,0,255,0,255,7,
 
 			.word 0  ; safety pair of bytes for reading by POP B
 _sword_sword_delay_6:
-			.byte 0, 2; offset_y, offset_x
-			.byte 5, -3; h, w
-
-
+			.byte 0, 0; offset_y, offset_x
+			.byte 5, 0; h, w
+			.byte 255,0,255,0,255,3,255,252,255,0,255,0,255,0,255,0,
+			.byte 255,3,255,252,255,0,255,0,255,0,255,0,255,3,
 
 			.word 0  ; safety pair of bytes for reading by POP B
 _sword_sword_delay_7:
-			.byte 0, 2; offset_y, offset_x
-			.byte 5, -3; h, w
-
-
+			.byte 0, 0; offset_y, offset_x
+			.byte 5, 0; h, w
+			.byte 255,0,255,0,255,1,255,254,255,0,255,0,255,0,255,0,
+			.byte 255,1,255,254,255,0,255,0,255,0,255,0,255,1,
 
 			.word 0  ; safety pair of bytes for reading by POP B
 _sword_sword_r0_0:
@@ -72,7 +72,6 @@ _sword_sword_r0_0:
 			.byte 7,0,254,0,7,248,254,1,224,31,15,240,15,0,224,0,
 			.byte 15,224,224,3,0,254,255,0,255,0,0,0,255,0,0,255,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _sword_sword_r0_1:
 			.byte 2, 1; offset_y, offset_x
@@ -89,7 +88,6 @@ _sword_sword_r0_1:
 			.byte 255,0,192,63,192,0,255,0,192,6,255,0,255,0,3,28,
 			.byte 3,0,255,0,3,252,255,0,240,15,7,248,7,0,240,0,
 			.byte 7,240,240,1,128,127,127,0,127,0,128,0,127,128,128,127,
-
 
 			.word 0  ; safety pair of bytes for reading by POP B
 _sword_sword_r0_2:
@@ -114,7 +112,6 @@ _sword_sword_r0_2:
 			.byte 255,0,255,0,3,0,248,0,255,0,3,248,248,0,192,63,
 			.byte 63,128,255,0,255,0,63,0,192,0,255,0,63,192,192,63,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _sword_sword_r0_3:
 			.byte 2, 1; offset_y, offset_x
@@ -137,7 +134,6 @@ _sword_sword_r0_3:
 			.byte 255,0,192,0,255,0,255,0,192,63,255,0,252,3,1,254,
 			.byte 255,0,255,0,1,0,252,0,255,0,1,124,252,0,224,31,
 			.byte 31,192,255,0,255,0,31,0,224,0,255,0,31,224,224,31,
-
 
 			.word 0  ; safety pair of bytes for reading by POP B
 _sword_sword_r0_4:
@@ -162,7 +158,6 @@ _sword_sword_r0_4:
 			.byte 255,0,255,0,0,0,254,0,255,0,0,62,254,0,240,15,
 			.byte 15,224,255,0,255,0,15,0,240,0,255,0,15,240,240,15,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _sword_sword_r0_5:
 			.byte 2, 1; offset_y, offset_x
@@ -185,7 +180,6 @@ _sword_sword_r0_5:
 			.byte 63,0,240,0,255,0,63,192,240,15,255,0,255,0,0,255,
 			.byte 127,128,127,0,0,0,255,0,127,0,0,31,255,0,248,7,
 			.byte 7,240,255,0,255,0,7,0,248,0,255,0,7,248,248,7,
-
 
 			.word 0  ; safety pair of bytes for reading by POP B
 _sword_sword_r0_6:
@@ -210,7 +204,6 @@ _sword_sword_r0_6:
 			.byte 63,192,63,0,128,0,255,0,63,128,128,15,255,0,252,3,
 			.byte 3,248,255,0,255,0,3,0,252,0,255,0,3,252,252,3,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _sword_sword_r0_7:
 			.byte 2, 1; offset_y, offset_x
@@ -234,7 +227,6 @@ _sword_sword_r0_7:
 			.byte 31,224,31,0,192,0,255,0,31,192,192,7,255,0,254,1,
 			.byte 1,252,255,0,255,0,1,0,254,0,255,0,1,254,254,1,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _sword_sword_r1_0:
 			.byte -2, 0; offset_y, offset_x
@@ -252,7 +244,6 @@ _sword_sword_r1_0:
 			.byte 252,0,255,0,252,3,255,0,255,0,253,2,253,0,255,0,
 			.byte 253,2,255,0,255,0,251,0,251,0,255,0,251,4,255,0,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _sword_sword_r1_1:
 			.byte -2, 0; offset_y, offset_x
@@ -269,7 +260,6 @@ _sword_sword_r1_1:
 			.byte 255,0,254,1,254,0,255,0,254,0,255,0,255,0,254,0,
 			.byte 254,0,255,0,254,1,255,0,255,0,254,1,254,0,255,0,
 			.byte 254,1,255,0,255,0,253,0,253,0,255,0,253,2,255,0,
-
 
 			.word 0  ; safety pair of bytes for reading by POP B
 _sword_sword_r1_2:
@@ -294,7 +284,6 @@ _sword_sword_r1_2:
 			.byte 127,128,127,0,255,0,255,0,127,128,255,0,255,0,255,0,
 			.byte 254,0,255,0,255,0,254,0,255,0,255,0,254,1,255,0,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _sword_sword_r1_3:
 			.byte -2, 0; offset_y, offset_x
@@ -317,7 +306,6 @@ _sword_sword_r1_3:
 			.byte 159,0,255,0,255,0,159,96,255,0,255,0,255,0,255,0,
 			.byte 191,64,191,0,255,0,255,0,191,64,255,0,255,0,255,0,
 			.byte 255,0,127,0,127,0,255,0,255,0,127,128,255,0,255,0,
-
 
 			.word 0  ; safety pair of bytes for reading by POP B
 _sword_sword_r1_4:
@@ -342,7 +330,6 @@ _sword_sword_r1_4:
 			.byte 223,32,223,0,255,0,255,0,223,32,255,0,255,0,255,0,
 			.byte 255,0,191,0,191,0,255,0,255,0,191,64,255,0,255,0,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _sword_sword_r1_5:
 			.byte -2, 0; offset_y, offset_x
@@ -365,7 +352,6 @@ _sword_sword_r1_5:
 			.byte 231,0,255,0,255,0,231,24,255,0,255,0,255,0,255,0,
 			.byte 239,16,239,0,255,0,255,0,239,16,255,0,255,0,255,0,
 			.byte 255,0,223,0,223,0,255,0,255,0,223,32,255,0,255,0,
-
 
 			.word 0  ; safety pair of bytes for reading by POP B
 _sword_sword_r1_6:
@@ -390,7 +376,6 @@ _sword_sword_r1_6:
 			.byte 247,8,247,0,255,0,255,0,247,8,255,0,255,0,255,0,
 			.byte 255,0,239,0,239,0,255,0,255,0,239,16,255,0,255,0,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _sword_sword_r1_7:
 			.byte -2, 0; offset_y, offset_x
@@ -414,7 +399,6 @@ _sword_sword_r1_7:
 			.byte 251,4,251,0,255,0,255,0,251,4,255,0,255,0,255,0,
 			.byte 255,0,247,0,247,0,255,0,255,0,247,8,255,0,255,0,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _sword_sword_l0_0:
 			.byte 2, -1; offset_y, offset_x
@@ -432,7 +416,6 @@ _sword_sword_l0_0:
 			.byte 127,0,224,0,127,128,224,31,240,15,7,248,7,0,240,0,
 			.byte 7,192,240,7,255,0,0,127,0,0,255,0,0,255,255,0,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _sword_sword_l0_1:
 			.byte 2, -1; offset_y, offset_x
@@ -449,7 +432,6 @@ _sword_sword_l0_1:
 			.byte 192,63,255,0,255,0,192,0,255,0,192,24,240,14,63,0,
 			.byte 63,0,240,0,63,192,240,15,248,7,3,252,3,0,248,0,
 			.byte 3,224,248,3,255,0,128,63,128,0,255,0,128,127,255,0,
-
 
 			.word 0  ; safety pair of bytes for reading by POP B
 _sword_sword_l0_2:
@@ -474,7 +456,6 @@ _sword_sword_l0_2:
 			.byte 255,0,255,0,1,0,252,0,255,0,1,240,252,1,255,0,
 			.byte 192,31,63,192,63,0,192,0,255,0,63,192,192,63,255,0,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _sword_sword_l0_3:
 			.byte 2, -1; offset_y, offset_x
@@ -497,7 +478,6 @@ _sword_sword_l0_3:
 			.byte 255,0,15,0,252,0,255,0,15,240,252,3,254,1,0,255,
 			.byte 255,0,255,0,0,0,254,0,255,0,0,248,254,0,255,0,
 			.byte 224,15,31,224,31,0,224,0,255,0,31,224,224,31,255,0,
-
 
 			.word 0  ; safety pair of bytes for reading by POP B
 _sword_sword_l0_4:
@@ -522,7 +502,6 @@ _sword_sword_l0_4:
 			.byte 127,128,127,0,0,0,255,0,127,0,0,124,255,0,255,0,
 			.byte 240,7,15,240,15,0,240,0,255,0,15,240,240,15,255,0,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _sword_sword_l0_5:
 			.byte 2, -1; offset_y, offset_x
@@ -545,7 +524,6 @@ _sword_sword_l0_5:
 			.byte 255,0,3,0,255,0,255,0,3,252,255,0,255,0,128,127,
 			.byte 63,192,63,0,128,0,255,0,63,0,128,62,255,0,255,0,
 			.byte 248,3,7,248,7,0,248,0,255,0,7,248,248,7,255,0,
-
 
 			.word 0  ; safety pair of bytes for reading by POP B
 _sword_sword_l0_6:
@@ -570,7 +548,6 @@ _sword_sword_l0_6:
 			.byte 31,224,31,0,192,0,255,0,31,0,192,31,255,0,255,0,
 			.byte 252,1,3,252,3,0,252,0,255,0,3,252,252,3,255,0,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _sword_sword_l0_7:
 			.byte 2, -1; offset_y, offset_x
@@ -594,7 +571,6 @@ _sword_sword_l0_7:
 			.byte 15,240,15,0,224,0,255,0,15,128,224,15,255,0,255,0,
 			.byte 254,0,1,254,1,0,254,0,255,0,1,254,254,1,255,0,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _sword_sword_l1_0:
 			.byte -2, -2; offset_y, offset_x
@@ -612,7 +588,6 @@ _sword_sword_l1_0:
 			.byte 255,0,63,0,255,0,63,192,191,64,255,0,255,0,191,0,
 			.byte 255,0,191,64,223,0,255,0,255,0,223,0,255,0,223,32,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _sword_sword_l1_1:
 			.byte -2, -2; offset_y, offset_x
@@ -629,7 +604,6 @@ _sword_sword_l1_1:
 			.byte 159,96,255,0,255,0,159,0,255,0,159,64,159,0,255,0,
 			.byte 255,0,159,0,255,0,159,96,223,32,255,0,255,0,223,0,
 			.byte 255,0,223,32,239,0,255,0,255,0,239,0,255,0,239,16,
-
 
 			.word 0  ; safety pair of bytes for reading by POP B
 _sword_sword_l1_2:
@@ -654,7 +628,6 @@ _sword_sword_l1_2:
 			.byte 255,0,255,0,255,0,239,0,255,0,255,0,239,16,247,0,
 			.byte 255,0,255,0,255,0,255,0,247,0,255,0,255,0,247,8,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _sword_sword_l1_3:
 			.byte -2, -2; offset_y, offset_x
@@ -677,7 +650,6 @@ _sword_sword_l1_3:
 			.byte 255,0,255,0,231,0,255,0,255,0,231,24,247,8,255,0,
 			.byte 255,0,255,0,255,0,247,0,255,0,255,0,247,8,251,0,
 			.byte 255,0,255,0,255,0,255,0,251,0,255,0,255,0,251,4,
-
 
 			.word 0  ; safety pair of bytes for reading by POP B
 _sword_sword_l1_4:
@@ -702,7 +674,6 @@ _sword_sword_l1_4:
 			.byte 255,0,255,0,255,0,251,0,255,0,255,0,251,4,253,0,
 			.byte 255,0,255,0,255,0,255,0,253,0,255,0,255,0,253,2,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _sword_sword_l1_5:
 			.byte -2, -2; offset_y, offset_x
@@ -725,7 +696,6 @@ _sword_sword_l1_5:
 			.byte 255,0,255,0,249,0,255,0,255,0,249,6,253,2,255,0,
 			.byte 255,0,255,0,255,0,253,0,255,0,255,0,253,2,254,0,
 			.byte 255,0,255,0,255,0,255,0,254,0,255,0,255,0,254,1,
-
 
 			.word 0  ; safety pair of bytes for reading by POP B
 _sword_sword_l1_6:
@@ -750,7 +720,6 @@ _sword_sword_l1_6:
 			.byte 255,0,255,0,255,0,254,0,255,0,255,0,254,1,255,0,
 			.byte 127,0,255,0,255,0,127,0,255,0,255,0,127,128,255,0,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _sword_sword_l1_7:
 			.byte -2, -2; offset_y, offset_x
@@ -773,4 +742,3 @@ _sword_sword_l1_7:
 			.byte 255,0,127,0,254,0,255,0,127,128,254,1,255,0,127,128,
 			.byte 255,0,255,0,127,0,255,0,255,0,127,128,255,0,255,0,
 			.byte 191,0,255,0,255,0,191,0,255,0,255,0,191,64,255,0,
-

@@ -15,7 +15,6 @@ _burner_dash_0_0:
 			.byte 240,6,7,96,7,0,240,0,7,152,240,9,249,6,15,240,
 			.byte 15,0,249,0,15,0,249,0,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _burner_dash_0_1:
 			.byte 0, 0; offset_y, offset_x
@@ -31,7 +30,6 @@ _burner_dash_0_1:
 			.byte 0,179,240,9,248,7,1,50,1,0,248,0,1,204,248,0,
 			.byte 252,1,1,152,1,0,252,0,1,102,252,2,254,1,67,188,
 			.byte 67,0,254,0,67,0,254,0,
-
 
 			.word 0  ; safety pair of bytes for reading by POP B
 _burner_dash_0_2:
@@ -54,7 +52,6 @@ _burner_dash_0_2:
 			.byte 0,0,255,0,127,128,0,153,255,0,255,0,144,111,255,0,
 			.byte 255,0,144,0,255,0,255,0,144,0,255,0,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _burner_dash_0_3:
 			.byte 0, 0; offset_y, offset_x
@@ -76,7 +73,6 @@ _burner_dash_0_3:
 			.byte 192,0,255,0,31,96,192,38,255,0,255,0,228,27,63,192,
 			.byte 63,0,228,0,255,0,63,0,228,0,255,0,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _burner_dash_1_0:
 			.byte 0, 0; offset_y, offset_x
@@ -93,7 +89,6 @@ _burner_dash_1_0:
 			.byte 240,6,143,32,143,0,240,0,143,80,240,9,249,6,159,96,
 			.byte 159,0,249,0,159,0,249,0,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _burner_dash_1_1:
 			.byte 0, 0; offset_y, offset_x
@@ -109,7 +104,6 @@ _burner_dash_1_1:
 			.byte 0,243,254,1,252,3,17,42,17,0,252,0,17,196,252,0,
 			.byte 252,1,35,136,35,0,252,0,35,84,252,2,254,1,103,152,
 			.byte 103,0,254,0,103,0,254,0,
-
 
 			.word 0  ; safety pair of bytes for reading by POP B
 _burner_dash_1_2:
@@ -132,7 +126,6 @@ _burner_dash_1_2:
 			.byte 8,0,255,0,255,0,8,149,255,0,255,0,153,102,255,0,
 			.byte 255,0,153,0,255,0,255,0,153,0,255,0,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _burner_dash_1_3:
 			.byte 0, 0; offset_y, offset_x
@@ -154,7 +147,6 @@ _burner_dash_1_3:
 			.byte 194,0,255,0,63,64,194,37,255,0,255,0,230,25,127,128,
 			.byte 127,0,230,0,255,0,127,0,230,0,255,0,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _burner_dash_2_0:
 			.byte 0, 0; offset_y, offset_x
@@ -171,7 +163,6 @@ _burner_dash_2_0:
 			.byte 252,1,63,128,63,0,252,0,63,64,252,2,252,3,127,128,
 			.byte 127,0,252,0,127,0,252,0,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _burner_dash_2_1:
 			.byte 0, 0; offset_y, offset_x
@@ -187,7 +178,6 @@ _burner_dash_2_1:
 			.byte 4,107,248,7,254,1,7,200,7,0,254,0,7,48,254,0,
 			.byte 255,0,15,96,15,0,255,0,15,144,255,0,255,0,31,224,
 			.byte 31,0,255,0,31,0,255,0,
-
 
 			.word 0  ; safety pair of bytes for reading by POP B
 _burner_dash_2_2:
@@ -210,7 +200,6 @@ _burner_dash_2_2:
 			.byte 195,0,255,0,255,0,195,36,255,0,255,0,199,56,255,0,
 			.byte 255,0,199,0,255,0,255,0,199,0,255,0,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _burner_dash_2_3:
 			.byte 0, 0; offset_y, offset_x
@@ -232,7 +221,6 @@ _burner_dash_2_3:
 			.byte 240,0,255,0,255,0,240,9,255,0,255,0,241,14,255,0,
 			.byte 255,0,241,0,255,0,255,0,241,0,255,0,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _burner_dash_3_0:
 			.byte 0, 0; offset_y, offset_x
@@ -249,7 +237,6 @@ _burner_dash_3_0:
 			.byte 240,6,31,64,31,0,240,0,31,160,240,9,241,14,63,192,
 			.byte 63,0,241,0,63,0,241,0,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _burner_dash_3_1:
 			.byte 0, 0; offset_y, offset_x
@@ -265,7 +252,6 @@ _burner_dash_3_1:
 			.byte 3,180,224,25,240,15,3,52,3,0,240,0,3,200,240,0,
 			.byte 252,1,7,144,7,0,252,0,7,104,252,2,252,3,79,176,
 			.byte 79,0,252,0,79,0,252,0,
-
 
 			.word 0  ; safety pair of bytes for reading by POP B
 _burner_dash_3_2:
@@ -288,7 +274,6 @@ _burner_dash_3_2:
 			.byte 1,0,255,0,255,0,1,154,255,0,255,0,19,236,255,0,
 			.byte 255,0,19,0,255,0,255,0,19,0,255,0,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _burner_dash_3_3:
 			.byte 0, 0; offset_y, offset_x
@@ -310,7 +295,6 @@ _burner_dash_3_3:
 			.byte 192,0,255,0,127,128,192,38,255,0,255,0,196,59,255,0,
 			.byte 255,0,196,0,255,0,255,0,196,0,255,0,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _burner_run_r0_0:
 			.byte 1, 0; offset_y, offset_x
@@ -326,7 +310,6 @@ _burner_run_r0_0:
 			.byte 15,80,252,2,254,1,31,96,31,0,254,0,31,128,254,0,
 			.byte 255,0,127,0,127,0,255,0,127,128,255,0,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _burner_run_r0_1:
 			.byte 1, 0; offset_y, offset_x
@@ -341,7 +324,6 @@ _burner_run_r0_1:
 			.byte 1,0,254,0,1,124,254,0,255,0,3,120,3,0,255,0,
 			.byte 3,148,255,0,255,0,135,88,135,0,255,0,135,32,255,0,
 			.byte 255,0,223,0,223,0,255,0,223,32,255,0,
-
 
 			.word 0  ; safety pair of bytes for reading by POP B
 _burner_run_r0_2:
@@ -363,7 +345,6 @@ _burner_run_r0_2:
 			.byte 255,0,255,0,225,8,255,0,255,0,247,0,255,0,255,0,
 			.byte 247,0,255,0,255,0,247,8,255,0,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _burner_run_r0_3:
 			.byte 1, 1; offset_y, offset_x
@@ -378,7 +359,6 @@ _burner_run_r0_3:
 			.byte 31,0,224,0,31,192,224,7,240,7,63,128,63,0,240,0,
 			.byte 63,64,240,9,248,5,127,128,127,0,248,0,127,0,248,2,
 			.byte 253,0,255,0,255,0,253,0,255,0,253,2,
-
 
 			.word 0  ; safety pair of bytes for reading by POP B
 _burner_run_r1_0:
@@ -395,7 +375,6 @@ _burner_run_r1_0:
 			.byte 15,176,252,2,252,2,63,192,63,0,252,0,63,0,252,1,
 			.byte 254,0,255,0,255,0,254,0,255,0,254,1,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _burner_run_r1_1:
 			.byte 2, 0; offset_y, offset_x
@@ -410,7 +389,6 @@ _burner_run_r1_1:
 			.byte 1,0,253,0,1,124,253,0,255,0,3,112,3,0,255,0,
 			.byte 3,172,255,0,255,0,15,176,15,0,255,0,15,64,255,0,
 			.byte 255,0,191,0,191,0,255,0,191,64,255,0,
-
 
 			.word 0  ; safety pair of bytes for reading by POP B
 _burner_run_r1_2:
@@ -432,7 +410,6 @@ _burner_run_r1_2:
 			.byte 255,0,255,0,195,16,255,0,255,0,239,0,255,0,255,0,
 			.byte 239,0,255,0,255,0,239,16,255,0,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _burner_run_r1_3:
 			.byte 2, 1; offset_y, offset_x
@@ -447,7 +424,6 @@ _burner_run_r1_3:
 			.byte 31,0,208,0,31,192,208,7,240,7,63,0,63,0,240,0,
 			.byte 63,192,240,10,240,11,255,0,255,0,240,0,255,0,240,4,
 			.byte 251,0,255,0,255,0,251,0,255,0,251,4,
-
 
 			.word 0  ; safety pair of bytes for reading by POP B
 _burner_run_r2_0:
@@ -464,7 +440,6 @@ _burner_run_r2_0:
 			.byte 15,48,248,4,248,5,63,192,63,0,248,0,63,0,248,2,
 			.byte 253,0,255,0,255,0,253,0,255,0,253,2,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _burner_run_r2_1:
 			.byte 1, 0; offset_y, offset_x
@@ -479,7 +454,6 @@ _burner_run_r2_1:
 			.byte 1,0,251,0,1,124,251,0,254,0,3,240,3,0,254,0,
 			.byte 3,12,254,1,254,1,15,112,15,0,254,0,15,128,254,0,
 			.byte 255,0,127,0,127,0,255,0,127,128,255,0,
-
 
 			.word 0  ; safety pair of bytes for reading by POP B
 _burner_run_r2_2:
@@ -501,7 +475,6 @@ _burner_run_r2_2:
 			.byte 255,0,255,0,131,32,255,0,255,0,223,0,255,0,255,0,
 			.byte 223,0,255,0,255,0,223,32,255,0,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _burner_run_r2_3:
 			.byte 1, 1; offset_y, offset_x
@@ -516,7 +489,6 @@ _burner_run_r2_3:
 			.byte 31,0,176,0,31,192,176,7,224,15,63,0,63,0,224,0,
 			.byte 63,192,224,16,224,23,255,0,255,0,224,0,255,0,224,8,
 			.byte 247,0,255,0,255,0,247,0,255,0,247,8,
-
 
 			.word 0  ; safety pair of bytes for reading by POP B
 _burner_run_r3_0:
@@ -533,7 +505,6 @@ _burner_run_r3_0:
 			.byte 15,48,252,3,252,2,63,192,63,0,252,0,63,0,252,1,
 			.byte 254,0,255,0,255,0,254,0,255,0,254,1,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _burner_run_r3_1:
 			.byte 0, 0; offset_y, offset_x
@@ -548,7 +519,6 @@ _burner_run_r3_1:
 			.byte 1,0,253,0,1,124,253,0,255,0,3,112,3,0,255,0,
 			.byte 3,204,255,0,255,0,15,176,15,0,255,0,15,64,255,0,
 			.byte 255,0,191,0,191,0,255,0,191,64,255,0,
-
 
 			.word 0  ; safety pair of bytes for reading by POP B
 _burner_run_r3_2:
@@ -570,7 +540,6 @@ _burner_run_r3_2:
 			.byte 255,0,255,0,195,16,255,0,255,0,239,0,255,0,255,0,
 			.byte 239,0,255,0,255,0,239,16,255,0,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _burner_run_r3_3:
 			.byte 0, 1; offset_y, offset_x
@@ -585,7 +554,6 @@ _burner_run_r3_3:
 			.byte 31,0,208,0,31,192,208,7,240,7,63,0,63,0,240,0,
 			.byte 63,192,240,12,240,11,255,0,255,0,240,0,255,0,240,4,
 			.byte 251,0,255,0,255,0,251,0,255,0,251,4,
-
 
 			.word 0  ; safety pair of bytes for reading by POP B
 _burner_run_l0_0:
@@ -602,7 +570,6 @@ _burner_run_l0_0:
 			.byte 63,64,240,10,248,6,127,128,127,0,248,0,127,0,248,1,
 			.byte 254,0,255,0,255,0,254,0,255,0,254,1,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _burner_run_l0_1:
 			.byte 1, 0; offset_y, offset_x
@@ -617,7 +584,6 @@ _burner_run_l0_1:
 			.byte 7,0,248,0,7,224,248,3,252,1,15,224,15,0,252,0,
 			.byte 15,144,252,2,254,1,31,160,31,0,254,0,31,64,254,0,
 			.byte 255,0,191,0,191,0,255,0,191,64,255,0,
-
 
 			.word 0  ; safety pair of bytes for reading by POP B
 _burner_run_l0_2:
@@ -634,7 +600,6 @@ _burner_run_l0_2:
 			.byte 3,164,255,0,255,0,135,104,135,0,255,0,135,16,255,0,
 			.byte 255,0,239,0,239,0,255,0,239,16,255,0,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _burner_run_l0_3:
 			.byte 1, 1; offset_y, offset_x
@@ -649,7 +614,6 @@ _burner_run_l0_3:
 			.byte 127,0,128,0,127,0,128,62,192,30,255,0,255,0,192,0,
 			.byte 255,0,192,41,225,26,255,0,255,0,225,0,255,0,225,4,
 			.byte 251,0,255,0,255,0,251,0,255,0,251,4,
-
 
 			.word 0  ; safety pair of bytes for reading by POP B
 _burner_run_l1_0:
@@ -666,7 +630,6 @@ _burner_run_l1_0:
 			.byte 63,64,240,13,252,3,63,64,63,0,252,0,63,128,252,0,
 			.byte 255,0,127,0,127,0,255,0,127,128,255,0,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _burner_run_l1_1:
 			.byte 2, 0; offset_y, offset_x
@@ -681,7 +644,6 @@ _burner_run_l1_1:
 			.byte 11,0,248,0,11,224,248,3,252,0,15,224,15,0,252,0,
 			.byte 15,80,252,3,255,0,15,208,15,0,255,0,15,32,255,0,
 			.byte 255,0,223,0,223,0,255,0,223,32,255,0,
-
 
 			.word 0  ; safety pair of bytes for reading by POP B
 _burner_run_l1_2:
@@ -698,7 +660,6 @@ _burner_run_l1_2:
 			.byte 3,212,255,0,255,0,195,52,195,0,255,0,195,8,255,0,
 			.byte 255,0,247,0,247,0,255,0,247,8,255,0,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _burner_run_l1_3:
 			.byte 2, 1; offset_y, offset_x
@@ -713,7 +674,6 @@ _burner_run_l1_3:
 			.byte 191,0,128,0,191,0,128,62,192,14,255,0,255,0,192,0,
 			.byte 255,0,192,53,240,13,255,0,255,0,240,0,255,0,240,2,
 			.byte 253,0,255,0,255,0,253,0,255,0,253,2,
-
 
 			.word 0  ; safety pair of bytes for reading by POP B
 _burner_run_l2_0:
@@ -730,7 +690,6 @@ _burner_run_l2_0:
 			.byte 31,32,240,12,252,3,31,160,31,0,252,0,31,64,252,0,
 			.byte 255,0,191,0,191,0,255,0,191,64,255,0,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _burner_run_l2_1:
 			.byte 1, 0; offset_y, offset_x
@@ -745,7 +704,6 @@ _burner_run_l2_1:
 			.byte 13,0,248,0,13,224,248,3,252,0,7,240,7,0,252,0,
 			.byte 7,8,252,3,255,0,7,232,7,0,255,0,7,16,255,0,
 			.byte 255,0,239,0,239,0,255,0,239,16,255,0,
-
 
 			.word 0  ; safety pair of bytes for reading by POP B
 _burner_run_l2_2:
@@ -767,7 +725,6 @@ _burner_run_l2_2:
 			.byte 255,0,255,0,193,4,255,0,255,0,251,0,255,0,255,0,
 			.byte 251,0,255,0,255,0,251,4,255,0,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _burner_run_l2_3:
 			.byte 1, 1; offset_y, offset_x
@@ -782,7 +739,6 @@ _burner_run_l2_3:
 			.byte 223,0,128,0,223,0,128,62,192,15,127,0,127,0,192,0,
 			.byte 127,128,192,48,240,14,127,128,127,0,240,0,127,0,240,1,
 			.byte 254,0,255,0,255,0,254,0,255,0,254,1,
-
 
 			.word 0  ; safety pair of bytes for reading by POP B
 _burner_run_l3_0:
@@ -799,7 +755,6 @@ _burner_run_l3_0:
 			.byte 63,192,240,12,252,3,63,64,63,0,252,0,63,128,252,0,
 			.byte 255,0,127,0,127,0,255,0,127,128,255,0,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _burner_run_l3_1:
 			.byte 0, 0; offset_y, offset_x
@@ -814,7 +769,6 @@ _burner_run_l3_1:
 			.byte 11,0,248,0,11,224,248,3,252,0,15,224,15,0,252,0,
 			.byte 15,48,252,3,255,0,15,208,15,0,255,0,15,32,255,0,
 			.byte 255,0,223,0,223,0,255,0,223,32,255,0,
-
 
 			.word 0  ; safety pair of bytes for reading by POP B
 _burner_run_l3_2:
@@ -831,7 +785,6 @@ _burner_run_l3_2:
 			.byte 3,204,255,0,255,0,195,52,195,0,255,0,195,8,255,0,
 			.byte 255,0,247,0,247,0,255,0,247,8,255,0,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _burner_run_l3_3:
 			.byte 0, 1; offset_y, offset_x
@@ -846,4 +799,3 @@ _burner_run_l3_3:
 			.byte 191,0,128,0,191,0,128,62,192,14,255,0,255,0,192,0,
 			.byte 255,0,192,51,240,13,255,0,255,0,240,0,255,0,240,2,
 			.byte 253,0,255,0,255,0,253,0,255,0,253,2,
-

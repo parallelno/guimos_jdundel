@@ -16,7 +16,6 @@ _hero_l_idle0_0:
 			.byte 15,224,240,7,15,0,240,0,248,0,31,0,31,0,248,0,
 			.byte 31,224,248,7,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _hero_l_idle0_1:
 			.byte 0, 0; offset_y, offset_x
@@ -34,7 +33,6 @@ _hero_l_idle0_1:
 			.byte 7,240,248,3,7,0,248,0,252,0,15,0,15,0,252,0,
 			.byte 15,240,252,3,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _hero_l_idle0_2:
 			.byte 0, 0; offset_y, offset_x
@@ -51,7 +49,6 @@ _hero_l_idle0_2:
 			.byte 240,1,0,248,0,0,240,0,0,7,240,14,252,2,3,4,
 			.byte 3,248,252,1,3,0,252,0,254,0,7,0,7,0,254,0,
 			.byte 7,248,254,1,
-
 
 			.word 0  ; safety pair of bytes for reading by POP B
 _hero_l_idle0_3:
@@ -75,7 +72,6 @@ _hero_l_idle0_3:
 			.byte 255,0,1,252,254,0,255,0,1,0,254,0,255,0,3,0,
 			.byte 255,0,255,0,3,0,255,0,255,0,3,252,255,0,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _hero_l_idle0_4:
 			.byte 0, 0; offset_y, offset_x
@@ -97,7 +93,6 @@ _hero_l_idle0_4:
 			.byte 0,0,252,0,63,192,0,129,252,3,255,0,0,129,255,0,
 			.byte 255,0,0,126,255,0,255,0,0,0,255,0,255,0,129,0,
 			.byte 255,0,255,0,129,0,255,0,255,0,129,126,255,0,
-
 
 			.word 0  ; safety pair of bytes for reading by POP B
 _hero_l_idle0_5:
@@ -121,7 +116,6 @@ _hero_l_idle0_5:
 			.byte 127,0,128,63,255,0,127,0,128,0,255,0,255,0,192,0,
 			.byte 255,0,255,0,192,0,255,0,255,0,192,63,255,0,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _hero_l_idle0_6:
 			.byte 0, 0; offset_y, offset_x
@@ -144,7 +138,6 @@ _hero_l_idle0_6:
 			.byte 63,128,192,31,255,0,63,0,192,0,255,0,255,0,224,0,
 			.byte 127,0,127,0,224,0,255,0,127,128,224,31,255,0,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _hero_l_idle0_7:
 			.byte 0, 1; offset_y, offset_x
@@ -161,7 +154,6 @@ _hero_l_idle0_7:
 			.byte 128,15,7,192,7,0,128,0,7,56,128,112,224,16,31,32,
 			.byte 31,192,224,15,31,0,224,0,240,0,63,0,63,0,240,0,
 			.byte 63,192,240,15,
-
 
 			.word 0  ; safety pair of bytes for reading by POP B
 _hero_l_run0_0:
@@ -180,7 +172,6 @@ _hero_l_run0_0:
 			.byte 3,32,192,0,3,192,192,7,240,0,15,0,15,224,240,7,
 			.byte 15,16,240,8,248,7,31,224,31,0,248,0,31,0,248,0,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _hero_l_run0_1:
 			.byte 0, 0; offset_y, offset_x
@@ -198,7 +189,6 @@ _hero_l_run0_1:
 			.byte 1,16,224,0,1,224,224,3,248,0,7,0,7,240,248,3,
 			.byte 7,8,248,4,252,3,15,240,15,0,252,0,15,0,252,0,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _hero_l_run0_2:
 			.byte 0, 0; offset_y, offset_x
@@ -215,7 +205,6 @@ _hero_l_run0_2:
 			.byte 224,0,0,0,0,255,224,15,0,0,224,16,240,14,0,7,
 			.byte 0,8,240,0,0,240,240,1,252,0,3,0,3,248,252,1,
 			.byte 3,4,252,2,254,1,7,248,7,0,254,0,7,0,254,0,
-
 
 			.word 0  ; safety pair of bytes for reading by POP B
 _hero_l_run0_3:
@@ -240,7 +229,6 @@ _hero_l_run0_3:
 			.byte 255,0,255,0,1,252,254,0,255,0,1,2,254,1,255,0,
 			.byte 3,252,255,0,255,0,3,0,255,0,255,0,3,0,255,0,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _hero_l_run0_4:
 			.byte 0, 0; offset_y, offset_x
@@ -263,7 +251,6 @@ _hero_l_run0_4:
 			.byte 63,0,0,2,252,0,63,0,0,124,252,0,255,0,0,0,
 			.byte 255,0,255,0,0,126,255,0,255,0,0,129,255,0,255,0,
 			.byte 129,126,255,0,255,0,129,0,255,0,255,0,129,0,255,0,
-
 
 			.word 0  ; safety pair of bytes for reading by POP B
 _hero_l_run0_5:
@@ -288,7 +275,6 @@ _hero_l_run0_5:
 			.byte 127,0,127,0,128,63,255,0,127,128,128,64,255,0,255,0,
 			.byte 192,63,255,0,255,0,192,0,255,0,255,0,192,0,255,0,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _hero_l_run0_6:
 			.byte 0, 0; offset_y, offset_x
@@ -312,7 +298,6 @@ _hero_l_run0_6:
 			.byte 63,0,63,128,192,31,255,0,63,64,192,32,255,0,255,0,
 			.byte 224,31,127,128,127,0,224,0,255,0,127,0,224,0,255,0,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _hero_l_run0_7:
 			.byte 0, 1; offset_y, offset_x
@@ -329,7 +314,6 @@ _hero_l_run0_7:
 			.byte 0,0,3,0,3,248,0,127,3,4,0,128,128,112,7,56,
 			.byte 7,64,128,0,7,128,128,15,224,0,31,0,31,192,224,15,
 			.byte 31,32,224,16,240,15,63,192,63,0,240,0,63,0,240,0,
-
 
 			.word 0  ; safety pair of bytes for reading by POP B
 _hero_l_run1_0:
@@ -348,7 +332,6 @@ _hero_l_run1_0:
 			.byte 3,32,192,0,3,192,192,7,240,0,15,0,15,224,240,7,
 			.byte 15,16,240,8,248,7,31,224,31,0,248,0,31,0,248,0,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _hero_l_run1_1:
 			.byte 0, 0; offset_y, offset_x
@@ -366,7 +349,6 @@ _hero_l_run1_1:
 			.byte 1,16,224,0,1,224,224,3,248,0,7,0,7,240,248,3,
 			.byte 7,8,248,4,252,3,15,240,15,0,252,0,15,0,252,0,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _hero_l_run1_2:
 			.byte 0, 0; offset_y, offset_x
@@ -383,7 +365,6 @@ _hero_l_run1_2:
 			.byte 224,0,0,0,0,255,224,15,0,0,224,16,240,14,0,7,
 			.byte 0,8,240,0,0,240,240,1,252,0,3,0,3,248,252,1,
 			.byte 3,4,252,2,254,1,7,248,7,0,254,0,7,0,254,0,
-
 
 			.word 0  ; safety pair of bytes for reading by POP B
 _hero_l_run1_3:
@@ -408,7 +389,6 @@ _hero_l_run1_3:
 			.byte 255,0,255,0,1,252,254,0,255,0,1,2,254,1,255,0,
 			.byte 3,252,255,0,255,0,3,0,255,0,255,0,3,0,255,0,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _hero_l_run1_4:
 			.byte 0, 0; offset_y, offset_x
@@ -431,7 +411,6 @@ _hero_l_run1_4:
 			.byte 63,0,0,2,252,0,63,0,0,124,252,0,255,0,0,0,
 			.byte 255,0,255,0,0,126,255,0,255,0,0,129,255,0,255,0,
 			.byte 129,126,255,0,255,0,129,0,255,0,255,0,129,0,255,0,
-
 
 			.word 0  ; safety pair of bytes for reading by POP B
 _hero_l_run1_5:
@@ -456,7 +435,6 @@ _hero_l_run1_5:
 			.byte 127,0,127,0,128,63,255,0,127,128,128,64,255,0,255,0,
 			.byte 192,63,255,0,255,0,192,0,255,0,255,0,192,0,255,0,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _hero_l_run1_6:
 			.byte 0, 0; offset_y, offset_x
@@ -480,7 +458,6 @@ _hero_l_run1_6:
 			.byte 63,0,63,128,192,31,255,0,63,64,192,32,255,0,255,0,
 			.byte 224,31,127,128,127,0,224,0,255,0,127,0,224,0,255,0,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _hero_l_run1_7:
 			.byte 0, 1; offset_y, offset_x
@@ -497,7 +474,6 @@ _hero_l_run1_7:
 			.byte 0,0,3,0,3,248,0,127,3,4,0,128,128,112,7,56,
 			.byte 7,64,128,0,7,128,128,15,224,0,31,0,31,192,224,15,
 			.byte 31,32,224,16,240,15,63,192,63,0,240,0,63,0,240,0,
-
 
 			.word 0  ; safety pair of bytes for reading by POP B
 _hero_l_run2_0:
@@ -516,7 +492,6 @@ _hero_l_run2_0:
 			.byte 15,224,240,7,15,0,240,0,248,0,31,0,31,0,248,0,
 			.byte 31,224,248,7,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _hero_l_run2_1:
 			.byte 0, 0; offset_y, offset_x
@@ -534,7 +509,6 @@ _hero_l_run2_1:
 			.byte 7,240,248,3,7,0,248,0,252,0,15,0,15,0,252,0,
 			.byte 15,240,252,3,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _hero_l_run2_2:
 			.byte 0, 0; offset_y, offset_x
@@ -551,7 +525,6 @@ _hero_l_run2_2:
 			.byte 240,1,0,240,0,8,240,0,0,7,240,14,252,2,3,4,
 			.byte 3,248,252,1,3,0,252,0,254,0,7,0,7,0,254,0,
 			.byte 7,248,254,1,
-
 
 			.word 0  ; safety pair of bytes for reading by POP B
 _hero_l_run2_3:
@@ -575,7 +548,6 @@ _hero_l_run2_3:
 			.byte 255,0,1,252,254,0,255,0,1,0,254,0,255,0,3,0,
 			.byte 255,0,255,0,3,0,255,0,255,0,3,252,255,0,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _hero_l_run2_4:
 			.byte 0, 0; offset_y, offset_x
@@ -597,7 +569,6 @@ _hero_l_run2_4:
 			.byte 0,2,252,0,63,192,0,129,252,3,255,0,0,129,255,0,
 			.byte 255,0,0,126,255,0,255,0,0,0,255,0,255,0,129,0,
 			.byte 255,0,255,0,129,0,255,0,255,0,129,126,255,0,
-
 
 			.word 0  ; safety pair of bytes for reading by POP B
 _hero_l_run2_5:
@@ -621,7 +592,6 @@ _hero_l_run2_5:
 			.byte 127,0,128,63,255,0,127,0,128,0,255,0,255,0,192,0,
 			.byte 255,0,255,0,192,0,255,0,255,0,192,63,255,0,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _hero_l_run2_6:
 			.byte 0, 0; offset_y, offset_x
@@ -644,7 +614,6 @@ _hero_l_run2_6:
 			.byte 63,128,192,31,255,0,63,0,192,0,255,0,255,0,224,0,
 			.byte 127,0,127,0,224,0,255,0,127,128,224,31,255,0,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _hero_l_run2_7:
 			.byte 0, 1; offset_y, offset_x
@@ -661,7 +630,6 @@ _hero_l_run2_7:
 			.byte 128,15,7,128,7,64,128,0,7,56,128,112,224,16,31,32,
 			.byte 31,192,224,15,31,0,224,0,240,0,63,0,63,0,240,0,
 			.byte 63,192,240,15,
-
 
 			.word 0  ; safety pair of bytes for reading by POP B
 _hero_l_run3_0:
@@ -680,7 +648,6 @@ _hero_l_run3_0:
 			.byte 15,224,240,7,15,0,240,0,248,0,31,0,31,0,248,0,
 			.byte 31,224,248,7,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _hero_l_run3_1:
 			.byte 0, 0; offset_y, offset_x
@@ -698,7 +665,6 @@ _hero_l_run3_1:
 			.byte 7,240,248,3,7,0,248,0,252,0,15,0,15,0,252,0,
 			.byte 15,240,252,3,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _hero_l_run3_2:
 			.byte 0, 0; offset_y, offset_x
@@ -715,7 +681,6 @@ _hero_l_run3_2:
 			.byte 240,1,0,240,0,8,240,0,0,7,240,14,252,2,3,4,
 			.byte 3,248,252,1,3,0,252,0,254,0,7,0,7,0,254,0,
 			.byte 7,248,254,1,
-
 
 			.word 0  ; safety pair of bytes for reading by POP B
 _hero_l_run3_3:
@@ -739,7 +704,6 @@ _hero_l_run3_3:
 			.byte 255,0,1,252,254,0,255,0,1,0,254,0,255,0,3,0,
 			.byte 255,0,255,0,3,0,255,0,255,0,3,252,255,0,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _hero_l_run3_4:
 			.byte 0, 0; offset_y, offset_x
@@ -761,7 +725,6 @@ _hero_l_run3_4:
 			.byte 0,2,252,0,63,192,0,129,252,3,255,0,0,129,255,0,
 			.byte 255,0,0,126,255,0,255,0,0,0,255,0,255,0,129,0,
 			.byte 255,0,255,0,129,0,255,0,255,0,129,126,255,0,
-
 
 			.word 0  ; safety pair of bytes for reading by POP B
 _hero_l_run3_5:
@@ -785,7 +748,6 @@ _hero_l_run3_5:
 			.byte 127,0,128,63,255,0,127,0,128,0,255,0,255,0,192,0,
 			.byte 255,0,255,0,192,0,255,0,255,0,192,63,255,0,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _hero_l_run3_6:
 			.byte 0, 0; offset_y, offset_x
@@ -808,7 +770,6 @@ _hero_l_run3_6:
 			.byte 63,128,192,31,255,0,63,0,192,0,255,0,255,0,224,0,
 			.byte 127,0,127,0,224,0,255,0,127,128,224,31,255,0,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _hero_l_run3_7:
 			.byte 0, 1; offset_y, offset_x
@@ -825,7 +786,6 @@ _hero_l_run3_7:
 			.byte 128,15,7,128,7,64,128,0,7,56,128,112,224,16,31,32,
 			.byte 31,192,224,15,31,0,224,0,240,0,63,0,63,0,240,0,
 			.byte 63,192,240,15,
-
 
 			.word 0  ; safety pair of bytes for reading by POP B
 _hero_l_attk0_0:
@@ -844,7 +804,6 @@ _hero_l_attk0_0:
 			.byte 3,0,248,2,3,120,248,0,252,0,7,0,7,0,252,0,
 			.byte 7,248,252,3,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _hero_l_attk0_1:
 			.byte 0, 0; offset_y, offset_x
@@ -861,7 +820,6 @@ _hero_l_attk0_1:
 			.byte 240,0,0,224,0,0,240,0,0,255,240,15,252,2,1,254,
 			.byte 1,0,252,1,1,60,252,0,254,0,3,0,3,0,254,0,
 			.byte 3,252,254,1,
-
 
 			.word 0  ; safety pair of bytes for reading by POP B
 _hero_l_attk0_2:
@@ -885,7 +843,6 @@ _hero_l_attk0_2:
 			.byte 255,0,0,128,254,0,255,0,0,30,254,0,255,0,1,0,
 			.byte 255,0,255,0,1,0,255,0,255,0,1,254,255,0,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _hero_l_attk0_3:
 			.byte 0, 0; offset_y, offset_x
@@ -907,7 +864,6 @@ _hero_l_attk0_3:
 			.byte 0,0,252,0,63,192,0,255,252,3,255,0,0,191,127,128,
 			.byte 127,0,0,64,255,0,127,0,0,15,255,0,255,0,128,0,
 			.byte 255,0,255,0,128,0,255,0,255,0,128,127,255,0,
-
 
 			.word 0  ; safety pair of bytes for reading by POP B
 _hero_l_attk0_4:
@@ -931,7 +887,6 @@ _hero_l_attk0_4:
 			.byte 63,0,128,32,255,0,63,128,128,7,255,0,255,0,192,0,
 			.byte 127,0,127,0,192,0,255,0,127,128,192,63,255,0,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _hero_l_attk0_5:
 			.byte 0, 0; offset_y, offset_x
@@ -954,7 +909,6 @@ _hero_l_attk0_5:
 			.byte 31,0,192,16,255,0,31,192,192,3,255,0,255,0,224,0,
 			.byte 63,0,63,0,224,0,255,0,63,192,224,31,255,0,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _hero_l_attk0_6:
 			.byte 0, 1; offset_y, offset_x
@@ -971,7 +925,6 @@ _hero_l_attk0_6:
 			.byte 128,7,7,0,7,0,128,0,7,248,128,127,224,23,15,240,
 			.byte 15,0,224,8,15,224,224,1,240,0,31,0,31,0,240,0,
 			.byte 31,224,240,15,
-
 
 			.word 0  ; safety pair of bytes for reading by POP B
 _hero_l_attk0_7:
@@ -990,7 +943,6 @@ _hero_l_attk0_7:
 			.byte 7,0,240,4,7,240,240,0,248,0,15,0,15,0,248,0,
 			.byte 15,240,248,7,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _hero_l_attk1_0:
 			.byte 0, 0; offset_y, offset_x
@@ -1007,7 +959,6 @@ _hero_l_attk1_0:
 			.byte 192,7,3,224,3,0,192,0,3,28,192,56,240,8,15,16,
 			.byte 15,224,240,7,15,0,240,0,248,0,31,0,31,0,248,0,
 			.byte 31,224,248,7,
-
 
 			.word 0  ; safety pair of bytes for reading by POP B
 _hero_l_attk1_1:
@@ -1026,7 +977,6 @@ _hero_l_attk1_1:
 			.byte 7,240,248,3,7,0,248,0,252,0,15,0,15,0,252,0,
 			.byte 15,240,252,3,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _hero_l_attk1_2:
 			.byte 0, 0; offset_y, offset_x
@@ -1043,7 +993,6 @@ _hero_l_attk1_2:
 			.byte 240,1,0,248,0,0,240,0,0,7,240,14,252,2,3,4,
 			.byte 3,248,252,1,3,0,252,0,254,0,7,0,7,0,254,0,
 			.byte 7,248,254,1,
-
 
 			.word 0  ; safety pair of bytes for reading by POP B
 _hero_l_attk1_3:
@@ -1067,7 +1016,6 @@ _hero_l_attk1_3:
 			.byte 255,0,1,252,254,0,255,0,1,0,254,0,255,0,3,0,
 			.byte 255,0,255,0,3,0,255,0,255,0,3,252,255,0,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _hero_l_attk1_4:
 			.byte 0, 0; offset_y, offset_x
@@ -1089,7 +1037,6 @@ _hero_l_attk1_4:
 			.byte 0,0,252,0,63,192,0,129,252,3,255,0,0,129,255,0,
 			.byte 255,0,0,126,255,0,255,0,0,0,255,0,255,0,129,0,
 			.byte 255,0,255,0,129,0,255,0,255,0,129,126,255,0,
-
 
 			.word 0  ; safety pair of bytes for reading by POP B
 _hero_l_attk1_5:
@@ -1113,7 +1060,6 @@ _hero_l_attk1_5:
 			.byte 127,0,128,63,255,0,127,0,128,0,255,0,255,0,192,0,
 			.byte 255,0,255,0,192,0,255,0,255,0,192,63,255,0,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _hero_l_attk1_6:
 			.byte 0, 0; offset_y, offset_x
@@ -1136,7 +1082,6 @@ _hero_l_attk1_6:
 			.byte 63,128,192,31,255,0,63,0,192,0,255,0,255,0,224,0,
 			.byte 127,0,127,0,224,0,255,0,127,128,224,31,255,0,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _hero_l_attk1_7:
 			.byte 0, 1; offset_y, offset_x
@@ -1153,4 +1098,3 @@ _hero_l_attk1_7:
 			.byte 128,15,7,192,7,0,128,0,7,56,128,112,224,16,31,32,
 			.byte 31,192,224,15,31,0,224,0,240,0,63,0,63,0,240,0,
 			.byte 63,192,240,15,
-

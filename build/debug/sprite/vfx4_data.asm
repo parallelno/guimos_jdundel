@@ -13,7 +13,6 @@ _vfx4_hit0_0:
 			.byte 239,16,247,8,239,16,247,8,239,16,247,8,247,8,239,16,
 			.byte 247,8,239,16,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _vfx4_hit0_1:
 			.byte 3, 0; offset_y, offset_x
@@ -27,7 +26,6 @@ _vfx4_hit0_1:
 			.byte 254,1,103,152,103,152,254,1,103,144,254,0,253,0,251,0,
 			.byte 251,4,253,2,251,4,253,2,251,4,253,2,253,2,251,4,
 			.byte 253,2,251,4,
-
 
 			.word 0  ; safety pair of bytes for reading by POP B
 _vfx4_hit0_2:
@@ -43,7 +41,6 @@ _vfx4_hit0_2:
 			.byte 126,129,255,0,126,129,255,0,254,1,255,0,255,0,254,1,
 			.byte 255,0,254,1,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _vfx4_hit0_3:
 			.byte 3, 1; offset_y, offset_x
@@ -57,7 +54,6 @@ _vfx4_hit0_3:
 			.byte 230,25,127,128,127,128,230,25,127,0,230,9,223,0,191,0,
 			.byte 191,64,223,32,191,64,223,32,191,64,223,32,223,32,191,64,
 			.byte 223,32,191,64,
-
 
 			.word 0  ; safety pair of bytes for reading by POP B
 _vfx4_hit1_0:
@@ -73,7 +69,6 @@ _vfx4_hit1_0:
 			.byte 239,104,247,22,239,120,247,30,239,24,247,24,247,24,239,24,
 			.byte 247,16,239,8,255,0,255,0,255,4,255,32,255,4,255,32,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _vfx4_hit1_1:
 			.byte 2, 0; offset_y, offset_x
@@ -87,7 +82,6 @@ _vfx4_hit1_1:
 			.byte 254,3,103,252,103,244,254,2,103,104,254,1,253,6,251,150,
 			.byte 251,154,253,5,251,158,253,7,251,6,253,6,253,6,251,6,
 			.byte 253,4,251,2,255,0,255,0,255,1,255,8,255,1,255,8,
-
 
 			.word 0  ; safety pair of bytes for reading by POP B
 _vfx4_hit1_2:
@@ -103,7 +97,6 @@ _vfx4_hit1_2:
 			.byte 126,102,255,1,126,231,255,1,254,1,255,129,255,129,254,1,
 			.byte 255,129,254,0,255,0,255,0,255,0,255,2,255,0,255,2,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _vfx4_hit1_3:
 			.byte 2, 1; offset_y, offset_x
@@ -117,7 +110,6 @@ _vfx4_hit1_3:
 			.byte 230,63,127,192,127,64,230,47,127,128,230,22,223,105,191,96,
 			.byte 191,160,223,89,191,224,223,121,191,96,223,96,223,96,191,96,
 			.byte 223,64,191,32,255,0,255,0,255,16,255,128,255,16,255,128,
-
 
 			.word 0  ; safety pair of bytes for reading by POP B
 _vfx4_hit2_0:
@@ -135,7 +127,6 @@ _vfx4_hit2_0:
 			.byte 255,15,255,240,255,240,255,15,255,48,255,12,255,3,255,192,
 			.byte 255,192,255,3,255,192,255,3,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _vfx4_hit2_1:
 			.byte 1, 0; offset_y, offset_x
@@ -151,7 +142,6 @@ _vfx4_hit2_1:
 			.byte 251,1,253,8,251,4,253,2,253,14,251,7,253,14,251,7,
 			.byte 255,3,255,252,255,252,255,3,255,12,255,3,255,0,255,240,
 			.byte 255,240,255,0,255,240,255,0,
-
 
 			.word 0  ; safety pair of bytes for reading by POP B
 _vfx4_hit2_2:
@@ -169,7 +159,6 @@ _vfx4_hit2_2:
 			.byte 255,0,255,255,255,255,255,0,255,195,255,0,255,0,255,60,
 			.byte 255,60,255,0,255,60,255,0,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _vfx4_hit2_3:
 			.byte 1, 1; offset_y, offset_x
@@ -185,7 +174,6 @@ _vfx4_hit2_3:
 			.byte 191,16,223,128,191,64,223,32,223,224,191,112,223,224,191,112,
 			.byte 255,63,255,192,255,192,255,63,255,192,255,48,255,15,255,0,
 			.byte 255,0,255,15,255,0,255,15,
-
 
 			.word 0  ; safety pair of bytes for reading by POP B
 _vfx4_hit3_0:
@@ -204,7 +192,6 @@ _vfx4_hit3_0:
 			.byte 255,4,255,32,255,4,255,32,255,24,255,24,255,24,255,24,
 			.byte 255,0,255,0,255,0,255,0,255,64,255,2,255,64,255,2,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _vfx4_hit3_1:
 			.byte 0, 0; offset_y, offset_x
@@ -221,7 +208,6 @@ _vfx4_hit3_1:
 			.byte 251,0,253,0,253,0,251,0,253,0,251,0,255,0,255,0,
 			.byte 255,1,255,8,255,1,255,8,255,6,255,6,255,6,255,6,
 			.byte 255,0,255,0,255,0,255,0,255,144,255,0,255,144,255,0,
-
 
 			.word 0  ; safety pair of bytes for reading by POP B
 _vfx4_hit3_2:
@@ -240,7 +226,6 @@ _vfx4_hit3_2:
 			.byte 255,0,255,2,255,0,255,2,255,1,255,129,255,129,255,1,
 			.byte 255,0,255,0,255,0,255,0,255,36,255,0,255,36,255,0,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _vfx4_hit3_3:
 			.byte 0, 1; offset_y, offset_x
@@ -258,7 +243,6 @@ _vfx4_hit3_3:
 			.byte 255,16,255,128,255,16,255,128,255,96,255,96,255,96,255,96,
 			.byte 255,0,255,0,255,0,255,0,255,0,255,9,255,0,255,9,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _vfx4_hero_death1_0:
 			.byte 0, 0; offset_y, offset_x
@@ -273,7 +257,6 @@ _vfx4_hero_death1_0:
 			.byte 7,224,192,15,7,248,192,63,224,31,15,240,15,128,224,15,
 			.byte 15,112,224,16,240,15,127,128,127,0,240,0,127,128,240,15,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _vfx4_hero_death1_1:
 			.byte 0, 0; offset_y, offset_x
@@ -287,7 +270,6 @@ _vfx4_hero_death1_1:
 			.byte 248,7,1,254,1,252,248,3,1,2,248,4,240,12,1,6,
 			.byte 1,248,240,3,1,254,240,15,248,7,3,252,3,224,248,3,
 			.byte 3,28,248,4,252,3,31,224,31,0,252,0,31,224,252,3,
-
 
 			.word 0  ; safety pair of bytes for reading by POP B
 _vfx4_hero_death1_2:
@@ -308,7 +290,6 @@ _vfx4_hero_death1_2:
 			.byte 255,0,0,7,254,1,255,0,7,248,255,0,255,0,7,0,
 			.byte 255,0,255,0,7,248,255,0,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _vfx4_hero_death1_3:
 			.byte 0, 0; offset_y, offset_x
@@ -328,7 +309,6 @@ _vfx4_hero_death1_3:
 			.byte 63,192,128,65,255,0,255,0,193,62,255,0,255,0,193,0,
 			.byte 255,0,255,0,193,62,255,0,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _vfx4_hero_death2_0:
 			.byte 0, 0; offset_y, offset_x
@@ -340,7 +320,6 @@ _vfx4_hero_death2_0:
 			.byte 7,240,224,15,7,248,224,31,224,31,15,240,15,224,224,7,
 			.byte 15,16,224,24,240,15,31,224,31,0,240,0,31,224,240,15,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _vfx4_hero_death2_1:
 			.byte 0, 0; offset_y, offset_x
@@ -351,7 +330,6 @@ _vfx4_hero_death2_1:
 			.byte 248,7,0,255,0,254,248,3,0,1,248,4,248,4,1,2,
 			.byte 1,252,248,3,1,254,248,7,248,7,3,252,3,248,248,1,
 			.byte 3,4,248,6,252,3,7,248,7,0,252,0,7,248,252,3,
-
 
 			.word 0  ; safety pair of bytes for reading by POP B
 _vfx4_hero_death2_2:
@@ -367,7 +345,6 @@ _vfx4_hero_death2_2:
 			.byte 255,0,255,0,0,126,254,0,255,0,0,129,254,1,255,0,
 			.byte 1,254,255,0,255,0,1,0,255,0,255,0,1,254,255,0,
 
-
 			.word 0  ; safety pair of bytes for reading by POP B
 _vfx4_hero_death2_3:
 			.byte 0, 0; offset_y, offset_x
@@ -381,4 +358,3 @@ _vfx4_hero_death2_3:
 			.byte 31,192,128,63,255,0,31,224,128,127,255,0,255,0,128,127,
 			.byte 63,192,63,128,128,31,255,0,63,64,128,96,255,0,255,0,
 			.byte 192,63,127,128,127,0,192,0,255,0,127,128,192,63,255,0,
-

@@ -7,15 +7,20 @@ TILE_IMG_TILE_LEN = TILED_IMG_TILE_H * TILED_IMG_SCR_BUFFS + 2 ; 8*4 bytes + a c
 REPEATER_CODE = $FF
 
 
-; init the tiled image drawing
+; init the tiled image idx data
 ; in:
 ; a - idxs data ram-disk activation command
-; c - gfx data ram-disk activation command
-; de - idx data addr (points to the addr where it was loaded)
-; hl - gfx data addr (points to the addr where it was loaded)
-tiled_img_init:
+; hl - idx data addr (points to the addr where it was loaded)
+tiled_img_init_idxs:
 			sta tiled_img_draw_ramdisk_access_idxs + 1
-			mov a, c
+			shld tiled_img_draw_data_addr + 1
+			ret
+
+; init the tiled image gfx
+; in:
+; a - gfx data ram-disk activation command
+; hl - gfx data addr (points to the addr where it was loaded)
+tiled_img_init_gfx:
 			sta tiled_img_draw_ramdisk_access_gfx + 1
 			; -TILE_IMG_TILE_LEN because there is no tile_gfx associated with idx = 0
 			; + PALETTE_LEN because the pallete is palette stored before gfx data
@@ -23,8 +28,6 @@ tiled_img_init:
 			LXI_B(-TILE_IMG_TILE_LEN + PALETTE_LEN + 4)
 			dad b
 			shld tiled_img_draw_gfx_addr + 1
-			xchg
-			shld tiled_img_draw_data_addr + 1
 			ret
 
 ;----------------------------------------------------------------
