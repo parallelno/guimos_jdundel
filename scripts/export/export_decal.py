@@ -158,7 +158,7 @@ def lists_of_sprites_ptrs_to_asm(label_prefix, asset_name, asset_j):
 	
 	asm = ""
 
-	asm += f"{asset_name}_gfx_ptrs:\n"
+	asm += f"_{asset_name}_gfx_ptrs:\n"
 	ptrs = 0
 	for list_name in asset_j["lists"]:
 		list_j = asset_j["lists"][list_name]

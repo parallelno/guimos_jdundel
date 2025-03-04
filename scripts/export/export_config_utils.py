@@ -232,10 +232,15 @@ def get_load_asm(load_name, allocation, segments):
 					asm += f"			mvi a, {const_ram_disk_s}\n"
 					asm += f"			lxi h, {const_addr}\n"
 					asm += f"			call text_ex_init_text\n"
+
+				case build.ASSET_TYPE_TEXT_RUS:
+					asm += f"			mvi a, {const_ram_disk_s}\n"
+					asm += f"			lxi h, {const_addr}\n"
+					asm += f"			call text_ex_init_text\n"					
 				
 				case build.ASSET_TYPE_MUSIC:
 					asm += f"			lxi d, {const_addr}\n"
-					asm += f"			lxi h, {NAME}_ay_reg_data_ptrs\n"
+					asm += f"			lxi h, _{name_low}_ay_reg_data_ptrs\n"
 					asm += f"			call v6_gc_init_song\n"
 					asm += f"			CALL_RAM_DISK_FUNC_NO_RESTORE(v6_gc_start, {const_ram_disk_s} | {const_ram_disk_m} | RAM_DISK_M_8F)\n"
 
@@ -262,7 +267,17 @@ def get_load_asm(load_name, allocation, segments):
 				case build.ASSET_TYPE_TILED_IMG_GFX:
 					asm += f"			mvi a, {const_ram_disk_s}\n"
 					asm += f"			lxi h, {const_addr}\n"
-					asm += f"			call tiled_img_init_gfx\n"					
+					asm += f"			call tiled_img_init_gfx\n"
+
+				case build.ASSET_TYPE_DECAL:
+					asm += f"			lxi h, _{name_low}_gfx_ptrs\n"
+					asm += f"			lxi b, {const_addr}\n"
+					asm += f"			call update_labels_eod\n"
+
+				case build.ASSET_TYPE_DECAL:
+					asm += f"			lxi d, _{name_low}_preshifted_sprites\n"
+					asm += f"			lxi h, {const_addr}\n"
+					asm += f"			call sprite_update_labels\n"
 
 			
 			asm += f"\n"

@@ -27,16 +27,16 @@ game_init:
 			;======================
 			; DECALS0
 			;======================
-			lxi h, decals0_gfx_ptrs
-			lxi b, DECALS0_ADDR		
-			call update_labels_eod
+			// lxi h, decals0_gfx_ptrs
+			// lxi b, DECALS0_ADDR		
+			// call update_labels_eod
 
 			;======================
 			; BACKS0
 			;======================
-			lxi d, _backs0_preshifted_sprites
-			lxi h, BACKS0_ADDR
-			call sprite_update_labels 
+			// lxi d, _backs0_preshifted_sprites
+			// lxi h, BACKS0_ADDR
+			// call sprite_update_labels 
 			;======================
 			; LV0 room 0
 			;======================

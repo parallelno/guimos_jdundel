@@ -50,6 +50,7 @@ def export_asm(asset_j_path, asm_meta_path, asm_data_path, bin_path, clean_tmp =
 
 	# save the asm
 	label_prefix = common.path_to_basename(bin_path).upper()
+	label_prefix_low = common.path_to_basename(asset_j_path)
 	
 	with open(asm_data_path, "w") as file_inc:
 		# task stacks
@@ -81,9 +82,9 @@ def export_asm(asset_j_path, asm_meta_path, asm_data_path, bin_path, clean_tmp =
 
 	# reg_data ptrs. 
 	addr = 0
-	ptrs = f'{label_prefix}_ay_reg_data_ptrs:\n			.word '
+	ptrs = f'_{label_prefix_low}_ay_reg_data_ptrs:\n			.word '
 	for i, reg_data_len in enumerate(ay_reg_data_lens):
-		label_name = f'_{label_prefix}_ay_reg_data{i:02d}'
+		label_name = f'_{label_prefix_low}_ay_reg_data{i:02d}'
 		ay_reg_data_ptrs += f'{label_name} = {addr}\n'
 		ptrs += f'{label_name}, '
 		addr += reg_data_len 

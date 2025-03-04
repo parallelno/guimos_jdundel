@@ -43,7 +43,7 @@ _decals0_chest_small_opened = 3870
 _decals0_chest_big_opened = 3976
 _decals0_chest_weapon0_opened = 4112
 
-decals0_gfx_ptrs:
+_decals0_gfx_ptrs:
 _decals_walkable_gfx_ptrs: .word _decals0_bones, _decals0_skull, 
 
 _decals_collidable_gfx_ptrs: .word _decals0_web1, 

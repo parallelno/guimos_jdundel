@@ -106,6 +106,9 @@ Permanent load: 1624, Current Load: 125158, Free Space: 85946
 			RAM_DISK_S_DECALS0 = RAM_DISK_S0
 			DECALS0_ADDR = 27828
 			LOAD_FILE(DECALS0_FILENAME_PTR, RAM_DISK_S_DECALS0, DECALS0_ADDR, DECALS0_FILE_LEN)
+			lxi h, _decals0_gfx_ptrs
+			lxi b, DECALS0_ADDR
+			call update_labels_eod
 
 			RAM_DISK_M_BACKS0 = RAM_DISK_M0
 			RAM_DISK_S_BACKS0 = RAM_DISK_S0
@@ -181,7 +184,7 @@ Permanent load: 1624, Current Load: 125158, Free Space: 85946
 			SONG01_ADDR = 32768
 			LOAD_FILE(SONG01_FILENAME_PTR, RAM_DISK_S_SONG01, SONG01_ADDR, SONG01_FILE_LEN)
 			lxi d, SONG01_ADDR
-			lxi h, SONG01_ay_reg_data_ptrs
+			lxi h, _song01_ay_reg_data_ptrs
 			call v6_gc_init_song
 			CALL_RAM_DISK_FUNC_NO_RESTORE(v6_gc_start, RAM_DISK_S_SONG01 | RAM_DISK_M_SONG01 | RAM_DISK_M_8F)
 
