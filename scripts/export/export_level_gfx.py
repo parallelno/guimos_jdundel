@@ -3,7 +3,7 @@ from PIL import Image
 from pathlib import Path
 import json
 
-import export.level_utils as level_utils
+import export.export_level_utils as export_level_utils
 import utils.common as common
 import utils.common_gfx as common_gfx
 import utils.build as build
@@ -13,7 +13,7 @@ def export_if_updated(asset_j_path, asm_meta_path, asm_data_path, bin_path,
 	source_name = common.path_to_basename(asset_j_path)
 
 	if (force_export or 
-		level_utils.is_source_updated(asset_j_path, build.ASSET_TYPE_LEVEL_DATA)):
+		export_level_utils.is_source_updated(asset_j_path, build.ASSET_TYPE_LEVEL_DATA)):
 		
 		export_asm(asset_j_path, asm_meta_path, asm_data_path, bin_path)
 		print(f"export_tiled_img_gfx: {asset_j_path} got exported.")
@@ -65,7 +65,7 @@ def ram_disk_data_to_asm(level_j_path):
 			rooms_j.append(json.load(file))
 
 	# make a tile index remap dictionary, to have the first idx = 0
-	remap_idxs = level_utils.remap_index(rooms_j)
+	remap_idxs = export_level_utils.remap_index(rooms_j)
 
 	# list of tiles addreses
 	png_name = common.path_to_basename(path_png)
@@ -100,7 +100,7 @@ def ram_data_to_asm(level_j_path, data_ptrs, remap_idxs):
 	
 	png_name = common.path_to_basename(path_png)
 	asm += get_list_of_tiles(remap_idxs, "_" + level_name, png_name)
-	asm += f"{level_name.upper()}_TILES_PTRS_LEN = {len(remap_idxs)}\n"
+	asm += f"			.word EOD\n"
 
 	return asm
 
@@ -152,7 +152,7 @@ def gfx_to_asm(room_j, image, path, remap_idxs, label_prefix):
 		bytes3 = common.combine_bits_to_bytes(bits3) # E000-FFFF
 
 		# to support a tile render function
-		data, mask = level_utils.get_tiledata(bytes0, bytes1, bytes2, bytes3)
+		data, mask = export_level_utils.get_tiledata(bytes0, bytes1, bytes2, bytes3)
 
 		label = label_prefix + "_tile" + str(remap_idxs[t_idx])
 

@@ -387,6 +387,36 @@ get_word_from_ram_disk:
 .endf
 
 
+; converts the local ptrs into global adding the global offset
+; the the array data must ends with EOD
+; in:
+; hl - points to the array of local ptrs to the data
+; bc - the global offset
+
+; out:
+; hl - points to the last byte of EOD
+; bc - same
+update_labels_eod:
+@loop:
+			; read the local ptr
+			mov e, m
+			inx h
+			mov d, m
+			; ret if EOD
+			mov a, e
+			ora d
+			rz
+			xchg
+			dad b
+			xchg
+			; store the offseted addr
+			dcx h
+			mov m, e
+			inx h
+			mov m, d
+			inx h
+			jmp @loop
+
 ; converts the local labels into globals adding the global addr
 ; to the pointers in the array
 ; in:
@@ -397,9 +427,8 @@ get_word_from_ram_disk:
 ; hl - points to the next byte after the array
 ; c = 0
 ; de - same
-
-update_labels:
-@update_labels_loop:
+update_labels_len:
+@loop:
 			mov a, m
 			add e
 			mov m, a
@@ -410,9 +439,8 @@ update_labels:
 			inx h
 
 			dcr c
-			jnz @update_labels_loop
+			jnz @loop
 			ret
-
 
 ; Set the palette
 ; input: hl - the addr of the last item in the palette

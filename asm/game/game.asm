@@ -24,44 +24,36 @@ game_init:
 			load_permanent()
 			load_level0()
 
-
-			;======================
-			; LV0 room 0
-			;======================
-			lxi h, _lv0_tiles_ptrs
-			lxi d, LV0_GFX_ADDR		
-			lxi b, LV0_TILES_PTRS_LEN	
-			call update_labels
-
-			lxi h, _lv0_rooms_ptrs
-			lxi d, LV0_DATA_ADDR		
-			lxi b, LV0_ROOMS_PTRS_LEN	
-			call update_labels
-
-			lxi h, level00_init_tbls
-			lxi d, level_init_tbl
-			lxi b, level00_init_tbls_end
-			call mem_copy
-.breakpoint
-
-			call room_unpack
-			call room_init_tiles_gfx
-			call room_draw_tiles
-
 			;======================
 			; DECALS0
 			;======================
 			lxi h, decals0_gfx_ptrs
-			lxi d, DECALS0_ADDR			
-			lxi b, DECALS0_GFX_PTRS_LEN			
-			call update_labels
+			lxi b, DECALS0_ADDR		
+			call update_labels_eod
 
 			;======================
 			; BACKS0
 			;======================
 			lxi d, _backs0_preshifted_sprites
 			lxi h, BACKS0_ADDR
-			call sprite_update_labels
+			call sprite_update_labels 
+			;======================
+			; LV0 room 0
+			;======================
+			lxi h, _lv0_tiles_ptrs
+			lxi b, LV0_GFX_ADDR
+			call update_labels_eod
+
+			lxi h, _lv0_rooms_ptrs
+			lxi b, LV0_DATA_ADDR		
+			call update_labels_eod
+
+			lxi h, level00_init_tbls
+			lxi d, level_init_tbl
+			lxi b, level00_init_tbls_end
+			call mem_copy
+
+			call room_init
 
 			;======================
 			; SONG01
@@ -74,30 +66,21 @@ game_init:
 			;======================
 			; FONT
 			;======================
-
-			; init the text & font
+			; init font
+			mvi a, RAM_DISK_S_FONT
+			lxi h, font_gfx_ptrs
+			lxi b, FONT_ADDR
+			call text_ex_init_font
+			; init text
 			mvi a, RAM_DISK_S_TEXT_LV0
-			lxi b, (RAM_DISK_S_FONT<<8) | FONT_GFX_PTRS_LEN
 			lxi h, TEXT_LV0_ADDR
-			lxi d, font_gfx_ptrs
-			push d
-			lxi d, FONT_ADDR
-			push d
-			mvi e, >SCR_BUFF1_ADDR
-			call text_ex_init
+			call text_ex_init_text
 
 			; draw a test text
 			lxi d, _options_screen_settings_names
 			call text_ex_draw
 
 			ei
-
-			;======================
-			; preshift test hero_r_idle0
-			;======================
-			lxi d, _burner_preshifted_sprites
-			lxi h, BURNER_ADDR
-			call sprite_update_labels
 
 			;======================
 			; tiled img test
@@ -114,6 +97,10 @@ game_init:
 			;======================
 			; sprite test
 			;======================
+			lxi d, _burner_preshifted_sprites
+			lxi h, BURNER_ADDR
+			call sprite_update_labels
+
 		frame .var 0
 		shift .var 0
 @loop:

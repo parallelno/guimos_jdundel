@@ -70,6 +70,7 @@ def get_list_of_rooms(room_paths, label_prefix):
 	label = "_" + label_prefix + "_rooms_ptrs"
 	rooms_data_ptrs_len = len(room_paths) * (build.WORD_LEN + build.SAFE_WORD_LEN)
 	rooms_data_ptrs_len += build.SAFE_WORD_LEN
+	rooms_data_ptrs_len += 2 # EOD
 
 	asm = ""
 	asm += f"{label}:\n			.word "
@@ -77,9 +78,7 @@ def get_list_of_rooms(room_paths, label_prefix):
 	for room_path_p in room_paths:
 		room_path = room_path_p['path']
 		asm += get_room_data_label(room_path) + ", "
-
-	asm += "\n\n"
-	asm += f"{label_prefix.upper()}_ROOMS_PTRS_LEN = {len(room_paths)}\n"
+	asm += "\n			.word EOD\n"
 	asm += "\n"
 
 	return asm, label, rooms_data_ptrs_len

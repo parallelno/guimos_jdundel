@@ -66,4 +66,4 @@ _lv0_tile44 = 5394
 _lv0_tiles_ptrs:
 			.word _lv0_tile0, _lv0_tile1, _lv0_tile2, _lv0_tile3, _lv0_tile4, _lv0_tile5, _lv0_tile6, _lv0_tile7, _lv0_tile8, _lv0_tile9, _lv0_tile10, _lv0_tile11, _lv0_tile12, _lv0_tile13, _lv0_tile14, _lv0_tile15, _lv0_tile16, _lv0_tile17, _lv0_tile18, _lv0_tile19, _lv0_tile20, _lv0_tile21, _lv0_tile22, _lv0_tile23, _lv0_tile24, _lv0_tile25, _lv0_tile26, _lv0_tile27, _lv0_tile28, _lv0_tile29, _lv0_tile30, _lv0_tile31, _lv0_tile32, _lv0_tile33, _lv0_tile34, _lv0_tile35, _lv0_tile36, _lv0_tile37, _lv0_tile38, _lv0_tile39, _lv0_tile40, _lv0_tile41, _lv0_tile42, _lv0_tile43, _lv0_tile44, 
 
-LV0_TILES_PTRS_LEN = 45
+			.word EOD

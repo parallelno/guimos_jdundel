@@ -120,15 +120,11 @@ def gfx_ptrs_to_asm(label_prefix, asset_j, gfx_ptrs):
 	asm = ""
 
 	# if font_gfx_ptrs_rd == True, then add list of labels with relatives addresses
-	asm += "; relative labels. to make it global call update_labels\n"
 	for char_name in gfx_ptrs:
 		adjusted_char = get_char_label_postfix(char_name) 
 		asm += f"_{label_prefix}_{adjusted_char} = {gfx_ptrs[char_name]}\n"
 
 	asm += f"{label_prefix}_gfx_ptrs:\n"
-
-	gfx_ptrs_len = len(asset_j["gfx_ptrs"])
-	asm += f"{label_prefix.upper()}_GFX_PTRS_LEN = {gfx_ptrs_len}\n"
 	
 	numbers_in_line = 16 
 	for i, char_name in enumerate(asset_j["gfx_ptrs"]):
@@ -138,7 +134,7 @@ def gfx_ptrs_to_asm(label_prefix, asset_j, gfx_ptrs):
 			asm += "			.word "
 		adjusted_char = get_char_label_postfix(char_name)
 		asm += f"_{label_prefix}_{adjusted_char}, "
-
+	asm += "\n			.word EOD\n"
 	asm +="\n"
 
 	return asm

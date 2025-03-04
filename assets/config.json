@@ -25,13 +25,13 @@
 		"scripts" : [
 			"assets/config.json",
 			"scripts/export/export_config.py",
-			"scripts/export/config_utils.py",
+			"scripts/export/export_config_utils.py",
 			"scripts/build_and_run.py",
 			"scripts/utils/build.py",
 			"scripts/utils/common.py",
 			"scripts/utils/common_gfx.py",
-			"scripts/export/level_utils.py",
-			"scripts/export/tiled_img_utils.py"
+			"scripts/export/export_level_utils.py",
+			"scripts/export/export_tiled_img_utils.py"
 		]
 	},
 	"export_dir" :

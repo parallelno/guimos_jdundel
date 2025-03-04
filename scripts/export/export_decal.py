@@ -171,10 +171,9 @@ def lists_of_sprites_ptrs_to_asm(label_prefix, asset_name, asset_j):
 			ptrs += 1
 			#if i < len(list_j) -1:
 				#asm += "0, "
-	
 		asm += "\n\n"
 
-	asm = f"{asset_name.upper()}_GFX_PTRS_LEN = {ptrs}\n\n" + asm
+	asm += f"			.word EOD\n"
 
 	return asm
 

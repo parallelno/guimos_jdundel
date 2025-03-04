@@ -23,49 +23,44 @@ text_ex_set_spacing:
 			mov m, b
 			ret
 
-; init the text ex functionality
+; set what scr buffers to draw to (SCR_BUFF3_ADDR, SCR_BUFF2_ADDR, SCR_BUFF1_ADDR)			
 ; in:
-; a - text data ram-disk activation command
-; b - font gfx ram-disk activation command
-; c - low_byte - FONT_GFX_PTRS_LEN
-; hl - text data addr (points to the addr where it was loaded)
-; e - SCR_BUFF3_ADDR or SCR_BUFF2_ADDR or SCR_BUFF1_ADDR
-; stack0 - return addr
-; stack1 - font global gfx addr (points to the addr where it was loaded)
-; stack2 - font_gfx_ptrs
-
-text_ex_init:
-			; set text data ram-disk activation command
-			sta text_ex_draw_ramdisk_access_data + 1
-			; set font gfx ram-disk activation command
-			mov a, b
-			sta text_ex_draw_ramdisk_access_gfx + 1
-			; set what scr buffers to draw to (SCR_BUFF3_ADDR, SCR_BUFF2_ADDR, SCR_BUFF1_ADDR)			
-			mov a, e
+; a - SCR_BUFF3_ADDR or SCR_BUFF2_ADDR or SCR_BUFF1_ADDR
+text_ex_set_scr_addr:
 			sta text_ex_scr_buff_addr + 1
-			; set text data addr
-			shld text_ex_draw_data_addr + 1
-			; font global gfx addr
-			pop h ; func return addr
-			xthl
-			xchg
+			ret
 
-			mov a, c ; temporally store FONT_GFX_PTRS_LEN to A
-			
-			; font_gfx_ptrs
-			pop h ; func return addr
-			xthl
-			LXI_B(- ADDR_LEN)
-			dad b ; font_gfx_ptrs - ADDR_LEN ; because there is no char_code = 0
+; init the font gfx data
+; in:
+; a - font gfx ram-disk stack activation command
+; hl - font_gfx_ptrs
+; bc - font global gfx addr (points to where gfx was loaded)
+text_ex_init_font:
+			; set font gfx ram-disk stack activation command
+			sta text_ex_draw_ramdisk_access_gfx + 1			
+			; hl - font_gfx_ptrs
+			push h
+			; font_gfx_ptrs - ADDR_LEN because there is no char_code = 0
+			dcx h
+			dcx h
 			shld text_ex_draw_font_gfx_ptrs + 1
-			
-			mov c, a ; restore FONT_GFX_PTRS_LEN
+			pop h
 			
 			; update gfx local labels
-			; hl - font_gfx_ptrs
-			; de - font global gfx addr
-			; c - FONT_GFX_PTRS_LEN
-			call update_labels
+			; hl - font_gfx_ptrs with local ptrs
+			; bc - font global gfx addr
+			call update_labels_eod
+			ret
+
+; init the text data
+; in:
+; a - text data ram-disk activation command
+; hl - text data addr (points to the addr where it was loaded)
+text_ex_init_text:
+			; set text data ram-disk activation command
+			sta text_ex_draw_ramdisk_access_data + 1
+			; set text data addr
+			shld text_ex_draw_data_addr + 1
 			ret
 
 
@@ -229,7 +224,7 @@ text_ex_draw_font_gfx_ptrs:
 			ana d
 			RRC_(3)
 text_ex_scr_buff_addr:
-			adi TEMP_BYTE	; for ex. >SCR_BUFF1_ADDR
+			adi >SCR_BUFF1_ADDR
 			mov d, a
 
 			; draw a char

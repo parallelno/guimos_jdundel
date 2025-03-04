@@ -41,7 +41,7 @@ v6_gc_init_song:
 			; hl - points to the array of ptrs to the reg data
 			; de - points to the song data
 			mvi c, GC_TASKS
-			call update_labels
+			call update_labels_len
 			ret
 
 

@@ -133,7 +133,7 @@ sprite_update_labels:
 			; hl - points to the array of ptrs to the data
 			; de - the data addr
 			; c - the len of the array
-			call update_labels
+			call update_labels_len
 			pop psw
 			; if a < 0, we updated the last frame in the animation
 			ora a

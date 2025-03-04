@@ -3,7 +3,7 @@ from PIL import Image
 from pathlib import Path
 import json
 
-import export.tiled_img_utils as tiled_img_utils
+import export.export_tiled_img_utils as export_tiled_img_utils
 import utils.common as common
 import utils.common_gfx as common_gfx
 import utils.build as build
@@ -14,7 +14,7 @@ def export_if_updated(asset_j_path, asm_meta_path, asm_data_path, bin_path,
 	source_name = common.path_to_basename(asset_j_path)
 
 	if (force_export or
-		tiled_img_utils.is_source_updated(asset_j_path, build.ASSET_TYPE_TILED_IMG_DATA)):
+		export_tiled_img_utils.is_source_updated(asset_j_path, build.ASSET_TYPE_TILED_IMG_DATA)):
 
 		export_asm(asset_j_path, asm_meta_path, asm_data_path, bin_path)
 		print(f"export_tiled_img_gfx: {asset_j_path} got exported.")
@@ -68,15 +68,15 @@ def data_to_asm(tiled_img_j_path):
 		tiled_file_j = json.load(file)
 
 	# make a tile index remap dictionary, to have the first idx = 0
-	remap_idxs = tiled_img_utils.remap_indices(tiled_file_j)
+	remap_idxs = export_tiled_img_utils.remap_indices(tiled_file_j)
 
-	if len(remap_idxs) > tiled_img_utils.TILED_IMG_GFX_IDX_MAX:
-		build.exit_error(f'export_tiled_img ERROR: gfx_idxs > "{tiled_img_utils.TILED_IMG_GFX_IDX_MAX}", path: {source_j_path}')
+	if len(remap_idxs) > export_tiled_img_utils.TILED_IMG_GFX_IDX_MAX:
+		build.exit_error(f'export_tiled_img ERROR: gfx_idxs > "{export_tiled_img_utils.TILED_IMG_GFX_IDX_MAX}", path: {source_j_path}')
 
 	# list of tiles addreses
 	png_name = common.path_to_basename(path_png)
 	
 	# tile gfx data to asm
-	asm += tiled_img_utils.gfx_to_asm("_" + png_name, image, remap_idxs)
+	asm += export_tiled_img_utils.gfx_to_asm("_" + png_name, image, remap_idxs)
 
 	return asm

@@ -43,8 +43,6 @@ _decals0_chest_small_opened = 3870
 _decals0_chest_big_opened = 3976
 _decals0_chest_weapon0_opened = 4112
 
-DECALS0_GFX_PTRS_LEN = 45
-
 decals0_gfx_ptrs:
 _decals_walkable_gfx_ptrs: .word _decals0_bones, _decals0_skull, 
 
@@ -64,3 +62,4 @@ _containers_gfx_ptrs: .word _decals0_chest_small, _decals0_chest_big, _decals0_c
 
 _containers_opened_gfx_ptrs: .word _decals0_chest_small_opened, _decals0_chest_big_opened, _decals0_chest_weapon0_opened, 
 
+			.word EOD

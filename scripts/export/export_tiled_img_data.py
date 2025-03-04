@@ -2,7 +2,7 @@ import os
 from pathlib import Path
 import json
 
-import export.tiled_img_utils as tiled_img_utils
+import export.export_tiled_img_utils as export_tiled_img_utils
 import utils.common as common
 import utils.build as build
 
@@ -12,7 +12,7 @@ def export_if_updated(asset_j_path, asm_meta_path, asm_data_path, bin_path,
 	source_name = common.path_to_basename(asset_j_path)
 
 	if (force_export or
-		tiled_img_utils.is_source_updated(asset_j_path, build.ASSET_TYPE_TILED_IMG_DATA)):
+		export_tiled_img_utils.is_source_updated(asset_j_path, build.ASSET_TYPE_TILED_IMG_DATA)):
 
 		export_asm(asset_j_path, asm_meta_path, asm_data_path, bin_path)
 		print(f"export_tiled_img_data: {asset_j_path} got exported.")
@@ -72,7 +72,7 @@ def data_to_asm(tiled_img_j_path):
 
 
 	# make a tile index remap dictionary, to have the first idx = 0
-	remap_idxs = tiled_img_utils.remap_indices(tiled_file_j)
+	remap_idxs = export_tiled_img_utils.remap_indices(tiled_file_j)
 
 	for layer in tiled_file_j["layers"]:
 		layer_name = layer["name"]
@@ -82,19 +82,19 @@ def data_to_asm(tiled_img_j_path):
 		data = layer["data"]
 
 		# determine pos_x, pos_y, tiles_w, tiles_h
-		tile_first_x = tiled_img_utils.SCR_TILES_W # max
-		tile_first_y = tiled_img_utils.SCR_TILES_H # max
+		tile_first_x = export_tiled_img_utils.SCR_TILES_W # max
+		tile_first_y = export_tiled_img_utils.SCR_TILES_H # max
 
 		tile_last_x = -1 # min
 		tile_last_y = -1 # min
 
-		for t_y in range(tiled_img_utils.SCR_TILES_H):
+		for t_y in range(export_tiled_img_utils.SCR_TILES_H):
 
 			non_empty_tile_line = False
 
-			for t_x in range(tiled_img_utils.SCR_TILES_W):
+			for t_x in range(export_tiled_img_utils.SCR_TILES_W):
 
-				t_idx = data[t_y * tiled_img_utils.SCR_TILES_W + t_x]
+				t_idx = data[t_y * export_tiled_img_utils.SCR_TILES_W + t_x]
 
 				if t_idx != 0:
 					non_empty_tile_line = True
@@ -115,7 +115,7 @@ def data_to_asm(tiled_img_j_path):
 		idxs = []
 		for t_y in reversed(range(tile_first_y, tile_last_y + 1)):
 			for t_x in range(tile_first_x, tile_last_x + 1):
-				t_idx = data[t_y * tiled_img_utils.SCR_TILES_W + t_x]
+				t_idx = data[t_y * export_tiled_img_utils.SCR_TILES_W + t_x]
 				if t_idx > 0:
 					idxs.append(remap_idxs[t_idx])
 				else:
@@ -123,12 +123,12 @@ def data_to_asm(tiled_img_j_path):
 
 		label_name = "_" + base_name + "_" + layer_name
 		pos_x = tile_first_x
-		pos_y = (tiled_img_utils.SCR_TILES_H - tile_last_y - 1) * \
-				tiled_img_utils.IMG_TILE_W
+		pos_y = (export_tiled_img_utils.SCR_TILES_H - tile_last_y - 1) * \
+				export_tiled_img_utils.IMG_TILE_W
 		tiles_w = tile_last_x - tile_first_x + 1
 		tiles_h = tile_last_y - tile_first_y + 1
 
-		tiled_img_asm, tiled_img_len = tiled_img_utils.tile_idxs_to_asm(
+		tiled_img_asm, tiled_img_len = export_tiled_img_utils.tile_idxs_to_asm(
 				label_name, idxs, pos_x, pos_y, tiles_w, tiles_h) 
 
 		# add the tiled img local ptr
@@ -139,7 +139,7 @@ def data_to_asm(tiled_img_j_path):
 		asm += tiled_img_asm 
 
 		# check if the length of the image fits the requirements
-		if tiled_img_len > tiled_img_utils.TILED_IMG_IDXS_LEN_MAX:
-			build.exit_error(f'export_tiled_img ERROR: tiled image {layer_name} > "{tiled_img_utils.TILED_IMG_IDXS_LEN_MAX}", path: {tiled_img_j_path}')
+		if tiled_img_len > export_tiled_img_utils.TILED_IMG_IDXS_LEN_MAX:
+			build.exit_error(f'export_tiled_img ERROR: tiled image {layer_name} > "{export_tiled_img_utils.TILED_IMG_IDXS_LEN_MAX}", path: {tiled_img_j_path}')
 
 	return asm, img_idxs_ptrs

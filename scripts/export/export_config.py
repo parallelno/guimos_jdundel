@@ -3,7 +3,7 @@ import json
 
 from utils import build
 from utils import common
-from export import config_utils
+from export import export_config_utils
 from export import export_font
 from export import export_music
 from export import export_level_data
@@ -162,7 +162,7 @@ def export(config_j_path):
 
 
 	# export the code to load assets & a memory usage report
-	loads_path = config_utils.export_loads(config_j, assets, build_code_dir, build_bin_dir)
+	loads_path = export_config_utils.export_loads(config_j, assets, build_code_dir, build_bin_dir)
 
 	# export a build includes
 	export_build_includes(assets, [loads_path])
