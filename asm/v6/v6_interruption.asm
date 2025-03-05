@@ -65,13 +65,13 @@ palette_update_request_:
 			out 2
 			lda scr_offset_y
 			out 3
-			; used in the main program to keep the update synced with interuption
+			; used in the main program to keep the update synced with interruption
 @update_skipper:
 			mvi a, %01010101
 			rrc
 			sta @update_skipper+1
 			jnc @skip_update
-			lxi h, game_updates_required
+			lxi h, gameplay_updates_required
 			inr m
 @skip_update:
 			; fps update
@@ -117,5 +117,5 @@ ints_per_sec_counter:
 			.byte INTS_PER_SEC
 
 ; a lopped counter increased every game draw call
-game_draws_counter = interruption_fps + 1
+gameplay_draw_counter = interruption_fps + 1
 palette_update_request = palette_update_request_ + 1

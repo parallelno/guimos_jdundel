@@ -41,7 +41,7 @@ stats_screen_text_draw:
 			xchg
 			; hl - stats
 			lxi b, STATS_NUMBERS_SCR_ADDR
-			call draw_text_int16
+			call text_mono_draw_int16
 
 			; draw items stats 
 			mvi c, TILEDATA_FUNC_ID_ITEMS
@@ -49,7 +49,7 @@ stats_screen_text_draw:
 			xchg
 			; hl - stats
 			lxi b, STATS_NUMBERS_SCR_ADDR - END_GAME_LINE_SPACING * 1
-			call draw_text_int16
+			call text_mono_draw_int16
 
 			; draw coins stats 
 			mvi c, TILEDATA_FUNC_ID_RESOURCES
@@ -57,7 +57,7 @@ stats_screen_text_draw:
 			xchg
 			; hl - stats
 			lxi b, STATS_NUMBERS_SCR_ADDR - END_GAME_LINE_SPACING * 2
-			call draw_text_int16
+			call text_mono_draw_int16
 
 			; draw containers stats 
 			mvi c, TILEDATA_FUNC_ID_CONTAINERS
@@ -65,7 +65,7 @@ stats_screen_text_draw:
 			xchg
 			; hl - stats
 			lxi b, STATS_NUMBERS_SCR_ADDR - END_GAME_LINE_SPACING * 3
-			call draw_text_int16
+			call text_mono_draw_int16
 
 			; draw doors stats 
 			mvi c, TILEDATA_FUNC_ID_DOORS
@@ -73,7 +73,7 @@ stats_screen_text_draw:
 			xchg
 			; hl - stats
 			lxi b, STATS_NUMBERS_SCR_ADDR - END_GAME_LINE_SPACING * 4
-			call draw_text_int16
+			call text_mono_draw_int16
 
 			; draw breakables stats 
 			mvi c, TILEDATA_FUNC_ID_BREAKABLES
@@ -81,14 +81,14 @@ stats_screen_text_draw:
 			xchg
 			; hl - stats
 			lxi b, STATS_NUMBERS_SCR_ADDR - END_GAME_LINE_SPACING * 5
-			call draw_text_int16
+			call text_mono_draw_int16
 
 			; TODO: add stats of the secret rooms entered
 
 			; draw total stats
 			lxi h, game_ui_score_txt
 			lxi b, STATS_NUMBERS_SCR_ADDR - END_GAME_LINE_SPACING * 7
-			jmp draw_text
+			jmp text_mono_draw
 
 stats_screen_init:
 			call screen_simple_init

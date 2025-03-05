@@ -149,7 +149,7 @@ sprite_copy_to_scr_v:
 			lxi h, $2000-height+2-1
 	.endif
 			dad sp
-			; set sp to a safe place, because an interuption break can happen
+			; set sp to a safe place, because an interruption break can happen
 			; between sta and out $10 in RAM_DISK_ON(RAM_DISK_S_BACKBUFF) in the code above
 			lxi sp, STACK_INTERRUPTION_ADDR
 

@@ -1,3 +1,4 @@
+	; this line for VSCode proper formating
 ;=======================================================
 ; Ports
 ;=======================================================
@@ -36,7 +37,9 @@ SCR_BUFF3_ADDR			= 0xE000
 SCR_BUFF_LEN            = 0x2000
 SCR_BUFFS_LEN			= SCR_BUFF_LEN * 4
 BACK_BUFF_ADDR          = 0xA000
+BACK_BUFF_LEN           = SCR_BUFF_LEN * 3
 BACK_BUFF2_ADDR         = 0xA000
+BACK_BUFF2_LEN          = SCR_BUFF_LEN * 3
 
 ;=======================================================
 ; Sprite

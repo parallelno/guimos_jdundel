@@ -89,7 +89,7 @@ settings_screen_init:
 
 settings_screen_text_draw:
 			lxi b, (<SETTINGS_PARAG_SPACING)<<8 | <SETTINGS_LINE_SPACING
-			call text_ex_rd_set_spacing
+			call text_ex_set_spacing
 
 @text_pos		.var  SETTINGS_POS
 			; SETTINGS TITLE
@@ -172,6 +172,28 @@ setting_sfx_val_draw:
 			; draw a setting value
 			;lxi b, SETTINGS_SETTING_VAL_POS_X<<8 | <@text_pos
 			call text_ex_draw
+			ret
+
+; erase a block in the screen buff
+; in:
+; hl - scr_addr
+; b - width/8
+; c - height
+erase_screen_block:
+			mov a, c
+			add l
+			mov c, l
+@loop:
+			mvi m, 0
+			inr l
+			cmp l
+			jnz @loop
+			
+			inr h
+			mov l, c
+
+			dcr b
+			jnz @loop
 			ret
 
 setting_controls_val_draw:

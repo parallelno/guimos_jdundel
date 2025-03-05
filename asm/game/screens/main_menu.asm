@@ -54,7 +54,7 @@ main_menu_back_draw:
 
 			@line_spacing = <(-SETTING_LINE_SPACING)
 			lxi b, @line_spacing<<8 | @line_spacing
-			call text_ex_rd_set_spacing
+			call text_ex_set_spacing
 			; draw main menu settings
 			;lxi h, SETTING_POS
 			lxi d, _main_menu_settings

@@ -47,7 +47,7 @@ fill_buff_black:
 
 reset_game_updates_required_counter:
 			A_TO_ZERO(NULL)
-			sta game_updates_required
+			sta gameplay_updates_required
 			ret
 
 ; pause the main programm

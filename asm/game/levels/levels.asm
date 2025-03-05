@@ -90,9 +90,6 @@ level_init:
 ; copy a palette from the ram-disk, then request for using it
 level_init_palette:
 			lhld level_palette_ptr
-			xchg
-			lxi h, level_ram_disk_s_gfx
-			mov h, m
 			jmp copy_palette_request_update
 
 level_update:

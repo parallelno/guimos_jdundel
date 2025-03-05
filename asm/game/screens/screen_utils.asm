@@ -11,17 +11,11 @@ screen_space_checking:
 
 screen_simple_init:
 			; clear the screen
-			A_TO_ZERO(RAM_DISK_OFF_CMD)
-			lxi b, 0
-			lxi d, SCR_BUFF_LEN * 4 / 32 - 1
-			call clear_mem_sp
+			MEM_ERASE_SP(SCR_ADDR, SCR_BUFFS_LEN)
 			; clear the backbuffer2
-			mvi a, RAM_DISK_S_BACKBUFF
-			lxi b, 0
-			lxi d, SCR_BUFF_LEN * 3 / 32 - 1
-			call clear_mem_sp
+			MEM_ERASE_SP(BACK_BUFF_ADDR, BACK_BUFF_LEN, RAM_DISK_S_BACKBUFF)
 
-			mvi a, BORDER_COLOT_IDX
+			mvi a, BORDER_COLOR_IDX
 			sta border_color_idx
 
 			; erase backs buffs
@@ -50,9 +44,9 @@ screen_simple_init:
 			ret
 
 screen_palette_and_frame:
-			lxi d, _ti0_palette
-			mvi h, <RAM_DISK_S_TILED_IMAGES_GFX
-			call copy_palette_request_update
+			lxi h, TI0_GFX_ADDR + WORD_LEN ; WORD_LEN because it's the palette local offset
+			mvi a, RAM_DISK_S_TI0_GFX
+			call copy_palette_request_update_rd
 
 			; back1
 			lxi d, _ti0_main_menu_back1
@@ -70,7 +64,7 @@ screen_simple_update:
 			inr m
 
 @loop:
-			CHECK_GAME_UPDATE_COUNTER(game_updates_required)
+			CHECK_GAME_UPDATE_COUNTER(gameplay_updates_required)
 
 @spec_update_func:
 			call TEMP_ADDR
@@ -85,9 +79,9 @@ screen_simple_update:
 
 screen_simple_draw:
 			; update counter to calc fps
-			lhld game_draws_counter
+			lhld gameplay_draw_counter
 			inx h
-			shld game_draws_counter
+			shld gameplay_draw_counter
 
 			; draw funcs
 			call backs_draw

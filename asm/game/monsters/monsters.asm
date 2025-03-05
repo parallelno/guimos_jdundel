@@ -1,5 +1,5 @@
 .include "asm/game/monsters/monsters_data.asm"
-.include "asm/game/monsters/monster_macro.asm"
+.include "asm/game/monsters/monster_macros.asm"
 .include "asm/game/monsters/skeleton.asm"
 .include "asm/game/monsters/skeleton_quest.asm"
 .include "asm/game/monsters/vampire.asm"

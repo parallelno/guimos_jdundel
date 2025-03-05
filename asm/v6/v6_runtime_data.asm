@@ -43,7 +43,7 @@ palette:			.storage PALETTE_LEN
 border_color_idx:	.storage BYTE_LEN
 scr_offset_y:		.storage BYTE_LEN
 ; it is used to check how many updates needs to happened to sync with interruptions
-game_updates_required:
+gameplay_updates_required:
 			.storage BYTE_LEN
 
 ;=============================================================================

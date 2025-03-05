@@ -125,80 +125,6 @@ mem_copy:
 			jnz @loop
 			ret
 
-/*
-;========================================
-; copy a memory buffer (ram to ram-disk)
-; !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-; !!! IT CORRUPTS TWO BYTES BEFORE THE BUFFER !!!
-; !!!        IF INTERRUPTIONS ARE ENABLED     !!!
-; !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
-; in:
-; de - source
-; hl - destination + len
-; bc - len. len must be divisible by 2
-; a - ram-disk activation command
-
-; prep: 228cc
-; copy a word: 64-96cc
-; TODO: optimization: unroll the loop 4 or more times, 
-mem_copy_to_ram_disk_bc_len:
-			shld mem_copy_to_ram_disk_dest + 1
-			; store sp
-			lxi h, $0000
-			dad sp
-			shld restore_sp + 1	
-			; hl += de + bc
-			; bc = de
-			xchg
-			push h
-			dad b
-			pop b
-			; bc - source
-			; hl - source + len
-			; mem_copy_to_ram_disk_dest+1 - destination + len
-			jmp mem_copy_to_ram_disk_mapping
-
-; in:
-; de - source + len. len must be divisible by 2
-; hl - destination + len
-; bc - source
-; a - ram-disk activation command
-; prep: 108cc
-; copy a word: 64 - 64+32=96cc
-; copy 128 bytes: 108 + 64*64 + 32 = 4236cc
-; copy 256 bytes: 108 + 64*128 + 32 = 8332cc
-; copy 1024*24 bytes: 108 + 64*1024*12 + 32*96 = 789,612cc
-mem_copy_to_ram_disk:
-			shld mem_copy_to_ram_disk_dest + 1
-			; store sp
-			lxi h, $0000
-			dad sp
-			shld restore_sp + 1
-mem_copy_to_ram_disk_mapping:
-			RAM_DISK_ON_BANK()
-			
-mem_copy_to_ram_disk_dest:
-			lxi sp, TEMP_ADDR
-			xchg
-			; bc - source			
-			; hl - source + len
-			; sp - destination + len
-@loop2:
-			mov a, c
-@loop:
-			; copy a word to ram-disk
-			MEM_COPY_WORD()
-			; check the end
-			cmp l
-			jnz @loop
-			mov a, b
-			cmp h
-			jnz @loop2
-			jmp restore_sp
-
-
-*/
 ;========================================
 ; copy a memory buffer (ram to ram-disk)
 ; !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -469,18 +395,34 @@ set_palette_int:			; call it from an interruption routine
 			ret
 
 
-; Copy the pallete, then request for using it
+; Copy the pallete, 
+; then request for using it
 ; in:
 ; hl - palette addr
 ; uses: bc, de, hl, a
-.function copy_palette_request_update()
+copy_palette_request_update:
 			lxi d, palette
 			lxi b, PALETTE_LEN
 			call mem_copy_bc_len
 			lxi h, palette_update_request
 			mvi m, PALETTE_UPD_REQ_YES
-			;ret
-.endf
+			ret
+
+; TODO: think of storing all palettes in one place, ram or ram-disk
+; that will unify copy_palette_request_update and copy_palette_request_update_rd
+; Copy the pallete from the ram-disk,
+; then request for using it
+; in:
+; a - ram-disk activation command
+; hl - palette addr
+; uses: bc, de, hl, a
+copy_palette_request_update_rd:
+			lxi d, palette
+			lxi b, PALETTE_LEN
+			call mem_copy_from_ram_disk
+			lxi h, palette_update_request
+			mvi m, PALETTE_UPD_REQ_YES
+			ret
 
 
 ; empty func

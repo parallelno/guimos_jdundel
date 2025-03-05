@@ -127,7 +127,7 @@ text_mono_draw_int8:
 			lxi h, text_mono_buff_len2
 			jmp text_mono_draw
 
-; draw int8 as an acii text
+; draw int16 as an acii text
 ; in:
 ; bc - scr addr
 ; hl - int16
@@ -175,7 +175,7 @@ text_mono_draw:
 			; DE - scr addr
 			mov d, b
 			mov e, c
-			; load BC to prevent an interuption func to corrupt the font data
+			; load BC to prevent an interruption func to corrupt the font data
 			mov c, m
 			inx h
 			mov b, m
