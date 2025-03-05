@@ -29,16 +29,15 @@ hero_respawn:
 
 			; setup a hero pos
 			lhld level_start_pos_ptr
-			xchg
-			lda level_ram_disk_s_data
-			call get_word_from_ram_disk
-			; set pos
-			; b - pos_x
-			; c - pos_y		
-			mov a, b
-			sta hero_pos_x+1
-			mov a, c
-			sta hero_pos_y+1
+			; hl - points to .byte pos_y, pos_x
+			mov a, m
+			inx h
+			mov h, m
+			; ha - pos_xy
+			mvi l, 0
+			shld hero_pos_x
+			mov h, a
+			shld hero_pos_y
 			ret
 
 hero_room_init:

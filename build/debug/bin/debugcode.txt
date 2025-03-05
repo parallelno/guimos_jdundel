@@ -10812,14 +10812,14 @@ $6f7e f3         di
 $6f7f cd 20 0b   call $0b20
 $6f82 cd 31 24   call $2431
 $6f85 cd 4b 24   call $244b
-$6f88 21 fa 45   lxi h,$45fa
-$6f8b 11 3d 26   lxi d,$263d
-$6f8e 01 0a 46   lxi b,$460a
-$6f91 cd 84 03   call $0384
-$6f94 cd eb 67   call $67eb
-$6f97 11 b3 00   lxi d,$00b3
-$6f9a cd 22 07   call $0722
-$6f9d fb         ei
+$6f88 fb         ei
+$6f89 21 fa 45   lxi h,$45fa
+$6f8c 11 3d 26   lxi d,$263d
+$6f8f 01 0a 46   lxi b,$460a
+$6f92 cd 84 03   call $0384
+$6f95 cd eb 67   call $67eb
+$6f98 11 b3 00   lxi d,$00b3
+$6f9b cd 22 07   call $0722
 $6f9e 11 9f 01   lxi d,$019f
 $6fa1 cd 42 18   call $1842
 $6fa4 2a 81 1f   lhld $1f81
