@@ -64,9 +64,6 @@ temp_buff:				.storage TEMP_BUFF_LEN
 ; global states
 ;
 global_states:
-; stores a request to manage the game and main_menu states
-global_request:			.storage BYTE_LEN
-
 
 ; the current room idx of the current level
 room_id:				.storage BYTE_LEN ; in the range [0, ROOMS_MAX-1]

@@ -12,13 +12,17 @@ game_start:
 			; prepare to return back from the screen
 			lxi h, @loop
 			push h
-			lda global_request
-			HL_TO_AX2_PLUS_INT16(global_funcs) ; because GLOBAL_REQ_NONE is excluded from main_screens_call_ptrs
+			; read the global func
+global_request: = * + 1
+			lxi h, GLOBAL_REQ_MAIN_MENU
+			lxi b, global_funcs
+			dad h
+			dad b
 			mov e, m
 			inx h
 			mov d, m
-			
 			xchg
+			; call a global func
 			pchl
 
 global_funcs:

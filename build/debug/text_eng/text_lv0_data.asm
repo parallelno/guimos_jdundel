@@ -14,7 +14,7 @@ _EOD_ = 0
 			.word 0 ; safety pair of bytes for reading by POP B
 _main_menu_settings:
 			.word 36 ; data len to copy to ram
-			.byte 100, 100 ; scr pos (y, x)
+			.byte 131, 96 ; scr pos (y, x)
 			TEXT("START GAME", _LINE_BREAK_)
 			TEXT("OPTIONS", _LINE_BREAK_)
 			TEXT("SCORES", _LINE_BREAK_)
@@ -24,7 +24,7 @@ _main_menu_settings:
 			.word 0 ; safety pair of bytes for reading by POP B
 _main_menu_license:
 			.word 42 ; data len to copy to ram
-			.byte 0, 0 ; scr pos (y, x)
+			.byte 32, 26 ; scr pos (y, x)
 			TEXT("2023. Developed by Fedotovskikh family", )
 
 ;===================================================================================

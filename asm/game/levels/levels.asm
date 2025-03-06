@@ -80,7 +80,7 @@ level_init:
 			; reset room_id
 			lhld room_id
 			mvi l, ROOM_ID_0
-			mvi a, GLOBAL_REQ_NONE
+			A_TO_ZERO(GLOBAL_REQ_NONE)
 			call room_teleport
 			
 			call room_init

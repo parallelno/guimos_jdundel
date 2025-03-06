@@ -83,6 +83,7 @@ screen_simple_draw:
 			inx h
 			shld gameplay_draw_counter
 
+.breakpoint
 			; draw funcs
 			call backs_draw
 			call bullets_draw

@@ -339,7 +339,7 @@
 			; c - preshifted sprite idx*2 offset
 			call sprite_get_addr
 			
-			CALL_RAM_DISK_FUNC(sprite_draw_vm, RAM_DISK_S | RAM_DISK_M_8F)
+			CALL_RAM_DISK_FUNC(sprite_draw_vm, RAM_DISK_S | RAM_DISK_M_BACKBUFF | RAM_DISK_M_8F)
 			pop h			
 			inx h
 			; d - width

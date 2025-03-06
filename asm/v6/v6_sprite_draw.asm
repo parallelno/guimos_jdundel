@@ -24,7 +24,7 @@ draw_sprite_width_height:
 ; offset_x in bytes
 ; offset_y in pixels
 ; it uses sp to read the sprite data
-; ex. CALL_RAM_DISK_FUNC(sprite_draw_vm, RAM_DISK_S_BURNER)
+; ex. CALL_RAM_DISK_FUNC(sprite_draw_vm, RAM_DISK_S_BURNER | RAM_DISK_M_BACKBUFF | RAM_DISK_M_8F )
 ; in:
 ; bc - sprite data
 ; de - screen addr

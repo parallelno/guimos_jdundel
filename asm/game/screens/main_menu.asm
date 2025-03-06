@@ -1,7 +1,6 @@
 MAIN_MENU_CURSOR_POS_X		= $5800 ; .word
 MAIN_MENU_CURSOR_POS_Y_MAX	= $8100 ; .word
 
-SETTING_POS = $6083
 SETTING_LINE_SPACING = 18
 SETTING_PARAG_SPACING = 18
 
@@ -56,13 +55,10 @@ main_menu_back_draw:
 			lxi b, @line_spacing<<8 | @line_spacing
 			call text_ex_set_spacing
 			; draw main menu settings
-			;lxi h, SETTING_POS
 			lxi d, _main_menu_settings
 			call text_ex_draw
 
 			; draw licensing
-			@licensing_pos = $1a20			
-			;lxi h, @licensing_pos
 			lxi d, _main_menu_license
 			call text_ex_draw
 			ret
@@ -193,9 +189,9 @@ main_menu_cursor_update:
 			add c
 			CLAMP_A(<main_scr_vfx_pos_max1)
 			mov c, a
-			jmp @vfx_init
+			;jmp @vfx_init
 
-@vfx_init:
+@vfx_init:  
 			lxi d, _vfx_reward
 			jmp vfx_init
 @space_handling:
