@@ -2,8 +2,8 @@
 ; asm data file: build/debug/back/backs0_data.asm
 ; bin file: build/debug/bin/BACKS0.BIN
 
-BACKS0_FILE_LEN = 600
-BACKS0_LAST_RECORD_LEN = 88
+BACKS0_FILE_LEN = 620
+BACKS0_LAST_RECORD_LEN = 108
 
 BACKS0_FILENAME_PTR:
 			.byte "BACKS0" ; filename

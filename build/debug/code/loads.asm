@@ -20,8 +20,7 @@ Ram-disk usage:
 	BURNER.BIN: addr: 9870, len: 9030
 	SWORD.BIN: addr: 18900, len: 8928
 	DECALS0.BIN: addr: 27828, len: 4266
-	BACKS0.BIN: addr: 32094, len: 600
-Used: 32694, Free: 8
+Used: 32094, Free: 608
 
 --- bank0 addr8000 -----------------
 	LV0_GFX.BIN: addr: 34392, len: 5524
@@ -34,7 +33,8 @@ Used: 6484, Free: 84
 	SCYTHE.BIN: addr: 9078, len: 1554
 	SNOWFLAK.BIN: addr: 10632, len: 1212
 	TNT.BIN: addr: 11844, len: 1056
-Used: 12900, Free: 19802
+	BACKS0.BIN: addr: 12900, len: 620
+Used: 13520, Free: 19182
 
 --- bank1 addr8000 -----------------
 	TI0_GFX.BIN: addr: 32768, len: 8178
@@ -54,7 +54,7 @@ Used: 32728, Free: 40
 	VFX.BIN: addr: 62758, len: 2184
 Used: 32174, Free: 594
 
-Permanent load: 1624, Current Load: 125158, Free Space: 85946
+Permanent load: 1624, Current Load: 125178, Free Space: 85926
 
 */
 
@@ -110,11 +110,6 @@ Permanent load: 1624, Current Load: 125158, Free Space: 85946
 			lxi b, DECALS0_ADDR
 			call update_labels_eod
 
-			RAM_DISK_M_BACKS0 = RAM_DISK_M0
-			RAM_DISK_S_BACKS0 = RAM_DISK_S0
-			BACKS0_ADDR = 32094
-			LOAD_FILE(BACKS0_FILENAME_PTR, RAM_DISK_S_BACKS0, BACKS0_ADDR, BACKS0_FILE_LEN)
-
 			RAM_DISK_M_LV0_GFX = RAM_DISK_M0
 			RAM_DISK_S_LV0_GFX = RAM_DISK_S0
 			LV0_GFX_ADDR = 34392
@@ -169,6 +164,14 @@ Permanent load: 1624, Current Load: 125158, Free Space: 85946
 			LOAD_FILE(TNT_FILENAME_PTR, RAM_DISK_S_TNT, TNT_ADDR, TNT_FILE_LEN)
 			lxi d, _tnt_preshifted_sprites
 			lxi h, TNT_ADDR
+			call sprite_update_labels
+
+			RAM_DISK_M_BACKS0 = RAM_DISK_M1
+			RAM_DISK_S_BACKS0 = RAM_DISK_S1
+			BACKS0_ADDR = 12900
+			LOAD_FILE(BACKS0_FILENAME_PTR, RAM_DISK_S_BACKS0, BACKS0_ADDR, BACKS0_FILE_LEN)
+			lxi d, _backs0_preshifted_sprites
+			lxi h, BACKS0_ADDR
 			call sprite_update_labels
 
 			RAM_DISK_M_TI0_GFX = RAM_DISK_M1

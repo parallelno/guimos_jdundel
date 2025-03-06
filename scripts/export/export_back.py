@@ -96,7 +96,7 @@ def gfx_to_asm(label_prefix, asset_name, asset_j, image, asset_j_path):
 		data = sprite_data(bytes0, bytes1, bytes2, bytes3, width, height)
 		frame_label = f"{label_prefix}{asset_name}_{sprite_name}"
 		asm += "\n"
-		#asm += f"			.word 0  ; safety pair of bytes for reading by POP B\n"
+		asm += f"			.word 0  ; safety pair of bytes for reading by POP B\n"
 		asm += frame_label + ":\n"
 
 		width_packed = width//8 - 1

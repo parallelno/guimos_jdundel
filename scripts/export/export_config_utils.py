@@ -274,7 +274,7 @@ def get_load_asm(load_name, allocation, segments):
 					asm += f"			lxi b, {const_addr}\n"
 					asm += f"			call update_labels_eod\n"
 
-				case build.ASSET_TYPE_DECAL:
+				case build.ASSET_TYPE_BACK:
 					asm += f"			lxi d, _{name_low}_preshifted_sprites\n"
 					asm += f"			lxi h, {const_addr}\n"
 					asm += f"			call sprite_update_labels\n"

@@ -1,4 +1,5 @@
 _backs0_sprites:
+			.word 0  ; safety pair of bytes for reading by POP B
 _backs0_torch_front0:
 			.byte 6, 0; offset_y, offset_x
 			.byte 7, 1; height, width
@@ -8,6 +9,7 @@ _backs0_torch_front0:
 			.byte 0,1,0,0,0,0,254,47,
 
 
+			.word 0  ; safety pair of bytes for reading by POP B
 _backs0_torch_front1:
 			.byte 6, 0; offset_y, offset_x
 			.byte 7, 1; height, width
@@ -17,6 +19,7 @@ _backs0_torch_front1:
 			.byte 0,1,0,0,0,0,254,47,
 
 
+			.word 0  ; safety pair of bytes for reading by POP B
 _backs0_torch_front2:
 			.byte 6, 0; offset_y, offset_x
 			.byte 7, 1; height, width
@@ -26,6 +29,7 @@ _backs0_torch_front2:
 			.byte 0,1,0,0,0,0,254,47,
 
 
+			.word 0  ; safety pair of bytes for reading by POP B
 _backs0_torch_front3:
 			.byte 6, 0; offset_y, offset_x
 			.byte 7, 1; height, width
@@ -35,6 +39,7 @@ _backs0_torch_front3:
 			.byte 0,1,0,0,0,0,254,47,
 
 
+			.word 0  ; safety pair of bytes for reading by POP B
 _backs0_flag_front0:
 			.byte 7, 0; offset_y, offset_x
 			.byte 7, 1; height, width
@@ -44,6 +49,7 @@ _backs0_flag_front0:
 			.byte 9,34,0,0,224,15,52,88,
 
 
+			.word 0  ; safety pair of bytes for reading by POP B
 _backs0_flag_front1:
 			.byte 7, 0; offset_y, offset_x
 			.byte 7, 1; height, width
@@ -53,6 +59,7 @@ _backs0_flag_front1:
 			.byte 9,34,0,0,224,15,52,88,
 
 
+			.word 0  ; safety pair of bytes for reading by POP B
 _backs0_flag_front2:
 			.byte 7, 0; offset_y, offset_x
 			.byte 7, 1; height, width
@@ -62,6 +69,7 @@ _backs0_flag_front2:
 			.byte 9,162,0,0,224,15,52,88,
 
 
+			.word 0  ; safety pair of bytes for reading by POP B
 _backs0_flag_front3:
 			.byte 7, 0; offset_y, offset_x
 			.byte 7, 1; height, width
@@ -71,6 +79,7 @@ _backs0_flag_front3:
 			.byte 8,162,0,0,224,15,52,88,
 
 
+			.word 0  ; safety pair of bytes for reading by POP B
 _backs0_dialog_press_key0:
 			.byte 8, 1; offset_y, offset_x
 			.byte 7, 1; height, width
@@ -80,6 +89,7 @@ _backs0_dialog_press_key0:
 			.byte 64,4,248,63,4,64,248,63,
 
 
+			.word 0  ; safety pair of bytes for reading by POP B
 _backs0_dialog_press_key1:
 			.byte 8, 1; offset_y, offset_x
 			.byte 7, 1; height, width
