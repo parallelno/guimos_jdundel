@@ -1,10 +1,3 @@
-.if LOCALIZATION == 0
-	CREDITS_POS = 0x0600
-.endif
-.if LOCALIZATION == 1			
-	CREDITS_POS = 0x0000
-.endif
-
 credits_screen:
 			lda global_request
 			sta @global_req+1
@@ -25,9 +18,8 @@ credits_screen:
 credits_screen_text_draw:
 			call text_ex_reset_spacing
 			; credits
-			lxi h, CREDITS_POS
 			lxi d, _credits_screen_credits
-			call text_ex_draw_pos_offset_set
+			call text_ex_draw
 			ret
 
 credits_screen_init:

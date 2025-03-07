@@ -146,7 +146,7 @@
 		},
 		"stats" : {
 			"game_stats" : {
-				"scr_pos" : [0, 0],
+				"scr_pos" : [18, 224],
 				"text": [
 				"    Congratulations, hero! You were really",
 				"good in this epic quest! Time to celebrate",
@@ -169,7 +169,7 @@
 		},
 		"dialogs" : {
 			"no_health" : {
-				"scr_pos" : [0, 0],
+				"scr_pos" : [16, 45],
 				"text": [
 				"Oh, not this! ..must save.. friend - said the",
 				"hero and fell into the deep, chilling darkness.",
@@ -178,7 +178,7 @@
 			]
 			},
 			"knocked_his_home_door" : {
-				"scr_pos" : [0, 0],
+				"scr_pos" : [16, 45],
 				"text": [
 				"I'm ditching this popsicle pie, right, but I'm",
 				"not done! I gotta track down my buddy Natias,",
@@ -187,7 +187,7 @@
 			]
 			},
 			"knocked_his_friend_door" : {
-				"scr_pos" : [0, 0],
+				"scr_pos" : [16, 45],
 				"text": [
 				"Friend's mom: Natias ain't here now. He's left",
 				"early. Be a sweetie and fetch dried clothes",
@@ -196,14 +196,14 @@
 			]
 			},
 			"knocked_his_friend_door_no_clothes" : {
-				"scr_pos" : [0, 0],
+				"scr_pos" : [16, 45],
 				"text": [
 				"Friend's mom: Oh, sugar, no clothes means",
 				"no pie, remember? We had a straight-up deal."
 			]
 			},
 			"knocked_his_friend_door_clothes_returns" : {
-				"scr_pos" : [0, 0],
+				"scr_pos" : [16, 45],
 				"text": [
 				"Friend's mom: Sweetie, you're the best",
 				"helper in the world! Here's a fresh-baked",
@@ -212,7 +212,7 @@
 			]
 			},
 			"hero_gets_sword" : {
-				"scr_pos" : [0, 0],
+				"scr_pos" : [16, 45],
 				"text": [
 				"I don't believe my eyes, It is a legendary",
 				"sword, no doubt about it! Who would have",
@@ -221,7 +221,7 @@
 			]
 			},
 			"knocked_dungeon_entrance" : {
-				"scr_pos" : [0, 0],
+				"scr_pos" : [16, 45],
 				"text": [
 				"Oh no! Is it only a demo? So unfair! But",
 				"this is not the end! I can hardly wait to",
@@ -229,7 +229,7 @@
 			]
 			},
 			"hero_gets_spoon" : {
-				"scr_pos" : [0, 0],
+				"scr_pos" : [16, 45],
 				"text": [
 				"A spoon??! No, the spoon! The most iconic",
 				"and ancient spoon ever designed, a masterpiece!",
@@ -238,7 +238,7 @@
 			]
 			},
 			"hero_use_pie" : {
-				"scr_pos" : [0, 0],
+				"scr_pos" : [16, 45],
 				"text": [
 				"This popsicle pie is so delicious! I wish I had",
 				"my mouth big enough to swallow it all at",
@@ -246,7 +246,7 @@
 			]
 			},
 			"hero_use_clothes" : {
-				"scr_pos" : [0, 0],
+				"scr_pos" : [16, 45],
 				"text": [
 				"Deal's a deal! Promised to fetch and bring",
 				"the dry clothes, so get to it!"
@@ -255,7 +255,7 @@
 		},
 		"storytelling" : {
 			"storytelling_home" : {
-				"scr_pos" : [0, 0],
+				"scr_pos" : [16, 45],
 				"text": [
 				"Rad day for my morning jog! Legs are ready",
 				"for some serious adventuring action.",
@@ -263,7 +263,7 @@
 			]
 			},
 			"storytelling_farm_fence" : {
-				"scr_pos" : [0, 0],
+				"scr_pos" : [16, 45],
 				"text": [
 				"Oh my glob, guess what? Mom's on a cabbage",
 				"quest, and you know what they say - no",
@@ -272,7 +272,7 @@
 			]
 			},
 			"storytelling_road_to_friends_home" : {
-				"scr_pos" : [0, 0],
+				"scr_pos" : [16, 45],
 				"text": [
 				"Wait a minute! Who's the cheeky one",
 				"cluttering up the road? Gotta snag a hero",
@@ -281,7 +281,7 @@
 			]
 			},
 			"storytelling_friends_home" : {
-				"scr_pos" : [0, 0],
+				"scr_pos" : [16, 45],
 				"text": [
 				"Check it, my buddy's cave! He said he'd",
 				"be around today. Gotta jog his memory",
@@ -289,7 +289,7 @@
 			]
 			},
 			"storytelling_friends_backyard" : {
-				"scr_pos" : [0, 0],
+				"scr_pos" : [16, 45],
 				"text": [
 				"Really??? It looks like a hidden lair in",
 				"the bushes! I'm gonna investigate my",
@@ -298,7 +298,7 @@
 			]
 			},
 			"storytelling_friends_secret_place" : {
-				"scr_pos" : [0, 0],
+				"scr_pos" : [16, 45],
 				"text": [
 				"Oh no, there are bones and skulls all over",
 				"the place! I worry my friend can be in a real",
@@ -307,7 +307,7 @@
 			]
 			},
 			"storytelling_crossroad" : {
-				"scr_pos" : [0, 0],
+				"scr_pos" : [16, 45],
 				"text": [
 				"I'm shaken! A terrible monster and the corpses",
 				"of our beloved villagers! It's clear who the",
@@ -316,14 +316,14 @@
 			]
 			},
 			"storytelling_loop" : {
-				"scr_pos" : [0, 0],
+				"scr_pos" : [16, 45],
 				"text": [
 				"You better watch out, little rolling furry",
 				"burner, because there's no escaping from me!"
 			]
 			},
 			"storytelling_lost_coins" : {
-				"scr_pos" : [0, 0],
+				"scr_pos" : [16, 45],
 				"text": [
 				"Wow, wow, wow!!! My intuition never fails me!",
 				"I just knew there had to be treasures on this",
@@ -332,7 +332,7 @@
 			]
 			},
 			"storytelling_farm_entrance" : {
-				"scr_pos" : [0, 0],
+				"scr_pos" : [16, 45],
 				"text": [
 				"Every time I lay eyes on cabbage, I get all",
 				"hungry up in here. But you gotta watch out,",
@@ -341,7 +341,7 @@
 			]
 			},
 			"storytelling_farm_storage" : {
-				"scr_pos" : [0, 0],
+				"scr_pos" : [16, 45],
 				"text": [
 				"Who's that dude on my road? Not cool",
 				"with his mega-spooky vibe. Lucky",
@@ -350,7 +350,7 @@
 			]
 			},
 			"storytelling_dugeon_entrance" : {
-				"scr_pos" : [0, 0],
+				"scr_pos" : [16, 45],
 				"text": [
 				"Wily skeletons and a wall of fire - that's",
 				"a real hero's challenge! Gotta figure out",
@@ -359,7 +359,7 @@
 			]
 			},
 			"hero_use_cabbage" : {
-				"scr_pos" : [0, 0],
+				"scr_pos" : [16, 45],
 				"text": [
 				"Cabbages... so yummy-wummy! I can feel",
 				"myself getting all rested up and fresh!",
@@ -367,7 +367,7 @@
 			]
 			},
 			"hero_use_spoon" : {
-				"scr_pos" : [0, 0],
+				"scr_pos" : [16, 45],
 				"text": [
 				"Finally, feasted on my favorite popsicle-pie!",
 				"Oh, what's this? Some snowflakes left behind.",
@@ -376,7 +376,7 @@
 			]
 			},
 			"hero_freeze_monster" : {
-				"scr_pos" : [0, 0],
+				"scr_pos" : [16, 45],
 				"text": [
 				"Aha! So that's how it works. If you're all",
 				"spooky and scary, get a snowflake to the",

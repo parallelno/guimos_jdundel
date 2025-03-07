@@ -10540,7 +10540,7 @@ $6d43 0e 0e      mvi c,$0e
 $6d45 cd c0 6b   call $6bc0
 $6d48 cd 04 07   call $0704
 $6d4b d1         pop d
-$6d4c cd 34 07   call $0734
+$6d4c cd 31 07   call $0731
 $6d4f 21 f4 01   lxi h,$01f4
 $6d52 c3 bb 45   jmp $45bb
 
@@ -11026,7 +11026,7 @@ $714a cd b6 45   call $45b6
 $714d c9         ret
 $714e 3a 6b 74   lda $746b
 $7151 32 5b 71   sta $715b
-$7154 cd 76 71   call $7176
+$7154 cd 73 71   call $7173
 $7157 3a 6b 74   lda $746b
 $715a fe 00      cpi $00
 $715c c0         rnz
@@ -11035,111 +11035,111 @@ $7160 cd b4 6f   call $6fb4
 $7163 cd d4 6f   call $6fd4
 $7166 c3 57 71   jmp $7157
 $7169 cd 04 07   call $0704
-$716c 21 00 06   lxi h,$0600
-$716f 11 8c 02   lxi d,$028c
-$7172 cd 34 07   call $0734
-$7175 c9         ret
-$7176 cd 61 6f   call $6f61
-$7179 cd 9f 6f   call $6f9f
-$717c cd e8 6f   call $6fe8
-$717f cd 69 71   call $7169
-$7182 cd b6 45   call $45b6
-$7185 c9         ret
-$7186 3a 6b 74   lda $746b
-$7189 32 93 71   sta $7193
-$718c cd bf 71   call $71bf
-$718f 3a 6b 74   lda $746b
-$7192 fe 00      cpi $00
-$7194 c0         rnz
-$7195 21 55 6f   lxi h,$6f55
-$7198 cd b4 6f   call $6fb4
-$719b cd d4 6f   call $6fd4
-$719e c3 8f 71   jmp $718f
-$71a1 11 57 00   lxi d,$0057
-$71a4 cd 31 07   call $0731
-$71a7 0e 0a      mvi c,$0a
-$71a9 21 00 00   lxi h,$0000
-$71ac c5         push b
-$71ad e5         push h
-$71ae 11 69 00   lxi d,$0069
-$71b1 cd 34 07   call $0734
-$71b4 e1         pop h
-$71b5 c1         pop b
-$71b6 11 f2 ff   lxi d,$fff2
-$71b9 19         dad d
-$71ba 0d         dcr c
-$71bb c2 ac 71   jnz $71ac
-$71be c9         ret
-$71bf cd 61 6f   call $6f61
-$71c2 cd 9f 6f   call $6f9f
-$71c5 cd e8 6f   call $6fe8
-$71c8 cd a1 71   call $71a1
-$71cb cd b6 45   call $45b6
-$71ce c9         ret
+$716c 11 8c 02   lxi d,$028c
+$716f cd 31 07   call $0731
+$7172 c9         ret
+$7173 cd 61 6f   call $6f61
+$7176 cd 9f 6f   call $6f9f
+$7179 cd e8 6f   call $6fe8
+$717c cd 69 71   call $7169
+$717f cd b6 45   call $45b6
+$7182 c9         ret
+$7183 3a 6b 74   lda $746b
+$7186 32 90 71   sta $7190
+$7189 cd bc 71   call $71bc
+$718c 3a 6b 74   lda $746b
+$718f fe 00      cpi $00
+$7191 c0         rnz
+$7192 21 55 6f   lxi h,$6f55
+$7195 cd b4 6f   call $6fb4
+$7198 cd d4 6f   call $6fd4
+$719b c3 8c 71   jmp $718c
+$719e 11 57 00   lxi d,$0057
+$71a1 cd 31 07   call $0731
+$71a4 0e 0a      mvi c,$0a
+$71a6 21 00 00   lxi h,$0000
+$71a9 c5         push b
+$71aa e5         push h
+$71ab 11 69 00   lxi d,$0069
+$71ae cd 34 07   call $0734
+$71b1 e1         pop h
+$71b2 c1         pop b
+$71b3 11 f2 ff   lxi d,$fff2
+$71b6 19         dad d
+$71b7 0d         dcr c
+$71b8 c2 a9 71   jnz $71a9
+$71bb c9         ret
+$71bc cd 61 6f   call $6f61
+$71bf cd 9f 6f   call $6f9f
+$71c2 cd e8 6f   call $6fe8
+$71c5 cd 9e 71   call $719e
+$71c8 cd b6 45   call $45b6
+$71cb c9         ret
 
-$71cf 00                        .
+$71cc 00                        .
 
-$71d0 3a 6b 74   lda $746b
-$71d3 32 dd 71   sta $71dd
-$71d6 cd eb 71   call $71eb
-$71d9 3a 6b 74   lda $746b
-$71dc fe 00      cpi $00
-$71de c0         rnz
-$71df 21 e9 72   lxi h,$72e9
-$71e2 cd b4 6f   call $6fb4
-$71e5 cd d4 6f   call $6fd4
-$71e8 c3 d9 71   jmp $71d9
-$71eb cd 61 6f   call $6f61
-$71ee cd 9f 6f   call $6f9f
-$71f1 21 11 e8   lxi h,$e811
-$71f4 11 a7 01   lxi d,$01a7
-$71f7 cd 34 07   call $0734
-$71fa 11 f4 01   lxi d,$01f4
-$71fd cd eb 6f   call $6feb
-$7200 cd 0a 72   call $720a
-$7203 cd 20 72   call $7220
-$7206 cd b6 45   call $45b6
-$7209 c9         ret
-$720a 01 f2 e8   lxi b,$e8f2
-$720d cd 0f 07   call $070f
-$7210 11 a4 00   lxi d,$00a4
-$7213 cd 31 07   call $0731
-$7216 11 b3 00   lxi d,$00b3
-$7219 cd 31 07   call $0731
-$721c cd 36 72   call $7236
-$721f c9         ret
-$7220 c3 23 72   jmp $7223
-$7223 21 2d 72   lxi h,$722d
-$7226 22 21 72   shld $7221
-$7229 af         xra a
-$722a 32 cf 71   sta $71cf
-$722d 21 cf 71   lxi h,$71cf
-$7230 cd bc 72   call $72bc
-$7233 c3 44 65   jmp $6544
-$7236 cd 40 72   call $7240
-$7239 cd 5b 72   call $725b
-$723c cd 88 72   call $7288
-$723f c9         ret
-$7240 01 09 03   lxi b,$0309
-$7243 11 ca b4   lxi d,$b4ca
-$7246 cd 50 0d   call $0d50
-$7249 11 91 00   lxi d,$0091
-$724c cd 0a 0a   call $0a0a
-$724f fe 00      cpi $00
-$7251 c2 57 72   jnz $7257
-$7254 11 9a 00   lxi d,$009a
-$7257 cd 31 07   call $0731
-$725a c9         ret
-$725b 01 09 03   lxi b,$0309
-$725e 11 bc b4   lxi d,$b4bc
-$7261 cd 50 0d   call $0d50
-$7264 11 91 00   lxi d,$0091
-$7267 cd 1f 0b   call $0b1f
-$726a 3e 00      mvi a,$00
-$726c b9         cmp c
-$726d c2 73 72   jnz $7273
-$7270 11 9a 00   lxi d,$009a
-$7273 cd 31 07   call $0731
+$71cd 3a 6b 74   lda $746b
+$71d0 32 da 71   sta $71da
+$71d3 cd e8 71   call $71e8
+$71d6 3a 6b 74   lda $746b
+$71d9 fe 00      cpi $00
+$71db c0         rnz
+$71dc 21 e9 72   lxi h,$72e9
+$71df cd b4 6f   call $6fb4
+$71e2 cd d4 6f   call $6fd4
+$71e5 c3 d6 71   jmp $71d6
+$71e8 cd 61 6f   call $6f61
+$71eb cd 9f 6f   call $6f9f
+$71ee 21 11 e8   lxi h,$e811
+$71f1 11 a7 01   lxi d,$01a7
+$71f4 cd 34 07   call $0734
+$71f7 11 f4 01   lxi d,$01f4
+$71fa cd eb 6f   call $6feb
+$71fd cd 07 72   call $7207
+$7200 cd 1d 72   call $721d
+$7203 cd b6 45   call $45b6
+$7206 c9         ret
+$7207 01 f2 e8   lxi b,$e8f2
+$720a cd 0f 07   call $070f
+$720d 11 a4 00   lxi d,$00a4
+$7210 cd 31 07   call $0731
+$7213 11 b3 00   lxi d,$00b3
+$7216 cd 31 07   call $0731
+$7219 cd 33 72   call $7233
+$721c c9         ret
+$721d c3 20 72   jmp $7220
+$7220 21 2a 72   lxi h,$722a
+$7223 22 1e 72   shld $721e
+$7226 af         xra a
+$7227 32 cc 71   sta $71cc
+$722a 21 cc 71   lxi h,$71cc
+$722d cd bc 72   call $72bc
+$7230 c3 44 65   jmp $6544
+$7233 cd 3d 72   call $723d
+$7236 cd 58 72   call $7258
+$7239 cd 88 72   call $7288
+$723c c9         ret
+$723d 01 09 03   lxi b,$0309
+$7240 11 ca b4   lxi d,$b4ca
+$7243 cd 50 0d   call $0d50
+$7246 11 91 00   lxi d,$0091
+$7249 cd 0a 0a   call $0a0a
+$724c fe 00      cpi $00
+$724e c2 54 72   jnz $7254
+$7251 11 9a 00   lxi d,$009a
+$7254 cd 31 07   call $0731
+$7257 c9         ret
+$7258 01 09 03   lxi b,$0309
+$725b 11 bc b4   lxi d,$b4bc
+$725e cd 50 0d   call $0d50
+$7261 11 91 00   lxi d,$0091
+$7264 cd 1f 0b   call $0b1f
+$7267 3e 00      mvi a,$00
+$7269 b9         cmp c
+$726a c2 70 72   jnz $7270
+$726d 11 9a 00   lxi d,$009a
+$7270 21 f2 ff   lxi h,$fff2
+$7273 cd 34 07   call $0734
 $7276 c9         ret
 $7277 79         mov a,c
 $7278 85         add l
@@ -11207,14 +11207,14 @@ $72f6 fe 08      cpi $08
 $72f8 ca 09 73   jz $7309
 $72fb fe 04      cpi $04
 $72fd c0         rnz
-$72fe 21 cf 71   lxi h,$71cf
+$72fe 21 cc 71   lxi h,$71cc
 $7301 7e         mov a,m
 $7302 3d         dcr a
 $7303 f8         rm
 $7304 77         mov m,a
 $7305 cd bc 72   call $72bc
 $7308 c9         ret
-$7309 21 cf 71   lxi h,$71cf
+$7309 21 cc 71   lxi h,$71cc
 $730c 7e         mov a,m
 $730d 3c         inr a
 $730e fe 04      cpi $04
@@ -11222,7 +11222,7 @@ $7310 d0         rnc
 $7311 77         mov m,a
 $7312 cd bc 72   call $72bc
 $7315 c9         ret
-$7316 3a cf 71   lda $71cf
+$7316 3a cc 71   lda $71cc
 $7319 fe 03      cpi $03
 $731b c2 24 73   jnz $7324
 $731e 3e 01      mvi a,$01
@@ -11231,11 +11231,11 @@ $7323 c9         ret
 $7324 fe 00      cpi $00
 $7326 c2 2f 73   jnz $732f
 $7329 cd fc 09   call $09fc
-$732c c3 40 72   jmp $7240
+$732c c3 3d 72   jmp $723d
 $732f fe 01      cpi $01
 $7331 c2 3a 73   jnz $733a
 $7334 cd 11 0b   call $0b11
-$7337 c3 5b 72   jmp $725b
+$7337 c3 58 72   jmp $7258
 $733a fe 02      cpi $02
 $733c c0         rnz
 $733d cd 67 05   call $0567
@@ -11369,5 +11369,5 @@ $7474 56         mov d,m
 $7475 eb         xchg
 $7476 e9         pchl
 
-$7477 cf 04 f6 6f c9 73 d0 71   Ï.öoÉsÐq
-$747f 86 71 4e 71 44 73         †qNqDs
+$7477 cf 04 f6 6f c9 73 cd 71   Ï.öoÉsÍq
+$747f 83 71 4e 71 44 73         ƒqNqDs

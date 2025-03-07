@@ -72,10 +72,9 @@ dialog_draw_frame_text:
 			call backs_spawn
 
 			call text_ex_reset_spacing
-			;lxi h, $102d	; text pos
 			pop d
 			; de - text ptr
-			call text_ex_draw_pos_offset_set
+			call text_ex_draw
 
 			; pause to prevent closing a dialog right after opening
 			lxi h, 500

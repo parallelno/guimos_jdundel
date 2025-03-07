@@ -65,10 +65,11 @@ settings_screen:
 settings_screen_init:
 			call screen_simple_init
 			call screen_palette_and_frame
-
+			; draw a return text a bit offsetted
 			lxi h, (0xFF - 24 + 1)<<8 | 17
 			lxi d, _options_screen_return
 			call text_ex_draw_pos_offset_set
+
 			lxi d, _options_screen_change_settings
 			call screen_draw_return_button_custom_text
 
@@ -156,7 +157,8 @@ setting_sfx_val_draw:
 			lxi d, _options_screen_setting_off
 @sfx_on:
 			; draw a setting value
-			call text_ex_draw
+			LXI_H(-14)
+			call text_ex_draw_pos_offset_set
 			ret
 
 ; erase a block in the screen buff
