@@ -103,7 +103,7 @@ _options_screen_dots:
 			.word 0 ; safety pair of bytes for reading by POP B
 _options_screen_change_settings:
 			.word 18 ; data len to copy to ram
-			.byte 0, 0 ; scr pos (y, x)
+			.byte 25, 138 ; scr pos (y, x)
 			TEXT("Change settings", )
 
 

@@ -94,7 +94,6 @@ screen_simple_draw:
 ; draw a text referenced by _options_screen_return label
 screen_draw_return_text_button:
 			; draw a text
-			lxi h, 0
 			lxi d, _options_screen_return
 
 ; draw a space button as a back object
@@ -104,7 +103,7 @@ screen_draw_return_text_button:
 ; de - text_addr
 
 screen_draw_return_button_custom_text:
-			call text_ex_draw_pos_offset_set
+			call text_ex_draw
 
 			; braw a button
 			@pos_tiles_y = 1

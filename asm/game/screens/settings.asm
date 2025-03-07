@@ -66,14 +66,10 @@ settings_screen_init:
 			call screen_simple_init
 			call screen_palette_and_frame
 
+			lxi h, (0xFF - 24 + 1)<<8 | 17
+			lxi d, _options_screen_return
+			call text_ex_draw_pos_offset_set
 			lxi d, _options_screen_change_settings
-.if LOCALIZATION == 0
-			@text_change_settings_pos = $8a19
-.endif
-.if LOCALIZATION == 1			
-			@text_change_settings_pos = $7019
-.endif
-			lxi h, @text_change_settings_pos
 			call screen_draw_return_button_custom_text
 
 			call settings_screen_text_draw
