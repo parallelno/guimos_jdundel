@@ -83,7 +83,6 @@ screen_simple_draw:
 			inx h
 			shld gameplay_draw_counter
 
-.breakpoint
 			; draw funcs
 			call backs_draw
 			call bullets_draw
@@ -95,9 +94,8 @@ screen_simple_draw:
 ; draw a text referenced by _options_screen_return label
 screen_draw_return_text_button:
 			; draw a text
-			@text_return_pos = $5819
-			lxi b, @text_return_pos
-			lxi h, _options_screen_return
+			lxi h, 0
+			lxi d, _options_screen_return
 
 ; draw a space button as a back object
 ; and a custom text at the custom pos

@@ -1,10 +1,5 @@
 ; text
-.if LOCALIZATION == 0
-	SETTINGS_TEXT_SETTINGS_W	= 112 ; a width of a setting text column
-.endif
-.if LOCALIZATION == 1
-	SETTINGS_TEXT_SETTINGS_W	= 116 ; a width of a setting text column
-.endif
+SETTINGS_TEXT_SETTINGS_W	= 112 ; a width of a setting text column
 
 SETTINGS_SETTING_VAL_W = 12
 SETTINGS_SUB_SETTING_VAL_W = 12
@@ -37,8 +32,8 @@ SETTINGS_POS_X						= SETTINGS_HALF_SCR - (SETTINGS_TEXT_SETTINGS_W/2)
 SETTINGS_POS							= SETTINGS_POS_X<<8 | SETTINGS_POS_Y_MAX
 SETTINGS_SETTING_VAL_POS_X			= SETTINGS_HALF_SCR + SETTINGS_TEXT_SETTINGS_W/2 - SETTINGS_SETTING_VAL_W
 SETTINGS_SUB_SETTING_VAL_POS_X		= SETTINGS_HALF_SCR + SETTINGS_TEXT_SETTINGS_W/2 - SETTINGS_SUB_SETTING_VAL_W
-SETTINGS_SETTING_PREDEF_VAL_POS_X 	= SETTINGS_HALF_SCR + SETTINGS_TEXT_SETTINGS_W/2 - SETTINGS_SETTING_PREDEF_VAL_W
-SETTINGS_SETTING_TITLE_POS_X			= SETTINGS_HALF_SCR - SETTINGS_TEXT_TITLE_W/2
+;SETTINGS_SETTING_PREDEF_VAL_POS_X 	= SETTINGS_HALF_SCR + SETTINGS_TEXT_SETTINGS_W/2 - SETTINGS_SETTING_PREDEF_VAL_W
+;SETTINGS_SETTING_TITLE_POS_X			= SETTINGS_HALF_SCR - SETTINGS_TEXT_TITLE_W/2
 
 ; cursor
 SETTINGS_CURSOR_POS_X		= SETTINGS_POS_X - 12
@@ -93,13 +88,10 @@ settings_screen_text_draw:
 
 @text_pos		.var  SETTINGS_POS
 			; SETTINGS TITLE
-			;lxi h, SETTINGS_SETTING_TITLE_POS_X<<8 | <@text_pos
 			lxi d, _options_screen_settings
 			call text_ex_draw
 
 			; MUSIC & SFX & Controls
-			@text_pos = @text_pos + SETTINGS_LINE_SPACING
-			;lxi h, @text_pos
 			lxi d, _options_screen_settings_names
 			call text_ex_draw
 
@@ -135,20 +127,18 @@ setting_music_val_draw:
 			@text_pos = @text_pos + SETTINGS_LINE_SPACING
 
 			; erase a setting value
-			@scr_addr_x_offset = (SETTINGS_SETTING_VAL_POS_X/8)<<8
+			@scr_addr_x_offset = (SETTINGS_SETTING_VAL_POS_X / 8)<<8
 			lxi b, 3<<8 | 9
 			lxi d, SCR_BUFF1_ADDR + <@text_pos | @scr_addr_x_offset
 			call sprite_copy_to_scr_v
 			; get a setting value
 			lxi d, _options_screen_setting_on
-			call text_ex_draw
-			mvi a, SETTING_OFF
-			cmp c
+			call v6_gc_get_setting
+			cpi SETTING_OFF
 			jnz @music_on
 			lxi d, _options_screen_setting_off
 @music_on:
 			; draw a setting value
-			;lxi b, <@text_pos | SETTINGS_SETTING_VAL_POS_X<<8
 			call text_ex_draw
 			ret
 
@@ -170,7 +160,6 @@ setting_sfx_val_draw:
 			lxi d, _options_screen_setting_off
 @sfx_on:
 			; draw a setting value
-			;lxi b, SETTINGS_SETTING_VAL_POS_X<<8 | <@text_pos
 			call text_ex_draw
 			ret
 
@@ -217,23 +206,19 @@ setting_controls_val_draw:
 			jz @control_preset_keyboard
 			; draw a preset name
 			lxi d, _options_screen_control_preset_joy
-			;lxi b, SETTINGS_SETTING_VAL_POS_X<<8 | <@text_pos
 			call text_ex_draw
 
 			; draw controls
 			lxi d, _options_screen_controls_joystic
-			;lxi b, SETTINGS_SUB_SETTING_VAL_POS_X<<8 | <@text_pos + SETTINGS_LINE_SPACING
 			call text_ex_draw
 			ret
 @control_preset_keyboard:
 			; draw a preset name
-			lxi d, _options_screen_control_preset_key
-			;lxi b, SETTINGS_SETTING_VAL_POS_X<<8 | <@text_pos
+			lxi d, _options_screen_control_preset_key		
 			call text_ex_draw
 			
 			; draw controls
-			lxi h, _options_screen_controls_keyboard
-			;lxi b, SETTINGS_SUB_SETTING_VAL_POS_X<<8 | <@text_pos + SETTINGS_LINE_SPACING
+			lxi d, _options_screen_controls_keyboard		
 			call text_ex_draw
 			ret
 

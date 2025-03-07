@@ -1,8 +1,4 @@
-SCORES_TITLE_POS = $58d8
-
-SCORES_POS = $38b8
 SCORES_LINE_SPACING = 14
-SCORES_PARAG_SPACING = 24
 
 scores_screen:
 			lda global_request
@@ -22,26 +18,23 @@ scores_screen:
 			jmp	@loop
 
 scores_screen_text_draw:
-			;lxi h, SCORES_TITLE_POS
 			lxi d, _scores_screen_score_title
 			call text_ex_draw
 
-			mvi e, SCORES_MAX
-			lxi b, SCORES_POS
+			mvi c, SCORES_MAX
+			lxi h, 0 ; offset_x = 0, offset_y = 0
 @loop:
 			push b
-			push d
+			push h
 			lxi d, _scores_screen_buff
-			call text_ex_draw
-			pop d
+			call text_ex_draw_pos_offset_set
+			pop h
 			pop b
+			; new line pos
+			LXI_D(-SCORES_LINE_SPACING)
+			dad d
 
-			LXI_H(-SCORES_LINE_SPACING)
-			dad b
-			mov b, h
-			mov c, l
-
-			dcr e
+			dcr c
 			jnz @loop
 			ret
 

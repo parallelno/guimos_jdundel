@@ -34,14 +34,14 @@ _main_menu_license:
 			.word 0 ; safety pair of bytes for reading by POP B
 _scores_screen_score_title:
 			.word 14 ; data len to copy to ram
-			.byte 50, 50 ; scr pos (y, x)
+			.byte 216, 88 ; scr pos (y, x)
 			TEXT("SCORE BOARD", )
 
 
 			.word 0 ; safety pair of bytes for reading by POP B
 _scores_screen_buff:
 			.word 36 ; data len to copy to ram
-			.byte 0, 0 ; scr pos (y, x)
+			.byte 184, 56 ; scr pos (y, x)
 			TEXT("TEMPNAME .................. 65535", )
 
 ;===================================================================================
@@ -51,28 +51,28 @@ _scores_screen_buff:
 			.word 0 ; safety pair of bytes for reading by POP B
 _options_screen_setting_on:
 			.word 6 ; data len to copy to ram
-			.byte 0, 0 ; scr pos (y, x)
+			.byte 202, 164 ; scr pos (y, x)
 			TEXT("ON", )
 
 
 			.word 0 ; safety pair of bytes for reading by POP B
 _options_screen_setting_off:
 			.word 6 ; data len to copy to ram
-			.byte 0, 0 ; scr pos (y, x)
+			.byte 202, 164 ; scr pos (y, x)
 			TEXT("OFF", )
 
 
 			.word 0 ; safety pair of bytes for reading by POP B
 _options_screen_settings:
 			.word 12 ; data len to copy to ram
-			.byte 0, 0 ; scr pos (y, x)
+			.byte 216, 105 ; scr pos (y, x)
 			TEXT("Settings", )
 
 
 			.word 0 ; safety pair of bytes for reading by POP B
 _options_screen_settings_names:
 			.word 240 ; data len to copy to ram
-			.byte 140, 40 ; scr pos (y, x)
+			.byte 202, 64 ; scr pos (y, x)
 			TEXT("Music", _LINE_BREAK_)
 			TEXT("SFX", _PARAG_BREAK_)
 
@@ -89,7 +89,7 @@ _options_screen_settings_names:
 			.word 0 ; safety pair of bytes for reading by POP B
 _options_screen_return:
 			.word 26 ; data len to copy to ram
-			.byte 0, 0 ; scr pos (y, x)
+			.byte 25, 88 ; scr pos (y, x)
 			TEXT("Return to the Main Menu", )
 
 
@@ -110,21 +110,21 @@ _options_screen_change_settings:
 			.word 0 ; safety pair of bytes for reading by POP B
 _options_screen_control_preset_key:
 			.word 8 ; data len to copy to ram
-			.byte 0, 0 ; scr pos (y, x)
+			.byte 164, 164 ; scr pos (y, x)
 			TEXT("Keys", )
 
 
 			.word 0 ; safety pair of bytes for reading by POP B
 _options_screen_control_preset_joy:
 			.word 8 ; data len to copy to ram
-			.byte 0, 0 ; scr pos (y, x)
+			.byte 164, 164 ; scr pos (y, x)
 			TEXT("JoyP1", )
 
 
 			.word 0 ; safety pair of bytes for reading by POP B
 _options_screen_controls_keyboard:
 			.word 48 ; data len to copy to ram
-			.byte 0, 0 ; scr pos (y, x)
+			.byte 150, 164 ; scr pos (y, x)
 			TEXT("K UP", _LINE_BREAK_)
 			TEXT("K DOWN", _LINE_BREAK_)
 			TEXT("K LEFT", _LINE_BREAK_)
@@ -137,7 +137,7 @@ _options_screen_controls_keyboard:
 			.word 0 ; safety pair of bytes for reading by POP B
 _options_screen_controls_joystic:
 			.word 52 ; data len to copy to ram
-			.byte 0, 0 ; scr pos (y, x)
+			.byte 150, 164 ; scr pos (y, x)
 			TEXT("J UP", _LINE_BREAK_)
 			TEXT("J DOWN", _LINE_BREAK_)
 			TEXT("J LEFT", _LINE_BREAK_)
@@ -153,7 +153,7 @@ _options_screen_controls_joystic:
 			.word 0 ; safety pair of bytes for reading by POP B
 _credits_screen_credits:
 			.word 484 ; data len to copy to ram
-			.byte 0, 0 ; scr pos (y, x)
+			.byte 224, 18 ; scr pos (y, x)
 			TEXT("    This game was created because I truly", _LINE_BREAK_)
 			TEXT("believe in the awesomeness of the Soviet", _LINE_BREAK_)
 			TEXT("PC Vector 06c that shaped my life.", _PARAG_BREAK_)

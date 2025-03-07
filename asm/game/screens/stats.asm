@@ -1,6 +1,4 @@
-END_GAME_TEXT_POS		= $12e0
 END_GAME_LINE_SPACING	= 12
-END_GAME_PARAG_SPACING	= 24
 
 .if LOCALIZATION == 0
 	STATS_NUMBERS_SCR_ADDR = $b0aa
@@ -30,7 +28,6 @@ stats_screen:
 stats_screen_text_draw:
 			call text_ex_reset_spacing
 			; draw a text
-			;lxi h, END_GAME_TEXT_POS
 			lxi d, _stats_game_stats
 			call text_ex_draw
 

@@ -424,8 +424,7 @@ v6_gc_flip_mute:
 ; return setting_music value
 ; to call from this module: call v6_gc_get_setting
 ; out:
-; c - setting_music value
+; a - setting_music value
 v6_gc_get_setting:
 			lda setting_music
-			mov c, a
 			ret
