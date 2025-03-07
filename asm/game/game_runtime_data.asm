@@ -18,7 +18,9 @@ level_init_tbl_end:
 LEVEL_INIT_TBL_LEN = level_init_tbl_end - level_init_tbl
 ;=============================================================================
 ; tile graphics pointer table.
-
+.align 0x100 ; TODO: should it be alignd by $100? perhaps only the following room_tiledata should be aligned
+.storage 0x20 	; TODO: it's a necessary offset to alight room_tiledata to 0x100
+				; TODO: think of pack the runtime data to minimize such waist
 ; data format:
 ; .loop ROOM_HEIGHT
 ;	.loop ROOM_WIDTH
