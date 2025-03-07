@@ -268,7 +268,7 @@ set_file_name:
 			push h
 			lxi d, CPM_FCB+1 ; file name addr
 			lxi b, FILENAME_LEN		
-			call mem_copy_bc_len
+			call mem_copy_len
 			pop h
 
 			push h
@@ -290,7 +290,7 @@ set_file_name:
 			; hl - file ext ptr
 			; de - points to v6_os_errmsg_file_open_ext
 			; bc - extention len
-			call mem_copy_bc_len
+			call mem_copy_len
 			mvi a, '\n'
 			stax d
 			inx d

@@ -15,7 +15,7 @@ level_start_pos_ptr:				.storage ADDR_LEN		; .word _level00_start_pos
 level_rooms_ptrs:					.storage ADDR_LEN		; .word _level00_rooms_addr
 level_tiles_ptrs:					.storage ADDR_LEN		; .word _level00_tiles_pptr
 level_init_tbl_end:
-
+LEVEL_INIT_TBL_LEN = level_init_tbl_end - level_init_tbl
 ;=============================================================================
 ; tile graphics pointer table.
 
@@ -358,3 +358,4 @@ breakables_status_buffer_available_ptr:	.storage BYTE_LEN ; contains the pointer
 breakables_status_buffer_ptrs:			.storage ROOMS_MAX * LEVELS_MAX
 breakables_status_buffers:				.storage 0x100 - ROOMS_MAX * LEVELS_MAX ;  TODO: check if this LEN is correct
 breakables_statuses_end:
+; TODO: ! breakables_status_buffers goes beyond aligned 0x100 block

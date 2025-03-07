@@ -96,12 +96,16 @@ mem_fill_sp:
 			ret
 
 ; copy a memory buffer (ram to ram )
+; in:
 ; 	hl - source
 ; 	de - destination
 ;	bc - len
 ; prep: 40cc
-mem_copy_bc_len:
+mem_copy_len:
 			BC_TO_BC_PLUS_HL()
+; in:
+; 	hl - source
+; 	de - destination			
 ;	bc - source + len
 ; prep: 0cc
 ; loop: 56-76cc
@@ -403,7 +407,7 @@ set_palette_int:			; call it from an interruption routine
 copy_palette_request_update:
 			lxi d, palette
 			lxi b, PALETTE_LEN
-			call mem_copy_bc_len
+			call mem_copy_len
 			lxi h, palette_update_request
 			mvi m, PALETTE_UPD_REQ_YES
 			ret

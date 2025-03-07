@@ -30,11 +30,11 @@ level_init:
 			inx h
 			mov d, m
 			xchg
-			; hl - source
+			; hl - source (level00_init_tbls)
 			; copy a level init data
 			lxi d, level_init_tbl
-			lxi b, level_init_tbl_end
-			call mem_copy
+			lxi b, LEVEL_INIT_TBL_LEN
+			call mem_copy_len
 
 			; init the screen
 			call level_init_palette

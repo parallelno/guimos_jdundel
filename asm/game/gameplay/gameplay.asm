@@ -1,26 +1,3 @@
-// .include "asm/game/levels/room_macros.asm"
-// .include "asm/game/levels/levels_data.asm"
-
-// .include "asm/game/gameplay/gameplay_consts.asm"
-// .include "asm/game/levels/backs_consts.asm"
-// .include "asm/game/actor/actor_consts.asm"
-// .include "asm/game/hero/hero_consts.asm"
-// .include "asm/game/monsters/monsters_consts.asm"
-// .include "asm/game/bullets/bullets_consts.asm"
-
-// .include "game/game_score_data.asm"
-
-// .include "asm/game/actor/actor.asm"
-// .include "asm/game/hero/hero.asm"
-// .include "asm/game/monsters/monsters.asm"
-// .include "asm/game/bullets/bullets.asm"
-// .include "asm/game/levels/breakables.asm"
-// .include "asm/game/levels/levels.asm"
-// .include "asm/game/levels/room.asm"
-// .include "asm/game/levels/backs.asm"
-// .include "asm/game/ui/ui.asm"
-// .include "asm/game/hero/hero_triggers.asm"
-
 gameplay:
 			call gameplay_init
 			call reset_game_updates_required_counter

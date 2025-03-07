@@ -9658,8 +9658,8 @@ $670d 23         inx h
 $670e 56         mov d,m
 $670f eb         xchg
 $6710 11 4a 26   lxi d,$264a
-$6713 01 5a 26   lxi b,$265a
-$6716 cd 84 03   call $0384
+$6713 01 10 00   lxi b,$0010
+$6716 cd 7e 03   call $037e
 $6719 cd 7a 67   call $677a
 $671c 3e 01      mvi a,$01
 $671e 32 23 45   sta $4523

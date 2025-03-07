@@ -226,7 +226,7 @@ mem_erase_sp $0345
 mem_erase_sp_filler $0353
 @loop_4 $0359
 mem_fill_sp $0371
-mem_copy_bc_len $037e
+mem_copy_len $037e
 mem_copy $0384
 @loop_5 $0384
 MEM_COPY_WORD_LEN $0005
@@ -1872,6 +1872,7 @@ level_start_pos_ptr $2654
 level_rooms_ptrs $2656
 level_tiles_ptrs $2658
 level_init_tbl_end $265a
+LEVEL_INIT_TBL_LEN $0010
 ROOM_TILES_GFX_PTRS_LEN $01e0
 room_tiles_gfx_ptrs $265a
 room_tiles_gfx_ptrs_end $283a
