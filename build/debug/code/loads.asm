@@ -189,7 +189,7 @@ Permanent load: 1624, Current Load: 125178, Free Space: 85926
 			lxi d, SONG01_ADDR
 			lxi h, _song01_ay_reg_data_ptrs
 			call v6_gc_init_song
-			CALL_RAM_DISK_FUNC_NO_RESTORE(v6_gc_start, RAM_DISK_S_SONG01 | RAM_DISK_M_SONG01 | RAM_DISK_M_8F)
+			CALL_RAM_DISK_FUNC_NO_RESTORE(v6_gc_start, RAM_DISK_M_SONG01 | RAM_DISK_M_8F)
 
 			RAM_DISK_M_KNIGHT = RAM_DISK_M2
 			RAM_DISK_S_KNIGHT = RAM_DISK_S2

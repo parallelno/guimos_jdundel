@@ -652,7 +652,7 @@ $058c d3 11      out $11
 $058e 31 dc 7f   lxi sp,$7fdc
 $0591 c5         push b
 $0592 d5         push d
-$0593 3e fa      mvi a,$fa
+$0593 3e e2      mvi a,$e2
 $0595 d3 11      out $11
 $0597 cd 2b 0b   call $0b2b
 $059a af         xra a
@@ -4697,7 +4697,7 @@ $2582 cd 9e 01   call $019e
 $2585 11 00 80   lxi d,$8000
 $2588 21 19 24   lxi h,$2419
 $258b cd 13 08   call $0813
-$258e 3e fa      mvi a,$fa
+$258e 3e e2      mvi a,$e2
 $2590 d3 11      out $11
 $2592 cd 27 08   call $0827
 $2595 af         xra a

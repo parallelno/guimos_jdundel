@@ -65,7 +65,7 @@ v6_gc_start:
 
 
 ; called by the unterruption routine
-; ex. CALL_RAM_DISK_FUNC_NO_RESTORE(v6_gc_update, RAM_DISK_M_SONG01 | RAM_DISK_M_8F)
+; ex. CALL_RAM_DISK_FUNC_NO_RESTORE(v6_gc_update, RAM_DISK_S_SONG01 | RAM_DISK_M_SONG01 | RAM_DISK_M_8F)
 v6_gc_update:
 			; return if muted
 			lda setting_music
@@ -176,7 +176,7 @@ v6_gc_clear_buffers:
 v6_gc_scheduler_update:
 			lxi h, 0
 			dad sp
-			shld GCPlayerSchedulerRestoreSp+1
+			shld v6_gc_scheduler_restore_sp+1
 			lhld v6_gc_current_task_spp
 			mov e, m
 			inx h
@@ -209,21 +209,21 @@ v6_gc_scheduler_store_task_context:
 			inx h
 			mvi a, <v6_gc_task_sps_end
 			cmp l
-			jnz @storeNextTaskSp
+			jnz @store_next_task_sp
 			mvi a, >v6_gc_task_sps_end
 			cmp h
-			jnz @storeNextTaskSp
+			jnz @store_next_task_sp
 			; (v6_gc_current_task_spp) = v6_gc_task_sps[0]
 			lxi h, v6_gc_task_sps
-@storeNextTaskSp:
+@store_next_task_sp:
 			shld v6_gc_current_task_spp
-GCPlayerSchedulerRestoreSp:
+v6_gc_scheduler_restore_sp:
 			lxi sp, TEMP_ADDR
 			ret
 
 
 ; unpacks 16 bytes of reg_data for the current task
-; this function is called during an interruption
+; this function is called from the interruption routine
 ; Parameters (forward):
 ; DE: source addr (compressed data)
 ; BC: destination addr (decompressing)
@@ -329,7 +329,7 @@ v6_gc_unpack:
 @exit:
 			; the song ended
 			; restore sp
-			lhld GCPlayerSchedulerRestoreSp+1
+			lhld v6_gc_scheduler_restore_sp + 1
 			sphl
 			; restart the music
 			call v6_gc_start

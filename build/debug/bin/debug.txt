@@ -1,5 +1,3 @@
-BREAKPOINT $59b2
-BREAKPOINT $6617
 BY_BC $0001
 BY_DE $0002
 BY_HL_FROM_BC $0003
@@ -395,8 +393,8 @@ v6_gc_clear_buffers $08a0
 @loop_12 $08a6
 v6_gc_scheduler_update $08b2
 v6_gc_scheduler_store_task_context $08c6
-@storeNextTaskSp $08e5
-GCPlayerSchedulerRestoreSp $08e8
+@store_next_task_sp $08e5
+v6_gc_scheduler_restore_sp $08e8
 v6_gc_unpack $08ec
 @literals_2 $08f3
 @Ldir1 $08f7

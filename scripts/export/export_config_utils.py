@@ -242,7 +242,7 @@ def get_load_asm(load_name, allocation, segments):
 					asm += f"			lxi d, {const_addr}\n"
 					asm += f"			lxi h, _{name_low}_ay_reg_data_ptrs\n"
 					asm += f"			call v6_gc_init_song\n"
-					asm += f"			CALL_RAM_DISK_FUNC_NO_RESTORE(v6_gc_start, {const_ram_disk_s} | {const_ram_disk_m} | RAM_DISK_M_8F)\n"
+					asm += f"			CALL_RAM_DISK_FUNC_NO_RESTORE(v6_gc_start, {const_ram_disk_m} | RAM_DISK_M_8F)\n"
 
 				case build.ASSET_TYPE_LEVEL_DATA:
 					asm += f"			lxi h, _{name_low}_rooms_ptrs\n"
