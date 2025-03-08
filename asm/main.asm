@@ -16,9 +16,13 @@
 .include "asm/game/bullets/bullets_consts.asm"
 
 ; all runtime data assembly should be the last inclusions to not blow up the executible size
-.include "game/game_runtime_data.asm"
+;.include "game/game_runtime_data.asm"
 ; this must be the last runtime data inclusion due to of validation checks
-.include "asm/v6/v6_runtime_data.asm"
+;.include "asm/v6/v6_runtime_data.asm"
+; TODO: replace the include below with the auto struct packer
+.include "asm/runtime_data.asm"
+; TODO: think of better place for it
+.include "asm/v6/sound/v6_gc_runtime_data.asm"
 
 
 .include "game/game_macros.asm"

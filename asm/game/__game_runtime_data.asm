@@ -12,8 +12,8 @@ level_palette_ptr:					.storage ADDR_LEN	; .word _level00_palette
 level_resources_inst_data_pptr:		.storage ADDR_LEN		; .word _level00_resources_inst_data_ptrs
 level_containers_inst_data_pptr:	.storage ADDR_LEN		; .word _level00_containers_inst_data_ptrs
 level_start_pos_ptr:				.storage ADDR_LEN		; .word _level00_start_pos
-level_rooms_ptrs:					.storage ADDR_LEN		; .word _level00_rooms_addr
-level_tiles_ptrs:					.storage ADDR_LEN		; .word _level00_tiles_pptr
+level_rooms_pptr:					.storage ADDR_LEN		; .word _level00_rooms_addr
+level_tiles_pptr:					.storage ADDR_LEN		; .word _level00_tiles_pptr
 level_init_tbl_end:
 LEVEL_INIT_TBL_LEN = level_init_tbl_end - level_init_tbl
 ;=============================================================================
@@ -57,7 +57,7 @@ room_tiledata_backup_end:
 ; tiled image idxs buffer
 ; a temporal buffer to unpack data
 
-; TODO: consider increasing this buffer and combine 
+; TODO: consider increasing this buffer and combine
 ; title1, title2, main_menu_back1, and main_menu_back2 into one image
 TEMP_BUFF_LEN = $200
 temp_buff:				.storage TEMP_BUFF_LEN

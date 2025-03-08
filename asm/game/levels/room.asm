@@ -70,7 +70,7 @@ room_redraw:
 
 ; packed room data has to be stored into $8000-$FFFF segment to be properly unzipped
 room_unpack:
-			lhld level_rooms_ptrs
+			lhld level_rooms_pptr
 			; convert a room_id into the addr of the room data (gfx tile idxs & tiledata)
 			; like _lv0_home or _lv0_farm_fence, etc
 			lda room_id
@@ -128,7 +128,7 @@ restore_doors_containers_tiledata_ex:
 
 ; convert room gfx tile_idxs into room gfx tile ptrs
 room_init_tiles_gfx:
-			lhld level_tiles_ptrs
+			lhld level_tiles_pptr
 			shld @gfx_tiles_ptrs + 1
 
 			lxi h, room_tiles_gfx_ptrs + ROOM_TILES_GFX_PTRS_LEN / 2
