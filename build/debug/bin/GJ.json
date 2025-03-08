@@ -2704,6 +2704,16 @@
             "operand": "RW",
             "status": 1,
             "value": "0x59B2"
+        },
+        {
+            "addr": "0x6617",
+            "autoDel": false,
+            "comment": "",
+            "cond": "=ANY",
+            "memPages": 4294967295,
+            "operand": "RW",
+            "status": 1,
+            "value": "0x6617"
         }
     ]
 }

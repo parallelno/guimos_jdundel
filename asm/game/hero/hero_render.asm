@@ -7,10 +7,10 @@ hero_draw:
 
 			lda hero_dir
 			rrc
-			mvi l, <(RAM_DISK_S_HERO_R | RAM_DISK_M_8F)
+			mvi l, <(RAM_DISK_S_HERO_R | RAM_DISK_M_BACKBUFF | RAM_DISK_M_8F)
 			jc @spriteR
 @spriteL:
-			mvi l, <(RAM_DISK_S_HERO_L | RAM_DISK_M_8F)
+			mvi l, <(RAM_DISK_S_HERO_L | RAM_DISK_M_BACKBUFF | RAM_DISK_M_8F)
 @spriteR:
 
 			lda hero_status

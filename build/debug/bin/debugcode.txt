@@ -6174,9 +6174,9 @@ $41e4 2a fa 74   lhld $74fa
 $41e7 cd 3f 0c   call $0c3f
 $41ea 3a fc 74   lda $74fc
 $41ed 0f         rrc
-$41ee 2e fc      mvi l,$fc
+$41ee 2e fd      mvi l,$fd
 $41f0 da f5 41   jc $41f5
-$41f3 2e fc      mvi l,$fc
+$41f3 2e fd      mvi l,$fd
 $41f5 3a f7 74   lda $74f7
 $41f8 e6 80      ani $80
 $41fa c2 28 42   jnz $4228
