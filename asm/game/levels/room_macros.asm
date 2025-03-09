@@ -49,7 +49,7 @@
 ; check a spawn_rate which addr is rate_ptr + room_id
 ; use:
 ; hl, e, a
-; TODO: an issue that this macro does not check the level. 
+; TODO: error: this macro does not check the level. 
 ; rooms_spawn_rates array does not contain a proper data for all levels
 .macro ROOM_SPAWN_RATE_CHECK(rate_ptr, do_not_spawn)
 			; check rooms_break_rate if it needs to spawn

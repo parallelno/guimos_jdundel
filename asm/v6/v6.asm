@@ -27,13 +27,5 @@ jmp v6_main_init
 v6_main_init:
 			lxi h, interruption
 			call v6_os_init
-			call v6_init
 			call game_start
 			call v6_os_exit
-
-; TODO: use .function to not worry about unused funcs
-v6_init:
-.if DEBUG
-			;clear_ram_disk()
-.endif
-			ret

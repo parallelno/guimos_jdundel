@@ -37,7 +37,7 @@ game_score_resources:
 
 ; func_id = 10
 ; TODO: it was previosly triggered by triggers, it caused a bug
-; because the fiends door can be accessed multiple times. 
+; because friend's door can be accessed multiple times.
 ; so it dissabled and not used now
 ; think of using it only for secret places/rooms
 game_score_secrets:

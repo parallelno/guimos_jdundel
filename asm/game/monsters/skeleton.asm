@@ -120,8 +120,9 @@ skeleton_update:
 			cpi SKELETON_STATUS_SHOOT
 			jz skeleton_update_shoot
 			cpi MONSTER_STATUS_FREEZE
-			jz monster_update_freeze			
+			jz monster_update_freeze
 			ret
+
 
 ; in:
 ; hl - ptr to monster_status
