@@ -1,13 +1,13 @@
-.include "game/bullets/bullets_macro.asm"
-.include "game/bullets/vfx_consts.asm"
-.include "game/bullets/sword.asm"
-.include "game/bullets/snowflake.asm"
-.include "game/bullets/scythe.asm"
-.include "game/bullets/bomb.asm"
-.include "game/bullets/sparker.asm"
-.include "game/bullets/fart.asm"
-.include "game/bullets/vfx.asm"
-.include "game/bullets/cursor.asm"
+.include "app/bullets/bullets_macro.asm"
+.include "app/bullets/vfx_consts.asm"
+.include "app/bullets/sword.asm"
+.include "app/bullets/snowflake.asm"
+.include "app/bullets/scythe.asm"
+.include "app/bullets/bomb.asm"
+.include "app/bullets/sparker.asm"
+.include "app/bullets/fart.asm"
+.include "app/bullets/vfx.asm"
+.include "app/bullets/cursor.asm"
 
 bullets_init:
 			; set the last marker byte of runtime_data

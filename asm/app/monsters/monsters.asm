@@ -1,13 +1,13 @@
-.include "asm/game/monsters/monsters_data.asm"
-.include "asm/game/monsters/monster_macros.asm"
-.include "asm/game/monsters/skeleton.asm"
-.include "asm/game/monsters/skeleton_quest.asm"
-.include "asm/game/monsters/vampire.asm"
-.include "asm/game/monsters/burner.asm"
-.include "asm/game/monsters/burner_quest.asm"
-.include "asm/game/monsters/knight.asm"
-.include "asm/game/monsters/knight_heavy.asm"
-.include "asm/game/monsters/firepool.asm"
+.include "asm/app/monsters/monsters_data.asm"
+.include "asm/app/monsters/monster_macros.asm"
+.include "asm/app/monsters/skeleton.asm"
+.include "asm/app/monsters/skeleton_quest.asm"
+.include "asm/app/monsters/vampire.asm"
+.include "asm/app/monsters/burner.asm"
+.include "asm/app/monsters/burner_quest.asm"
+.include "asm/app/monsters/knight.asm"
+.include "asm/app/monsters/knight_heavy.asm"
+.include "asm/app/monsters/firepool.asm"
 
 monsters_init:
 			; monsters_runtime_data_sorted got inited in level_init with NULL
@@ -69,7 +69,6 @@ monster_init:
 
 			ROOM_SPAWN_RATE_CHECK(rooms_spawn_rate_monsters, @restore_sp)
 @no_spawn_rate_check:
-
 			lxi h, monster_update_ptr+1
 			mvi e, MONSTER_RUNTIME_DATA_LEN
 			call actor_get_empty_data_ptr
@@ -77,21 +76,25 @@ monster_init:
 
 			mov a, c
 			; a - tile_idx in the room_tiledata array
-			; hl - ptr to monster_update_ptr+1
+			; hl - ptr to monster_update_ptr + 1
 
 			; advance hl to monster_update_ptr
-			dcx h
+			;dcx h
+			HL_ADVANCE(monster_update_ptr + 1, monster_update_ptr)
 			pop b ; using bc to read from the stack is requirenment
 			; bc - ptr to monster_update_ptr
 			mov m, c
-			inx h
+			;inx h
+			HL_ADVANCE(monster_update_ptr, monster_update_ptr + 1)
 			mov m, b
 			; advance hl to monster_draw_ptr
-			inx h
+			;inx h
+			HL_ADVANCE(monster_update_ptr + 1, monster_draw_ptr)
 			pop b
 			; bc - ptr to monster_draw_ptr
 			mov m, c
-			inx h
+			;inx h
+			HL_ADVANCE(monster_draw_ptr, monster_draw_ptr + 1)
 			mov m, b
 
 			; a - tile_idx in the room_tiledata array
@@ -99,7 +102,8 @@ monster_init:
 			; e - tile_idx
 
 			; advance hl to monster_status
-			inx h
+			;inx h
+			HL_ADVANCE(monster_draw_ptr + 1, monster_status)
 			pop b
 			; b - MONSTER_STATUS
 			mov m, b
@@ -113,7 +117,8 @@ monster_init:
 			pop b
 			; bc - monster_anim_ptr
 			mov m, c
-			inx h
+			;inx h
+			HL_ADVANCE(monster_anim_ptr, monster_anim_ptr + 1)
 			mov m, b
 
 			; e - tile_idx
@@ -133,38 +138,50 @@ monster_init:
 			; d = scr_x
 			; a = pos_y
 			; e = 0 and SPRITE_W_PACKED_MIN
-			; hl - ptr to monster_update_ptr+1
+			; hl - ptr to monster_anim_ptr + 1
 
 			; advance hl to monster_erase_scr_addr
-			inx h
+			;inx h
+			HL_ADVANCE(monster_anim_ptr + 1, monster_erase_scr_addr)
 			mov m, a
-			inx h
+			;inx h
+			HL_ADVANCE(monster_erase_scr_addr, monster_erase_scr_addr + 1)
 			mov m, d
 			; advance hl to monster_erase_scr_addr_old
-			inx h
+			;inx h
+			HL_ADVANCE(monster_erase_scr_addr + 1, monster_erase_scr_addr_old)
 			mov m, a
-			inx h
+			;inx h
+			HL_ADVANCE(monster_erase_scr_addr_old, monster_erase_scr_addr_old + 1)
 			mov m, d
 			; advance hl to monster_erase_wh
-			inx h
+			;inx h
+			HL_ADVANCE(monster_erase_scr_addr_old + 1, monster_erase_wh)
 			mvi m, SPRITE_H_MIN
-			inx h
+			;inx h
+			HL_ADVANCE(monster_erase_wh, monster_erase_wh + 1)
 			mov m, e
 			; advance hl to monster_erase_wh_old
-			inx h
+			;inx h
+			HL_ADVANCE(monster_erase_wh + 1, monster_erase_wh_old)
 			mvi m, SPRITE_H_MIN
-			inx h
+			;inx h
+			HL_ADVANCE(monster_erase_wh_old, monster_erase_wh_old + 1)
 			mov m, e
 			; advance hl to monster_pos_x
-			inx h
+			;inx h
+			HL_ADVANCE(monster_erase_wh_old + 1, monster_pos_x)
 			mov m, e
-			inx h
+			;inx h
+			HL_ADVANCE(monster_pos_x, monster_pos_x + 1)
 @pos_x:
 			mvi m, TEMP_BYTE ; pos_x
 			; advance hl to monster_pos_y
-			inx h
+			;inx h
+			HL_ADVANCE(monster_pos_x + 1, monster_pos_y)
 			mov m, e
-			inx h
+			;inx h
+			HL_ADVANCE(monster_pos_y, monster_pos_y + 1)
 			mov m, a
 
 			; advance hl to monster_impacted_ptr
@@ -172,18 +189,22 @@ monster_init:
 			pop b
 			; bc - ptr to monster_impacted_ptr
 			mov m, c
-			inx h
+			;inx h
+			HL_ADVANCE(monster_impacted_ptr, monster_impacted_ptr + 1)
 			mov m, b
 
 			; advance hl to monster_id
-			inx h
+			;inx h
+			HL_ADVANCE(monster_impacted_ptr + 1, monster_id)
 @monster_id:
 			mvi m, TEMP_BYTE
 			; advance hl to monster_type
-			inx h
+			;inx h
+			HL_ADVANCE(monster_id, monster_type)
 			mvi m, MONSTER_TYPE_ENEMY
 			; advance hl to monster_health
-			inx h
+			;inx h
+			HL_ADVANCE(monster_type, monster_health)
 @health:
 			mvi m, TEMP_BYTE
 

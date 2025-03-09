@@ -1,8 +1,8 @@
-.include "game/hero/hero_data.asm"
-.include "game/hero/hero_update.asm"
-.include "game/hero/hero_collision.asm"
-.include "game/hero/hero_tile_funcs.asm"
-.include "game/hero/hero_render.asm"
+.include "app/hero/hero_data.asm"
+.include "app/hero/hero_update.asm"
+.include "app/hero/hero_collision.asm"
+.include "app/hero/hero_tile_funcs.asm"
+.include "app/hero/hero_render.asm"
 
 
 hero_game_init:

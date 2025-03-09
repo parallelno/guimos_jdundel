@@ -1,29 +1,26 @@
 gameplay:
-			call gameplay_init
-			call reset_game_updates_required_counter
-@loop:
-			call gameplay_update
-			call gameplay_draw
-			jmp	@loop
-
-gameplay_init:
+			; init
 			call game_stats_init
 			call hero_game_init
 			call levels_init
 			call dialogs_init
 			call gameplay_ui_init
-			ret
+			call reset_game_updates_required_counter
+
+@loop:		; main loop
+			call gameplay_update
+			call gameplay_draw
+			jmp	@loop
 
 gameplay_update:
 			lxi h, game_update_counter
 			inr m
-
 @loop:
 			CHECK_GAME_UPDATE_COUNTER(gameplay_updates_required)
 
 			; check the pause
 			lda global_request
-			cpi GAME_REQ_PAUSE			
+			cpi GAME_REQ_PAUSE
 			jz @pause
 			cpi GAME_REQ_END_HOME
 			jz @end

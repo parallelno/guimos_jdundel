@@ -48,7 +48,7 @@ interruption:
 palette_update_request_:
 			mvi a, PALETTE_UPD_REQ_NO ; this constant value is mutable, do not replace it with xra a
 			CPI_WITH_ZERO(PALETTE_UPD_REQ_NO)
-			jz @no_palette_update
+			jz @set_border_scrolling
 			; set a palette
 			; hl - the addr of the last item in the palette
 			lxi h, palette + PALETTE_LEN - 1
@@ -57,7 +57,7 @@ palette_update_request_:
 			A_TO_ZERO(PALETTE_UPD_REQ_NO)
 			sta palette_update_request
 
-@no_palette_update:			
+@set_border_scrolling:
 			; a border color, scrolling set up
 			mvi a, PORT0_OUT_OUT
 			out 0
@@ -65,15 +65,12 @@ palette_update_request_:
 			out 2
 			lda scr_offset_y
 			out 3
-			; used in the main program to keep the update synced with interruption
-@update_skipper:
-			mvi a, %01010101
-			rrc
-			sta @update_skipper+1
-			jnc @skip_update
+
+			; it's used in the main program to 
+			; keep the update synced with interruption
 			lxi h, gameplay_updates_required
 			inr m
-@skip_update:
+
 			; fps update
 			lxi h, ints_per_sec_counter
 			dcr m

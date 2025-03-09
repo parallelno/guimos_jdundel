@@ -64,6 +64,12 @@
 		.endloop
 .endmacro
 
+.macro DCR_M(i)
+		.loop i
+			dcr m
+		.endloop
+.endmacro
+
 .macro INR_L(i)
 		.loop i
 			inr l
@@ -494,13 +500,14 @@ BY_HL_FROM_DE	= 4
 			mov m, a
 .endmacro
 
-.macro CHECK_GAME_UPDATE_COUNTER(@gameplay_updates_required)
+ ; ints_per_update = 2 means the update happens every second interruption
+.macro CHECK_GAME_UPDATE_COUNTER(@gameplay_updates_required, ints_per_update = 2)
 			; check if an interruption happened
 			lxi h, @gameplay_updates_required
 			mov a, m
 			ora a
-			rz
-			dcr m
+			rm
+			DCR_M(ints_per_update)
 .endmacro
 
 .macro TEXT(string, end_code = _EOD_)

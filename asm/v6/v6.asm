@@ -27,5 +27,5 @@ jmp v6_main_init
 v6_main_init:
 			lxi h, interruption
 			call v6_os_init
-			call game_start
+			call app_start
 			call v6_os_exit
