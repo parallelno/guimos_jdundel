@@ -8,7 +8,7 @@ RES_DISPLAYED_MAX = 3
 
 GAME_UI_ITEM_UPDATE_DELAY = 80
 
-gameplay_ui_init:
+game_ui_init:
 			A_TO_ZERO( RES_SELECTABLE_AVAILABLE_NONE)
 			sta game_ui_res_selected_id
 			mvi a, <global_items
@@ -21,7 +21,7 @@ game_ui_draw:
 			call game_ui_draw_score_text
 			jmp game_ui_draw_res
 
-gameplay_ui_update:
+game_ui_update:
 			call game_ui_draw_items
 			jmp dialog_update
 

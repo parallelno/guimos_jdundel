@@ -64,7 +64,7 @@ screen_simple_update:
 			inr m
 
 @loop:
-			CHECK_GAME_UPDATE_COUNTER(gameplay_updates_required)
+			CHECK_GAME_UPDATE_COUNTER(game_updates_required)
 
 @spec_update_func:
 			call TEMP_ADDR
@@ -79,9 +79,9 @@ screen_simple_update:
 
 screen_simple_draw:
 			; update counter to calc fps
-			lhld gameplay_draw_counter
+			lhld game_draw_counter
 			inx h
-			shld gameplay_draw_counter
+			shld game_draw_counter
 
 			; draw funcs
 			call backs_draw

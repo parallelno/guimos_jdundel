@@ -68,7 +68,7 @@ palette_update_request_:
 
 			; it's used in the main program to 
 			; keep the update synced with interruption
-			lxi h, gameplay_updates_required
+			lxi h, game_updates_required
 			inr m
 
 			; fps update
@@ -114,5 +114,5 @@ ints_per_sec_counter:
 			.byte INTS_PER_SEC
 
 ; a lopped counter increased every game draw call
-gameplay_draw_counter = interruption_fps + 1
+game_draw_counter = interruption_fps + 1
 palette_update_request = palette_update_request_ + 1

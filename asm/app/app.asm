@@ -28,7 +28,7 @@ global_request: = * + 1
 global_funcs:
 			.word empty_func		; GLOBAL_REQ_NONE		= 0
 			.word main_menu			; GLOBAL_REQ_MAIN_MENU	= 1
-			.word gameplay			; GLOBAL_REQ_GAME		= 2
+			.word game				; GLOBAL_REQ_GAME		= 2
 			.word settings_screen	; GLOBAL_REQ_OPTIONS	= 3
 			.word scores_screen		; GLOBAL_REQ_SCORES		= 4
 			.word credits_screen	; GLOBAL_REQ_CREDITS	= 5

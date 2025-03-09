@@ -1,22 +1,22 @@
-gameplay:
+game:
 			; init
 			call game_stats_init
 			call hero_game_init
 			call levels_init
 			call dialogs_init
-			call gameplay_ui_init
+			call game_ui_init
 			call reset_game_updates_required_counter
 
 @loop:		; main loop
-			call gameplay_update
-			call gameplay_draw
+			call game_update
+			call game_draw
 			jmp	@loop
 
-gameplay_update:
+game_update:
 			lxi h, game_update_counter
 			inr m
 @loop:
-			CHECK_GAME_UPDATE_COUNTER(gameplay_updates_required)
+			CHECK_GAME_UPDATE_COUNTER(game_updates_required)
 
 			; check the pause
 			lda global_request
@@ -31,7 +31,7 @@ gameplay_update:
 			call level_update
 @pause:			
 			call backs_update
-			call gameplay_ui_update
+			call game_ui_update
 
 			; to check repeated key-pressing
 			lda action_code
@@ -43,11 +43,11 @@ gameplay_update:
 			POP_H(1) ; to return into main_start loop
 			ret
 
-gameplay_draw:
+game_draw:
 			; update counter to calc fps
-			lhld gameplay_draw_counter
+			lhld game_draw_counter
 			inx h
-			shld gameplay_draw_counter
+			shld game_draw_counter
 			
 			; draw funcs
 			call backs_draw

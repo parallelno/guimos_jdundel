@@ -8,7 +8,7 @@
 .include "app/app_consts.asm"
 .include "app/levels/room_consts.asm"
 .include "app/levels/levels_data_consts.asm"
-.include "app/gameplay/gameplay_consts.asm"
+.include "app/game/game_consts.asm"
 .include "app/levels/backs_consts.asm"
 .include "app/actor/actor_consts.asm"
 .include "app/hero/hero_consts.asm"
@@ -54,7 +54,7 @@
 .include "app/screens/scores.asm"
 .include "app/screens/settings.asm"
 .include "app/screens/stats.asm"
-.include "app/gameplay/gameplay.asm"
+.include "app/game/game.asm"
 
 .include "app/app.asm"
 

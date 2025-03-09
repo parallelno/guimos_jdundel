@@ -312,7 +312,7 @@ scr_offset_y:			= global_states_2 + 1 ; .byte
 
 ; it is used to check how many updates needs to happened
 ; to sync with interruptions
-gameplay_updates_required:= global_states_2 + 2 ; .byte
+game_updates_required:= global_states_2 + 2 ; .byte
 			;.storage BYTE_LEN
 
 ; a lopped counter increased every game update

@@ -317,7 +317,7 @@ interruption_restoreHL $05e5
 interruption_restoreSP $05e8
 interruption_return $05ec
 ints_per_sec_counter $05ef
-gameplay_draw_counter $05ca
+game_draw_counter $05ca
 palette_update_request $05a1
 draw_fps $05f0
 @fps_text_hi $060f
@@ -1993,7 +1993,7 @@ game_status_end $7bec
 global_states_2 $7bf7
 border_color_idx $7bf7
 scr_offset_y $7bf8
-gameplay_updates_required $7bf9
+game_updates_required $7bf9
 game_update_counter $7bfa
 char_temp_x $7bfb
 char_temp_y $7bfd
@@ -3299,9 +3299,9 @@ RES_TEXT_SCR_ADDR_0 $a8fb
 RES_SELECTION_FRAME_SCR_ADDR $a6f0
 RES_DISPLAYED_MAX $0003
 GAME_UI_ITEM_UPDATE_DELAY $0050
-gameplay_ui_init $5fac
+game_ui_init $5fac
 game_ui_draw $5fb8
-gameplay_ui_update $5fc4
+game_ui_update $5fc4
 game_ui_draw_health_text $5fca
 game_ui_draw_score_text $5fd3
 game_ui_score_txt $5fe4
@@ -3475,13 +3475,13 @@ stats_screen $6521
 @global_req_5 $652d
 stats_screen_text_draw $653c
 stats_screen_init $6596
-gameplay $65a6
+game $65a6
 @loop_40 $65b8
-gameplay_update $65c1
+game_update $65c1
 @loop_41 $65c5
 @pause $65e6
 @end $65f5
-gameplay_draw $65fc
+game_draw $65fc
 app_start $6628
 @loop_42 $6640
 global_request $6645
