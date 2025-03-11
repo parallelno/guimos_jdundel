@@ -17,8 +17,9 @@ HERO_DIR_DOWN			= %1000
 
 
 ; hero statuses.
-; a status describes what set of animations and behavior is active
-; for ex. HERO_STATUS_ATTACK plays hero_r_attk or hero_l_attk depending on the direction and it spawns a weapon trail
+; status describe what set of animations and behavior is active
+; for ex. HERO_STATUS_ATTACK plays hero_r_attk or hero_l_attk 
+; depending on the direction and it spawns a weapon trail
 HERO_STATUS_IDLE			= 0
 HERO_STATUS_ATTACK			= 1
 HERO_STATUS_MOVE			= 2

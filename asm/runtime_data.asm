@@ -76,6 +76,10 @@ ram_disk_mode:				= $7511
 
 ;=============================================================================
 ; monsters runtime data
+; requirements:
+; * MONSTER_RUNTIME_DATA_LEN < 256
+; * (bullet_status - bullet_erase_scr_addr) == (monster_status - monster_erase_scr_addr)
+; * (bullet_erase_scr_addr+1 - bullet_erase_wh) == (monster_erase_scr_addr+1 - monster_erase_wh)
 ;
 MONSTERS_MAX = 15 ; max monsters in the room
 ; ptr to the first monster data in the sorted list
@@ -131,7 +135,10 @@ temp_buff:				.storage TEMP_BUFF_LEN
 
 ;=============================================================================
 ; bullets runtime data
-; must fit inside $100 block
+; requirements:
+; * must fit inside $100 block
+; * (bullet_status - bullet_erase_scr_addr) == (monster_status - monster_erase_scr_addr)
+; * (bullet_erase_scr_addr+1 - bullet_erase_wh) == (monster_erase_scr_addr+1 - monster_erase_wh)
 
 ; a list of bullet runtime data structs.
 bullets_runtime_data:		= $7815

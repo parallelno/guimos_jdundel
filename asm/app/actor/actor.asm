@@ -166,7 +166,6 @@ actors_invoke_if_alive:
 			lxi d, TEMP_WORD
 			dad d
 			jmp @loop
-			ret
 
 ; calls any provided func for each actor with a status ACTOR_RUNTIME_DATA_ALIVE or ACTOR_RUNTIME_DATA_DESTR
 ; a called func will get HL pointing to a monster_update_ptr+1 in the runtime data, and A holding an actor status
@@ -209,7 +208,6 @@ actors_call_if_alive:
 			lxi d, TEMP_WORD
 			dad d
 			jmp @loop
-			ret
 
 ; erase a sprite or restore the background behind a sprite
 ; requires (bullet_status - bullet_erase_scr_addr) == (monster_status - monster_erase_scr_addr)
