@@ -1,13 +1,14 @@
 ; lava pool is a quest monster. it can be destroied by snowflake weapon
 
 ; statuses.
-FIREPOOL_STATUS_IDLE					= 0
+; personal actor statuses must be in a range of 0 to %0001_1111 including.
+ACTOR_STATUS_FIREPOOL_IDLE				= 0
 
 ; status duration in updates.
-FIREPOOL_STATUS_DETECT_HERO_TIME	= 50
-FIREPOOL_STATUS_SHOOT_PREP_TIME		= 30
-FIREPOOL_STATUS_RELAX_TIME			= 25
-FIREPOOL_STATUS_MOVE_TIME			= 55
+ACTOR_STATUS_FIREPOOL_DETECT_HERO_TIME	= 50
+ACTOR_STATUS_FIREPOOL_SHOOT_PREP_TIME	= 30
+ACTOR_STATUS_FIREPOOL_RELAX_TIME		= 25
+ACTOR_STATUS_FIREPOOL_MOVE_TIME			= 55
 
 ; animation speed (the less the slower, 0-255, 255 means the next frame is almost every update)
 FIREPOOL_ANIM_SPEED_IDLE	= 40
@@ -32,7 +33,7 @@ firepool_init:
 			CPI_WITH_ZERO(False)
 			jnz @return
 			mov a, b
-			MONSTER_INIT(firepool_update, firepool_draw, firepool_impacted, FIREPOOL_HEALTH, FIREPOOL_STATUS_IDLE, _vfx_firepool, False)
+			MONSTER_INIT(firepool_update, firepool_draw, firepool_impacted, FIREPOOL_HEALTH, ACTOR_STATUS_FIREPOOL_IDLE, _vfx_firepool, False)
 @return:
 			mvi a, TILEDATA_RESTORE_TILE
 			ret			

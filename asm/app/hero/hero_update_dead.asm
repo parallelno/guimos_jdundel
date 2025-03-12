@@ -1,13 +1,13 @@
 ; a visual sequence when a hero lost all his life points
 hero_dead:
 			lda hero_status
-			cpi HERO_STATUS_DEATH_FADE_INIT_GB
+			cpi ACTOR_STATUS_HERO_DEATH_FADE_INIT_GB
 			jz hero_dead_fade_init_gb
-			cpi HERO_STATUS_DEATH_FADE_GB
+			cpi ACTOR_STATUS_HERO_DEATH_FADE_GB
 			jz hero_dead_fade_gb
-			cpi HERO_STATUS_DEATH_FADE_R
+			cpi ACTOR_STATUS_HERO_DEATH_FADE_R
 			jz hero_dead_fade_r
-			cpi HERO_STATUS_DEATH_WAIT_SPARKER
+			cpi ACTOR_STATUS_HERO_DEATH_WAIT_SPARKER
 			jz hero_dead_wait_sparker
 			ret
 
@@ -16,7 +16,7 @@ hero_dead_fade_init_gb:
 			KILL_ALL_BULLETS()
 
 			; set the status
-			mvi a, HERO_STATUS_DEATH_FADE_GB
+			mvi a, ACTOR_STATUS_HERO_DEATH_FADE_GB
 			sta hero_status
 
 			; kill all the backs
@@ -70,7 +70,7 @@ hero_dead_fade_gb:
 
 			; set the status
 			lxi h, hero_status
-			mvi m, HERO_STATUS_DEATH_FADE_R
+			mvi m, ACTOR_STATUS_HERO_DEATH_FADE_R
 
 			; draw vfx
 			; bc - vfx scrXY
@@ -126,7 +126,7 @@ hero_dead_fade_r:
 
 			; set the status
 			lxi h, hero_status
-			mvi m, HERO_STATUS_DEATH_WAIT_SPARKER
+			mvi m, ACTOR_STATUS_HERO_DEATH_WAIT_SPARKER
 			;advance hl to hero_status_timer
 			inx h
 			mvi m, HERO_STATUS_DEATH_WAIT_SPARKER_DURATION

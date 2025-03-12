@@ -48,18 +48,19 @@
 ;			check mod-hero collision, impact if collides
 
 ; statuses.
-KNIGHT_STATUS_DETECT_HERO_INIT	= MONSTER_STATUS_INIT
-KNIGHT_STATUS_DETECT_HERO		= 1
-KNIGHT_STATUS_DEFENCE_INIT		= 2
-KNIGHT_STATUS_DEFENCE			= 3
-KNIGHT_STATUS_MOVE_INIT			= 4
-KNIGHT_STATUS_MOVE				= 5
-KNIGHT_STATUS_PANIC				= 6
+; personal actor statuses must be in a range of 0 to %0001_1111 including.
+ACTOR_STATUS_KNIGHT_DETECT_HERO_INIT	= ACTOR_STATUS_MONSTER_INIT
+ACTOR_STATUS_KNIGHT_DETECT_HERO			= 1
+ACTOR_STATUS_KNIGHT_DEFENCE_INIT		= 2
+ACTOR_STATUS_KNIGHT_DEFENCE				= 3
+ACTOR_STATUS_KNIGHT_MOVE_INIT			= 4
+ACTOR_STATUS_KNIGHT_MOVE				= 5
+ACTOR_STATUS_KNIGHT_PANIC				= 6
 
 ; status duration in updates.
-KNIGHT_STATUS_DETECT_HERO_TIME	= 100
-KNIGHT_STATUS_DEFENCE_TIME		= 30
-KNIGHT_STATUS_MOVE_TIME			= 50
+ACTOR_STATUS_KNIGHT_DETECT_HERO_TIME	= 100
+ACTOR_STATUS_KNIGHT_DEFENCE_TIME		= 30
+ACTOR_STATUS_KNIGHT_MOVE_TIME			= 50
 
 ; animation speed (the less the slower, 0-255, 255 means the next frame is almost every update)
 KNIGHT_ANIM_SPEED_DETECT_HERO	= 10
@@ -89,7 +90,7 @@ KNIGHT_DETECT_HERO_DISTANCE = 60
 ; out:
 ; a = TILEDATA_RESTORE_TILE
 knight_init:
-			MONSTER_INIT(knight_update, knight_draw, monster_impacted, KNIGHT_HEALTH, KNIGHT_STATUS_DETECT_HERO_INIT, _knight_idle)
+			MONSTER_INIT(knight_update, knight_draw, monster_impacted, KNIGHT_HEALTH, ACTOR_STATUS_KNIGHT_DETECT_HERO_INIT, _knight_idle)
 
 ;========================================================
 ; anim and a gameplay logic update
@@ -99,19 +100,19 @@ knight_update:
 			; advance hl to monster_status
 			HL_ADVANCE(monster_update_ptr, monster_status, BY_HL_FROM_DE)
 			mov a, m
-			cpi KNIGHT_STATUS_MOVE
+			cpi ACTOR_STATUS_KNIGHT_MOVE
 			jz knight_update_move
-			cpi KNIGHT_STATUS_DETECT_HERO
+			cpi ACTOR_STATUS_KNIGHT_DETECT_HERO
 			jz knight_update_detect_hero
-			cpi KNIGHT_STATUS_DEFENCE
+			cpi ACTOR_STATUS_KNIGHT_DEFENCE
 			jz knight_update_speedup
-			cpi KNIGHT_STATUS_MOVE_INIT
+			cpi ACTOR_STATUS_KNIGHT_MOVE_INIT
 			jz knight_update_move_init
-			cpi KNIGHT_STATUS_DEFENCE_INIT
+			cpi ACTOR_STATUS_KNIGHT_DEFENCE_INIT
 			jz knight_update_speedup_init
-			cpi KNIGHT_STATUS_DETECT_HERO_INIT
+			cpi ACTOR_STATUS_KNIGHT_DETECT_HERO_INIT
 			jz knight_update_detect_hero_init
-			cpi MONSTER_STATUS_FREEZE
+			cpi ACTOR_STATUS_MONSTER_FREEZE
 			jz monster_update_freeze
 			ret
 
@@ -119,9 +120,9 @@ knight_update:
 ; hl - ptr to monster_status
 knight_update_detect_hero_init:
 			; hl = monster_status
-			mvi m, KNIGHT_STATUS_DETECT_HERO
+			mvi m, ACTOR_STATUS_KNIGHT_DETECT_HERO
 			inx h
-			mvi m, KNIGHT_STATUS_DETECT_HERO_TIME
+			mvi m, ACTOR_STATUS_KNIGHT_DETECT_HERO_TIME
 			HL_ADVANCE(monster_status_timer, monster_anim_ptr)
 			mvi m, <_knight_idle
 			inx h
@@ -131,16 +132,16 @@ knight_update_detect_hero_init:
 ; in:
 ; hl - ptr to monster_status
 knight_update_detect_hero:
-			MONSTER_UPDATE_DETECT_HERO( KNIGHT_DETECT_HERO_DISTANCE, KNIGHT_STATUS_DEFENCE_INIT, NULL, NULL, KNIGHT_ANIM_SPEED_DETECT_HERO, knight_update_anim_check_collision_hero, KNIGHT_STATUS_MOVE_INIT, KNIGHT_STATUS_MOVE_TIME)
+			MONSTER_UPDATE_DETECT_HERO( KNIGHT_DETECT_HERO_DISTANCE, ACTOR_STATUS_KNIGHT_DEFENCE_INIT, NULL, NULL, KNIGHT_ANIM_SPEED_DETECT_HERO, knight_update_anim_check_collision_hero, ACTOR_STATUS_KNIGHT_MOVE_INIT, ACTOR_STATUS_KNIGHT_MOVE_TIME)
 
 ; in:
 ; hl - ptr to monster_status
 knight_update_speedup_init:
 			; hl - ptr to monster_status
-			mvi m, KNIGHT_STATUS_DEFENCE
+			mvi m, ACTOR_STATUS_KNIGHT_DEFENCE
 			; advance hl to monster_status_timer
 			inx h
-			mvi m, KNIGHT_STATUS_DEFENCE_TIME
+			mvi m, ACTOR_STATUS_KNIGHT_DEFENCE_TIME
 @check_anim_dir:
 			; aim the monster to the hero dir
 			; advance hl to monster_pos_x+1
@@ -220,7 +221,7 @@ knight_update_speedup:
  			; hl - ptr to monster_status_timer
 			; advance hl to monster_status
 			dcx h
-			mvi m, KNIGHT_STATUS_DETECT_HERO_INIT
+			mvi m, ACTOR_STATUS_KNIGHT_DETECT_HERO_INIT
 			ret
 
 @update_movement:
@@ -236,7 +237,7 @@ knight_update_speedup:
 			; hl points to monster_pos_x
 			; advance hl to monster_status
 			HL_ADVANCE(monster_pos_x, monster_status, BY_BC)
-			mvi m, KNIGHT_STATUS_DEFENCE_INIT
+			mvi m, ACTOR_STATUS_KNIGHT_DEFENCE_INIT
 			; hl points to monster_status
 			; advance hl to monster_anim_timer
 			HL_ADVANCE(monster_status, monster_anim_timer)
@@ -247,7 +248,7 @@ knight_update_speedup:
 ; hl - ptr to monster_status
 knight_update_move_init:
 			; hl = monster_status
-			mvi m, KNIGHT_STATUS_MOVE
+			mvi m, ACTOR_STATUS_KNIGHT_MOVE
 			; advance hl to monster_status_timer
 
 			; advance hl to monster_id
@@ -344,13 +345,13 @@ knight_update_move:
 			; hl points to monster_pos_x
 			; advance hl to monster_status
 			HL_ADVANCE(monster_pos_x, monster_status, BY_BC)
-			mvi m, KNIGHT_STATUS_MOVE_INIT
+			mvi m, ACTOR_STATUS_KNIGHT_MOVE_INIT
 			ret
 @set_detect_hero_init:
  			; hl - ptr to monster_status_timer
 			; advance hl to monster_status
 			dcx h
-			mvi m, KNIGHT_STATUS_DETECT_HERO_INIT
+			mvi m, ACTOR_STATUS_KNIGHT_DETECT_HERO_INIT
 			ret
 
 

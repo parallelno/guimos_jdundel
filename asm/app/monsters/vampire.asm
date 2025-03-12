@@ -55,19 +55,20 @@
 ;			check mod-hero collision, impact if collides
 
 ; statuses.
-VAMPIRE_STATUS_DETECT_HERO_INIT	= MONSTER_STATUS_INIT
-VAMPIRE_STATUS_DETECT_HERO		= 1
-VAMPIRE_STATUS_SHOOT_PREP		= 2
-VAMPIRE_STATUS_SHOOT			= 3
-VAMPIRE_STATUS_RELAX			= 4
-VAMPIRE_STATUS_MOVE_INIT		= 5
-VAMPIRE_STATUS_MOVE				= 6
+; personal actor statuses must be in a range of 0 to %0001_1111 including.
+ACTOR_STATUS_VAMPIRE_DETECT_HERO_INIT	= ACTOR_STATUS_MONSTER_INIT
+ACTOR_STATUS_VAMPIRE_DETECT_HERO		= 1
+ACTOR_STATUS_VAMPIRE_SHOOT_PREP		= 2
+ACTOR_STATUS_VAMPIRE_SHOOT			= 3
+ACTOR_STATUS_VAMPIRE_RELAX			= 4
+ACTOR_STATUS_VAMPIRE_MOVE_INIT		= 5
+ACTOR_STATUS_VAMPIRE_MOVE			= 6
 
 ; status duration in updates.
-VAMPIRE_STATUS_DETECT_HERO_TIME	= 50
-VAMPIRE_STATUS_SHOOT_PREP_TIME	= 30
-VAMPIRE_STATUS_RELAX_TIME		= 25
-VAMPIRE_STATUS_MOVE_TIME		= 55
+ACTOR_STATUS_VAMPIRE_DETECT_HERO_TIME	= 50
+ACTOR_STATUS_VAMPIRE_SHOOT_PREP_TIME	= 30
+ACTOR_STATUS_VAMPIRE_RELAX_TIME			= 25
+ACTOR_STATUS_VAMPIRE_MOVE_TIME			= 55
 
 ; animation speed (the less the slower, 0-255, 255 means the next frame is almost every update)
 VAMPIRE_ANIM_SPEED_DETECT_HERO	= 30
@@ -95,7 +96,7 @@ VAMPIRE_DETECT_HERO_DISTANCE = 90
 ; out:
 ; a = TILEDATA_RESTORE_TILE
 vampire_init:
-			MONSTER_INIT(vampire_update, vampire_draw, monster_impacted, VAMPIRE_HEALTH, VAMPIRE_STATUS_DETECT_HERO_INIT, _vampire_idle)
+			MONSTER_INIT(vampire_update, vampire_draw, monster_impacted, VAMPIRE_HEALTH, ACTOR_STATUS_VAMPIRE_DETECT_HERO_INIT, _vampire_idle)
 
 ;========================================================
 ; anim and a gameplay logic update
@@ -106,29 +107,29 @@ vampire_update:
 			HL_ADVANCE(monster_update_ptr, monster_status, BY_HL_FROM_DE)
 			mov a, m
 			; a - monster_status
-			cpi VAMPIRE_STATUS_MOVE
+			cpi ACTOR_STATUS_VAMPIRE_MOVE
 			jz vampire_update_move
-			cpi VAMPIRE_STATUS_DETECT_HERO
+			cpi ACTOR_STATUS_VAMPIRE_DETECT_HERO
 			jz vampire_update_detect_hero
-			cpi VAMPIRE_STATUS_RELAX
+			cpi ACTOR_STATUS_VAMPIRE_RELAX
 			jz vampire_update_relax
-			cpi VAMPIRE_STATUS_SHOOT_PREP
+			cpi ACTOR_STATUS_VAMPIRE_SHOOT_PREP
 			jz vampire_update_shoot_prep
-			cpi VAMPIRE_STATUS_MOVE_INIT
+			cpi ACTOR_STATUS_VAMPIRE_MOVE_INIT
 			jz vampire_update_move_init
-			cpi VAMPIRE_STATUS_DETECT_HERO_INIT
+			cpi ACTOR_STATUS_VAMPIRE_DETECT_HERO_INIT
 			jz vampire_update_detect_hero_init
-			cpi VAMPIRE_STATUS_SHOOT
+			cpi ACTOR_STATUS_VAMPIRE_SHOOT
 			jz vampire_update_shoot
-			cpi MONSTER_STATUS_FREEZE
+			cpi ACTOR_STATUS_MONSTER_FREEZE
 			jz monster_update_freeze
 			ret
 
 vampire_update_detect_hero_init:
 			; hl = monster_status
-			mvi m, VAMPIRE_STATUS_DETECT_HERO
+			mvi m, ACTOR_STATUS_VAMPIRE_DETECT_HERO
 			inx h
-			mvi m, VAMPIRE_STATUS_DETECT_HERO_TIME
+			mvi m, ACTOR_STATUS_VAMPIRE_DETECT_HERO_TIME
 			HL_ADVANCE(monster_status_timer, monster_anim_ptr)
 			mvi m, <_vampire_idle
 			inx h
@@ -138,13 +139,13 @@ vampire_update_detect_hero_init:
 ; in:
 ; hl - ptr to monster_status
 vampire_update_detect_hero:
-MONSTER_UPDATE_DETECT_HERO(VAMPIRE_DETECT_HERO_DISTANCE, VAMPIRE_STATUS_SHOOT_PREP, VAMPIRE_STATUS_SHOOT_PREP_TIME, _vampire_cast, VAMPIRE_ANIM_SPEED_DETECT_HERO, vampire_update_anim_check_collision_hero, VAMPIRE_STATUS_MOVE_INIT, VAMPIRE_STATUS_MOVE_TIME)
+MONSTER_UPDATE_DETECT_HERO(VAMPIRE_DETECT_HERO_DISTANCE, ACTOR_STATUS_VAMPIRE_SHOOT_PREP, ACTOR_STATUS_VAMPIRE_SHOOT_PREP_TIME, _vampire_cast, VAMPIRE_ANIM_SPEED_DETECT_HERO, vampire_update_anim_check_collision_hero, ACTOR_STATUS_VAMPIRE_MOVE_INIT, ACTOR_STATUS_VAMPIRE_MOVE_TIME)
 
 ; in:
 ; hl - ptr to monster_status
 vampire_update_move_init:
 			; hl = monster_status
-			mvi m, VAMPIRE_STATUS_MOVE
+			mvi m, ACTOR_STATUS_VAMPIRE_MOVE
 			xchg
 			call random
 			; advance hl to monster_speed_x
@@ -229,15 +230,15 @@ vampire_update_move:
 			; hl points to monster_pos_x
 			; advance hl to monster_status
 			HL_ADVANCE(monster_pos_x, monster_status, BY_BC)
-			mvi m, VAMPIRE_STATUS_MOVE_INIT
+			mvi m, ACTOR_STATUS_VAMPIRE_MOVE_INIT
 			inx h
-			mvi m, VAMPIRE_STATUS_MOVE_TIME
+			mvi m, ACTOR_STATUS_VAMPIRE_MOVE_TIME
 			ret
 @set_detect_hero_init:
  			; hl - ptr to monster_status_timer
 			; advance hl to monster_status
 			dcx h
-			mvi m, VAMPIRE_STATUS_DETECT_HERO_INIT
+			mvi m, ACTOR_STATUS_VAMPIRE_DETECT_HERO_INIT
 			ret
 
 vampire_update_relax:
@@ -252,10 +253,10 @@ vampire_update_relax:
 			jmp vampire_update_anim_check_collision_hero
  @set_move_init:
  			; hl - ptr to monster_status_timer
-			mvi m, VAMPIRE_STATUS_MOVE_TIME
+			mvi m, ACTOR_STATUS_VAMPIRE_MOVE_TIME
 			; advance hl to monster_status
 			dcx h
-			mvi m, VAMPIRE_STATUS_MOVE_INIT
+			mvi m, ACTOR_STATUS_VAMPIRE_MOVE_INIT
 			ret
 
 ; in:
@@ -274,7 +275,7 @@ vampire_update_shoot_prep:
   			; hl - ptr to monster_status_timer
 			; advance hl to monster_status
 			dcx h
-			mvi m, VAMPIRE_STATUS_SHOOT
+			mvi m, ACTOR_STATUS_VAMPIRE_SHOOT
 			
 			lxi h, sfx_vampire_attack
 			call v6_sfx_play
@@ -284,10 +285,10 @@ vampire_update_shoot_prep:
 ; hl - ptr to monster_status
 vampire_update_shoot:
 			; hl = monster_status
-			mvi m, VAMPIRE_STATUS_RELAX
+			mvi m, ACTOR_STATUS_VAMPIRE_RELAX
 			; advance hl to monster_status_timer
 			inx h
-			mvi m, VAMPIRE_STATUS_RELAX_TIME
+			mvi m, ACTOR_STATUS_VAMPIRE_RELAX_TIME
 
 			; advance hl to monster_pos_x+1
 			HL_ADVANCE(monster_status_timer, monster_pos_x+1, BY_BC)

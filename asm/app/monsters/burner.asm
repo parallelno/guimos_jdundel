@@ -62,20 +62,21 @@
 
 
 ; statuses.
-BURNER_STATUS_DETECT_HERO_INIT	= 0 * JMP_4_LEN
-BURNER_STATUS_DETECT_HERO		= 1 * JMP_4_LEN
-BURNER_STATUS_DASH_PREP			= 2 * JMP_4_LEN
-BURNER_STATUS_DASH				= 3 * JMP_4_LEN
-BURNER_STATUS_RELAX				= 4 * JMP_4_LEN
-BURNER_STATUS_MOVE_INIT			= 5 * JMP_4_LEN
-BURNER_STATUS_MOVE				= 6 * JMP_4_LEN
+; personal actor statuses must be in a range of 0 to %0001_1111 including.
+ACTOR_STATUS_BURNER_DETECT_HERO_INIT	= 0 * JMP_4_LEN
+ACTOR_STATUS_BURNER_DETECT_HERO			= 1 * JMP_4_LEN
+ACTOR_STATUS_BURNER_DASH_PREP			= 2 * JMP_4_LEN
+ACTOR_STATUS_BURNER_DASH				= 3 * JMP_4_LEN
+ACTOR_STATUS_BURNER_RELAX				= 4 * JMP_4_LEN
+ACTOR_STATUS_BURNER_MOVE_INIT			= 5 * JMP_4_LEN
+ACTOR_STATUS_BURNER_MOVE				= 6 * JMP_4_LEN
 
 ; status duration in updates.
-BURNER_STATUS_DETECT_HERO_TIME	= 50
-BURNER_STATUS_DASH_PREP_TIME	= 10
-BURNER_STATUS_DASH_TIME			= 16
-BURNER_STATUS_RELAX_TIME		= 25
-BURNER_STATUS_MOVE_TIME			= 60
+ACTOR_STATUS_BURNER_DETECT_HERO_TIME	= 50
+ACTOR_STATUS_BURNER_DASH_PREP_TIME		= 10
+ACTOR_STATUS_BURNER_DASH_TIME			= 16
+ACTOR_STATUS_BURNER_RELAX_TIME			= 25
+ACTOR_STATUS_BURNER_MOVE_TIME			= 60
 
 ; animation speed (the less the slower, 0-255, 255 means the next frame is almost every update)
 BURNER_ANIM_SPEED_DETECT_HERO	= 50
@@ -104,7 +105,7 @@ BURNER_DETECT_HERO_DISTANCE = 60
 ; out:
 ; a = TILEDATA_RESTORE_TILE
 burner_init:
-			MONSTER_INIT(burner_update, burner_draw, monster_impacted, BURNER_HEALTH, BURNER_STATUS_DETECT_HERO_INIT, _burner_idle)
+			MONSTER_INIT(burner_update, burner_draw, monster_impacted, BURNER_HEALTH, ACTOR_STATUS_BURNER_DETECT_HERO_INIT, _burner_idle)
 
 ; uppdate for BURNER_ID
 ; anim and a gameplay logic update
@@ -114,21 +115,21 @@ burner_update:
 			; advance hl to monster_status
 			HL_ADVANCE(monster_update_ptr, monster_status, BY_HL_FROM_DE)
 			mov a, m
-			cpi BURNER_STATUS_MOVE
+			cpi ACTOR_STATUS_BURNER_MOVE
 			jz burner_update_move
-			cpi BURNER_STATUS_DETECT_HERO
+			cpi ACTOR_STATUS_BURNER_DETECT_HERO
 			jz burner_update_detect_hero
-			cpi BURNER_STATUS_DASH
+			cpi ACTOR_STATUS_BURNER_DASH
 			jz burner_update_dash		
-			cpi BURNER_STATUS_RELAX
+			cpi ACTOR_STATUS_BURNER_RELAX
 			jz burner_update_relax
-			cpi BURNER_STATUS_DASH_PREP
+			cpi ACTOR_STATUS_BURNER_DASH_PREP
 			jz burner_update_dash_prep
-			cpi BURNER_STATUS_MOVE_INIT
+			cpi ACTOR_STATUS_BURNER_MOVE_INIT
 			jz burner_update_move_init
-			cpi BURNER_STATUS_DETECT_HERO_INIT
+			cpi ACTOR_STATUS_BURNER_DETECT_HERO_INIT
 			jz burner_update_detect_hero_init
-			cpi MONSTER_STATUS_FREEZE
+			cpi ACTOR_STATUS_MONSTER_FREEZE
 			jz burner_update_freeze
 			ret
 
@@ -136,16 +137,16 @@ burner_update:
 ; in:
 ; hl - ptr to monster_status
 burner_update_freeze:
-			mvi m, MONSTER_STATUS_INIT
+			mvi m, ACTOR_STATUS_MONSTER_INIT
 			ret
 
 ; in:
 ; hl - ptr to monster_status
 burner_update_detect_hero_init:
 			; hl = monster_status
-			mvi m, BURNER_STATUS_DETECT_HERO
+			mvi m, ACTOR_STATUS_BURNER_DETECT_HERO
 			inx h
-			mvi m, BURNER_STATUS_DETECT_HERO_TIME
+			mvi m, ACTOR_STATUS_BURNER_DETECT_HERO_TIME
 			HL_ADVANCE(monster_status_timer, monster_anim_ptr)
 			mvi m, <_burner_idle
 			inx h
@@ -155,12 +156,12 @@ burner_update_detect_hero_init:
 ; in:
 ; hl - ptr to monster_status
 burner_update_detect_hero:
-			MONSTER_UPDATE_DETECT_HERO(BURNER_DETECT_HERO_DISTANCE, BURNER_STATUS_DASH_PREP, BURNER_STATUS_DASH_PREP_TIME, _burner_dash, BURNER_ANIM_SPEED_DETECT_HERO, burner_update_anim_check_collision_hero, BURNER_STATUS_MOVE_INIT, BURNER_STATUS_MOVE_TIME)
+			MONSTER_UPDATE_DETECT_HERO(BURNER_DETECT_HERO_DISTANCE, ACTOR_STATUS_BURNER_DASH_PREP, ACTOR_STATUS_BURNER_DASH_PREP_TIME, _burner_dash, BURNER_ANIM_SPEED_DETECT_HERO, burner_update_anim_check_collision_hero, ACTOR_STATUS_BURNER_MOVE_INIT, ACTOR_STATUS_BURNER_MOVE_TIME)
 
 ; in:
 ; hl - ptr to monster_status
 burner_update_move_init:
-			mvi m, BURNER_STATUS_MOVE
+			mvi m, ACTOR_STATUS_BURNER_MOVE
 
 			xchg
 			call random
@@ -246,15 +247,15 @@ burner_update_move:
 			; hl points to monster_pos_x
 			; advance hl to monster_status
 			HL_ADVANCE(monster_pos_x, monster_status, BY_BC)
-			mvi m, BURNER_STATUS_MOVE_INIT
+			mvi m, ACTOR_STATUS_BURNER_MOVE_INIT
 			inx h
-			mvi m, BURNER_STATUS_MOVE_TIME
+			mvi m, ACTOR_STATUS_BURNER_MOVE_TIME
 			ret
 @set_detect_hero_init:
  			; hl - ptr to monster_status_timer
 			; advance hl to monster_status
 			dcx h
-			mvi m, BURNER_STATUS_DETECT_HERO_INIT
+			mvi m, ACTOR_STATUS_BURNER_DETECT_HERO_INIT
 			ret
 
 ; in:
@@ -271,10 +272,10 @@ burner_update_relax:
 			jmp burner_update_anim_check_collision_hero
  @set_move_init:
  			; hl - ptr to monster_status_timer
-			mvi m, BURNER_STATUS_MOVE_TIME
+			mvi m, ACTOR_STATUS_BURNER_MOVE_TIME
 			; advance hl to monster_status
 			dcx h
-			mvi m, BURNER_STATUS_MOVE_INIT
+			mvi m, ACTOR_STATUS_BURNER_MOVE_INIT
 			ret
 
 ; in:
@@ -291,10 +292,10 @@ burner_update_dash_prep:
 			jmp burner_update_anim_check_collision_hero
  @set_dash:
   			; hl - ptr to monster_status_timer
-			mvi m, BURNER_STATUS_DASH_TIME
+			mvi m, ACTOR_STATUS_BURNER_DASH_TIME
 			; advance hl to monster_status
 			dcx h
-			mvi m, BURNER_STATUS_DASH
+			mvi m, ACTOR_STATUS_BURNER_DASH
 			; advance hl to monster_pos_x
 			HL_ADVANCE(monster_status, monster_pos_x, BY_BC)
 			; reset sub pixel pos_x
@@ -302,7 +303,7 @@ burner_update_dash_prep:
 			; advance hl to pos_x+1
 			inx h
 			; pos_diff =  hero_pos - burnerPosX
-			; speed = pos_diff / BURNER_STATUS_DASH_TIME
+			; speed = pos_diff / ACTOR_STATUS_BURNER_DASH_TIME
 			lda hero_pos_x+1
 			sub m
 			mov e, a 
@@ -311,13 +312,13 @@ burner_update_dash_prep:
 			sbb a
 			mov d, a
 			xchg
-			; posDiffX / BURNER_STATUS_DASH_TIME 
+			; posDiffX / ACTOR_STATUS_BURNER_DASH_TIME 
 			dad h 
 			dad h 
 			dad h 
 			dad h
 			; to fill up L with %1111 if pos_diff < 0
-			ani %1111 ; <(%0000000011111111 / BURNER_STATUS_DASH_TIME)
+			ani %1111 ; <(%0000000011111111 / ACTOR_STATUS_BURNER_DASH_TIME)
 			ora l
 			mov l, a
 			push h
@@ -337,13 +338,13 @@ burner_update_dash_prep:
 			sbb a
 			mov d, a 
 			xchg
-			; posDiffY / BURNER_STATUS_DASH_TIME 
+			; posDiffY / ACTOR_STATUS_BURNER_DASH_TIME 
 			dad h 
 			dad h 
 			dad h 
 			dad h 
 			; to fill up L with %1111 if pos_diff < 0
-			ani %1111 ; <(%0000000011111111 / BURNER_STATUS_DASH_TIME)
+			ani %1111 ; <(%0000000011111111 / ACTOR_STATUS_BURNER_DASH_TIME)
 			ora l 
 			mov l, a
 			xchg
@@ -377,10 +378,10 @@ burner_update_dash:
 			jmp actor_anim_update
 @set_move_init:
 			; hl points to monster_status_timer
-			mvi m, BURNER_STATUS_MOVE_TIME			
+			mvi m, ACTOR_STATUS_BURNER_MOVE_TIME			
 			; advance hl to monster_status
 			dcx h
-			mvi m, BURNER_STATUS_MOVE_INIT
+			mvi m, ACTOR_STATUS_BURNER_MOVE_INIT
 			ret	
 
 

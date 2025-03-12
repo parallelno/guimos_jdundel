@@ -2,7 +2,7 @@
 
 ; statuses.
 ; a status describes what set of animations and behavior is active
-; for ex. HERO_STATUS_ATTACK plays hero_attk_r or hero_attk_l depending on the direction and it spawns a weapon trail
+; for ex. ACTOR_STATUS_HERO_ATTACK plays hero_attk_r or hero_attk_l depending on the direction and it spawns a weapon trail
 SWORD_STATUS_ATTACK = 0
 
 ; duration of statuses (in update_durations)

@@ -18,13 +18,23 @@
 hero_update:
 			; check if a current animation is an attack
 			lda hero_status
-			cpi HERO_STATUS_ATTACK
+
+			mov c, a
+			ani ACTOR_STATUS_BIT_HERO_BLINK
+			cnz hero_blink
+			; a - status
+			ani ~ACTOR_STATUS_BIT_GLOBAL
+			; a - contains only hero statuses
+
+			cpi ACTOR_STATUS_HERO_ATTACK
 			jz hero_attack_update
-			cpi HERO_STATUS_IMPACTED
+			
+			cpi ACTOR_STATUS_HERO_IMPACTED
 			cz hero_impacted_update
-			cpi HERO_STATUS_INVINCIBLE
+			cpi ACTOR_STATUS_HERO_INVINCIBLE
 			cz hero_invincible_update
-			ani ACTOR_STATUS_BIT_NON_GAMEPLAY
+			
+			ani ACTOR_STATUS_BIT_HERO_ANIMATIC
 			jnz hero_dead
 
 			; check if an attack key is pressed
@@ -51,7 +61,7 @@ hero_update:
 			; some arrow keys got pressed
 			; if the status was idle last time, start the move
 			lda hero_status
-			cpi HERO_STATUS_IDLE
+			cpi ACTOR_STATUS_HERO_IDLE
 			jz @check_move_keys
 
 			; check if the same arrow keys pressed the prev update
@@ -66,7 +76,7 @@ hero_update:
 			jmp hero_update_temp_pos
 
 @check_move_keys:
-			mvi a, HERO_STATUS_MOVE
+			mvi a, ACTOR_STATUS_HERO_MOVE
 			sta hero_status
 
 			mov a, l
@@ -294,7 +304,7 @@ hero_check_tiledata:
 hero_attack_start:
 			; set the status
 			lxi h, hero_status
-			mvi m, HERO_STATUS_ATTACK
+			mvi m, ACTOR_STATUS_HERO_ATTACK
 			;advance hl to hero_status_timer
 			inx h
 			mvi m, HERO_STATUS_ATTACK_DURATION
@@ -481,7 +491,7 @@ hero_attack_update:
 
 hero_idle_start:
 			; set status
-			mvi a, HERO_STATUS_IDLE
+			mvi a, ACTOR_STATUS_HERO_IDLE
 			sta hero_status
 			; reset the anim timer
 			A_TO_ZERO(NULL)
@@ -515,7 +525,7 @@ hero_idle_update:
 hero_invincible_start:
 			; set the status
 			lxi h, hero_status
-			mvi m, HERO_STATUS_INVINCIBLE
+			mvi m, ACTOR_STATUS_HERO_INVINCIBLE | ACTOR_STATUS_BIT_HERO_BLINK
 			;advance hl to hero_status_timer
 			inx h
 			mvi m, HERO_STATUS_INVINCIBLE_DURATION
@@ -546,9 +556,9 @@ hero_impacted_update:
 ; a, hl, de
 hero_impacted:
 			lda hero_status
-			cpi HERO_STATUS_INVINCIBLE ; this is invincible + hero blinking status
+			cpi ACTOR_STATUS_HERO_INVINCIBLE
 			rz
-			cpi HERO_STATUS_IMPACTED ; to handle it once per upcomming damage. it is also invincible
+			cpi ACTOR_STATUS_HERO_IMPACTED ; to handle it once per upcomming damage. it is also invincible
 			rz
 
 			lxi h, sfx_bomb_attack
@@ -567,7 +577,7 @@ hero_impacted:
 			mov m, a
 			jnz @not_dead
 			; dead
-			mvi a, HERO_STATUS_DEATH_FADE_INIT_GB
+			mvi a, ACTOR_STATUS_HERO_DEATH_FADE_INIT_GB
 			sta hero_status
 @not_dead:
 			jmp game_ui_draw_health_text
@@ -578,7 +588,7 @@ hero_impacted:
 hero_impacted_start:
 			; set the status
 			lxi h, hero_status
-			mvi m, HERO_STATUS_IMPACTED
+			mvi m, ACTOR_STATUS_HERO_IMPACTED | ACTOR_STATUS_BIT_HERO_BLINK
 			;advance hl to hero_status_timer
 			inx h
 			mvi m, HERO_STATUS_IMPACTED_DURATION
@@ -614,3 +624,21 @@ hero_impacted_start:
 @no_vert_move:
 			lxi h, 0
 			jmp @set_speed_y
+
+; periodic change visibility
+; in:
+; c - status
+; out:
+; a - new status (visibility bit updated)
+hero_blink:
+@state_blink:
+			mvi a, %01010101
+ 			rrc
+ 			sta @state_blink + 1
+ 			mov a, c
+			rnc
+			; invert the visibility bit
+			xri ACTOR_STATUS_BIT_INVIS
+			sta hero_status
+			ret
+			

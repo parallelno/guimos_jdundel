@@ -15,7 +15,7 @@ KNIGHT_QUEST_MAX_POS_Y				= 255 - 16 - 14
 ; out:
 ; a = TILEDATA_RESTORE_TILE
 knight_heavy_init:
-			MONSTER_INIT( knight_heavy_update, knight_draw, empty_func, KNIGHT_HEALTH, KNIGHT_STATUS_DETECT_HERO_INIT, _knight_idle, False)
+			MONSTER_INIT( knight_heavy_update, knight_draw, empty_func, KNIGHT_HEALTH, ACTOR_STATUS_KNIGHT_DETECT_HERO_INIT, _knight_idle, False)
 @return:
 			mvi a, TILEDATA_RESTORE_TILE
 			ret			
@@ -33,21 +33,21 @@ knight_heavy_update:
 			; advance hl to monster_status
 			HL_ADVANCE(monster_update_ptr, monster_status, BY_DE)
 			mov a, m
-			cpi KNIGHT_STATUS_MOVE
+			cpi ACTOR_STATUS_KNIGHT_MOVE
 			jz knight_update_move
-			cpi KNIGHT_STATUS_DETECT_HERO
+			cpi ACTOR_STATUS_KNIGHT_DETECT_HERO
 			jz knight_update_detect_hero
-			cpi KNIGHT_STATUS_DEFENCE
+			cpi ACTOR_STATUS_KNIGHT_DEFENCE
 			jz knight_update_speedup
-			cpi KNIGHT_STATUS_MOVE_INIT
+			cpi ACTOR_STATUS_KNIGHT_MOVE_INIT
 			jz knight_update_move_init
-			cpi KNIGHT_STATUS_DEFENCE_INIT
+			cpi ACTOR_STATUS_KNIGHT_DEFENCE_INIT
 			jz knight_heavy_update_defence_init
-			cpi KNIGHT_STATUS_DETECT_HERO_INIT
+			cpi ACTOR_STATUS_KNIGHT_DETECT_HERO_INIT
 			jz knight_update_detect_hero_init
-			cpi KNIGHT_STATUS_PANIC
+			cpi ACTOR_STATUS_KNIGHT_PANIC
 			jz knight_update_panic
-			cpi MONSTER_STATUS_FREEZE
+			cpi ACTOR_STATUS_MONSTER_FREEZE
 			jz monster_update_freeze
 			ret
 
@@ -81,7 +81,7 @@ knight_heavy_check_panic:
 			; hl - ptr to monster_update_ptr
 			; advance hl to monster_status
 			HL_ADVANCE(monster_update_ptr, monster_status, BY_DE)
-			mvi m, KNIGHT_STATUS_PANIC
+			mvi m, ACTOR_STATUS_KNIGHT_PANIC
 			ret
 
 ; in:
@@ -116,10 +116,10 @@ knight_update_panic:
 ; in:
 ; hl - ptr to monster_status
 knight_heavy_update_defence_init:
-			mvi m, KNIGHT_STATUS_DEFENCE
+			mvi m, ACTOR_STATUS_KNIGHT_DEFENCE
 			; advance hl to monster_status_timer
 			inx h
-			mvi m, KNIGHT_STATUS_DEFENCE_TIME
+			mvi m, ACTOR_STATUS_KNIGHT_DEFENCE_TIME
 @check_anim_dir:
 			; aim the monster to the hero dir
 			; advance hl to monster_pos_x+1

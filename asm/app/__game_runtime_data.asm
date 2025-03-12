@@ -160,7 +160,7 @@ hero_update_ptr:			.storage ADDR_LEN ; .word hero_update
 hero_draw_ptr:				.storage ADDR_LEN ; .word hero_draw
 hero_impacted_ptr:			.storage ADDR_LEN ; .word hero_impacted ; called by a monster's bullet, a monster, etc. to affect a hero
 hero_type:					.storage BYTE_LEN ; .byte MONSTER_TYPE_ALLY
-hero_status:				.storage BYTE_LEN ; .byte HERO_STATUS_IDLE ; a status describes what set of animations and behavior is active
+hero_status:				.storage BYTE_LEN ; .byte ACTOR_STATUS_HERO_IDLE ; a status describes what set of animations and behavior is active
 hero_status_timer:			.storage BYTE_LEN ; .byte 0	; a duration of the status. ticks every update
 hero_anim_timer:			.storage BYTE_LEN ; .byte TEMP_BYTE ; it triggers an anim frame switching when it overflows
 hero_anim_addr:				.storage ADDR_LEN ; .word TEMP_ADDR ; holds the current frame ptr

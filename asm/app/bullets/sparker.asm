@@ -60,7 +60,7 @@ sparker_init_speed:
 			; hl - ptr to bullet_speed_x
 			; set a projectile speed towards the hero
 			; pos_diff =  hero_pos - burnerPosX
-			; speed = pos_diff / VAMPIRE_STATUS_DASH_TIME			
+			; speed = pos_diff / ACTOR_STATUS_VAMPIRE_DASH_TIME			
 			lda hero_pos_x+1
 			sub b
 			mov e, a
