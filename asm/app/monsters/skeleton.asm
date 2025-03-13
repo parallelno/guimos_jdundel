@@ -102,6 +102,11 @@ skeleton_init:
 ; in:
 ; de - ptr to monster_update_ptr 
 skeleton_update:
+@codePerfStart_skeleton_update
+			call @test1
+@codePerfEnd_skeleton_update
+			ret
+@test1:
 			; advance hl to monster_status
 			HL_ADVANCE(monster_update_ptr, monster_status, BY_HL_FROM_DE)
 			mov a, m
@@ -123,7 +128,6 @@ skeleton_update:
 			cpi ACTOR_STATUS_MONSTER_FREEZE
 			jz monster_update_freeze
 			ret
-			;
 /*
 ; TODO: the alternative that uses a table to check statuses.
 ; statuses of a particular monster must have the first
@@ -133,6 +137,10 @@ skeleton_update:
 ; it also requres a change in a callig func signatures.
 ; hl will no longer contain a ptr to monster_status,
 ; de - will contain it
+*/
+@test2:
+			; advance hl to monster_status
+			HL_ADVANCE(monster_update_ptr, monster_status, BY_HL_FROM_DE)
 			mov a, m
 			xchg
 			ani ~ACTOR_STATUS_BIT_GLOBAL
@@ -149,7 +157,7 @@ skeleton_status_handlers:
 			JMP_4(skeleton_update_relax)
 			JMP_4(skeleton_update_move_init)
 			JMP_4(skeleton_update_move)
-*/
+			JMP_4(monster_update_freeze)
 
 ; in:
 ; hl - ptr to monster_status

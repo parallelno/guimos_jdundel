@@ -252,6 +252,10 @@ def export_debug_data(path, out_path = None):
 	debug_data["labels"] = {}
 	debug_data["consts"] = {}
 	debug_data["breakpoints"] = []
+	debug_data["codePerfs"] = []
+
+	codePerfs = {} 
+
 	for line_b in lines:
 		line = line_b.decode('ascii')
 		lineParts = line.split(" ")
@@ -261,6 +265,7 @@ def export_debug_data(path, out_path = None):
 
 		# check if it's a breakpoint
 		if lineParts[0].find("BREAKPOINT") != -1:
+
 			addr = int(lineParts[1][1:], 16)
 			addrS = f"0x{addr:X}"
 			commentPos = line.find("IF")
@@ -277,7 +282,29 @@ def export_debug_data(path, out_path = None):
 			bpJ["value"] = addrS
 
 			debug_data["breakpoints"].append(bpJ)
+
+		elif lineParts[0].upper().find("CODEPERFSTART_") != -1:
+			label_start = lineParts[0].upper().find("CODEPERFSTART_")
+			label_name = lineParts[0][label_start + len("CODEPERFSTART_"):]
+			if label_name not in codePerfs:
+				codePerfs[label_name] = {}
+			codePerf = codePerfs[label_name]
+			
+			addr = int(lineParts[1][1:], 16)
+			addrS = f"0x{addr:X}"
+			codePerf["addrStart"] = addrS
 		
+		elif lineParts[0].upper().find("CODEPERFEND_") != -1:
+			label_start = lineParts[0].upper().find("CODEPERFEND_")
+			label_name = lineParts[0][label_start + len("CODEPERFEND_"):]
+			if label_name not in codePerfs:
+				codePerfs[label_name] = {}
+			codePerf = codePerfs[label_name]
+
+			addr = int(lineParts[1][1:], 16)
+			addrS = f"0x{addr:X}"
+			codePerf["addrEnd"] = addrS
+
 		# check if it's a label or a constant
 		elif len(lineParts) == 2 and lineParts[1][0] == "$":
 			label_name = lineParts[0]
@@ -294,6 +321,16 @@ def export_debug_data(path, out_path = None):
 			else:
 				debug_data["labels"][label_name] = addrS
 
+	# add codePerfs to the debug data
+	for label_name in codePerfs:
+		codePerf = codePerfs[label_name]
+		if "addrEnd" in codePerf and "addrStart" in codePerf:
+			codePerf["label"] = label_name
+			codePerf["addrStart"] = codePerf["addrStart"]
+			codePerf["addrEnd"] = codePerf["addrEnd"]
+			codePerf["active"] = True
+			debug_data["codePerfs"].append(codePerf)
+	
 	if out_path:
 		with open(out_path, "w") as file:
 			file.write(json.dumps(debug_data, indent=4))
