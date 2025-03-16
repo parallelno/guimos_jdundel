@@ -253,8 +253,10 @@ def export_debug_data(path, out_path = None):
 	debug_data["consts"] = {}
 	debug_data["breakpoints"] = []
 	debug_data["codePerfs"] = []
+	debug_data["watchpoints"] = []
 
-	codePerfs = {} 
+	codePerfs = {}
+	watchpoints = {} 
 
 	for line_b in lines:
 		line = line_b.decode('ascii')
@@ -283,27 +285,67 @@ def export_debug_data(path, out_path = None):
 
 			debug_data["breakpoints"].append(bpJ)
 
+		# check if it's a code performance start label
 		elif lineParts[0].upper().find("CODEPERFSTART_") != -1:
-			label_start = lineParts[0].upper().find("CODEPERFSTART_")
-			label_name = lineParts[0][label_start + len("CODEPERFSTART_"):]
-			if label_name not in codePerfs:
-				codePerfs[label_name] = {}
-			codePerf = codePerfs[label_name]
-			
+			label_start = lineParts[0].upper().find("CODEPERFSTART_") + len("CODEPERFSTART_")
+			label_name = lineParts[0][label_start:]
+
+			codePerf = codePerfs.setdefault(label_name, {})
 			addr = int(lineParts[1][1:], 16)
 			addrS = f"0x{addr:X}"
 			codePerf["addrStart"] = addrS
-		
+			
+		# check if it's a code performance end label
 		elif lineParts[0].upper().find("CODEPERFEND_") != -1:
-			label_start = lineParts[0].upper().find("CODEPERFEND_")
-			label_name = lineParts[0][label_start + len("CODEPERFEND_"):]
-			if label_name not in codePerfs:
-				codePerfs[label_name] = {}
-			codePerf = codePerfs[label_name]
+			label_start = lineParts[0].upper().find("CODEPERFEND_") + len("CODEPERFEND_")
+			label_name = lineParts[0][label_start:]
 
+			codePerf = codePerfs.setdefault(label_name, {})
 			addr = int(lineParts[1][1:], 16)
 			addrS = f"0x{addr:X}"
 			codePerf["addrEnd"] = addrS
+
+		# check if it's a watchpoint
+		elif lineParts[0].upper().find("WATCHPOINTSTART") != -1:
+			line = lineParts[0].upper()
+			globalAddr = int(lineParts[1][1:], 16)
+			globalAddrS = f"0x{globalAddr:X}"
+			token_pos = line.find("WATCHPOINTSTART") + len("WATCHPOINTSTART")
+			active_start = line.find("ON", token_pos, token_pos + len("ON"))
+			active = active_start != -1
+			token_pos += len("ON") if active_start != -1 else len("OFF")
+
+			access_start = line.find("R", token_pos, token_pos + len("R"))
+			access_end = line.find("_", token_pos, token_pos + len("RW_"))
+			access_len = access_end - access_start
+			accessS = "RW" if access_start != -1 and access_len == 2 else \
+				"R" if access_start != -1 else "W"
+			token_pos += len(accessS) + len("_")
+
+			comment = lineParts[0][token_pos:]
+
+			watchpoint = watchpoints.setdefault(comment, {})
+			watchpoint["comment"] = comment
+			watchpoint["globalAddr"] = globalAddrS
+			watchpoint["addrStart"] = globalAddr
+			watchpoint["active"] = active
+			watchpoint["access"] = accessS
+			watchpoint["id"] = len(watchpoints) - 1
+			watchpoint["type"] = "LEN"
+			watchpoint["value"] = "0x0000"
+			watchpoint["cond"] = "=ANY"
+		
+		# check if it's a watchpoint end label
+		elif lineParts[0].upper().find("WATCHPOINTEND") != -1:
+			line = lineParts[0].upper()
+			token_pos = line.find("WATCHPOINTEND") + len("WATCHPOINTEND") + 1
+			comment = lineParts[0][token_pos:]
+
+			watchpoint = watchpoints.setdefault(comment, {})
+			globalAddr = int(lineParts[1][1:], 16)
+			length = globalAddr - watchpoint["addrStart"]
+			lenS = f"0x{length:X}"
+			watchpoint["len"] = lenS
 
 		# check if it's a label or a constant
 		elif len(lineParts) == 2 and lineParts[1][0] == "$":
@@ -331,6 +373,12 @@ def export_debug_data(path, out_path = None):
 			codePerf["active"] = True
 			debug_data["codePerfs"].append(codePerf)
 	
+	# add watchpoints to the debug data
+	for comment_name in watchpoints:
+		watchpoint = watchpoints[comment_name]
+		watchpoint.pop("addrStart", None)
+		debug_data["watchpoints"].append(watchpoint)
+
 	if out_path:
 		with open(out_path, "w") as file:
 			file.write(json.dumps(debug_data, indent=4))

@@ -67,6 +67,8 @@ hero_data_prev_pptr:		= hero_runtime_data + 29	; .word TEMP_ADDR
 hero_data_next_pptr:		= hero_runtime_data + 31	; .word TEMP_ADDR
 hero_runtime_data_end:		= hero_runtime_data + 33
 
+watchpointStartOffRW_hero_runtime_data: = hero_runtime_data ; adds the watchpoint to the debug data
+watchpointEnd_hero_runtime_data: = hero_runtime_data_end	; adds the watchpoint to the debug data	
 ;=============================================================================
 ;
 ; contains the current RAM-disk mode
