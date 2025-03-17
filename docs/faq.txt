@@ -9,10 +9,10 @@ POP BC ; read the first pair of bytes
 ...
 
 If the interruption call happen right after "LXI SP", it stores the return 
-addr into the stack. But the SP points to the ram-disk data now, so it rewrites
-the data with the return addr. We can't prevent that because it's a hardware
-specific behavior. To avoid this issue we keep two empty bytes before every
-ram-disk data block.
+addr into the stack. But the SP points to the ram-disk data now, so it 
+rewrites the data with the return addr. We can't prevent that because it's a
+hardware specific behavior. To avoid this issue we keep two empty bytes before 
+every ram-disk data block.
 
 ;===========================================================================
 ; Why the stack buffers are in the RAM and the working RAM-disk?
@@ -55,3 +55,25 @@ With all of it been said, I decided to only use .functions in the utils assembly
 where not all subroutines are required for the particular game. If you do not
 need functionality, lets say, tiled images, it's more meaninful to exclude the 
 whole asm module.
+
+;===========================================================================
+; How extract breakpoints from the code into a debug data
+;===========================================================================
+
+If you type ".breakpoint" in the code, the build system adds a breakpoint to 
+your debug data at that address.
+
+;===========================================================================
+; How extract watchpoints from the code into a debug data
+;===========================================================================
+
+If you type "watchpointStart<RW/R/W><On/Off>_<label_name>: = address" in the 
+code, the build system adds a watchpoint to your debug data at that address.
+
+;===========================================================================
+; How to mark the code that it needs a code performance check
+;===========================================================================
+
+If you add "codePerfStart_<label_name>" and "codePerfEnd_<label_name>" markers
+to your code, the build system adds a code perf block enity with those addresses
+to our debug data.
