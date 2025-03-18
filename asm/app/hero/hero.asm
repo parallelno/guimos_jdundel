@@ -41,7 +41,7 @@ hero_respawn:
 			ret
 
 hero_room_init:
-			call hero_idle_start
+			call hero_idle_init
 			
 			; reset key data
 			A_TO_ZERO(CONTROL_CODE_NO)

@@ -54,8 +54,8 @@
 ;			check mod-hero collision, impact if collides
 
 ; statuses.
-; personal actor statuses must be in a range of 0 to %0001_1111 including.
-ACTOR_STATUS_SKELETON_DETECT_HERO_INIT	= ACTOR_STATUS_MONSTER_INIT
+; personal actor statuses must be in a range of 0 to ACTOR_STATUS_CUSTOM including.
+ACTOR_STATUS_SKELETON_DETECT_HERO_INIT	= ACTOR_STATUS_CUSTOM
 ACTOR_STATUS_SKELETON_DETECT_HERO		= 1
 ACTOR_STATUS_SKELETON_SHOOT_PREP		= 2
 ACTOR_STATUS_SKELETON_SHOOT				= 3
@@ -102,9 +102,9 @@ skeleton_init:
 ; in:
 ; de - ptr to monster_update_ptr 
 skeleton_update:
-@codePerfStart_skeleton_update
+@codePerfStart_skeleton_update ; adds the code performance to the debug data
 			call @test1
-@codePerfEnd_skeleton_update
+@codePerfEnd_skeleton_update ; adds the code performance to the debug data
 			ret
 @test1:
 			; advance hl to monster_status
@@ -125,7 +125,7 @@ skeleton_update:
 			jz skeleton_update_detect_hero_init
 			cpi ACTOR_STATUS_SKELETON_SHOOT
 			jz skeleton_update_shoot
-			cpi ACTOR_STATUS_MONSTER_FREEZE
+			cpi ACTOR_STATUS_FREEZE
 			jz monster_update_freeze
 			ret
 /*
@@ -143,7 +143,7 @@ skeleton_update:
 			HL_ADVANCE(monster_update_ptr, monster_status, BY_HL_FROM_DE)
 			mov a, m
 			xchg
-			ani ~ACTOR_STATUS_BIT_GLOBAL
+			ani ~ACTOR_STATUS_BITS
 			adi <skeleton_status_handlers
 			mov l, m
 			mvi h, >skeleton_status_handlers
@@ -231,7 +231,7 @@ skeleton_update_move_init:
 @set_anim:
 			HL_ADVANCE(monster_speed_y+1, monster_anim_ptr, BY_BC)
 			; a = rnd
-			CPI_WITH_ZERO(0)
+			CPI_ZERO()
 			; if rnd is positive (up or right movement), then play _skeleton_run_r anim
 			jp @set_anim_run_r
 @set_anim_run_l:
@@ -332,7 +332,7 @@ skeleton_update_shoot:
 			ora m
 			jz @shoot_vert
 			mov a, m
-			CPI_WITH_ZERO(0)
+			CPI_ZERO()
 			mvi a, BULLET_DIR_R
 			jp @shoot_right
 @shoot_left:
@@ -344,7 +344,7 @@ skeleton_update_shoot:
 			; advance hl to monster_speed_y+1
 			INX_H(2)
 			mov a, m
-			CPI_WITH_ZERO(0)
+			CPI_ZERO()
 			mvi a, BULLET_DIR_U
 			jp @shoot_up
 @shoot_down:

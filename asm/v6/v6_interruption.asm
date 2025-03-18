@@ -47,7 +47,7 @@ interruption:
 			;check for a palette update
 palette_update_request_:
 			mvi a, PALETTE_UPD_REQ_NO ; this constant value is mutable, do not replace it with xra a
-			CPI_WITH_ZERO(PALETTE_UPD_REQ_NO)
+			CPI_ZERO(PALETTE_UPD_REQ_NO)
 			jz @set_border_scrolling
 			; set a palette
 			; hl - the addr of the last item in the palette

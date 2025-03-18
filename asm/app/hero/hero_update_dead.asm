@@ -38,7 +38,7 @@ hero_dead_fade_gb:
 
 @fade_gb_counter:
 			mvi a, HERO_STATUS_DEATH_FADE_GB_TIMER
-			CPI_WITH_ZERO(0)
+			CPI_ZERO()
 			
 			jz @next_status
 			dcr a
@@ -99,14 +99,14 @@ hero_dead_fade_r:
 
 @fade_r_counter:
 			mvi a, HERO_STATUS_DEATH_FADE_R_TIMER
-			CPI_WITH_ZERO(0)
+			CPI_ZERO()
 			jz @next_status
 			dcr a
 			sta @fade_r_counter + 1
 
 @loop_r:
 			mov a, m
-			CPI_WITH_ZERO(0)
+			CPI_ZERO()
 			jz @next
 			dcr m
 @next:

@@ -62,9 +62,9 @@
 
 
 ; statuses.
-; personal actor statuses must be in a range of 0 to %0001_1111 including.
-ACTOR_STATUS_BURNER_DETECT_HERO_INIT	= 0 * JMP_4_LEN
-ACTOR_STATUS_BURNER_DETECT_HERO			= 1 * JMP_4_LEN
+; personal actor statuses must be in a range of 0 to ACTOR_STATUS_CUSTOM including.
+ACTOR_STATUS_BURNER_DETECT_HERO_INIT	= ACTOR_STATUS_INIT
+ACTOR_STATUS_BURNER_DETECT_HERO			= 1 * JMP_4_LEN ; TODO: why * JMP_4_LEN???
 ACTOR_STATUS_BURNER_DASH_PREP			= 2 * JMP_4_LEN
 ACTOR_STATUS_BURNER_DASH				= 3 * JMP_4_LEN
 ACTOR_STATUS_BURNER_RELAX				= 4 * JMP_4_LEN
@@ -129,7 +129,7 @@ burner_update:
 			jz burner_update_move_init
 			cpi ACTOR_STATUS_BURNER_DETECT_HERO_INIT
 			jz burner_update_detect_hero_init
-			cpi ACTOR_STATUS_MONSTER_FREEZE
+			cpi ACTOR_STATUS_FREEZE
 			jz burner_update_freeze
 			ret
 
@@ -137,7 +137,7 @@ burner_update:
 ; in:
 ; hl - ptr to monster_status
 burner_update_freeze:
-			mvi m, ACTOR_STATUS_MONSTER_INIT
+			mvi m, ACTOR_STATUS_BURNER_DETECT_HERO_INIT
 			ret
 
 ; in:
@@ -213,7 +213,7 @@ burner_update_move_init:
 @set_anim:
 			HL_ADVANCE(monster_speed_y+1, monster_anim_ptr, BY_BC)
 			; a = rnd
-			CPI_WITH_ZERO(0)
+			CPI_ZERO()
 			; if rnd is positive (up or right movement), then play burner_run_r anim
 			jp @set_anim_run_r
 @set_anim_run_l:

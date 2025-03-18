@@ -93,7 +93,7 @@ game_ui_res_select_next:
 game_ui_res_select_and_draw:
 			; check if a resource is not empty
 			mov a, m
-			CPI_WITH_ZERO(0)
+			CPI_ZERO()
 			jnz @select_res
 			call @get_first_available
 @select_res:
@@ -135,7 +135,7 @@ game_ui_draw_res:
 			; l - selected res_id
 @loop:
 			mov a, m
-			CPI_WITH_ZERO(0)
+			CPI_ZERO()
 			jz @next
 			
 			; store an available res_id
@@ -164,7 +164,7 @@ game_ui_draw_res:
 			mvi h, >hero_resources
 			; check if a res is available
 			mov a, m
-			CPI_WITH_ZERO(0)
+			CPI_ZERO()
 			jz @draw_loop_next
 
 			push b

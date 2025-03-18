@@ -48,8 +48,8 @@
 ;			check mod-hero collision, impact if collides
 
 ; statuses.
-; personal actor statuses must be in a range of 0 to %0001_1111 including.
-ACTOR_STATUS_KNIGHT_DETECT_HERO_INIT	= ACTOR_STATUS_MONSTER_INIT
+; personal actor statuses must be in a range of 0 to ACTOR_STATUS_CUSTOM including.
+ACTOR_STATUS_KNIGHT_DETECT_HERO_INIT	= ACTOR_STATUS_CUSTOM
 ACTOR_STATUS_KNIGHT_DETECT_HERO			= 1
 ACTOR_STATUS_KNIGHT_DEFENCE_INIT		= 2
 ACTOR_STATUS_KNIGHT_DEFENCE				= 3
@@ -112,7 +112,7 @@ knight_update:
 			jz knight_update_speedup_init
 			cpi ACTOR_STATUS_KNIGHT_DETECT_HERO_INIT
 			jz knight_update_detect_hero_init
-			cpi ACTOR_STATUS_MONSTER_FREEZE
+			cpi ACTOR_STATUS_FREEZE
 			jz monster_update_freeze
 			ret
 

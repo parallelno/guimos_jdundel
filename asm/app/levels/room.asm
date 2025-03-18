@@ -27,7 +27,7 @@ room_teleport:
 ; restores game statuses
 room_init_statuses:
 			lda game_status_fart
-			CPI_WITH_ZERO(0)
+			CPI_ZERO()
 			cnz fart_init
 			ret
 
@@ -335,7 +335,7 @@ room_tiledata_item_spawn:
 			lxi h, @restore_tiledata+1
 			mov m, b
 			; check if it's storytelling dialog tiledata
-			CPI_WITH_ZERO(TILEDATA_STORYTELLING)
+			CPI_ZERO(TILEDATA_STORYTELLING)
 			jz @restore_tiledata
 
 			ADD_A(1) ; to make a WORD ptr
@@ -347,7 +347,7 @@ room_tiledata_item_spawn:
 			adi <global_items - 1 ; because the first item_id = 1
 			mov l, a
 			mov a, m
-			CPI_WITH_ZERO(ITEM_STATUS_NOT_ACQUIRED)
+			CPI_ZERO(ITEM_STATUS_NOT_ACQUIRED)
 			mvi a, TILEDATA_RESTORE_TILE
 			rnz ; status != 0 means this item was picked up
 
@@ -637,7 +637,7 @@ room_check_tiledata_restorable:
 			ora b
 			mov e, a
 			ldax d
-			CPI_WITH_ZERO(TILEDATA_NO_COLLISION)
+			CPI_ZERO(TILEDATA_NO_COLLISION)
 			rnz			; 124 cc if returns
 
 			; get x+dx in tiles
@@ -651,7 +651,7 @@ room_check_tiledata_restorable:
 			ora c
 			mov e, a
 			ldax d
-			CPI_WITH_ZERO(TILEDATA_NO_COLLISION)
+			CPI_ZERO(TILEDATA_NO_COLLISION)
 			rnz		; 180 cc if returns
 
 			; get y+dy in tiles
@@ -665,7 +665,7 @@ room_check_tiledata_restorable:
 			ora h
 			mov e, a
 			ldax d
-			CPI_WITH_ZERO(TILEDATA_NO_COLLISION)
+			CPI_ZERO(TILEDATA_NO_COLLISION)
 			rnz		; 240 cc if returns
 
 			; check top-left corner
@@ -673,7 +673,7 @@ room_check_tiledata_restorable:
 			ora l
 			mov e, a
 			ldax d
-			CPI_WITH_ZERO(TILEDATA_NO_COLLISION)
+			CPI_ZERO(TILEDATA_NO_COLLISION)
 			ret		; 280 cc
 
 ; collects tiledata of tiles that intersect with a sprite

@@ -1,5 +1,6 @@
 .include "app/hero/hero_update_dead.asm"
 
+; advances the current animation to the next frame
 .macro HERO_UPDATE_ANIM(anim_speed)
 			lxi h, hero_anim_timer
 			mov a, m
@@ -16,27 +17,27 @@
 .endmacro
 
 hero_update:
-			; check if a current animation is an attack
-			lda hero_status
+			lxi h, hero_status
+			mov a, m
+			ani ~ACTOR_STATUS_BITS
 
-			mov c, a
-			ani ACTOR_STATUS_BIT_HERO_BLINK
-			cnz hero_blink
-			; a - status
-			ani ~ACTOR_STATUS_BIT_GLOBAL
-			; a - contains only hero statuses
+			; call hero_check_keys if the status
+			; ACTOR_STATUS_HERO_IDLE or
+			; ACTOR_STATUS_HERO_MOVE or
+			; ACTOR_STATUS_HERO_INVINCIBLE
+			cpi ACTOR_STATUS_HERO_INVINCIBLE + 1
+			jc hero_check_keys
 
 			cpi ACTOR_STATUS_HERO_ATTACK
 			jz hero_attack_update
-			
-			cpi ACTOR_STATUS_HERO_IMPACTED
-			cz hero_impacted_update
-			cpi ACTOR_STATUS_HERO_INVINCIBLE
-			cz hero_invincible_update
-			
-			ani ACTOR_STATUS_BIT_HERO_ANIMATIC
-			jnz hero_dead
+			cpi ACTOR_STATUS_KICKOFF
+			jz hero_kickoff_update
+			cpi ACTOR_STATUS_BIT_HERO_ANIMATIC
+			jz hero_dead
+			ret
 
+			
+hero_check_keys:
 			; check if an attack key is pressed
 			lhld action_code
 			; h - action_code_old
@@ -44,30 +45,31 @@ hero_update:
 
 			mvi a, CONTROL_CODE_FIRE1
 			ana l
-			jnz hero_attack_start
+			jnz hero_attack_init
 
 			mvi a, CONTROL_CODE_FIRE2
 			ana l
-			jz @no_fire2
+			jz @arrow_key_handling
+@fire2_handling:
 			; a = CONTROL_CODE_FIRE2
 			ana h
-			jz game_ui_res_select_next ; call only if CONTROL_CODE_FIRE2 was pressed the last time
-@no_fire2:
-			; if no arrow key is pressed, do IDLE
+			; call only if CONTROL_CODE_FIRE2 was pressed now and the last time
+			; TODO: check if it's really necessary to check the last time
+			jz game_ui_res_select_next
+
+@arrow_key_handling:
 			mvi a, CONTROL_CODE_LEFT | CONTROL_CODE_RIGHT | CONTROL_CODE_UP | CONTROL_CODE_DOWN
 			ana l
-			jz hero_idle_update
+			jz hero_idle_update ; if no arrow key is pressed, handle IDLE
 
 			; some arrow keys got pressed
-			; if the status was idle last time, start the move
+			; if the status was idle last time, check the pressed keys
 			lda hero_status
 			cpi ACTOR_STATUS_HERO_IDLE
 			jz @check_move_keys
 
-			; check if the same arrow keys pressed the prev update
+			; if not the same keys were pressed the prev update
 			mov a, l
-			;xra h ; it erases bits if they are equal in both action_code_old and action_code
-			;ani CONTROL_CODE_LEFT | CONTROL_CODE_RIGHT | CONTROL_CODE_UP | CONTROL_CODE_DOWN
 			cmp h
 			jnz @check_move_keys
 
@@ -301,7 +303,7 @@ hero_check_tiledata:
 			TILEDATA_HANDLING(HERO_COLLISION_WIDTH, HERO_COLLISION_HEIGHT, hero_tile_func_tbl)
 			ret
 
-hero_attack_start:
+hero_attack_init:
 			; set the status
 			lxi h, hero_status
 			mvi m, ACTOR_STATUS_HERO_ATTACK
@@ -336,7 +338,7 @@ hero_attack_start:
 @use_snowflake:
 			lxi h, hero_res_snowflake
 			mov a, m
-			CPI_WITH_ZERO(0)
+			CPI_ZERO()
 			rz
 			dcr m
 			lxi h, hero_res_sword
@@ -348,7 +350,7 @@ hero_attack_start:
 @use_cabbage:
 			lxi h, hero_res_cabbage
 			mov a, m
-			CPI_WITH_ZERO(0)
+			CPI_ZERO()
 			rz
 			dcr m
 
@@ -361,7 +363,7 @@ hero_attack_start:
 
 			; check if a hero uses cabbage the first time
 			lda game_status_cabbage_healing
-			CPI_WITH_ZERO(0)
+			CPI_ZERO()
 			jnz @no_cabbage_healing_dialog
 			inr a
 			sta game_status_cabbage_healing
@@ -400,7 +402,7 @@ hero_attack_start:
 @use_popsicle_pie:
 			; check if a hero uses a popsicle pie the first time
 			lda game_status_use_pie
-			CPI_WITH_ZERO(0)
+			CPI_ZERO()
 			jnz @no_hero_use_pie_dialog
 			inr a
 			sta game_status_use_pie
@@ -420,7 +422,7 @@ hero_attack_start:
 @use_clothes:
 			; check if a hero uses clothes the first time
 			lda game_status_use_clothes
-			CPI_WITH_ZERO(0)
+			CPI_ZERO()
 			jnz @no_hero_use_clothes_dialog
 			inr a
 			sta game_status_use_clothes
@@ -440,7 +442,7 @@ hero_attack_start:
 @use_spoon:
 			lxi h, hero_res_popsicle_pie
 			mov a, m
-			CPI_WITH_ZERO(0)
+			CPI_ZERO()
 			rz ; return if no pie
 			dcr m
 			lxi h, hero_res_snowflake
@@ -451,7 +453,7 @@ hero_attack_start:
 
 			; check if a hero uses a spoon the first time
 			lda game_status_use_spoon
-			CPI_WITH_ZERO(0)
+			CPI_ZERO()
 			jnz @no_hero_use_spoon_dialog
 			inr a
 			sta game_status_use_spoon
@@ -487,12 +489,15 @@ hero_attack_update:
 			dcr m
 			rnz
 			; if the timer == 0, set the status to Idle
-			jmp hero_idle_start
+			jmp hero_idle_init
 
-hero_idle_start:
+hero_idle_init:
 			; set status
 			mvi a, ACTOR_STATUS_HERO_IDLE
 			sta hero_status
+			jmp hero_idle_anim_start
+
+hero_idle_anim_start:
 			; reset the anim timer
 			A_TO_ZERO(NULL)
 			sta hero_anim_timer
@@ -514,62 +519,42 @@ hero_idle_start:
 			shld hero_anim_addr
 			ret
 
+; in:
+; h - action_code_old
+; l - action_code
 hero_idle_update:
-			; check if the same keys pressed the prev update
+			; no key pressed now. check the last one
 			mov a, l
 			cmp h
-			jnz hero_idle_start
+			; if the last time a key was pressed, start idle
+			jnz hero_idle_init
+			; or continue idle
 			HERO_UPDATE_ANIM(HERO_ANIM_SPEED_IDLE)
-			ret
 
-hero_invincible_start:
-			; set the status
+			; handle invincibility
 			lxi h, hero_status
-			mvi m, ACTOR_STATUS_HERO_INVINCIBLE | ACTOR_STATUS_BIT_HERO_BLINK
-			;advance hl to hero_status_timer
-			inx h
-			mvi m, HERO_STATUS_INVINCIBLE_DURATION
-			; reset key data
-			A_TO_ZERO(CONTROL_CODE_NO)
-			sta action_code
+			mov a, m
+			ani ACTOR_STATUS_HERO_INVINCIBLE
+			jnz hero_invincible_update
 			ret
 
-hero_invincible_update:
-			lxi h, hero_status_timer
-			dcr m
-			rnz
-			jmp hero_idle_start
 
-
-hero_impacted_update:
-			lxi h, hero_status_timer
-			dcr m
-			jz hero_invincible_start
-			; move the hero
-			jmp hero_update_temp_pos
-
-
+; called by a monster's bullet, a monster, etc. to affect a hero
 ; handling the damage
 ; in:
 ; c - damage (positive number)
 ; uses:
 ; a, hl, de
 hero_impacted:
+			; to make sure the impact once per upcomming damage
 			lda hero_status
-			cpi ACTOR_STATUS_HERO_INVINCIBLE
-			rz
-			cpi ACTOR_STATUS_HERO_IMPACTED ; to handle it once per upcomming damage. it is also invincible
-			rz
+			ani ACTOR_STATUS_BIT_INVINCIBLE
+			rnz
 
-			lxi h, sfx_bomb_attack
-			call v6_sfx_play
-
-			call hero_impacted_start
-
+			; c - damage
 			lxi h, hero_res_health
 			mov a, m
 			sub c
-
 			; clamp to 0
 			jnc @no_clamp
 			A_TO_ZERO(0)
@@ -579,19 +564,27 @@ hero_impacted:
 			; dead
 			mvi a, ACTOR_STATUS_HERO_DEATH_FADE_INIT_GB
 			sta hero_status
+			jmp @sfx
 @not_dead:
+			call hero_kickoff_init
+@sfx:
+			; SFX
+			lxi h, sfx_bomb_attack
+			call v6_sfx_play
+
 			jmp game_ui_draw_health_text
 
 
+; sets the kick off backward movement
 ; uses:
 ; hl, de, a
-hero_impacted_start:
+hero_kickoff_init:
 			; set the status
 			lxi h, hero_status
-			mvi m, ACTOR_STATUS_HERO_IMPACTED | ACTOR_STATUS_BIT_HERO_BLINK
-			;advance hl to hero_status_timer
+			mvi m, ACTOR_STATUS_BIT_INVINCIBLE | ACTOR_STATUS_KICKOFF
+			; advance hl to hero_status_timer
 			inx h
-			mvi m, HERO_STATUS_IMPACTED_DURATION
+			mvi m, HERO_STATUS_KICKOFF_DURATION
 
 			; set backward speed
 			; check hero's horizontal direction
@@ -625,20 +618,56 @@ hero_impacted_start:
 			lxi h, 0
 			jmp @set_speed_y
 
-; periodic change visibility
+; backward movement
 ; in:
-; c - status
-; out:
-; a - new status (visibility bit updated)
+; hl - points to hero_status
+hero_kickoff_update:
+			call hero_blink
+			; hl - points to hero_status
+			; advance to hero_status_timer
+			inx h
+			dcr m
+			jz hero_invincible_init
+			; move the hero
+			jmp hero_update_temp_pos
+
+; indicates invincibility. it periodicly changes visibility
+; in:
+; hl - points to hero_status
 hero_blink:
 @state_blink:
 			mvi a, %01010101
  			rrc
  			sta @state_blink + 1
- 			mov a, c
 			rnc
 			; invert the visibility bit
+			mov a, m
 			xri ACTOR_STATUS_BIT_INVIS
-			sta hero_status
+			mov m, a
 			ret
-			
+
+; a hero remins invincible after kickoff
+; until the timer is off or the player press the button
+hero_invincible_init:
+			; set the status
+			lxi h, hero_status
+			mvi m, ACTOR_STATUS_BIT_INVINCIBLE | ACTOR_STATUS_HERO_INVINCIBLE
+			;advance hl to hero_status_timer
+			inx h
+			mvi m, HERO_STATUS_INVINCIBLE_DURATION
+
+			; reset key data to prevent a pressing repetition pattern in the next update
+			A_TO_ZERO(CONTROL_CODE_NO)
+			sta action_code
+			jmp hero_idle_anim_start
+
+; invincible mode until the timer is off or the player press the button
+; in:
+; hl - points to hero_status
+hero_invincible_update:
+			call hero_blink
+			;advance hl to hero_status_timer
+			inx h
+			dcr m
+			rnz
+			jmp hero_idle_init

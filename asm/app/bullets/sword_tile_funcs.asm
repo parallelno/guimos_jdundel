@@ -113,7 +113,7 @@ sword_func_breakable:
 			mov e, a
 			; check if a sword is available
 			lda hero_res_sword
-			CPI_WITH_ZERO(RES_EMPTY)
+			CPI_ZERO(RES_EMPTY)
 			rz ; return if no sword
 
 			; if breakable_id == BREAKABLE_ID_CABBAGE, spawn a fart bullet

@@ -12,7 +12,7 @@
 skeleton_quest_init:
 			mov b, a
 			lda hero_res_spoon
-			CPI_WITH_ZERO(0)
+			CPI_ZERO()
 			jz @return
 			mov a, b
 			jmp skeleton_init

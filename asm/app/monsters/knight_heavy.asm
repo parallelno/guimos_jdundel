@@ -47,7 +47,7 @@ knight_heavy_update:
 			jz knight_update_detect_hero_init
 			cpi ACTOR_STATUS_KNIGHT_PANIC
 			jz knight_update_panic
-			cpi ACTOR_STATUS_MONSTER_FREEZE
+			cpi ACTOR_STATUS_FREEZE
 			jz monster_update_freeze
 			ret
 
@@ -63,7 +63,7 @@ knight_heavy_check_panic:
 			shld @restore_hl+1
 			; check if the hero has game_status_fart
 			lda game_status_fart
-			CPI_WITH_ZERO(GAME_STATUS_NOT_ACQUIRED)
+			CPI_ZERO(GAME_STATUS_NOT_ACQUIRED)
 			rz
 			; hl - ptr to monster_update_ptr
 			

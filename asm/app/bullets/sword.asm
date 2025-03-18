@@ -51,7 +51,7 @@ sword_tile_func_tbl:
 sword_init:
 			; prevent a sword from spawning if it's not available
 			lda hero_res_sword
-			CPI_WITH_ZERO(RES_EMPTY)
+			CPI_ZERO(RES_EMPTY)
 			jz sword_check_tiledata
 
 			; advance hl to bullet_pos_x+1

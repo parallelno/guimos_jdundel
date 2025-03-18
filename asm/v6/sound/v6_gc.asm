@@ -69,7 +69,7 @@ v6_gc_start:
 v6_gc_update:
 			; return if muted
 			lda setting_music
-			CPI_WITH_ZERO(SETTING_OFF)
+			CPI_ZERO(SETTING_OFF)
 			rz
 
 			; handle the current task

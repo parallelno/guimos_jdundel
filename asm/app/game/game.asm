@@ -40,7 +40,7 @@ game_update:
 @end:		
 			mvi a, GLOBAL_REQ_END_HOME
 			sta global_request
-			POP_H(1) ; to return into main_start loop
+			POP_H(1) ; bypass RET to return to main_start loop
 			ret
 
 game_draw:

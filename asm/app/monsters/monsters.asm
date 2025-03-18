@@ -247,8 +247,8 @@ monsters_get_first_collided:
 			; advance hl to monster_type
 			HL_ADVANCE(monster_update_ptr+1, monster_type, BY_BC)
 			mov a, m
-			cpi MONSTER_TYPE_ALLY
-			jz @no_collision
+			CPI_ZERO(MONSTER_TYPE_ENEMY)
+			jnz @no_collision
 
 			; advance hl to monster_pos_x+1
 			HL_ADVANCE(monster_type, monster_pos_x+1, BY_BC)
@@ -368,14 +368,14 @@ monster_impacted:
 			; de - ptr to monster_impacted_ptr+1
 			; advance hl to monster_pos_x+1
 			HL_ADVANCE(monster_impacted_ptr+1, monster_status, BY_HL_FROM_DE)
-			mvi m, ACTOR_STATUS_MONSTER_FREEZE
+			mvi m,ACTOR_STATUS_FREEZE
 			; advance hl to monster_status_timer
 			inx h
-			mvi m, MONSTER_STATUS_FREEZE_TIME
+			mvi m, ACTOR_STATUS_FREEZE_TIME
 
 			; check if a hero uses a snowflake the first time
 			lda game_status_first_freeze
-			CPI_WITH_ZERO(0)
+			CPI_ZERO()
 			rnz
 			inr a
 			sta game_status_first_freeze
@@ -398,6 +398,6 @@ monster_update_freeze:
 			rnz
 			; advance hl to monster_status
 			dcx h
-			mvi m, ACTOR_STATUS_MONSTER_INIT
+			mvi m, ACTOR_STATUS_INIT
 			ret
 

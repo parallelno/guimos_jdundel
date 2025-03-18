@@ -335,9 +335,9 @@ BY_HL_FROM_DE	= 4
 			mov h, a
 .endmacro
 
-.macro CPI_WITH_ZERO(int8_const = 0)
+.macro CPI_ZERO(int8_const = 0)
 		.if int8_const != 0
-			.error "CPI_WITH_ZERO macros was used with a non-zero constant = ", int8_const
+			.error "CPI_ZERO macros was used with a non-zero constant = ", int8_const
 		.endif
 		ora a
 .endmacro

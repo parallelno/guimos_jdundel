@@ -16,9 +16,6 @@ hero_draw:
 			lda hero_status
 			ani ACTOR_STATUS_BIT_INVIS
 			jnz @invis
-			// lda hero_status
-			// ani ACTOR_STATUS_BIT_BLINK
-			// jnz @state_blink
 
 @draw:
 			mov a, l
@@ -42,11 +39,6 @@ hero_draw:
 			shld hero_erase_wh
 			ret
 
-// @state_blink:
-// 			mvi a, %00110011
-// 			rrc
-// 			sta @state_blink + 1
-// 			jc @draw
 @invis:
 			mov a, l
 			CALL_RAM_DISK_FUNC_BANK(sprite_draw_invis_vm)

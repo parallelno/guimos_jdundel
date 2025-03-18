@@ -2,7 +2,7 @@
 ; when the hero looses all the health
 trigger_hero_no_health:
 			; disable hero updates
-			mvi a, ACTOR_STATUS_NO_UPDATE
+			mvi a, ACTOR_STATUS_NO_UPDATE | ACTOR_STATUS_BIT_INVIS
 			sta hero_status
 
 			; init a dialog
@@ -26,7 +26,7 @@ trigger_hero_no_health:
 trigger_hero_knocks_his_home_door:
 			; check if the hero has a popsicle pie
 			lda hero_res_popsicle_pie
-			CPI_WITH_ZERO(0)
+			CPI_ZERO()
 			rz
 			; take all his pies if so
 			A_TO_ZERO(0)

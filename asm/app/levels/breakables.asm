@@ -14,7 +14,7 @@ breakables_room_status_init:
 			; hl - the pptr to the bleakables status buffer for the current room
 			; check if ptr is inited
 			mov a, m
-			CPI_WITH_ZERO(NULL_PTR)
+			CPI_ZERO(NULL_PTR)
 			jnz breakables_room_status_restore; return if ptr != 0, means non need to init
 			; the bleakables status buffer for the current room wasn't inited
 
@@ -109,7 +109,7 @@ breakables_room_status_store:
 			; hl - the pptr to the bleakables status buffer for the current room
 			; check if ptr is inited
 			mov a, m
-			CPI_WITH_ZERO(NULL_PTR)
+			CPI_ZERO(NULL_PTR)
 			rz ; return if ptr == 0, means uninited
 
 			mov l, m

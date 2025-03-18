@@ -55,8 +55,8 @@
 ;			check mod-hero collision, impact if collides
 
 ; statuses.
-; personal actor statuses must be in a range of 0 to %0001_1111 including.
-ACTOR_STATUS_VAMPIRE_DETECT_HERO_INIT	= ACTOR_STATUS_MONSTER_INIT
+; personal actor statuses must be in a range of 0 to ACTOR_STATUS_CUSTOM including.
+ACTOR_STATUS_VAMPIRE_DETECT_HERO_INIT	= ACTOR_STATUS_CUSTOM
 ACTOR_STATUS_VAMPIRE_DETECT_HERO		= 1
 ACTOR_STATUS_VAMPIRE_SHOOT_PREP		= 2
 ACTOR_STATUS_VAMPIRE_SHOOT			= 3
@@ -121,7 +121,7 @@ vampire_update:
 			jz vampire_update_detect_hero_init
 			cpi ACTOR_STATUS_VAMPIRE_SHOOT
 			jz vampire_update_shoot
-			cpi ACTOR_STATUS_MONSTER_FREEZE
+			cpi ACTOR_STATUS_FREEZE
 			jz monster_update_freeze
 			ret
 
@@ -195,7 +195,7 @@ vampire_update_move_init:
 @set_anim:
 			HL_ADVANCE(monster_speed_y+1, monster_anim_ptr, BY_BC)
 			; a = rnd
-			CPI_WITH_ZERO(0)
+			CPI_ZERO()
 			; if rnd is positive (up or right movement), then play _vampire_run_r anim
 			jp @set_anim_run_r
 @set_anim_run_l:

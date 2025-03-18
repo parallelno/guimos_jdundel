@@ -27,7 +27,7 @@ dialog_init:
 ; z flag = 1 if a dialog is already initiated
 dialog_is_inited:
 			lda dialog_update
-			CPI_WITH_ZERO(OPCODE_NOP)
+			CPI_ZERO(OPCODE_NOP)
 			ret
 
 ; invoke a dialog callback func

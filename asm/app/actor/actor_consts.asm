@@ -13,19 +13,23 @@ ACTOR_RUNTIME_DATA_LAST	  = $fe ; the end of the last existing actor's runtime d
 ACTOR_RUNTIME_DATA_END	  = $ff ; the end of the actor's runtime data
 
 ; actor statuses
-; status is stored in *_status byte (monster_status, bullet_status)
-; statuses prescribe the behavior of monsters, boolets, and also used by
-; the render system to blink an actor, make it invisible, etc.
-; statuses below can be combined with other statuses
-; make it invisible
-ACTOR_STATUS_BIT_INVIS			= %1000_0000
-; blink every second frame
-;ACTOR_STATUS_BIT_BLINK			= %0100_0000
-; non-gameplay statuses like the hero death animation can be combined 
-; with ACTOR_STATUS_BIT_NON_GAMEPLAY to make the status checking faster
-;ACTOR_STATUS_BIT_NON_GAMEPLAY	= %0010_0000
-; disables the update and render functionality. 
-; the actor will be controlled by another entity
-ACTOR_STATUS_NO_UPDATE			= %1110_0000
+; status is stored in *_status byte (hero_status, monster_status, bullet_status)
+; statuses define a behavior of an actor, for example move, hit, or make it 
+; invisible.
+; statuse bits below can be combined with other statuses like ACTOR_STATUS_NO_UPDATE
+ACTOR_STATUS_BIT_INVIS		= %1000_0000
+ACTOR_STATUS_BIT_INVINCIBLE	= %0100_0000
+; can be used as a unique status defined in the actor's code
+ACTOR_STATUS_BIT_RESERVED	= %0010_0000
+; combines all status bits
+ACTOR_STATUS_BITS = ACTOR_STATUS_BIT_INVIS | ACTOR_STATUS_BIT_INVINCIBLE | ACTOR_STATUS_BIT_RESERVED
 
-ACTOR_STATUS_BIT_GLOBAL			= ACTOR_STATUS_NO_UPDATE | ACTOR_STATUS_BIT_INVIS
+; disables the update and render functionality. An actor will be controlled by 
+; another entity
+ACTOR_STATUS_INIT		= 0
+ACTOR_STATUS_NO_UPDATE	= ~ACTOR_STATUS_BITS
+ACTOR_STATUS_KICKOFF	= ~ACTOR_STATUS_BITS - 1
+ACTOR_STATUS_FREEZE		= ~ACTOR_STATUS_BITS - 2
+ACTOR_STATUS_CUSTOM		= ~ACTOR_STATUS_BITS - 3 ; statuses 0-ACTOR_STATUS_CUSTOM are defined by the particular actor
+
+ACTOR_STATUS_FREEZE_TIME = BUFF_FREEZE_TIME
