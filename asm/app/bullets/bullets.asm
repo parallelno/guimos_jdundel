@@ -86,6 +86,14 @@ bullet_init:
 			mov m, c
 			inx h
 			mov m, b
+
+			pop b ; get the ptr to init_speed func
+@restore_sp:
+			lxi sp, TEMP_ADDR
+			RAM_DISK_OFF()			
+			; bc - ptr to init_speed func
+			push b
+
 @caster_pos:
 			lxi b, TEMP_WORD
 			; bc - scr pos
@@ -134,14 +142,12 @@ bullet_init:
 			; advance hl to bullet_speed_x
 			inx h
 
-			pop b
-			; bc - ptr to init_speed func
-@restore_sp:
-			lxi sp, TEMP_ADDR
-			RAM_DISK_OFF()
-
 			xchg
 			; de - ptr to bullet_speed_x
+			
+			pop b
+			; bc - ptr to init_speed func
+
 			lxi h, @ret
 			push h
 			mov l, c
