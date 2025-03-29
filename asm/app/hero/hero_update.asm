@@ -32,8 +32,8 @@ hero_update:
 			jz hero_attack_update
 			cpi ACTOR_STATUS_KICKOFF
 			jz hero_kickoff_update
-			cpi ACTOR_STATUS_BIT_HERO_ANIMATIC
-			jz hero_dead
+			cpi ACTOR_STATUS_HERO_DEATH_WAIT_SPARKER + 1
+			jc hero_dead
 			ret
 
 			
@@ -546,6 +546,9 @@ hero_idle_update:
 ; uses:
 ; a, hl, de
 hero_impacted:
+.if DEBUG
+			ret
+.endif
 			; to make sure the impact once per upcomming damage
 			lda hero_status
 			ani ACTOR_STATUS_BIT_INVINCIBLE

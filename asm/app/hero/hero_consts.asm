@@ -17,27 +17,20 @@ HERO_DIR_DOWN			= %1000
 
 
 ; hero statuses.
-; personal actor statuses must be in a range of 0 to ACTOR_STATUS_CUSTOM including.
-; status describe what set of animations and behavior is active
+; statuses describe what set of animations and behavior is active
 ; for ex. ACTOR_STATUS_HERO_ATTACK plays hero_r_attk or hero_l_attk 
-; depending on the direction and it spawns a weapon trail
-ACTOR_STATUS_HERO_IDLE			= 0
-ACTOR_STATUS_HERO_MOVE			= 1
-ACTOR_STATUS_HERO_INVINCIBLE	= 2
-
+; depending on the direction. It also spawns a weapon trail
+; personal actor statuses must be in a range of 0 to ACTOR_STATUS_CUSTOM including.
+; The more popular status is, the lower its id should be. For optimization purposes.
+ACTOR_STATUS_HERO_IDLE			= 0 ;\  all these statuses have to
+ACTOR_STATUS_HERO_MOVE			= 1 ; > have contigues ids to be 
+ACTOR_STATUS_HERO_INVINCIBLE	= 2 ;/  handled properly
 ACTOR_STATUS_HERO_ATTACK		= 3
-;ACTOR_STATUS_HERO_IMPACTED		= 4
-;ACTOR_STATUS_BITS_HERO_GAMEPLAY	= %0000_0111
-
-;ACTOR_STATUS_BIT_HERO_BLINK		= ACTOR_STATUS_BIT_RESERVED
-ACTOR_STATUS_BIT_HERO_ANIMATIC	= %0000_1000
-
 ; statuses above this one are used for special effects and are not used in the game
-
-ACTOR_STATUS_HERO_DEATH_FADE_INIT_GB	= ACTOR_STATUS_BIT_HERO_ANIMATIC+0
-ACTOR_STATUS_HERO_DEATH_FADE_GB			= ACTOR_STATUS_BIT_HERO_ANIMATIC+1
-ACTOR_STATUS_HERO_DEATH_FADE_R			= ACTOR_STATUS_BIT_HERO_ANIMATIC+2 | ACTOR_STATUS_BIT_INVIS
-ACTOR_STATUS_HERO_DEATH_WAIT_SPARKER	= ACTOR_STATUS_BIT_HERO_ANIMATIC+3 | ACTOR_STATUS_BIT_INVIS
+ACTOR_STATUS_HERO_DEATH_FADE_INIT_GB	= 4							 ;\  all these statuses have to
+ACTOR_STATUS_HERO_DEATH_FADE_GB			= 5 						 ; > have contigues ids to be 
+ACTOR_STATUS_HERO_DEATH_FADE_R			= 6 | ACTOR_STATUS_BIT_INVIS ; > handled properly
+ACTOR_STATUS_HERO_DEATH_WAIT_SPARKER	= 7 | ACTOR_STATUS_BIT_INVIS ;/
 
 ; duration of statuses (in update_durations)
 HERO_STATUS_ATTACK_DURATION		= 12

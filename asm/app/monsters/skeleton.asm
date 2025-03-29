@@ -102,15 +102,20 @@ skeleton_init:
 ; in:
 ; de - ptr to monster_update_ptr 
 skeleton_update:
-@codePerfStart_skeleton_update ; adds the code performance to the debug data
-			call @test1
-@codePerfEnd_skeleton_update ; adds the code performance to the debug data
-			ret
-@test1:
 			; advance hl to monster_status
 			HL_ADVANCE(monster_update_ptr, monster_status, BY_HL_FROM_DE)
 			mov a, m
-			; NOT TODO: call table is not faster than properly sorted cpi/jz
+			/*
+			NOT TODO: a call table is not faster than properly sorted cpi/jz.
+						it requres a change callig func signatures (de will 
+						contain a ptr to monster_status instead of hl.
+						a call table takes 17*4cc. it includes xchg in calling 
+						func and JMP_4 to call it.
+						if status IDs take a big range like now (
+						ACTOR_STATUS_SKELETON_DETECT_HERO = 1,
+						ACTOR_STATUS_FREEZE = 0x50)
+						it will blow up the call table and waist memory.
+			*/
 			cpi ACTOR_STATUS_SKELETON_MOVE
 			jz skeleton_update_move
 			cpi ACTOR_STATUS_SKELETON_DETECT_HERO
@@ -128,36 +133,6 @@ skeleton_update:
 			cpi ACTOR_STATUS_FREEZE
 			jz monster_update_freeze
 			ret
-/*
-; TODO: the alternative that uses a table to check statuses.
-; statuses of a particular monster must have the first
-; and the second bits zeroed. they can be used for global 
-; actor/monster statuses if needed. in this handler they are
-; erased to do not interferre the status checking process.
-; it also requres a change in a callig func signatures.
-; hl will no longer contain a ptr to monster_status,
-; de - will contain it
-*/
-@test2:
-			; advance hl to monster_status
-			HL_ADVANCE(monster_update_ptr, monster_status, BY_HL_FROM_DE)
-			mov a, m
-			xchg
-			ani ~ACTOR_STATUS_BITS
-			adi <skeleton_status_handlers
-			mov l, m
-			mvi h, >skeleton_status_handlers
-			sphl
-			; ~17*4cc it includes xchg in calling funcs and JMP_4
-skeleton_status_handlers:
-			JMP_4(skeleton_update_detect_hero_init)
-			JMP_4(skeleton_update_detect_hero)
-			JMP_4(skeleton_update_shoot_prep)
-			JMP_4(skeleton_update_shoot)
-			JMP_4(skeleton_update_relax)
-			JMP_4(skeleton_update_move_init)
-			JMP_4(skeleton_update_move)
-			JMP_4(monster_update_freeze)
 
 ; in:
 ; hl - ptr to monster_status
@@ -356,7 +331,11 @@ skeleton_update_shoot:
 			mov b, m
 			INX_H(2)
 			mov c, m
+.if DEBUG			
 			jmp scythe_init
+			ret
+.endif
+
 
 ; in:
 ; hl - monster_anim_timer
