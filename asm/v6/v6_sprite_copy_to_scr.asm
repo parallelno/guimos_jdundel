@@ -26,7 +26,20 @@ sprite_copy_to_scr_v:
 // @skipMaxW:
 
 			; h=max(h, SPRITE_COPY_TO_SCR_H_MAX)
+
+// .if DEBUG
+// 	.breakpoint "C > 0x14 h > SPRITE_COPY_TO_SCR_H_MAX"
+// .endif
 			mov a, c
+// .if DEBUG
+// 	.breakpoint "C < 0x5 h < SPRITE_COPY_TO_SCR_H_MIN"
+// .endif
+
+			/*
+			TODO: BUG
+			; h=max(h, SPRITE_COPY_TO_SCR_H_MAX)
+			; clamp doesn't work. it leaves remaining pieces of sprites on the screen
+			*/
 			cpi SPRITE_COPY_TO_SCR_H_MAX
 			jc @skipMaxH
 @maxH:
@@ -121,16 +134,17 @@ sprite_copy_to_scr_v:
 
 @next_column:
 			RAM_DISK_ON(RAM_DISK_S_BACKBUFF | RAM_DISK_M_BACKBUFF | RAM_DISK_M_8F)
-			; read without a stack operations because
-			; we have to load BC before using POP B
+			; read with non-stack operations because we must load BC before 
+			; using POP B
 			mov b, m
 			dcr l
 			mov c, m
-			// TODO: optimization: instead executing extra code to prevent data corruption by the interruption break, 
-			// we can nexh:
-			// when a draw func starts, send the interruption return addr that leads to a start the this draw func.
-			// if the interraption ends, it returns back to the start of the the draw func and it executes code 
-			// again with a guaranty that the data is not corrupted this time.
+			/* TODO: optimization: instead executing extra code to prevent data 
+			corruption by the interruption break, we can do next:
+			when a draw func starts, send the interruption return addr that 
+			leads to a start the this draw func. if the interraption ends, 
+			it returns back to the start of the the draw func and it executes 
+			code again with a guaranty that the data is not corrupted this time.*/
 			RAM_DISK_ON(RAM_DISK_S_BACKBUFF)
 
 			mov m, c
@@ -149,9 +163,10 @@ sprite_copy_to_scr_v:
 			lxi h, $2000-height+2-1
 	.endif
 			dad sp
-			; set sp to a safe place, because an interruption break can happen
-			; between sta and out $10 in RAM_DISK_ON(RAM_DISK_S_BACKBUFF) in the code above
-			lxi sp, STACK_INTERRUPTION_ADDR
+			; set SP to a STACK_TEMP_ADDR, for the case when an interruption call 
+			; happens between sta and out $10 in RAM_DISK_ON(RAM_DISK_S_BACKBUFF) 
+			; in the code above
+			lxi sp, STACK_TEMP_ADDR
 
 			jnc @next_column
 			; advance Y to the next column

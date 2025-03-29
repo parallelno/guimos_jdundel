@@ -104,12 +104,18 @@ RAM_DISK_M_AF = RAM_DISK_M_AD | RAM_DISK_M_EF
 RESTART_ADDR 			= 0x0000
 INT_ADDR	 			= 0x0038
 
-STACK_LEN				= 32
+MAIN_STACK_LEN	= 32 ; used in the main programm
+INT_STACK_LEN	= 30 ; used in the interruption routine
+TMP_STACK_LEN	= 2  ; used as a temp 2 byte space in the render routines such as sprite_copy_to_scr_v
+
 ; defines available user space
 ; "-2" because erase funcs can let the interruption call corrupt 0x7ffe, @7fff bytes.
 STACK_MAIN_PROGRAM_ADDR	= 0x8000 - 2
-STACK_INTERRUPTION_ADDR	= STACK_MAIN_PROGRAM_ADDR - STACK_LEN ; it is used by the iterruption func
-STACK_MIN_ADDR			= STACK_INTERRUPTION_ADDR - STACK_LEN
+; used by the iterruption func
+STACK_INTERRUPTION_ADDR	= STACK_MAIN_PROGRAM_ADDR - MAIN_STACK_LEN
+; used as a temp 2 byte space in the render routines such as sprite_copy_to_scr_v
+STACK_TEMP_ADDR			= STACK_INTERRUPTION_ADDR - INT_STACK_LEN
+STACK_MIN_ADDR			= STACK_TEMP_ADDR - TMP_STACK_LEN
 
 ; this addr is immune to the iterruption call because 0x0 and 0x1 should not be contain any data
 ; nor in the ram, not in the ram-disk. 

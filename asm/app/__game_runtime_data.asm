@@ -332,11 +332,11 @@ rooms_spawn_rates_end:
 
 ;=============================================================================
 ; contains statuss of breakables. 
-.align 0x100 ; TODO: check if it must be aligned to $100
+.align 0x100 ; must be aligned to $100
 ; should be reseted every game start and after hero respawns
-; this structure can contain statuses for 1016 breakables across off levels
+; this structure can contain statuses for 1016 breakables across all levels
 ; each room can contain variable amount of breakables
-; TODO: supports only level 0 and level 1 now
+; TODO: check if it supports the level 2
 ; data format:
 ; breakables_status_buffer_ptrs:
 ;	 .byte a low byte pointer to a breakables statuses in breakables_status_buffers for a room_id_0 in level_id_0
@@ -358,6 +358,5 @@ rooms_spawn_rates_end:
 BREAKABLES_MAX							= 1016 ; (256-1-128)*8
 breakables_status_buffer_available_ptr:	.storage BYTE_LEN ; contains the pointer
 breakables_status_buffer_ptrs:			.storage ROOMS_MAX * LEVELS_MAX
-breakables_status_buffers:				.storage 0x100 - ROOMS_MAX * LEVELS_MAX ;  TODO: check if this LEN is correct
+breakables_status_buffers:				.storage 0x100 - ROOMS_MAX * LEVELS_MAX - BYTE_LEN
 breakables_statuses_end:
-; TODO: ! breakables_status_buffers goes beyond aligned 0x100 block

@@ -8,10 +8,10 @@
 BUFFERS_START_ADDR	= $7300
 
 ;=============================================================================
-; contains statuss of breakables. should be reseted every game start and after hero respawns
-; this structure can contain statuses for 1016 breakables across off levels
+; contains statuses of breakables. should be reseted every game start and after hero respawn
+; this structure can contain statuses for 1016 breakables across all levels
 ; each room can contain variable amount of breakables
-; TOD: cupports only level 0 and level 1 now
+; TODO: check if it supports the level 2
 ; data format:
 ; breakables_status_buffer_ptrs:
 ;	 .byte a low byte pointer to a breakables statuses in breakables_status_buffers for a room_id_0 in level_id_0
@@ -24,7 +24,7 @@ BUFFERS_START_ADDR	= $7300
 ; breakables_status_buffers:
 ;	.loop as many, as many rooms contain breakables and visited by player
 ;		Set of bytes where every byte contains statuses of 8 breakables in the room starting from the tile_id=0
-;			Bit = 0 means a breakable is not broken, and vise versa
+;			Where bit=0 means breakable is not broken, 1 - broken
 ;			Example: if the room contains nine breakables with tile_id=A, tile_id=B, tile_id=C, tile_id=J, tile_id=K, tile_id=O, tile_id=P, tile_id=X, tile_id=Z
 ;			their statuses will be packed into two bytes:
 ;			.byte XPOKJCBA
@@ -67,8 +67,6 @@ hero_data_prev_pptr:		= hero_runtime_data + 29	; .word TEMP_ADDR
 hero_data_next_pptr:		= hero_runtime_data + 31	; .word TEMP_ADDR
 hero_runtime_data_end:		= hero_runtime_data + 33
 
-watchpointStartOffRW_hero_runtime_data: = hero_runtime_data ; adds the watchpoint to the debug data
-watchpointEnd_hero_runtime_data: = hero_runtime_data_end	; adds the watchpoint to the debug data	
 ;=============================================================================
 ;
 ; contains the current RAM-disk mode
@@ -166,6 +164,10 @@ BULLET_RUNTIME_DATA_LEN = @data_end - bullets_runtime_data ; $1a; bullet_runtime
 bullets_runtime_data_end_marker:	= bullets_runtime_data + BULLET_RUNTIME_DATA_LEN * BULLETS_MAX ; $78ff ; :		.word ACTOR_RUNTIME_DATA_END << 8
 bullets_runtime_data_end:			= bullets_runtime_data_end_marker + ADDR_LEN
 BULLETS_RUNTIME_DATA_LEN			= bullets_runtime_data_end - bullets_runtime_data
+;=============================================================================
+;
+; FREE SPACE $78F8 - $7900
+;
 ;=============================================================================
 ; statuses of container instances.
 ; this data is aligned to $100, the length is <= $100

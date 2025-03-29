@@ -90,11 +90,19 @@ SCR_BUFF_LEN : int	= 0x2000
 SCR_BUFFS_LEN : int	= SCR_BUFF_LEN * 4
 SCR_ADDR : int 		= 0x8000
 
-STACK_LEN : int 		= 32
-STACK_MAIN_PROGRAM_ADDR : int	= SCR_ADDR - 2 # minus 2 because erase funcs can let the interruption call corrupt 0x7ffe, @7fff bytes.
-STACK_INTERRUPTION_ADDR : int	= STACK_MAIN_PROGRAM_ADDR - STACK_LEN # it is used by the iterruption func
-STACK_MIN_ADDR : int			= STACK_INTERRUPTION_ADDR - STACK_LEN
-STACKS_LEN : int				= SCR_ADDR - STACK_MIN_ADDR
+MAIN_STACK_LEN : int	= 32 # used in the main programm
+INT_STACK_LEN : int		= 30 # used in the interruption routine
+TMP_STACK_LEN : int		= 2  # used as a temp 2 byte space in the render routines such as sprite_copy_to_scr_v
+ALL_STACKS_LEN = MAIN_STACK_LEN + INT_STACK_LEN + TMP_STACK_LEN
+
+# defines available user space
+# "-2" because erase funcs can let the interruption call corrupt 0x7ffe, @7fff bytes.
+STACK_MAIN_PROGRAM_ADDR : int	= 0x8000 - 2
+# used by the iterruption func
+STACK_INTERRUPTION_ADDR : int	= STACK_MAIN_PROGRAM_ADDR - MAIN_STACK_LEN
+# used as a temp 2 byte space in the render routines such as sprite_copy_to_scr_v
+STACK_TEMP_ADDR : int			= STACK_INTERRUPTION_ADDR - INT_STACK_LEN
+STACK_MIN_ADDR : int			= STACK_TEMP_ADDR - TMP_STACK_LEN
 
 RAM_DISK_SEGMENT_LEN  : int = RAM_DISK_BANK_LEN // 2
 
@@ -270,18 +278,33 @@ def export_debug_data(path, out_path = None):
 
 			addr = int(lineParts[1][1:], 16)
 			addrS = f"0x{addr:X}"
-			commentPos = line.find("IF")
-			comment = line[commentPos+3:] if commentPos != -1 else ""
+			conditionPos = line.find("IF")
+			condS = line[conditionPos+3:] if conditionPos != -1 else ""
+			cond = condS.split(' ')
+
+			if len(cond) >= 3:
+				operand = cond[0]
+				operator = cond[1]
+				value = cond[2]
+				comment = "" if len(cond) < 4 else cond[3]
+				# combine all elements of cond from [3] to the rest because it's a comment
+				comment = ' '.join(cond[3:]) if len(cond) > 3 else ""
+				comment = comment.rstrip("\r\n")
+			else:
+				operand = "A"
+				operator = "=ANY"
+				value = "0"
+				comment = ""
 
 			bpJ = {}
 			bpJ["addr"] = addrS
 			bpJ["autoDel"] = False
 			bpJ["comment"] = comment
-			bpJ["cond"] = "=ANY" # TODO: add support for other conditions
-			bpJ["memPages"] = 4294967295 # means check every page of the ram-disk. TODO: add support for other memPages
-			bpJ["operand"] = "RW" # TODO: add support for other operands
+			bpJ["cond"] = operator
+			bpJ["memPages"] = 0xFFFFFFFF # means check every page of the ram-disk. TODO: add support for other memPages
+			bpJ["operand"] = operand
 			bpJ["status"] = 1 # enabled
-			bpJ["value"] = addrS
+			bpJ["value"] = value
 
 			debug_data["breakpoints"].append(bpJ)
 

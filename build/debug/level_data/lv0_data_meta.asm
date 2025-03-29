@@ -2,8 +2,8 @@
 ; asm data file: build/debug/level_data/lv0_data_data.asm
 ; bin file: build/debug/bin/LV0_DATA.BIN
 
-LV0_DATA_FILE_LEN = 3634
-LV0_DATA_LAST_RECORD_LEN = 50
+LV0_DATA_FILE_LEN = 3640
+LV0_DATA_LAST_RECORD_LEN = 56
 
 LV0_DATA_FILENAME_PTR:
 			.byte "LV0_DATA" ; filename
@@ -42,16 +42,16 @@ _lv0_containers_inst_data:
 			.byte 178,11,
 
 _lv0_home = 2
-_lv0_farm_fence = 276
-_lv0_road_to_friends_home = 542
-_lv0_friends_home = 828
-_lv0_friends_home_backyard = 1092
-_lv0_friends_secret_place = 1359
-_lv0_crossroad = 1675
-_lv0_farm_entrance = 1953
-_lv0_farm_storage = 2224
-_lv0_loop = 2490
-_lv0_dungeon_entrance = 2781
-_lv0_abandoned_home = 3069
-_lv0_lost_coins = 3342
+_lv0_farm_fence = 282
+_lv0_road_to_friends_home = 548
+_lv0_friends_home = 834
+_lv0_friends_home_backyard = 1098
+_lv0_friends_secret_place = 1365
+_lv0_crossroad = 1681
+_lv0_farm_entrance = 1959
+_lv0_farm_storage = 2230
+_lv0_loop = 2496
+_lv0_dungeon_entrance = 2787
+_lv0_abandoned_home = 3075
+_lv0_lost_coins = 3348
 

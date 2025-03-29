@@ -1,4 +1,4 @@
-; sharetable chunk of code to restore SP and 
+; sharetable chunk of code to restore SP and
 ; return a couple of parameters within HL, C
 draw_sprite_ret:
 draw_sprite_restore_sp:
@@ -44,8 +44,8 @@ draw_sprite_width_height:
 ; .byte - offset_x
 ; .byte - height
 ; .byte - width
-; 		0 - one byte width, 
-;		1 - two bytes width, 
+; 		0 - one byte width,
+;		1 - two bytes width,
 ;		2 - three bytes width
 
 ; pixel format:
@@ -71,7 +71,7 @@ sprite_draw_vm:	; VM stands for: V - variable height, M - mask support
 			xchg
 			pop b
 			; b - offset_x
-			; c - offset_y			
+			; c - offset_y
 			dad b
 			; store a sprite screen addr to return it from this func
 			shld draw_sprite_scr_addr+1
@@ -81,12 +81,12 @@ sprite_draw_vm:	; VM stands for: V - variable height, M - mask support
 			mov d, b
 			mov e, c
 			xchg
-			; h, b - width, 
-			; l, c - height			
+			; h, b - width
+			; l, c - height
 			shld draw_sprite_width_height+1
-			xchg		
-			; d, b - width, 
-			; e, c - height					
+			xchg
+			; d, b - width
+			; e, c - height
 			mov a, b
 			rrc
 			jc @width16

@@ -128,11 +128,8 @@ sprite_copy_to_back_buff_v:
 
 			COPY_SPRITE_TO_SCR_LOOP2(height)
 
-			; assign SP to prevent screen data corruption
-			; when we use mov b, m and mov c, m commands.
-			; a corruption might happen because we fill up B and C with
-			; more than one command (mov b,m/mov c,m)
-			lxi sp, STACK_INTERRUPTION_ADDR
+			; set SP to STACK_TEMP_ADDR to be able to use BC not only for "POP B"
+			lxi sp, STACK_TEMP_ADDR
 			; advance Y down and to the next scr buff
 			lxi b, $2000-height+2
 			dad b

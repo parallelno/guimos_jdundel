@@ -8,7 +8,7 @@ Ram-disk usage:
 	FONT.BIN: addr: 32768, len: 1624
 Used: 1624, Free: 6568
 
-Current Load: 1624, Free Space: 211104
+Current Load: 1624, Free Space: 211112
 
 ;===============================================
 ; level0
@@ -20,7 +20,7 @@ Ram-disk usage:
 	BURNER.BIN: addr: 9870, len: 9030
 	SWORD.BIN: addr: 18900, len: 8928
 	DECALS0.BIN: addr: 27828, len: 4266
-Used: 32094, Free: 608
+Used: 32094, Free: 610
 
 --- bank0 addr8000 -----------------
 	LV0_GFX.BIN: addr: 34392, len: 5524
@@ -34,7 +34,7 @@ Used: 6484, Free: 84
 	SNOWFLAK.BIN: addr: 10632, len: 1212
 	TNT.BIN: addr: 11844, len: 1056
 	BACKS0.BIN: addr: 12900, len: 620
-Used: 13520, Free: 19182
+Used: 13520, Free: 19184
 
 --- bank1 addr8000 -----------------
 	TI0_GFX.BIN: addr: 32768, len: 8178
@@ -48,13 +48,13 @@ Used: 8178, Free: 14
 Used: 32728, Free: 40
 
 --- bank3 addr8000 -----------------
-	LV0_DATA.BIN: addr: 32768, len: 3634
-	HERO_L.BIN: addr: 36402, len: 13176
-	HERO_R.BIN: addr: 49578, len: 13176
-	VFX.BIN: addr: 62754, len: 2184
-Used: 32170, Free: 598
+	LV0_DATA.BIN: addr: 32768, len: 3640
+	HERO_L.BIN: addr: 36408, len: 13176
+	HERO_R.BIN: addr: 49584, len: 13176
+	VFX.BIN: addr: 62760, len: 2184
+Used: 32176, Free: 592
 
-Permanent load: 1624, Current Load: 125174, Free Space: 85930
+Permanent load: 1624, Current Load: 125180, Free Space: 85932
 
 */
 
@@ -225,7 +225,7 @@ Permanent load: 1624, Current Load: 125174, Free Space: 85930
 
 			RAM_DISK_M_HERO_L = RAM_DISK_M3
 			RAM_DISK_S_HERO_L = RAM_DISK_S3
-			HERO_L_ADDR = 36402
+			HERO_L_ADDR = 36408
 			LOAD_FILE(HERO_L_FILENAME_PTR, RAM_DISK_S_HERO_L, HERO_L_ADDR, HERO_L_FILE_LEN)
 			lxi d, _hero_l_preshifted_sprites
 			lxi h, HERO_L_ADDR
@@ -233,7 +233,7 @@ Permanent load: 1624, Current Load: 125174, Free Space: 85930
 
 			RAM_DISK_M_HERO_R = RAM_DISK_M3
 			RAM_DISK_S_HERO_R = RAM_DISK_S3
-			HERO_R_ADDR = 49578
+			HERO_R_ADDR = 49584
 			LOAD_FILE(HERO_R_FILENAME_PTR, RAM_DISK_S_HERO_R, HERO_R_ADDR, HERO_R_FILE_LEN)
 			lxi d, _hero_r_preshifted_sprites
 			lxi h, HERO_R_ADDR
@@ -241,7 +241,7 @@ Permanent load: 1624, Current Load: 125174, Free Space: 85930
 
 			RAM_DISK_M_VFX = RAM_DISK_M3
 			RAM_DISK_S_VFX = RAM_DISK_S3
-			VFX_ADDR = 62754
+			VFX_ADDR = 62760
 			LOAD_FILE(VFX_FILENAME_PTR, RAM_DISK_S_VFX, VFX_ADDR, VFX_FILE_LEN)
 			lxi d, _vfx_preshifted_sprites
 			lxi h, VFX_ADDR

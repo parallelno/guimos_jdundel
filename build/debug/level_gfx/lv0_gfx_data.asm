@@ -298,6 +298,11 @@ _lv0_tile24:
 			.byte 0,0,0,0,0,128,128,0,192,192,240,240,254,248,224,224,
 			.word 0 ; safety pair of bytes for reading by POP B
 _lv0_tile25:
+			.byte 0 ; mask
+			.byte 4 ; counter
+
+			.word 0 ; safety pair of bytes for reading by POP B
+_lv0_tile26:
 			.byte 15 ; mask
 			.byte 4 ; counter
 			.byte 0,0,0,8,24,0,0,0,0,0,1,0,0,0,0,0,
@@ -309,7 +314,7 @@ _lv0_tile25:
 			.byte 255,255,249,241,167,239,255,255,249,249,254,255,255,255,255,255,
 			.byte 255,255,255,255,191,95,255,255,255,255,255,151,231,255,255,255,
 			.word 0 ; safety pair of bytes for reading by POP B
-_lv0_tile26:
+_lv0_tile27:
 			.byte 15 ; mask
 			.byte 4 ; counter
 			.byte 0,29,49,226,64,128,0,0,0,0,0,0,0,0,0,0,
@@ -321,7 +326,7 @@ _lv0_tile26:
 			.byte 0,2,14,29,191,127,255,255,255,255,255,255,255,255,255,255,
 			.byte 255,255,255,255,255,255,255,255,255,247,253,189,152,12,0,0,
 			.word 0 ; safety pair of bytes for reading by POP B
-_lv0_tile27:
+_lv0_tile28:
 			.byte 15 ; mask
 			.byte 4 ; counter
 			.byte 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -333,7 +338,7 @@ _lv0_tile27:
 			.byte 255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,
 			.byte 255,255,255,255,255,255,255,255,255,255,255,255,254,252,248,252,
 			.word 0 ; safety pair of bytes for reading by POP B
-_lv0_tile28:
+_lv0_tile29:
 			.byte 10 ; mask
 			.byte 4 ; counter
 			.byte 255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,
@@ -341,7 +346,7 @@ _lv0_tile28:
 			.byte 255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,
 			.byte 255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,
 			.word 0 ; safety pair of bytes for reading by POP B
-_lv0_tile29:
+_lv0_tile30:
 			.byte 14 ; mask
 			.byte 4 ; counter
 			.byte 31,31,31,31,31,31,31,31,0,254,254,254,254,254,254,0,
@@ -351,7 +356,7 @@ _lv0_tile29:
 			.byte 159,159,159,95,95,31,31,31,0,254,254,254,254,254,254,192,
 			.byte 3,125,255,255,255,255,255,1,249,249,249,249,251,249,249,249,
 			.word 0 ; safety pair of bytes for reading by POP B
-_lv0_tile30:
+_lv0_tile31:
 			.byte 15 ; mask
 			.byte 4 ; counter
 			.byte 98,194,8,16,3,7,4,1,0,0,0,0,0,0,0,0,
@@ -363,7 +368,7 @@ _lv0_tile30:
 			.byte 0,32,230,174,252,248,251,254,255,255,255,255,255,255,255,255,
 			.byte 224,224,192,252,248,240,252,240,112,0,0,0,0,0,0,0,
 			.word 0 ; safety pair of bytes for reading by POP B
-_lv0_tile31:
+_lv0_tile32:
 			.byte 15 ; mask
 			.byte 4 ; counter
 			.byte 0,0,2,3,3,0,1,3,7,68,2,32,16,0,64,32,
@@ -375,7 +380,7 @@ _lv0_tile31:
 			.byte 0,0,0,0,0,1,0,0,0,59,61,31,15,127,63,31,
 			.byte 255,255,255,255,255,255,127,127,255,255,251,184,24,8,0,0,
 			.word 0 ; safety pair of bytes for reading by POP B
-_lv0_tile32:
+_lv0_tile33:
 			.byte 14 ; mask
 			.byte 4 ; counter
 			.byte 31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,
@@ -385,7 +390,7 @@ _lv0_tile32:
 			.byte 159,159,159,159,159,159,159,159,159,159,159,159,159,159,159,159,
 			.byte 249,249,249,249,249,249,249,249,249,249,249,249,249,249,249,249,
 			.word 0 ; safety pair of bytes for reading by POP B
-_lv0_tile33:
+_lv0_tile34:
 			.byte 15 ; mask
 			.byte 4 ; counter
 			.byte 0,0,1,24,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -397,13 +402,13 @@ _lv0_tile33:
 			.byte 0,0,6,32,28,1,2,2,2,7,13,9,8,6,1,0,
 			.byte 0,224,240,24,60,239,200,8,8,8,8,8,8,172,240,0,
 			.word 0 ; safety pair of bytes for reading by POP B
-_lv0_tile34:
+_lv0_tile35:
 			.byte 8 ; mask
 			.byte 4 ; counter
 			.byte 0,0,0,0,0,0,0,0,0,255,0,0,0,0,0,0,
 			.byte 0,0,0,0,0,0,255,0,0,0,0,0,0,0,0,0,
 			.word 0 ; safety pair of bytes for reading by POP B
-_lv0_tile35:
+_lv0_tile36:
 			.byte 15 ; mask
 			.byte 4 ; counter
 			.byte 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -414,11 +419,6 @@ _lv0_tile35:
 			.byte 0,0,128,192,192,128,64,64,64,64,128,128,0,192,128,0,
 			.byte 0,14,25,8,8,8,8,8,16,24,220,51,21,11,3,0,
 			.byte 0,192,160,96,160,32,32,32,32,0,64,64,128,0,0,0,
-			.word 0 ; safety pair of bytes for reading by POP B
-_lv0_tile36:
-			.byte 0 ; mask
-			.byte 4 ; counter
-
 			.word 0 ; safety pair of bytes for reading by POP B
 _lv0_tile37:
 			.byte 15 ; mask

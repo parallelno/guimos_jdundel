@@ -97,7 +97,7 @@ def get_ram_disk_layout(config_j):
 	for bank_idx in range(build.RAM_DISK_BANKS_MAX):
 		# segment before stack
 		seg_name0 = f"bank{bank_idx} addr0"
-		seg_len0 = build.RAM_DISK_SEGMENT_LEN - build.STACKS_LEN
+		seg_len0 = build.RAM_DISK_SEGMENT_LEN - build.ALL_STACKS_LEN
 		seg_addr0 = 0
 		segments[seg_name0] = {
 			"bank_idx": bank_idx,

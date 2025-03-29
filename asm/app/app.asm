@@ -2,9 +2,7 @@ app_start:
 			di
 			MEM_ERASE_SP(SCR_ADDR, SCR_BUFFS_LEN)
 			call v6_sound_init
-			ei
 
-			di
 			load_permanent()
 			load_level0()
 			ei

@@ -60,15 +60,30 @@ whole asm module.
 ; How extract breakpoints from the code into a debug data
 ;===========================================================================
 
-If you type ".breakpoint" in the code, the build system adds a breakpoint to 
-your debug data at that address.
+If you type '.breakpoint "<OPERAND> <OPERATOR> <VALUE> <COMMENT>"' in the code, the build
+system adds a breakpoint at this address into the debug data. Where: 
+<OPERAND> - is a REG, REG PAIR, PC, SP, CC, or any valid operand.
+<OPERATOR> - =ANY, =, !=, >, <, >=, <=, etc.
+<VALUE> - hex value.
+<COMMENT> - all the remainig string in the quotes is interpretted as a comment.
+
+Examples:
+.breakpoint
+.breakpoint "HL < 0x1d23"
+.breakpoint "DE < 0xA000 sprite_copy_to_scr_v"
 
 ;===========================================================================
 ; How extract watchpoints from the code into a debug data
 ;===========================================================================
 
-If you type "watchpointStart<RW/R/W><On/Off>_<label_name>: = address" in the 
-code, the build system adds a watchpoint to your debug data at that address.
+If you type "<prefix>watchpointStart<RW/R/W><On/Off>_<label_name>: = address" 
+in the code, the build system adds a watchpoint to your debug data at that 
+address. Where:
+<prefix> can be '@' or any other valid label string.
+
+Examples:
+@watchpointStartOffRW_hero_runtime_data: = hero_runtime_data ; adds the watchpoint to the debug data
+@watchpointEnd_hero_runtime_data: = hero_runtime_data_end	; adds the watchpoint to the debug data
 
 ;===========================================================================
 ; How to mark the code that it needs a code performance check
