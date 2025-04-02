@@ -275,7 +275,7 @@ TILED_IMG_DRAW_DOWN = false
 			TILED_IMG_DRAW_8BYTES(TILED_IMG_DRAW_UP)
 			TILED_IMG_DRAW_8BYTES(TILED_IMG_DRAW_DOWN, false)
 
-			lxi sp, STACK_SAFE_ADDR
+			lxi sp, STACK_TEMP_ADDR
 .endmacro
 
 v6_tiled_img_draw_end:

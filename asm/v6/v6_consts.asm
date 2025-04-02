@@ -114,14 +114,10 @@ STACK_MAIN_PROGRAM_ADDR	= 0x8000 - 2
 ; used by the iterruption func
 STACK_INTERRUPTION_ADDR	= STACK_MAIN_PROGRAM_ADDR - MAIN_STACK_LEN
 ; used as a temp 2 byte space in the render routines such as sprite_copy_to_scr_v
+; It's used in rare cases when mapping is enabled, SP points to the data, and BC reg pair is 
+; temporally needed
 STACK_TEMP_ADDR			= STACK_INTERRUPTION_ADDR - INT_STACK_LEN
 STACK_MIN_ADDR			= STACK_TEMP_ADDR - TMP_STACK_LEN
-
-; this addr is immune to the iterruption call because 0x0 and 0x1 should not be contain any data
-; nor in the ram, not in the ram-disk. 
-; It's used in rare cases when enabled mapping, SP points to the data, and BC reg pair is 
-; temporally needed
-STACK_SAFE_ADDR			= 0x2
 
 BYTE_LEN	= 1
 WORD_LEN	= 2

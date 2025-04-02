@@ -177,17 +177,22 @@ mem_copy_to_ram_disk:
 @mapping:
 			mvi a, TEMP_BYTE			
 			RAM_DISK_ON_BANK()
-			mov a, e
+			
+			; TODO: think of how to optimize these two movs
+			mov b, d
+			mov c, e
+
+			mov a, c
 @dest:
 			lxi sp, TEMP_ADDR
 @start_loop:
 			jmp TEMP_ADDR
 
 			; hl - source + len
-			; de - source
+			; bc - source
 			; sp - destination + len
 mem_copy_to_ram_disk_loop2:
-			mov a, e
+			mov a, c
 mem_copy_to_ram_disk_loop:
 		.loop 16
 			MEM_COPY_WORD()
@@ -195,7 +200,7 @@ mem_copy_to_ram_disk_loop:
 			; check the end
 			cmp l
 			jnz mem_copy_to_ram_disk_loop
-			mov a, d
+			mov a, b
 			cmp h
 			jnz mem_copy_to_ram_disk_loop2
 			jmp restore_sp
@@ -221,10 +226,10 @@ jmp_tbl:
 ; len = 5 bytes
 .macro MEM_COPY_WORD()
 			dcx h
-			mov b, m
+			mov d, m
 			dcx h
-			mov c, m
-			push b
+			mov e, m
+			push d
 .endmacro
 
 ;========================================

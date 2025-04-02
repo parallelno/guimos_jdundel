@@ -271,7 +271,7 @@ text_ex_draw_shift0:
 
 text_ex_draw_advance_pos:
 			; bc - a pos offset
-			lxi sp, 0x0002 ; safe SP addr
+			lxi sp, STACK_TEMP_ADDR
 text_ex_draw_restore_pos_xy:
 			lxi h, TEMP_WORD ; restore pos_xy
 			; advance a pos_xy to the next char

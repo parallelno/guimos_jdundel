@@ -38,9 +38,9 @@ the stack is present in every bank of the ram-disk.
 ;===========================================================================
 
 If you implement the routin where you need temporal access to BC or jump 
-between ram-disk banks, use lxi sp, STACK_SAFE_ADDR (0x0002) safe addr before 
-doing it. It's safe because we always reserve two bytes before each data block. 
-Check the draw_text_ex func for implementation details.
+between ram-disk banks, use lxi sp, STACK_TEMP_ADDR safe addr before doing 
+it. Check the draw_text_ex func or TILED_IMG_DRAW_TILE for implementation
+details.
 
 ;===========================================================================
 ; Why some subroutines are .function, and others not

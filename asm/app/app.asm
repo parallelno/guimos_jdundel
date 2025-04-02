@@ -6,6 +6,7 @@ app_start:
 			load_permanent()
 			load_level0()
 			ei
+			CALL_RAM_DISK_FUNC_NO_RESTORE(v6_gc_start, RAM_DISK_M_SONG01 | RAM_DISK_M_8F)
 @loop:
 			; prepare to return back from the screen
 			lxi h, @loop
