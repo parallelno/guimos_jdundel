@@ -186,7 +186,7 @@ def export(config_j_path):
 
 	# export the debug data
 	debug_data_path = common.rename_extention(com_path, build.EXT_JSON)
-	debug_data = build.export_debug_data(raw_labels_path, debug_data_path)
+	debug_data = build.export_debug_data(debug_data_path, raw_labels_path, config_j["scripts"])
 
 	# export autoexec
 	autoexec_path = build_bin_dir + build.get_cpm_filename('autoexec', build.EXT_BAT)

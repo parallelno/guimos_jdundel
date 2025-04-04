@@ -252,8 +252,8 @@ def store_labels(labels, path):
 	with open(path, "w") as file:
 		file.write(labels_txt)
 
-def export_debug_data(path, out_path = None):
-	with open(path, "rb") as file:
+def export_debug_data(out_path, labels_path, scriptsJ):
+	with open(labels_path, "rb") as file:
 		lines = file.readlines()
 
 	debug_data = {}
@@ -262,9 +262,10 @@ def export_debug_data(path, out_path = None):
 	debug_data["breakpoints"] = []
 	debug_data["codePerfs"] = []
 	debug_data["watchpoints"] = []
+	debug_data["scripts"] = scriptsJ
 
 	codePerfs = {}
-	watchpoints = {} 
+	watchpoints = {}
 
 	for line_b in lines:
 		line = line_b.decode('ascii')
