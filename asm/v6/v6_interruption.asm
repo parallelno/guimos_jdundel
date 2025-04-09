@@ -79,13 +79,16 @@ palette_update_request_:
 			; a second is over
 interruption_fps:
 			lxi h, TEMP_WORD
+			/*
+			; commented out because FPS indication is drawn by the script in the Devector emulator
 			; hl - fps
 			mov a, l
-			lxi h, 0
-			shld interruption_fps + 1
 			; draw fps
 			; a - <fps
 			draw_fps()
+			*/
+			lxi h, 0
+			shld interruption_fps + 1
 			lxi h, ints_per_sec_counter
 			mvi m, INTS_PER_SEC
 interruption_no_fps_update:				

@@ -98,7 +98,9 @@ to our debug data.
 ; How to add a script to the debug data?
 ;===========================================================================
 
-Add the "scripts" dict into the build config with the structure:
+You can add the script from the Devector emulator in a Script tab.
+Also scripts can be exported from a build config. To make it, add the following
+structure below:
 "scripts": [
         {
             "active": true,
@@ -113,38 +115,49 @@ Add the "scripts" dict into the build config with the structure:
 ;===========================================================================
 
 Get the CPU state:
-    GetCC - get the CPU cicles
-	GetPC - get the program counter
-	GetSP - get the stack pointer
-	GetPSW - get the program status word
-	GetBC - get the BC register pair
-	GetDE - get the DE register pair
-	GetHL - get the HL register pair
-	GetA - get the A register
-	GetF - get the flags register
-	GetB - get the B register
-	GetC - get the C register
-	GetD - get the D register
-	GetE - get the E register
-	GetH - get the H register
-	GetL - get the L register
+    GetCC() - get the CPU cicles
+	GetPC() - get the program counter
+	GetSP() - get the stack pointer
+	GetPSW() - get the program status word
+	GetBC() - get the BC register pair
+	GetDE() - get the DE register pair
+	GetHL() - get the HL register pair
+	GetA() - get the A register
+	GetF() - get the flags register
+	GetB() - get the B register
+	GetC() - get the C register
+	GetD() - get the D register
+	GetE() - get the E register
+	GetH() - get the H register
+	GetL() - get the L register
 
-	GetFlagS - get the Sign flag
-	GetFlagZ - get the Zero flag
-	GetFlagAC - get the Auxiliary Carry flag
-	GetFlagP - get the Parity flag
-	GetFlagC - get the Carry flag
-	GetINTE - get the Interrupt Enable flag
-	GetIFF - get the Interrupt Flip-Flop (IFF) state
-	GetHLTA - get the HL' (temporary HL) register
-	GetMachineCycles - get the current number of machine cycles
+	GetFlagS() - get the Sign flag
+	GetFlagZ() - get the Zero flag
+	GetFlagAC() - get the Auxiliary Carry flag
+	GetFlagP() - get the Parity flag
+	GetFlagC() - get the Carry flag
+	GetINTE() - get the Interrupt Enable flag
+	GetIFF() - get the Interrupt Flip-Flop (IFF) state
+	GetHLTA() - get the HL' (temporary HL) register
+	GetMachineCycles() - get the current number of machine cycles
 
-    GetOpcode - the opcode of the executed instruction
+    GetOpcode() - the opcode of the executed instruction
+
+Get memory state:
+	GetByteGlobal() - get a byte at the global addr
 
 Misc:
     Break - break the execution
+UI:
+	DrawText - render a fixed size text in the Render Window.
+	DrawText(id, "TEXT", x, y, <color= 0xFFFFFFFF>)
+	The color is in a format: RRGGBBAA
 
-Example:
+	DrawRect - render a rectangle in the Render Window.
+	DrawRect(id, x, y, width, height, <color= 0xFFFFFFFF>)
+	The color is in a format: RRGGBBAA
+
+Script example:
 
 local sp = GetSP()
 if sp > 0x7FBE and sp < 0x7FFE then return end

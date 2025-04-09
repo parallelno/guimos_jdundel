@@ -680,9 +680,9 @@ $05c7 35         dcr m
 $05c8 c2 dd 05   jnz $05dd
 $05cb 21 00 00   lxi h,$0000
 $05ce 7d         mov a,l
-$05cf 21 00 00   lxi h,$0000
-$05d2 22 cc 05   shld $05cc
-$05d5 cd f2 05   call $05f2
+$05cf cd f2 05   call $05f2
+$05d2 21 00 00   lxi h,$0000
+$05d5 22 cc 05   shld $05cc
 $05d8 21 f1 05   lxi h,$05f1
 $05db 36 32      mvi m,$32
 $05dd d1         pop d
