@@ -307,7 +307,7 @@ def ram_data_to_asm(data_ptrs, level_j_path,
 	asm += data_asm
 	
 	#=====================================================================
-	# list of rooms
+	# list of labels and their addrs
 	for label, addr in data_ptrs.items():
 		asm += f"{label} = {addr}\n"
 	asm += "\n"

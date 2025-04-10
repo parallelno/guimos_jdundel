@@ -7,11 +7,11 @@ from export import export_config_utils
 from export import export_font
 from export import export_music
 from export import export_level_meta
-from export import export_level_data
+from export import export_level_gfx
 from export import export_sprite
 from export import export_fdd
-from export import export_tiled_img_meta
 from export import export_tiled_img_data
+from export import export_tiled_img_gfx
 from export import export_text
 from export import export_decal
 from export import export_back
@@ -103,7 +103,7 @@ def export(config_j_path):
 							force_export)
 					
 				case build.ASSET_TYPE_LEVEL_GFX:
-					export_level_data.export_if_updated(
+					export_level_gfx.export_if_updated(
 							asset_j_path,
 							asm_meta_path, asm_data_path, bin_path,
 							force_export)
@@ -115,13 +115,13 @@ def export(config_j_path):
 							force_export)
 					
 				case build.ASSET_TYPE_TILED_IMG_DATA:
-					export_tiled_img_meta.export_if_updated(
+					export_tiled_img_data.export_if_updated(
 							asset_j_path,
 							asm_meta_path, asm_data_path, bin_path,
 							force_export)
 					
 				case build.ASSET_TYPE_TILED_IMG_GFX:
-					export_tiled_img_data.export_if_updated(
+					export_tiled_img_gfx.export_if_updated(
 							asset_j_path,
 							asm_meta_path, asm_data_path, bin_path,
 							force_export)
