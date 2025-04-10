@@ -59,9 +59,9 @@
 .include "app/app.asm"
 
 executible_end:
-RAM_FREE_SPACE = STACK_MIN_ADDR - executible_end
+RAM_FREE_SPACE = BUFFERS_START_ADDR - executible_end
 
-.if executible_end >= STACK_MIN_ADDR
+.if executible_end >= BUFFERS_START_ADDR
 	.error "Runtime data buffer overlaps the stack buffer at addr (" runtime_data_end ")." 
 	.error "It must be within the range " BUFFERS_END_ADDR "."
 .endif
