@@ -6,7 +6,7 @@ from utils import common
 from export import export_config_utils
 from export import export_font
 from export import export_music
-from export import export_level_meta
+from export import export_level_data
 from export import export_level_gfx
 from export import export_sprite
 from export import export_fdd
@@ -97,7 +97,7 @@ def export(config_j_path):
 							force_export)
 				
 				case build.ASSET_TYPE_LEVEL_DATA:
-					export_level_meta.export_if_updated(
+					export_level_data.export_if_updated(
 							asset_j_path,
 							asm_meta_path, asm_data_path, bin_path,
 							force_export)

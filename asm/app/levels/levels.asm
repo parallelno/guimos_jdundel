@@ -22,10 +22,10 @@ levels_init:
 ;	level data initialization every level start
 ;
 level_init:
+			; copy a level init data
 			; get the level init data ptr of the current level
 			lda level_id
 			HL_TO_AX2_PLUS_INT16(levels_init_tbls_ptrs)
-
 			mov e, m
 			inx h
 			mov d, m
