@@ -76,7 +76,7 @@ packer_bin_ext	= ""
 #================================================================================
 # hardware and game consts
 
-SAFE_WORD_LEN : int	= 2
+SAFE_WORD_LEN : int	= 2 # safty pair of bytes for reading by POP B
 BYTE_LEN : int		= 1
 WORD_LEN : int		= 2
 NULL_S			= "NULL"

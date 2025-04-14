@@ -2,68 +2,89 @@
 ; asm data file: build/debug/level_gfx/lv0_gfx_data.asm
 ; bin file: build/debug/bin/LV0_GFX.BIN
 
-LV0_GFX_FILE_LEN = 5524
-LV0_GFX_LAST_RECORD_LEN = 20
+LV0_GFX_FILE_LEN = 5542
+LV0_GFX_LAST_RECORD_LEN = 38
 
 LV0_GFX_FILENAME_PTR:
 			.byte "LV0_GFX" ; filename
 			.byte " " ; filename white chars
 			.byte "BIN" ; extension
 
-; assets\levels/tiled/art/lv0.png
-_lv0_palette:
-			.byte %01100101, %01010010, %01011100, %01101011, 
-			.byte %10100100, %01101100, %10110111, %01101111, 
-			.byte %10011011, %11111101, %10101111, %01011111, 
-			.byte %11111111, %11100010, %01100010, %00011111, 
-
-_lv0_tile0 = 2
-_lv0_tile1 = 134
-_lv0_tile2 = 266
-_lv0_tile3 = 398
-_lv0_tile4 = 530
-_lv0_tile5 = 662
-_lv0_tile6 = 794
-_lv0_tile7 = 926
-_lv0_tile8 = 1058
-_lv0_tile9 = 1190
-_lv0_tile10 = 1322
-_lv0_tile11 = 1422
-_lv0_tile12 = 1554
-_lv0_tile13 = 1686
-_lv0_tile14 = 1818
-_lv0_tile15 = 1950
-_lv0_tile16 = 2082
-_lv0_tile17 = 2182
-_lv0_tile18 = 2314
-_lv0_tile19 = 2446
-_lv0_tile20 = 2578
-_lv0_tile21 = 2710
-_lv0_tile22 = 2842
-_lv0_tile23 = 2974
-_lv0_tile24 = 3106
-_lv0_tile25 = 3238
-_lv0_tile26 = 3242
-_lv0_tile27 = 3374
-_lv0_tile28 = 3506
-_lv0_tile29 = 3638
-_lv0_tile30 = 3706
-_lv0_tile31 = 3806
-_lv0_tile32 = 3938
-_lv0_tile33 = 4070
-_lv0_tile34 = 4170
-_lv0_tile35 = 4302
-_lv0_tile36 = 4338
-_lv0_tile37 = 4470
-_lv0_tile38 = 4602
-_lv0_tile39 = 4734
-_lv0_tile40 = 4866
-_lv0_tile41 = 4998
-_lv0_tile42 = 5130
-_lv0_tile43 = 5262
-_lv0_tile44 = 5394
-
 _lv0_gfx_tiles_ptrs:
 			.word _lv0_tile0, _lv0_tile1, _lv0_tile2, _lv0_tile3, _lv0_tile4, _lv0_tile5, _lv0_tile6, _lv0_tile7, _lv0_tile8, _lv0_tile9, _lv0_tile10, _lv0_tile11, _lv0_tile12, _lv0_tile13, _lv0_tile14, _lv0_tile15, _lv0_tile16, _lv0_tile17, _lv0_tile18, _lv0_tile19, _lv0_tile20, _lv0_tile21, _lv0_tile22, _lv0_tile23, _lv0_tile24, _lv0_tile25, _lv0_tile26, _lv0_tile27, _lv0_tile28, _lv0_tile29, _lv0_tile30, _lv0_tile31, _lv0_tile32, _lv0_tile33, _lv0_tile34, _lv0_tile35, _lv0_tile36, _lv0_tile37, _lv0_tile38, _lv0_tile39, _lv0_tile40, _lv0_tile41, _lv0_tile42, _lv0_tile43, _lv0_tile44, 
-
 			.word EOD
+
+lv0_gfx_init_tbl:
+			.byte RAM_DISK_S_LV0_GFX
+			.byte RAM_DISK_M_LV0_GFX
+			.word _lv0_gfx_tiles_ptrs
+lv0_palette_ptr:
+			.word _lv0_palette
+@data_end:
+LV0_GFX_INIT_TBL_LEN = @data_end - lv0_gfx_init_tbl
+
+; in:
+lv0_gfx_load:
+			lxi b, LV0_GFX_ADDR
+			lxi h, _lv0_gfx_tiles_ptrs
+			call update_labels_eod
+
+			lxi d, LV0_GFX_ADDR
+			lxi h, lv0_palette_ptr
+			mvi c, 1
+			call update_labels_len
+
+			; copy a level init data
+			lxi h, lv0_gfx_init_tbl
+			lxi d, lv_gfx_init_tbl
+			lxi b, LV0_GFX_INIT_TBL_LEN
+			call mem_copy_len
+			ret
+
+_lv0_palette = 0x0002
+_lv0_tile0 = 0x0014
+_lv0_tile1 = 0x0098
+_lv0_tile2 = 0x011c
+_lv0_tile3 = 0x01a0
+_lv0_tile4 = 0x0224
+_lv0_tile5 = 0x02a8
+_lv0_tile6 = 0x032c
+_lv0_tile7 = 0x03b0
+_lv0_tile8 = 0x0434
+_lv0_tile9 = 0x04b8
+_lv0_tile10 = 0x053c
+_lv0_tile11 = 0x05a0
+_lv0_tile12 = 0x0624
+_lv0_tile13 = 0x06a8
+_lv0_tile14 = 0x072c
+_lv0_tile15 = 0x07b0
+_lv0_tile16 = 0x0834
+_lv0_tile17 = 0x0898
+_lv0_tile18 = 0x091c
+_lv0_tile19 = 0x09a0
+_lv0_tile20 = 0x0a24
+_lv0_tile21 = 0x0aa8
+_lv0_tile22 = 0x0b2c
+_lv0_tile23 = 0x0bb0
+_lv0_tile24 = 0x0c34
+_lv0_tile25 = 0x0cb8
+_lv0_tile26 = 0x0cbc
+_lv0_tile27 = 0x0d40
+_lv0_tile28 = 0x0dc4
+_lv0_tile29 = 0x0e48
+_lv0_tile30 = 0x0e8c
+_lv0_tile31 = 0x0ef0
+_lv0_tile32 = 0x0f74
+_lv0_tile33 = 0x0ff8
+_lv0_tile34 = 0x105c
+_lv0_tile35 = 0x10e0
+_lv0_tile36 = 0x1104
+_lv0_tile37 = 0x1188
+_lv0_tile38 = 0x120c
+_lv0_tile39 = 0x1290
+_lv0_tile40 = 0x1314
+_lv0_tile41 = 0x1398
+_lv0_tile42 = 0x141c
+_lv0_tile43 = 0x14a0
+_lv0_tile44 = 0x1524
+

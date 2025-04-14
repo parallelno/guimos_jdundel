@@ -34,7 +34,7 @@ def bytes_to_asm(data, numbers_in_line = 16, add_empty_last_line = False):
 			if i != 0:
 				asm += "\n"
 			asm += "			.byte "
-		asm += str(byte) + ","
+		asm += f"0x{byte:02X}, "
 
 	asm += "\n"
 	if add_empty_last_line:

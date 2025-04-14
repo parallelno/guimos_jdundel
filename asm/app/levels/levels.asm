@@ -22,20 +22,6 @@ levels_init:
 ;	level data initialization every level start
 ;
 level_init:
-			; copy a level init data
-			; get the level init data ptr of the current level
-			lda level_id
-			HL_TO_AX2_PLUS_INT16(levels_init_tbls_ptrs)
-			mov e, m
-			inx h
-			mov d, m
-			xchg
-			; hl - source (level00_init_tbls)
-			; copy a level init data
-			lxi d, level_init_tbl
-			lxi b, LEVEL_INIT_TBL_LEN
-			call mem_copy_len
-
 			; init the screen
 			call level_init_palette
 			mvi a, 1
@@ -64,17 +50,17 @@ level_init:
 			call mem_erase
 
 			; setup resources
-			lhld level_resources_inst_data_pptr
+			lhld lv_resources_inst_data_pptr
 			lxi d, resources_inst_data_ptrs
 			lxi b, RESOURCES_LEN
-			lda level_ram_disk_s_data
+			lda lv_ram_disk_s_data
 			mem_copy_from_ram_disk()
 
 			; setup containers
-			lhld level_containers_inst_data_pptr
+			lhld lv_containers_inst_data_pptr
 			lxi d, containers_inst_data_ptrs
 			lxi b, CONTAINERS_LEN
-			lda level_ram_disk_s_data
+			lda lv_ram_disk_s_data
 			mem_copy_from_ram_disk()
 
 			; reset room_id
@@ -89,7 +75,8 @@ level_init:
 
 ; copy a palette from the ram-disk, then request for using it
 level_init_palette:
-			lhld level_palette_ptr
+			lda lv_ram_disk_s_gfx
+			lhld lv_palette_ptr
 			jmp copy_palette_request_update
 
 level_update:

@@ -58,8 +58,9 @@ def data_to_asm(tiled_img_j_path):
 	asm = ""
 	asm += "			.word 0 ; safety pair of bytes for reading by POP B\n"
 	
-	palette_asm, colors = common_gfx.palette_to_asm(image, source_j, path_png, "_" + source_name)
-	asm += palette_asm
+	palette_asm, colors, label, _ = common_gfx.palette_to_asm(image, source_j, path_png, "_" + source_name)
+	asm += f"{label}:\n"
+	asm += palette_asm + "\n"
 
 	image = common_gfx.remap_colors(image, colors)
 

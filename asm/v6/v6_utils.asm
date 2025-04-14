@@ -322,11 +322,11 @@ get_word_from_ram_disk:
 .endf
 
 
-; converts the local ptrs into global adding the global offset
-; the the array data must ends with EOD
+; Converts local labels to absolute by adding the absolute address
+; The the array data must ends with EOD word
 ; in:
 ; hl - points to the array of local ptrs to the data
-; bc - the global offset
+; bc - the abslute offset
 
 ; out:
 ; hl - points to the last byte of EOD
@@ -352,12 +352,11 @@ update_labels_eod:
 			inx h
 			jmp @loop
 
-; converts the local labels into globals adding the global addr
-; to the pointers in the array
+; Converts local labels to absolute by adding the absolute address 
 ; in:
 ; hl - points to the array of ptrs to the data
-; de - the global data addr
-; c - the len of the array. if there is two word ptrs in the array, c = 2
+; de - the abslute data addr
+; c - the len of the array. if the array contains two word ptrs, then c = 2
 ; out:
 ; hl - points to the next byte after the array
 ; c = 0
@@ -407,12 +406,14 @@ set_palette_int:			; call it from an interruption routine
 ; Copy the pallete, 
 ; then request for using it
 ; in:
-; hl - palette addr
+; hl - ram-disk palette addr
+; a - ram-disk activation command
 ; uses: bc, de, hl, a
 copy_palette_request_update:
 			lxi d, palette
 			lxi b, PALETTE_LEN
-			call mem_copy_len
+			mem_copy_from_ram_disk()
+
 			lxi h, palette_update_request
 			mvi m, PALETTE_UPD_REQ_YES
 			ret

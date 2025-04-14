@@ -28,12 +28,9 @@ hero_respawn:
 			sta hero_res_health
 
 			; setup a hero pos
-			lhld level_start_pos_ptr
-			; hl - points to .byte pos_y, pos_x
-			mov a, m
-			inx h
-			mov h, m
-			; ha - pos_xy
+			lhld lv_start_pos
+			; h - pos_x, l - pos_y
+			mov a, l
 			mvi l, 0
 			shld hero_pos_x
 			mov h, a

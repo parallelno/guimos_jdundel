@@ -53,7 +53,7 @@ def meta_data_to_asm(data_ptrs):
 
 	asm += "; relative text labels\n"
 	for label, val in data_ptrs.items():
-		asm += f"{label} = {val}\n"
+		asm += f"{label} = 0x{val:04x}\n"
 
 	return asm
 
@@ -126,8 +126,8 @@ def ramdisk_data_to_asm(asset_j_path, asset_j, localization_id):
 			copy_text_block_len += 2 # scr pos
 			data_local_ptrs[label] = text_local_addr_offset
 			text_local_addr_offset += copy_text_block_len
-			text_local_addr_offset += 2 # lenght
-			text_local_addr_offset += 2 # safety pair of bytes for reading by POP B
+			text_local_addr_offset += 2 # length
+			text_local_addr_offset += build.SAFE_WORD_LEN
 
 			# check if the length of the text fits the requirements
 			if copy_text_block_len > TEXT_LEN_MAX:

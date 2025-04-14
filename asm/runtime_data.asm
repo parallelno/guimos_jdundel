@@ -272,19 +272,21 @@ BACKS_RUNTIME_DATA_LEN = backs_runtime_data_end - backs_runtime_data
 
 ;=============================================================================
 ; level init data ptr and ram-disk access commands
-level_init_tbl:						= $7bc3
-level_ram_disk_s_data:				= level_init_tbl		; .byte __RAM_DISK_S_LEVEL00_DATA
-level_ram_disk_m_data: 				= level_init_tbl + 1	; .byte __RAM_DISK_M_LEVEL00_DATA
-level_ram_disk_s_gfx:				= level_init_tbl + 2	; .byte __RAM_DISK_S_LEVEL00_GFX
-level_ram_disk_m_gfx:				= level_init_tbl + 3	; .byte __RAM_DISK_M_LEVEL00_GFX
-level_palette_ptr:					= level_init_tbl + 4	; .word __level00_palette
-level_resources_inst_data_pptr:		= level_init_tbl + 6	; .word __level00_resources_inst_data_ptrs
-level_containers_inst_data_pptr:	= level_init_tbl + 8	; .word __level00_containers_inst_data_ptrs
-level_start_pos_ptr:				= level_init_tbl + 10	; .word _lv0_data_start_pos
-level_rooms_pptr:					= level_init_tbl + 12	; .word _lv0_data_rooms_ptrs
-level_tiles_pptr:					= level_init_tbl + 14	; .word _lv0_gfx_tiles_ptrs
-@data_end:							= level_init_tbl + 16	
-LEVEL_INIT_TBL_LEN = @data_end - level_init_tbl
+lv_data_init_tbl:				= $7bc3
+lv_ram_disk_s_data:				= lv_data_init_tbl		; .byte
+lv_ram_disk_m_data:				= lv_data_init_tbl + 1	; .byte
+lv_rooms_pptr:					= lv_data_init_tbl + 2	; .word
+lv_resources_inst_data_pptr:	= lv_data_init_tbl + 4	; .word
+lv_containers_inst_data_pptr:	= lv_data_init_tbl + 6	; .word
+lv_start_pos:					= lv_data_init_tbl + 8	; .word (y,x)
+
+lv_gfx_init_tbl:				= $7bcd
+lv_ram_disk_s_gfx:				= lv_gfx_init_tbl		; .byte
+lv_ram_disk_m_gfx:				= lv_gfx_init_tbl + 1	; .byte
+lv_tiles_pptr:					= lv_gfx_init_tbl + 2	; .word
+lv_palette_ptr:					= lv_gfx_init_tbl + 4	; .word
+;@data_end:						= lv_gfx_init_tbl + 6
+;LEVEL_INIT_TBL_LEN = @data_end - lv_data_init_tbl
 
 ;=============================================================================
 ;
@@ -381,6 +383,9 @@ ITEMS_MAX					= 15 ; item_id = 0 is reserved for dialog tiledata
 ; .endloop
 
 global_items:		= $7c11
+; ITEM_ID_KEY_0 status = $7c11
+; ITEM_ID_KEY_1 status = $7c12
+; etc.
 global_items_end:	= global_items + ITEMS_MAX
 
 ;=============================================================================

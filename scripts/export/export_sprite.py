@@ -37,7 +37,7 @@ def export_asm(asset_j_path, asm_meta_path, asm_data_path, bin_path):
 	asset_dir = str(Path(asset_j_path).parent) + "/"
 	path_png = asset_dir + asset_j["path_png"]
 	image = Image.open(path_png)
-	_, colors = common_gfx.palette_to_asm(image, asset_j)
+	_, colors, _, _ = common_gfx.palette_to_asm(image, asset_j)
 	image = common_gfx.remap_colors(image, colors)
 
 	asm_ram_disk_data, data_ptrs = gfx_to_asm("_", asset_name, asset_j, image, asset_j_path)
@@ -269,7 +269,7 @@ def img_to_preshifted_sprite(
 	asm += common.bytes_to_asm(data)
 
 	frame_data_len = len(data)
-	frame_data_len += 2 # safety pair of bytes for reading by POP B
+	frame_data_len += build.SAFE_WORD_LEN
 	frame_data_len += 4 # offset_y, offset_x_packed, h, width_packed
 
 	return asm, frame_data_len

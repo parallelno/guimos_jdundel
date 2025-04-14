@@ -5,8 +5,7 @@ def palette_to_asm(image, char_j, path = "", label_prefix = ""):
 	palette_coords = char_j["palette"]
 	colors = {}
 	asm = "; " + path + "\n"
-	# asm += "			.word 0 ; safety pair of bytes for reading by POP B\n"	
-	asm += label_prefix + "_palette" + ":\n"
+	label = label_prefix + "_palette"
 	palette = image.getpalette() 
 
 	for i, pos in enumerate(palette_coords):
@@ -22,7 +21,7 @@ def palette_to_asm(image, char_j, path = "", label_prefix = ""):
 		asm += "%" + format(color, '08b') + ", "
 		if i % 4 == 3 : asm += "\n"
 	
-	return asm, colors
+	return asm, colors, label, IMAGE_COLORS_MAX
 
 # combines RGB values into a Vector06c color format
 def pack_color(r,g,b):

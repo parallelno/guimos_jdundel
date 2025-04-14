@@ -26,17 +26,21 @@
 ; ffff = 4, teleport to 32-47 room_id, room_id = d+32
 ; ffff = 5, teleport to 48-63 room_id, room_id = d+48
 
-; ffff == 6, a global item. a hero interacts with it when he steps on it. item_id = d. see runtime_data.asm->global_items for details
+; ffff == 6, a global item. a hero interacts with it when he steps on 
+;		it. Item_id = d. See runtime_data.asm->global_items for details.
 ;		item_id = 0 - storytelling - an invisible tiledata to open a dialog window
-		ITEM_ID_KEY_0			= 1	; 	key 0
-;		item_id = 2 - key 1
-;		item_id = 3 - key 2
-;		item_id = 4 - key 3
-;		item_id = 5 - key 4
-;		item_id = 6 - key 5
-		ITEM_ID_UI_MAX			= 8		; items with item_id >= ITEM_ID_UI_MAX do not show up on the ui panel
+		ITEM_ID_KEY_0	= 1	; 	key 0
+;		item_id 		= 2 ; key 1
+;		item_id 		= 3 ; key 2
+;		item_id 		= 4 ; key 3
+;		item_id 		= 5 ; key 4
+;		item_id 		= 6 ; key 5
+		ITEM_ID_UI_MAX	= 8		; items with item_id >= ITEM_ID_UI_MAX do not show up on the ui panel
 
-; ffff == 7, a resource. a hero interacts with it when he steps on it. max instances in all rooms = RESOURCES_LEN/2-RESOURCES_UNIQUE_MAX. res_id = d. see runtime_data.asm->resources_inst_data for details
+; ffff == 7, a resource. a hero interacts with it when he steps on it. 
+;		Max instances in all rooms = RESOURCES_LEN/2-RESOURCES_UNIQUE_MAX. 
+;		res_id = d. see runtime_data.asm->resources_inst_data for 
+;		details.
 ;		res_id 				= 0 ; a coin (increases the game score when picked up) ; (tiledata = 7*16+0 = 160)
 ;		res_id 				= 1 ; a health crystal (increases health immedietly when picked up)
 		RES_ID_SWORD		= 2 ; a sword (the main weapon)
@@ -48,14 +52,16 @@
 		RES_ID_CABBAGE		= 8 ; cabbage ; it is a quest resource
 		RES_ID_SPOON		= 9	; use it to convert hero_res_popsicle_pie into hero_res_snowflake
 
-; every tiledata >= TILEDATA_COLLIDABLE is collidable (a hero and monsters can't step on that tile)
+; every tiledata >= TILEDATA_COLLIDABLE is collidable (a hero and 
+; 		monsters can't step on that tile)
 
 ; ffff == 8, ???
 ; ffff == 9, ???
 ; ffff == 10, triggers. activated when a hero hits it. trigger_id = d
-;		trigger_id == 0 - when he hits his house door
+;		trigger_id == 0 - when he hits his house door.
 
-; ffff == 11, collidable containers that leave rewards on the floor when a hero hits it. container_id = d
+; ffff == 11, collidable containers that leave rewards on the floor 
+;		when a hero hits it. container_id = d.
 ;		container_id = 0 - a chest with a sword
 ;		container_id = 1 - a big chest. big money reward
 ;		container_id = 2 - a chest ???
@@ -64,7 +70,8 @@
 ;		container_id = 5 - a monster spawner chest. it spawns a chest monster when opened
 ;		container_id = 6 - a crate with a teleport under it to a unique location
 
-; ffff == 12, doors. a hero interacts with it only when he hits it with a weapon. door_id = d
+; ffff == 12, doors. a hero interacts with it only when he hits it with
+;		a weapon. door_id = d.
 ;		door_id = 0 - a door 1a
 ;		door_id = 1 - a door 1b
 ;		door_id = 2 - a door 2a
@@ -74,20 +81,23 @@
 ;		door_id = 6 - a door 4a
 ;		door_id = 7 - a door 4b
 
-; ffff == 13, breakable items, a hero can only break it with a hit and get a random reward. a room tracks how many it was broken to manage a reward and a spawn rate. breakable_id = d
+; ffff == 13, breakable items, a hero can only break it with a hit and
+; 		get a random reward. A room tracks how many it was broken to 
+;		manage a reward and a spawn rate. breakable_id = d.
 ;		breakable_id == 0 - a barrel (tiledata = 13*16+0 = 208, $d0)
 ;		breakable_id == 1 - a crate
 		BREAKABLE_ID_CABBAGE = 2 ;cabbage (tiledata = $d2)
 
 ; ffff == 14, decals collidable. it's drawn on top of tiles to increase background variety. decal_collidable_id = d
-;		decal_collidable_id == 0 - a spider web
+;		decal_collidable_id == 0 - a spider web.
 
 ; ffff == 15,
 ;		d = %1111 - collision (tiledata = TILEDATA_COLLISION)
-;		d <  %1111 - collision + animated background, back_id = d
+;		d <  %1111 - collision + animated background, back_id = d.
 ;	 		back_id = 0 - torch front (tiledata = 15*16+0=241)
 ;   	    back_id = 1 - flag front (tiledata = 161)
 ;   	    back_id = 2 - dialog_press_key (tiledata = 162)
 
-; if tiledata > 0 then a tile is restored on the screen when a hero, a monster, or a bullet on it
+; if tiledata > 0 then a tile is restored on the screen when a hero,
+; 		a monster, or a bullet on it.
 

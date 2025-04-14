@@ -243,15 +243,8 @@ def get_load_asm(load_name, allocation, segments):
 					asm += f"			lxi h, _{name_low}_ay_reg_data_ptrs\n"
 					asm += f"			call v6_gc_init_song\n"
 
-				case build.ASSET_TYPE_LEVEL_DATA:
-					asm += f"			lxi h, _{name_low}_rooms_ptrs\n"
-					asm += f"			lxi b, {const_addr}\n"
-					asm += f"			call update_labels_eod\n"
-
-				case build.ASSET_TYPE_LEVEL_GFX:
-					asm += f"			lxi h, _{name_low}_tiles_ptrs\n"
-					asm += f"			lxi b, {const_addr}\n"
-					asm += f"			call update_labels_eod\n"
+				case build.ASSET_TYPE_LEVEL_DATA | build.ASSET_TYPE_LEVEL_GFX:
+					asm += f"			call {name_low}_load\n"
 
 				case build.ASSET_TYPE_SPRITE:
 					asm += f"			lxi d, _{name_low}_preshifted_sprites\n"

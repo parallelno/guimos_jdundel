@@ -144,21 +144,21 @@ draw_tile_16x16_buffs:
 			push b
 			push d
 			; draw a tile on the screen
-			lda level_ram_disk_s_gfx
+			lda lv_ram_disk_s_gfx
 			CALL_RAM_DISK_FUNC_BANK(draw_tile_16x16)
 			pop d
 			pop b
 			push b
 			push d
 			; draw a tile in the back buffer
-			lda level_ram_disk_s_gfx
+			lda lv_ram_disk_s_gfx
 			ori RAM_DISK_M_BACKBUFF | RAM_DISK_M_AF
 			CALL_RAM_DISK_FUNC_BANK(draw_tile_16x16)
 			pop d
 			pop b
 			push d
 			; draw a tile in the back buffer2
-			lda level_ram_disk_s_gfx
+			lda lv_ram_disk_s_gfx
 			ori RAM_DISK_M_BACKBUFF2 | RAM_DISK_M_AF
 			CALL_RAM_DISK_FUNC_BANK(draw_tile_16x16)
 

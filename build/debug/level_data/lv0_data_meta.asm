@@ -2,56 +2,63 @@
 ; asm data file: build/debug/level_data/lv0_data_data.asm
 ; bin file: build/debug/bin/LV0_DATA.BIN
 
-LV0_DATA_FILE_LEN = 3640
-LV0_DATA_LAST_RECORD_LEN = 56
+LV0_DATA_FILE_LEN = 3772
+LV0_DATA_LAST_RECORD_LEN = 60
 
 LV0_DATA_FILENAME_PTR:
 			.byte "LV0_DATA" ; filename
 			.byte "BIN" ; extension
 
-_lv0_start_pos:					; a hero starting pos
-			.byte 140			; pos_y
-			.byte 120			; pos_x
-
-_lv0_data_rooms_ptrs:
+lv0_data_rooms_ptrs:
 			.word _lv0_home, _lv0_farm_fence, _lv0_road_to_friends_home, _lv0_friends_home, _lv0_friends_home_backyard, _lv0_friends_secret_place, _lv0_crossroad, _lv0_farm_entrance, _lv0_farm_storage, _lv0_loop, _lv0_dungeon_entrance, _lv0_abandoned_home, _lv0_lost_coins, 
 			.word EOD
 
-_lv0_resources_inst_data_ptrs:
-			.byte 9, 109, 109, 109, 109, 109, 109, 111, 121, 
-_lv0_resources_inst_data:
-;			tiledata = 112, data below is pairs of tile_idx, room_id
-			.byte 98,0,99,0,82,0,215,2,216,2,217,2,198,2,199,2,
-			.byte 201,2,202,2,184,5,167,5,169,5,36,5,37,5,19,5,
-			.byte 20,5,104,6,87,6,73,6,27,6,196,9,197,9,205,9,
-			.byte 180,9,181,9,73,10,56,10,57,10,59,10,179,11,180,11,
-			.byte 181,11,182,11,179,12,180,12,162,12,163,12,138,12,139,12,
-			.byte 122,12,123,12,88,12,73,12,52,12,53,12,36,12,37,12,
-			.byte 38,12,39,12,
-;			tiledata = 118, data below is pairs of tile_idx, room_id
-			.byte 200,2,
-;			tiledata = 119, data below is pairs of tile_idx, room_id
-			.byte 125,0,94,0,134,4,135,4,101,4,
+lv0_data_init_tbl:
+			.byte RAM_DISK_S_LV0_DATA
+			.byte RAM_DISK_M_LV0_DATA
+			.word lv0_data_rooms_ptrs
+lv0_resources_inst_data_ptrs:
+			.word _lv0_resources_inst_data_ptrs
+			.word _lv0_containers_inst_data_ptrs
+			.byte 140			; hero start pos_y
+			.byte 120			; hero start pos_x
+@data_end:
+LV0_DATA_INIT_TBL_LEN = @data_end - lv0_data_init_tbl
 
-_lv0_containers_inst_data_ptrs:
-			.byte 3, 5, 7, 
-_lv0_containers_inst_data:
-;			tiledata = 176, data below is pairs of tile_idx, room_id
-			.byte 168,5,
-;			tiledata = 177, data below is pairs of tile_idx, room_id
-			.byte 178,11,
+LV0_RECOURCES_DATA_LEN = 121
+LV0_CONTAINERS_DATA_LEN = 7
 
-_lv0_home = 2
-_lv0_farm_fence = 282
-_lv0_road_to_friends_home = 548
-_lv0_friends_home = 834
-_lv0_friends_home_backyard = 1098
-_lv0_friends_secret_place = 1365
-_lv0_crossroad = 1681
-_lv0_farm_entrance = 1959
-_lv0_farm_storage = 2230
-_lv0_loop = 2496
-_lv0_dungeon_entrance = 2787
-_lv0_abandoned_home = 3075
-_lv0_lost_coins = 3348
+; in:
+lv0_data_load:
+			lxi b, LV0_DATA_ADDR
+			lxi h, lv0_data_rooms_ptrs
+			call update_labels_eod
+
+			lxi d, LV0_DATA_ADDR
+			lxi h, lv0_resources_inst_data_ptrs
+			mvi c, 2 ; _lv0_resources_inst_data_ptrs abd _lv0_containers_inst_data_ptrs
+			call update_labels_len
+
+			; copy a level init data
+			lxi h, lv0_data_init_tbl
+			lxi d, lv_data_init_tbl
+			lxi b, LV0_DATA_INIT_TBL_LEN
+			call mem_copy_len
+			ret 
+
+_lv0_resources_inst_data_ptrs = 0x0002
+_lv0_containers_inst_data_ptrs = 0x007d
+_lv0_home = 0x0086
+_lv0_farm_fence = 0x019e
+_lv0_road_to_friends_home = 0x02a8
+_lv0_friends_home = 0x03c6
+_lv0_friends_home_backyard = 0x04ce
+_lv0_friends_secret_place = 0x05d9
+_lv0_crossroad = 0x0715
+_lv0_farm_entrance = 0x082b
+_lv0_farm_storage = 0x093a
+_lv0_loop = 0x0a44
+_lv0_dungeon_entrance = 0x0b67
+_lv0_abandoned_home = 0x0c87
+_lv0_lost_coins = 0x0d98
 

@@ -54,7 +54,7 @@ def ram_disk_data_to_asm(level_j_path):
 
 	#=====================================================================
 	# room data
-		
+
 	rooms_j = get_rooms_j(level_dir, room_paths)
 
 	# make a tile index remap dictionary, to have the first idx = 0
@@ -96,7 +96,7 @@ def ram_disk_data_to_asm(level_j_path):
 
 		room_data_ptrs[room_data_label] = room_addr_offset
 		room_addr_offset += data_len
-		room_addr_offset += 2 # safety pair of bytes for reading by POP B
+		room_addr_offset += build.SAFE_WORD_LEN
 
 		# collect resource data
 
@@ -127,17 +127,37 @@ def ram_disk_data_to_asm(level_j_path):
 	
 	asm = ""
 	local_ptrs = {}
-	local_addrs = 2 # added safety pair of bytes for reading by POP B
+	local_addrs = build.SAFE_WORD_LEN
+
+	#=====================================================================
+	level_name = common.path_to_basename(level_j_path)
+
+	#=====================================================================
+	# resources data
+	data_asm, label, data_len = \
+		get_resources_inst_data(level_j_path, resources, resource_max_tiledata)
+	asm += data_asm
+	local_ptrs[label] = local_addrs
+	local_addrs += data_len
+	local_addrs += build.SAFE_WORD_LEN
+	
+	#=====================================================================
+	# containers data
+	data_asm, label, data_len = \
+		get_containers_inst_data(level_j_path, containers, container_max_tiledata)
+	asm += data_asm
+	local_ptrs[label] = local_addrs
+	local_addrs += data_len
+	local_addrs += build.SAFE_WORD_LEN
 
 	#=====================================================================
 	# rooms data
-
 	asm += room_data_asm
+
+	#=====================================================================
 	# add the room data pointers
 	for label, addr in room_data_ptrs.items():
 		local_ptrs[label] = addr + local_addrs
-	
-	#=====================================================================
 
 	return asm, local_ptrs, \
 		resources, resource_max_tiledata, \
@@ -145,13 +165,14 @@ def ram_disk_data_to_asm(level_j_path):
 
 def get_resources_inst_data(level_j_path, resources, resource_max_tiledata):
 
-	data_len = build.SAFE_WORD_LEN
+	data_len = 0
 
 	level_prefix = common.path_to_basename(level_j_path)
-	label = f"_{level_prefix}_resources_inst_data_ptrs"
+	label = f"_{level_prefix}_resources_inst_data"
 
 	asm = ""
-	asm += f"{label}:\n"
+	asm += "			.word 0 ; safety pair of bytes for reading by POP B\n"
+	asm += f"{label}_ptrs:\n"
 
 	# make resources_inst_data_ptrs data
 	if len(resources) > 0:
@@ -178,15 +199,15 @@ def get_resources_inst_data(level_j_path, resources, resource_max_tiledata):
 			else:
 				data_byte = ptr + inst_len + resources_inst_data_ptrs_len
 
-			asm += str(data_byte) + ", "
+			asm += f"0x{data_byte:02X}, "
 			ptr += inst_len
 			data_len += build.BYTE_LEN
 
-		asm += str(ptr + resources_inst_data_ptrs_len) + ", "
+		asm += f"0x{(ptr + resources_inst_data_ptrs_len):02X}, "
 		data_len += build.BYTE_LEN
 
 		# make resources_inst_data data
-		asm += f"\n_{level_prefix}_resources_inst_data:\n"
+		asm += f"\n_;{label}:\n"
 		for i, tiledata in enumerate(resources_sorted):
 			if len(resources_sorted[tiledata]) > 0:
 				asm += f";			tiledata = {tiledata}, data below is pairs of tile_idx, room_id\n"
@@ -203,17 +224,18 @@ def get_resources_inst_data(level_j_path, resources, resource_max_tiledata):
 
 	asm += "\n"
 
-	return asm, label, data_len
+	return asm, label+'_ptrs', data_len
 
 def get_containers_inst_data(level_j_path, containers, container_max_tiledata):
 
-	data_len = build.SAFE_WORD_LEN
+	data_len = 0
 
 	level_prefix = common.path_to_basename(level_j_path)
-	label = f"_{level_prefix}_containers_inst_data_ptrs"
+	label = f"_{level_prefix}_containers_inst_data"
 
 	asm = ""
-	asm += f"{label}:\n"
+	asm += "			.word 0 ; safety pair of bytes for reading by POP B\n"
+	asm += f"{label}_ptrs:\n"
 
 	# make containers_inst_data_ptrs data
 	if len(containers) > 0:
@@ -239,15 +261,15 @@ def get_containers_inst_data(level_j_path, containers, container_max_tiledata):
 			else:
 				byte_data = ptr + inst_len + containers_inst_data_ptrs_len
 
-			asm += str(byte_data) + ", "
+			asm += f"0x{byte_data:02X}, "
 			ptr += inst_len
 			data_len += build.BYTE_LEN
 
-		asm += str(ptr + containers_inst_data_ptrs_len) + ", "
+		asm += f"0x{(ptr + containers_inst_data_ptrs_len):02X}, "
 		data_len += build.BYTE_LEN
 
 		# make containers_inst_data data
-		asm += f"\n_{level_prefix}_containers_inst_data:\n"
+		asm += f"\n_;{label}:\n"
 		for i, tiledata in enumerate(containers_sorted):
 			if len(containers_sorted[tiledata]) > 0:
 				asm += f";			tiledata = {tiledata}, data below is pairs of tile_idx, room_id\n"
@@ -265,7 +287,7 @@ def get_containers_inst_data(level_j_path, containers, container_max_tiledata):
 
 	asm += "\n"
 
-	return asm, label, data_len
+	return asm, label+'_ptrs', data_len
 
 
 def ram_data_to_asm(data_ptrs, level_j_path,
@@ -275,41 +297,80 @@ def ram_data_to_asm(data_ptrs, level_j_path,
 	with open(level_j_path, "rb") as file:
 		level_j = json.load(file)
 
+	level_name = common.path_to_basename(level_j_path)
 	room_paths = level_j["rooms"]
 
 	asm = ""
 
 	#=====================================================================
-	# player's start pose
-	level_name = common.path_to_basename(level_j_path)
-
-	player_start_pose = f"_{level_name}_start_pos"
-	asm += f"{player_start_pose}:					; a hero starting pos\n"
-	asm += f'			.byte {level_j["hero_start_pos"]["y"]}			; pos_y\n'
-	asm += f'			.byte {level_j["hero_start_pos"]["x"]}			; pos_x\n'
-	asm += "\n"
-
-	#=====================================================================
 	# rooms data (gfx_idx + tiledata) pointers
-	data_asm, label, data_len = export_level_utils.get_list_of_rooms(room_paths, level_name)
-	asm += data_asm
+	rooms_data_data_asm, rooms_data_label, data_len = \
+		export_level_utils.get_list_of_rooms(room_paths, level_name)
+	asm += rooms_data_data_asm
 	
 	#=====================================================================
 	# resources data
-	data_asm, label, data_len = \
+	data_asm, resources_inst_data_label, resources_inst_data_len = \
 		get_resources_inst_data(level_j_path, resources, resource_max_tiledata)
-	asm += data_asm
 	
 	#=====================================================================
 	# containers data
-	data_asm, label, data_len = \
+	data_asm, containers_inst_data_label, containers_inst_data_len = \
 		get_containers_inst_data(level_j_path, containers, container_max_tiledata)
-	asm += data_asm
 	
+	#=====================================================================
+	# player's start pose
+	player_start_pose_label = f"{level_name}_start_pos"	
+
+	#=====================================================================
+	# level data init tbl
+	data_init_tbl_label = f"{level_name}_data_init_tbl"
+	asm += f"{data_init_tbl_label}:\n"
+	asm += f"			.byte RAM_DISK_S_{level_name.upper()}_DATA\n"
+	asm += f"			.byte RAM_DISK_M_{level_name.upper()}_DATA\n"
+	asm += f"			.word {rooms_data_label}\n"
+	asm += f"{resources_inst_data_label[1:]}:\n"
+	asm += f"			.word {resources_inst_data_label}\n"
+	asm += f"			.word {containers_inst_data_label}\n"
+	asm += f"			.byte {level_j["hero_start_pos"]["y"]}			; hero start pos_y\n"
+	asm += f"			.byte {level_j["hero_start_pos"]["x"]}			; hero start pos_x\n"
+	asm += f"@data_end:\n"
+	asm += f"{data_init_tbl_label.upper()}_LEN = @data_end - {data_init_tbl_label}\n"
+	asm += "\n"
+
+	asm += f'{level_name.upper()}_RECOURCES_DATA_LEN = {resources_inst_data_len}\n'
+	asm += f'{level_name.upper()}_CONTAINERS_DATA_LEN = {containers_inst_data_len}\n'
+	asm += "\n"
+
+
+	#=====================================================================
+	# init func
+	asm += f"; in:\n"
+	asm += f"{level_name}_data_load:\n"
+	asm += f"			lxi b, {level_name.upper()}_DATA_ADDR\n"
+	asm += f"			lxi h, {rooms_data_label}\n"
+	asm += f"			call update_labels_eod\n"
+	asm += f"\n"
+
+	asm += f"			lxi d, {level_name.upper()}_DATA_ADDR\n"
+	asm += f"			lxi h, {resources_inst_data_label[1:]}\n"
+	asm += f"			mvi c, 2 ; _lv0_resources_inst_data_ptrs abd _lv0_containers_inst_data_ptrs\n"
+	asm += f"			call update_labels_len\n"
+	asm += f"\n"
+
+	asm += f"			; copy a level init data\n"
+	asm += f"			lxi h, {data_init_tbl_label}\n"
+	asm += f"			lxi d, lv_data_init_tbl\n"
+	asm += f"			lxi b, {data_init_tbl_label.upper()}_LEN\n"
+	asm += f"			call mem_copy_len\n"
+	
+	asm += f"			ret \n"
+	asm += f"\n"
+
 	#=====================================================================
 	# list of labels and their addrs
 	for label, addr in data_ptrs.items():
-		asm += f"{label} = {addr}\n"
+		asm += f"{label} = 0x{addr:04x}\n"
 	asm += "\n"
 
 	return asm

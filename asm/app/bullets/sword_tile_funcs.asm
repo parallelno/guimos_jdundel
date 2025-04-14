@@ -61,32 +61,30 @@ sword_func_door:
 			lxi h, @tile_idx + 1
 			mov m, c
 
-			mov b, a ; temp b = door_id
-			; check global item status
-			ani %00001110
-			rrc
+			; requirement for ROOM_DECAL_DRAW
+			ADD_A(1) ; to make a WORD ptr
+			sta room_decal_draw_ptr_offset + 1
 
-			adi <global_items
+			; check the global item status
+			rrc ; divide WORD ptr by 2 to make it back door_id
+			rar ; divide door_id by 2 to get the key_id because two doors (L and R) share the same key_id
+			adi <global_items ; because the first door_id = 0
 			mov l, a
 			mvi h, >global_items
 			mov a, m
-			cpi <ITEM_STATUS_NOT_ACQUIRED
-			rz	; if status == ITEM_STATUS_NOT_ACQUIRED, means a hero does't have a proper key to open the door
-
-			mov a, b
-			ADD_A(1) ; to make a WORD ptr
-			sta room_decal_draw_ptr_offset+1 ; store door_id in case we need to draw an opened version of it
+			cpi <ITEM_STATUS_USED
+			rz	; if status == ITEM_STATUS_NOT_ACQUIRED, means a hero doesn't have a proper key to open the door
 
 			; update the key status
 			mvi m, <ITEM_STATUS_USED
 
 			; add score points
-			push b
+			push b ; store c - tile_idx
 			mov e, b
 			mvi d, TILEDATA_FUNC_ID_DOORS
 			call game_score_add
 			call game_ui_draw_score_text
-			pop b
+			pop b ; restore c - tile_idx
 
 			; erase breakable_id from tiledata
 			mvi b, >room_tiledata

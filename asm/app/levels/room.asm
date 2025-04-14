@@ -69,7 +69,7 @@ room_redraw:
 
 ; packed room data has to be stored into $8000-$FFFF segment to be properly unzipped
 room_unpack:
-			lhld level_rooms_pptr
+			lhld lv_rooms_pptr
 			; convert a room_id into the addr of the room data (gfx tile idxs & tiledata)
 			; like _lv0_home or _lv0_farm_fence, etc
 			lda room_id
@@ -87,7 +87,7 @@ room_unpack:
 			; copy the room data into the room_tiles_gfx_ptrs + offset
 			; offset = ROOM_TILES_GFX_PTRS_LEN / 2
 			lxi b, room_tiles_gfx_ptrs + ROOM_TILES_GFX_PTRS_LEN / 2
-			lda level_ram_disk_m_data
+			lda lv_ram_disk_m_data
 			ori RAM_DISK_M_8F
 			CALL_RAM_DISK_FUNC_BANK(dzx0)
 			ret
@@ -127,7 +127,7 @@ restore_doors_containers_tiledata_ex:
 
 ; convert room gfx tile_idxs into room gfx tile ptrs
 room_init_tiles_gfx:
-			lhld level_tiles_pptr
+			lhld lv_tiles_pptr
 			shld @gfx_tiles_ptrs + 1
 
 			lxi h, room_tiles_gfx_ptrs + ROOM_TILES_GFX_PTRS_LEN / 2
@@ -438,11 +438,11 @@ room_tiledata_door_spawn:
 			sta room_decal_draw_ptr_offset + 1
 
 			; check the global item status
-			mvi a, <global_items ; because the first door_id = 0
-			add b
+			rrc ; divide a WORD ptr by 2 to make it back door_id
+			rar ; divide door_id by 2 to get the key_id because two doors (L and R) share the same key_id
+			adi <global_items ; because the first door_id = 0
 			mov l, a
 			mvi h, >global_items
-
 			mov a, m
 			cpi <ITEM_STATUS_USED
 			jz @opened	; status == ITEM_STATUS_USED means a door is opened
@@ -564,7 +564,7 @@ room_draw_tiles:
 room_draw_tiles_ex:
 			sta @last_tile_id+1
 
-			lda level_ram_disk_s_gfx
+			lda lv_ram_disk_s_gfx
 			RAM_DISK_ON_BANK()
 
 			; set y = 0

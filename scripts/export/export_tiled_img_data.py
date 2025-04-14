@@ -48,7 +48,7 @@ def data_ptrs_to_asm(data_ptrs):
 
 	# list of labels and local addresses
 	for label, addr in data_ptrs.items():
-		asm += f"{label} = {addr}\n"
+		asm += f"{label} = 0x{addr:04x}\n"
 	asm += "\n"
 
 	return asm
@@ -134,7 +134,7 @@ def data_to_asm(tiled_img_j_path):
 		# add the tiled img local ptr
 		img_idxs_ptrs[label_name] = img_idxs_addr_offset
 		img_idxs_addr_offset += tiled_img_len
-		img_idxs_addr_offset += 2 # added safety pair of bytes for reading by POP B
+		img_idxs_addr_offset += build.SAFE_WORD_LEN
 
 		asm += tiled_img_asm 
 

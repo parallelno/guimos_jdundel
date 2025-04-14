@@ -23,9 +23,9 @@ Ram-disk usage:
 Used: 32094, Free: 610
 
 --- bank0 addr8000 -----------------
-	LV0_GFX.BIN: addr: 34392, len: 5524
-	TI0_DATA.BIN: addr: 39916, len: 960
-Used: 6484, Free: 84
+	LV0_GFX.BIN: addr: 34392, len: 5542
+	TI0_DATA.BIN: addr: 39934, len: 960
+Used: 6502, Free: 66
 
 --- bank1 addr0 -----------------
 	TEXT_LV0.BIN: addr: 0, len: 5190
@@ -48,13 +48,13 @@ Used: 8178, Free: 14
 Used: 32728, Free: 40
 
 --- bank3 addr8000 -----------------
-	LV0_DATA.BIN: addr: 32768, len: 3640
-	HERO_L.BIN: addr: 36408, len: 13176
-	HERO_R.BIN: addr: 49584, len: 13176
-	VFX.BIN: addr: 62760, len: 2184
-Used: 32176, Free: 592
+	LV0_DATA.BIN: addr: 32768, len: 3772
+	HERO_L.BIN: addr: 36540, len: 13176
+	HERO_R.BIN: addr: 49716, len: 13176
+	VFX.BIN: addr: 62892, len: 2184
+Used: 32308, Free: 460
 
-Permanent load: 1624, Current Load: 125180, Free Space: 85932
+Permanent load: 1624, Current Load: 125330, Free Space: 85782
 
 */
 
@@ -114,13 +114,11 @@ Permanent load: 1624, Current Load: 125180, Free Space: 85932
 			RAM_DISK_S_LV0_GFX = RAM_DISK_S0
 			LV0_GFX_ADDR = 34392
 			LOAD_FILE(LV0_GFX_FILENAME_PTR, RAM_DISK_S_LV0_GFX, LV0_GFX_ADDR, LV0_GFX_FILE_LEN)
-			lxi h, _lv0_gfx_tiles_ptrs
-			lxi b, LV0_GFX_ADDR
-			call update_labels_eod
+			call lv0_gfx_load
 
 			RAM_DISK_M_TI0_DATA = RAM_DISK_M0
 			RAM_DISK_S_TI0_DATA = RAM_DISK_S0
-			TI0_DATA_ADDR = 39916
+			TI0_DATA_ADDR = 39934
 			LOAD_FILE(TI0_DATA_FILENAME_PTR, RAM_DISK_S_TI0_DATA, TI0_DATA_ADDR, TI0_DATA_FILE_LEN)
 			mvi a, RAM_DISK_S_TI0_DATA
 			lxi h, TI0_DATA_ADDR
@@ -218,13 +216,11 @@ Permanent load: 1624, Current Load: 125180, Free Space: 85932
 			RAM_DISK_S_LV0_DATA = RAM_DISK_S3
 			LV0_DATA_ADDR = 32768
 			LOAD_FILE(LV0_DATA_FILENAME_PTR, RAM_DISK_S_LV0_DATA, LV0_DATA_ADDR, LV0_DATA_FILE_LEN)
-			lxi h, _lv0_data_rooms_ptrs
-			lxi b, LV0_DATA_ADDR
-			call update_labels_eod
+			call lv0_data_load
 
 			RAM_DISK_M_HERO_L = RAM_DISK_M3
 			RAM_DISK_S_HERO_L = RAM_DISK_S3
-			HERO_L_ADDR = 36408
+			HERO_L_ADDR = 36540
 			LOAD_FILE(HERO_L_FILENAME_PTR, RAM_DISK_S_HERO_L, HERO_L_ADDR, HERO_L_FILE_LEN)
 			lxi d, _hero_l_preshifted_sprites
 			lxi h, HERO_L_ADDR
@@ -232,7 +228,7 @@ Permanent load: 1624, Current Load: 125180, Free Space: 85932
 
 			RAM_DISK_M_HERO_R = RAM_DISK_M3
 			RAM_DISK_S_HERO_R = RAM_DISK_S3
-			HERO_R_ADDR = 49584
+			HERO_R_ADDR = 49716
 			LOAD_FILE(HERO_R_FILENAME_PTR, RAM_DISK_S_HERO_R, HERO_R_ADDR, HERO_R_FILE_LEN)
 			lxi d, _hero_r_preshifted_sprites
 			lxi h, HERO_R_ADDR
@@ -240,7 +236,7 @@ Permanent load: 1624, Current Load: 125180, Free Space: 85932
 
 			RAM_DISK_M_VFX = RAM_DISK_M3
 			RAM_DISK_S_VFX = RAM_DISK_S3
-			VFX_ADDR = 62760
+			VFX_ADDR = 62892
 			LOAD_FILE(VFX_FILENAME_PTR, RAM_DISK_S_VFX, VFX_ADDR, VFX_FILE_LEN)
 			lxi d, _vfx_preshifted_sprites
 			lxi h, VFX_ADDR
