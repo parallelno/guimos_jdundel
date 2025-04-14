@@ -49,8 +49,7 @@ def export_asm(asset_j_path, asm_meta_path, asm_data_path, bin_path, clean_tmp =
 	ay_reg_data_lens = [] 
 
 	# save the asm
-	label_prefix = common.path_to_basename(bin_path).upper()
-	label_prefix_low = common.path_to_basename(asset_j_path)
+	label_prefix = common.path_to_basename(asset_j_path)
 	
 	with open(asm_data_path, "w") as file_inc:
 		# task stacks
@@ -70,7 +69,7 @@ def export_asm(asset_j_path, asm_meta_path, asm_data_path, bin_path, clean_tmp =
 			common.run_command(f"{build.packer_path.replace('/', '\\')} -w 256 {bin_file} {zx0File}")
 
 			with open(zx0File, "rb") as f:
-				dbname = f"_{label_prefix}_ay_reg_data{i:02d}"
+				dbname = f"_{label_prefix}_ay_reg_data{i:02d}_relative"
 				data = f.read()
 				file_inc.write(f'{dbname}: .byte ' + ",".join("$%02x" % x for x in data) + "\n")
 				ay_reg_data_lens.append(len(data))
@@ -82,9 +81,9 @@ def export_asm(asset_j_path, asm_meta_path, asm_data_path, bin_path, clean_tmp =
 
 	# reg_data ptrs. 
 	addr = 0
-	ptrs = f'_{label_prefix_low}_ay_reg_data_ptrs:\n			.word '
+	ptrs = f'{label_prefix}_ay_reg_data_ptrs:\n			.word '
 	for i, reg_data_len in enumerate(ay_reg_data_lens):
-		label_name = f'_{label_prefix_low}_ay_reg_data{i:02d}'
+		label_name = f'_{label_prefix}_ay_reg_data{i:02d}_relative'
 		ay_reg_data_ptrs += f'{label_name} = {addr}\n'
 		ptrs += f'{label_name}, '
 		addr += reg_data_len 

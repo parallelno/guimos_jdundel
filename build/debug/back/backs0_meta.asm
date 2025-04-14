@@ -11,45 +11,45 @@ BACKS0_FILENAME_PTR:
 			.byte "BIN" ; extension
 
 ; relative frame labels
-_backs0_torch_front0 = 2
-_backs0_torch_front1 = 64
-_backs0_torch_front2 = 126
-_backs0_torch_front3 = 188
-_backs0_flag_front0 = 250
-_backs0_flag_front1 = 312
-_backs0_flag_front2 = 374
-_backs0_flag_front3 = 436
-_backs0_dialog_press_key0 = 498
-_backs0_dialog_press_key1 = 560
+_backs0_torch_front0_relative = 2
+_backs0_torch_front1_relative = 64
+_backs0_torch_front2_relative = 126
+_backs0_torch_front3_relative = 188
+_backs0_flag_front0_relative = 250
+_backs0_flag_front1_relative = 312
+_backs0_flag_front2_relative = 374
+_backs0_flag_front3_relative = 436
+_backs0_dialog_press_key0_relative = 498
+_backs0_dialog_press_key1_relative = 560
 
-_backs0_preshifted_sprites:
+backs0_preshifted_sprites:
 			.byte 1
-_backs0_anims:
-			.word _backs0_torch_front, _backs0_flag_front, _backs0_dialog_press_key, EOD
-_backs0_torch_front:
+backs0_anims:
+			.word backs0_torch_front, backs0_flag_front, backs0_dialog_press_key, EOD
+backs0_torch_front:
 			.byte 3, 0 ; offset to the next frame
-			.word _backs0_torch_front0, 
+			.word _backs0_torch_front0_relative, 
 			.byte 3, 0 ; offset to the next frame
-			.word _backs0_torch_front1, 
+			.word _backs0_torch_front1_relative, 
 			.byte 3, 0 ; offset to the next frame
-			.word _backs0_torch_front2, 
+			.word _backs0_torch_front2_relative, 
 			.byte 243, $ff ; offset to the first frame
-			.word _backs0_torch_front3, 
-_backs0_flag_front:
+			.word _backs0_torch_front3_relative, 
+backs0_flag_front:
 			.byte 3, 0 ; offset to the next frame
-			.word _backs0_flag_front0, 
+			.word _backs0_flag_front0_relative, 
 			.byte 3, 0 ; offset to the next frame
-			.word _backs0_flag_front1, 
+			.word _backs0_flag_front1_relative, 
 			.byte 3, 0 ; offset to the next frame
-			.word _backs0_flag_front2, 
+			.word _backs0_flag_front2_relative, 
 			.byte 3, 0 ; offset to the next frame
-			.word _backs0_flag_front3, 
+			.word _backs0_flag_front3_relative, 
 			.byte 3, 0 ; offset to the next frame
-			.word _backs0_flag_front2, 
+			.word _backs0_flag_front2_relative, 
 			.byte 235, $ff ; offset to the first frame
-			.word _backs0_flag_front1, 
-_backs0_dialog_press_key:
+			.word _backs0_flag_front1_relative, 
+backs0_dialog_press_key:
 			.byte 3, 0 ; offset to the next frame
-			.word _backs0_dialog_press_key0, 
+			.word _backs0_dialog_press_key0_relative, 
 			.byte 251, $ff ; offset to the first frame
-			.word _backs0_dialog_press_key1, 
+			.word _backs0_dialog_press_key1_relative, 

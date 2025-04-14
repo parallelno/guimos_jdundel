@@ -43,7 +43,7 @@ bomb_dmg_init:
 			mov l, c
 			mov h, b
 			shld bomb_init_speed + 1
-			BULLET_INIT(bomb_update, bomb_draw, BOMB_STATUS_MOVE_THROW, BOMB_STATUS_MOVE_TIME, _bomb_dmg, bomb_init_speed)
+			BULLET_INIT(bomb_update, bomb_draw, BOMB_STATUS_MOVE_THROW, BOMB_STATUS_MOVE_TIME, bomb_dmg_anim, bomb_init_speed)
 ; bullet_speed_x and bullet_speed_y are aimed toward the hero pos.
 ; in:
 ; de - ptr to bullet_speed_x

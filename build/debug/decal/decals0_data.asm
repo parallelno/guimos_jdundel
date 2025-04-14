@@ -1,6 +1,6 @@
 _decals0_sprites:
 			.word 0  ; safety pair of bytes for reading by POP B
-_decals0_bones:
+_decals0_bones_relative:
 			.byte 0, 0; offset_y, offset_x
 			.byte 12, 1; height, width
 			.byte 0xFF, 0xEF, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x10, 0x00, 0xFF, 0xC7, 0x00, 0x28, 0x00, 0x00, 
@@ -14,7 +14,7 @@ _decals0_bones:
 
 
 			.word 0  ; safety pair of bytes for reading by POP B
-_decals0_skull:
+_decals0_skull_relative:
 			.byte 0, 0; offset_y, offset_x
 			.byte 14, 1; height, width
 			.byte 0xFD, 0xFF, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xF8, 0xFF, 0x05, 0x00, 0x00, 0x00, 
@@ -29,7 +29,7 @@ _decals0_skull:
 
 
 			.word 0  ; safety pair of bytes for reading by POP B
-_decals0_web1:
+_decals0_web1_relative:
 			.byte 0, 0; offset_y, offset_x
 			.byte 14, 1; height, width
 			.byte 0xF7, 0xFF, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x08, 0xE3, 0xFF, 0x14, 0x00, 0x00, 0x08, 
@@ -44,7 +44,7 @@ _decals0_web1:
 
 
 			.word 0  ; safety pair of bytes for reading by POP B
-_decals0_barrel:
+_decals0_barrel_relative:
 			.byte 0, 0; offset_y, offset_x
 			.byte 16, 1; height, width
 			.byte 0xE0, 0x0F, 0x18, 0x00, 0x00, 0x00, 0x00, 0x18, 0xF0, 0x1F, 0xC0, 0x07, 0x38, 0x38, 0xC0, 0x27, 
@@ -60,7 +60,7 @@ _decals0_barrel:
 
 
 			.word 0  ; safety pair of bytes for reading by POP B
-_decals0_crate:
+_decals0_crate_relative:
 			.byte 0, 0; offset_y, offset_x
 			.byte 16, 1; height, width
 			.byte 0x00, 0x03, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xFC, 0xFF, 0x00, 0x03, 0x80, 0x04, 0xE0, 0x1F, 
@@ -76,7 +76,7 @@ _decals0_crate:
 
 
 			.word 0  ; safety pair of bytes for reading by POP B
-_decals0_cabbage:
+_decals0_cabbage_relative:
 			.byte 0, 0; offset_y, offset_x
 			.byte 15, 1; height, width
 			.byte 0xE0, 0x03, 0x00, 0x00, 0x00, 0x00, 0x0C, 0x1C, 0xF4, 0x1B, 0xE0, 0x03, 0x0C, 0x08, 0xF4, 0x13, 
@@ -92,7 +92,7 @@ _decals0_cabbage:
 
 
 			.word 0  ; safety pair of bytes for reading by POP B
-_decals0_key_0:
+_decals0_key_0_relative:
 			.byte 1, 0; offset_y, offset_x
 			.byte 10, 1; height, width
 			.byte 0xF0, 0x07, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xF8, 0x0F, 0xFC, 0x7F, 0x03, 0x80, 0x00, 0x00, 
@@ -105,7 +105,7 @@ _decals0_key_0:
 
 
 			.word 0  ; safety pair of bytes for reading by POP B
-_decals0_key_1:
+_decals0_key_1_relative:
 			.byte 1, 0; offset_y, offset_x
 			.byte 10, 1; height, width
 			.byte 0xF0, 0x07, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xF8, 0x0F, 0xFC, 0x7F, 0x03, 0x80, 0x00, 0x00, 
@@ -118,7 +118,7 @@ _decals0_key_1:
 
 
 			.word 0  ; safety pair of bytes for reading by POP B
-_decals0_key_2:
+_decals0_key_2_relative:
 			.byte 1, 0; offset_y, offset_x
 			.byte 10, 1; height, width
 			.byte 0xF0, 0x07, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xF8, 0x0F, 0xFC, 0x7F, 0x03, 0x80, 0x00, 0x00, 
@@ -131,7 +131,7 @@ _decals0_key_2:
 
 
 			.word 0  ; safety pair of bytes for reading by POP B
-_decals0_key_3:
+_decals0_key_3_relative:
 			.byte 1, 0; offset_y, offset_x
 			.byte 10, 1; height, width
 			.byte 0x80, 0x03, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xFC, 0x7F, 0xFC, 0x7F, 0x03, 0x80, 0x00, 0x00, 
@@ -144,7 +144,7 @@ _decals0_key_3:
 
 
 			.word 0  ; safety pair of bytes for reading by POP B
-_decals0_coin:
+_decals0_coin_relative:
 			.byte 0, 0; offset_y, offset_x
 			.byte 12, 1; height, width
 			.byte 0xFF, 0xFF, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xFF, 0x07, 0x01, 0xF0, 0xF0, 0x01, 
@@ -158,7 +158,7 @@ _decals0_coin:
 
 
 			.word 0  ; safety pair of bytes for reading by POP B
-_decals0_tnt:
+_decals0_tnt_relative:
 			.byte 1, 0; offset_y, offset_x
 			.byte 11, 1; height, width
 			.byte 0xFF, 0x07, 0x00, 0x38, 0x00, 0x00, 0x00, 0x00, 0xC0, 0x07, 0xFE, 0x03, 0x09, 0xE0, 0xC0, 0x01, 
@@ -171,7 +171,7 @@ _decals0_tnt:
 
 
 			.word 0  ; safety pair of bytes for reading by POP B
-_decals0_popsicle_pie:
+_decals0_popsicle_pie_relative:
 			.byte 1, 0; offset_y, offset_x
 			.byte 15, 1; height, width
 			.byte 0xE0, 0x1F, 0x0F, 0xE0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xE0, 0x07, 0x1F, 0xE0, 0x00, 0x00, 
@@ -187,7 +187,7 @@ _decals0_popsicle_pie:
 
 
 			.word 0  ; safety pair of bytes for reading by POP B
-_decals0_potion_red:
+_decals0_potion_red_relative:
 			.byte 1, 0; offset_y, offset_x
 			.byte 12, 1; height, width
 			.byte 0xF0, 0x07, 0x03, 0xF0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xFC, 0x7F, 0x07, 0xE0, 0x00, 0x00, 
@@ -201,7 +201,7 @@ _decals0_potion_red:
 
 
 			.word 0  ; safety pair of bytes for reading by POP B
-_decals0_dry_clothes:
+_decals0_dry_clothes_relative:
 			.byte 0, 0; offset_y, offset_x
 			.byte 10, 1; height, width
 			.byte 0xFF, 0xF9, 0x00, 0x00, 0x00, 0x00, 0x06, 0x00, 0x00, 0x00, 0xC0, 0xE0, 0x00, 0x00, 0x1F, 0x3F, 
@@ -214,7 +214,7 @@ _decals0_dry_clothes:
 
 
 			.word 0  ; safety pair of bytes for reading by POP B
-_decals0_door_0_l:
+_decals0_door_0_l_relative:
 			.byte 0, 0; offset_y, offset_x
 			.byte 16, 1; height, width
 			.byte 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xFF, 0xFF, 0x00, 0x00, 0xF7, 0xFC, 0xF8, 0x7F, 
@@ -230,7 +230,7 @@ _decals0_door_0_l:
 
 
 			.word 0  ; safety pair of bytes for reading by POP B
-_decals0_door_0_r:
+_decals0_door_0_r_relative:
 			.byte 0, 0; offset_y, offset_x
 			.byte 16, 1; height, width
 			.byte 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xFF, 0xFF, 0x00, 0x00, 0xFF, 0xFD, 0xFE, 0x1F, 
@@ -246,7 +246,7 @@ _decals0_door_0_r:
 
 
 			.word 0  ; safety pair of bytes for reading by POP B
-_decals0_door_1_l:
+_decals0_door_1_l_relative:
 			.byte 0, 0; offset_y, offset_x
 			.byte 15, 1; height, width
 			.byte 0xFD, 0xF7, 0x02, 0x08, 0x00, 0x00, 0x08, 0x02, 0x08, 0x02, 0x78, 0xE3, 0x87, 0x1C, 0x14, 0x85, 
@@ -262,7 +262,7 @@ _decals0_door_1_l:
 
 
 			.word 0  ; safety pair of bytes for reading by POP B
-_decals0_door_1_r:
+_decals0_door_1_r_relative:
 			.byte 0, 0; offset_y, offset_x
 			.byte 15, 1; height, width
 			.byte 0xEF, 0xBF, 0x10, 0x40, 0x00, 0x00, 0x40, 0x10, 0x40, 0x10, 0xC7, 0x1E, 0x38, 0xE1, 0xA1, 0x28, 
@@ -278,7 +278,7 @@ _decals0_door_1_r:
 
 
 			.word 0  ; safety pair of bytes for reading by POP B
-_decals0_door_4_l:
+_decals0_door_4_l_relative:
 			.byte 0, 0; offset_y, offset_x
 			.byte 15, 1; height, width
 			.byte 0xFD, 0xF7, 0x02, 0x08, 0x00, 0x00, 0x08, 0x02, 0x08, 0x02, 0x78, 0xE3, 0x87, 0x1C, 0x14, 0x85, 
@@ -294,7 +294,7 @@ _decals0_door_4_l:
 
 
 			.word 0  ; safety pair of bytes for reading by POP B
-_decals0_door_4_r:
+_decals0_door_4_r_relative:
 			.byte 0, 0; offset_y, offset_x
 			.byte 15, 1; height, width
 			.byte 0xEF, 0xBF, 0x10, 0x40, 0x00, 0x00, 0x40, 0x10, 0x40, 0x10, 0xC7, 0x1E, 0x38, 0xE1, 0xA1, 0x28, 
@@ -310,7 +310,7 @@ _decals0_door_4_r:
 
 
 			.word 0  ; safety pair of bytes for reading by POP B
-_decals0_door_0_open_l:
+_decals0_door_0_open_l_relative:
 			.byte 0, -2; offset_y, offset_x
 			.byte 16, 1; height, width
 			.byte 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xFF, 0xFF, 0x00, 0x00, 0x3F, 0xEF, 0xFE, 0x1F, 
@@ -326,7 +326,7 @@ _decals0_door_0_open_l:
 
 
 			.word 0  ; safety pair of bytes for reading by POP B
-_decals0_door_0_open_r:
+_decals0_door_0_open_r_relative:
 			.byte 0, 2; offset_y, offset_x
 			.byte 16, 1; height, width
 			.byte 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xFF, 0xFF, 0x00, 0x00, 0xBF, 0xFF, 0xF8, 0x7F, 
@@ -342,7 +342,7 @@ _decals0_door_0_open_r:
 
 
 			.word 0  ; safety pair of bytes for reading by POP B
-_decals0_door_1_open_l:
+_decals0_door_1_open_l_relative:
 			.byte 0, 0; offset_y, offset_x
 			.byte 11, 1; height, width
 			.byte 0xFD, 0xF7, 0x02, 0x08, 0x00, 0x00, 0x08, 0x02, 0x08, 0x02, 0x78, 0xE3, 0x87, 0x1C, 0x14, 0x85, 
@@ -355,7 +355,7 @@ _decals0_door_1_open_l:
 
 
 			.word 0  ; safety pair of bytes for reading by POP B
-_decals0_door_1_open_r:
+_decals0_door_1_open_r_relative:
 			.byte 0, 0; offset_y, offset_x
 			.byte 11, 1; height, width
 			.byte 0xEF, 0xBF, 0x10, 0x40, 0x00, 0x00, 0x40, 0x10, 0x40, 0x10, 0xC7, 0x1E, 0x38, 0xE1, 0xA1, 0x28, 
@@ -368,7 +368,7 @@ _decals0_door_1_open_r:
 
 
 			.word 0  ; safety pair of bytes for reading by POP B
-_decals0_chest_small:
+_decals0_chest_small_relative:
 			.byte 1, 0; offset_y, offset_x
 			.byte 11, 1; height, width
 			.byte 0xC0, 0x07, 0x3F, 0xF8, 0x00, 0x00, 0xF8, 0x3F, 0xF8, 0x3F, 0x80, 0x03, 0x7F, 0xFC, 0x04, 0x00, 
@@ -381,7 +381,7 @@ _decals0_chest_small:
 
 
 			.word 0  ; safety pair of bytes for reading by POP B
-_decals0_chest_big:
+_decals0_chest_big_relative:
 			.byte 1, 0; offset_y, offset_x
 			.byte 13, 1; height, width
 			.byte 0xE0, 0x07, 0x1F, 0xF8, 0x00, 0x00, 0xF8, 0x1F, 0xF8, 0x1F, 0x80, 0x03, 0x7F, 0xFC, 0x04, 0x00, 
@@ -396,7 +396,7 @@ _decals0_chest_big:
 
 
 			.word 0  ; safety pair of bytes for reading by POP B
-_decals0_chest_weapon0:
+_decals0_chest_weapon0_relative:
 			.byte 1, 0; offset_y, offset_x
 			.byte 13, 1; height, width
 			.byte 0xE0, 0x03, 0x1F, 0xFC, 0x00, 0x00, 0xFC, 0x1F, 0xFC, 0x1F, 0xC0, 0x01, 0x3F, 0xFE, 0x02, 0x00, 
@@ -411,7 +411,7 @@ _decals0_chest_weapon0:
 
 
 			.word 0  ; safety pair of bytes for reading by POP B
-_decals0_chest_small_opened:
+_decals0_chest_small_opened_relative:
 			.byte 1, 0; offset_y, offset_x
 			.byte 10, 1; height, width
 			.byte 0xC0, 0x07, 0x3F, 0xF8, 0x00, 0x00, 0xF8, 0x3F, 0xF8, 0x3F, 0x80, 0x03, 0x7F, 0xFC, 0x04, 0x00, 
@@ -424,7 +424,7 @@ _decals0_chest_small_opened:
 
 
 			.word 0  ; safety pair of bytes for reading by POP B
-_decals0_chest_big_opened:
+_decals0_chest_big_opened_relative:
 			.byte 1, 0; offset_y, offset_x
 			.byte 13, 1; height, width
 			.byte 0xE0, 0x07, 0x1F, 0xF8, 0x00, 0x00, 0xF8, 0x1F, 0xF8, 0x1F, 0x80, 0x03, 0x7F, 0xFC, 0x04, 0x00, 
@@ -439,7 +439,7 @@ _decals0_chest_big_opened:
 
 
 			.word 0  ; safety pair of bytes for reading by POP B
-_decals0_chest_weapon0_opened:
+_decals0_chest_weapon0_opened_relative:
 			.byte 1, 0; offset_y, offset_x
 			.byte 15, 1; height, width
 			.byte 0xE0, 0x03, 0x1F, 0xFC, 0x00, 0x00, 0xFC, 0x1F, 0xFC, 0x1F, 0xC0, 0x01, 0x3F, 0xFE, 0x02, 0x00, 

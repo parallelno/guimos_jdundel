@@ -19,7 +19,7 @@ bullets_init:
 
 
 ; bullet initialization
-; ex. BULLET_INIT(snowflake_update, snowflake_draw, ACTOR_STATUS_BIT_INVIS, SNOWFLAKE_STATUS_INVIS_TIME, _snowflake_run, snowflake_init_speed)
+; ex. BULLET_INIT(snowflake_update, snowflake_draw, ACTOR_STATUS_BIT_INVIS, SNOWFLAKE_STATUS_INVIS_TIME, snowflake_run_anim, snowflake_init_speed)
 ; in:
 ; bc - caster pos
 .macro BULLET_INIT(BULLET_UPDATE_PTR, BULLET_DRAW_PTR, BULLET_STATUS, BULLET_STATUS_TIMER, BULLET_ANIM_PTR, BULLET_SPEED_INIT)

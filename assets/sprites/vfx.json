@@ -37,6 +37,10 @@
 		"firepool"	: {
 			"frames" : ["firepool0", "firepool1", "firepool2"],
 			"loop" : true
+		},			
+		"selection"	: {
+			"frames" : ["selection0"],
+			"loop" : true			
 		}
 	},
 	"sprites" : [
@@ -149,7 +153,7 @@
 			"mask_color" : 1
 		},
 		{
-			"name" : "selection",
+			"name" : "selection0",
 			"x" : 0,
 			"y"	: 160,
 			"width" : 16,

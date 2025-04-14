@@ -26,7 +26,7 @@ sword_func_container:
 			call draw_tile_16x16_buffs
 			; draw vfx
 			; bc - tile screen addr
-			lxi d, _vfx_reward
+			lxi d, vfx_reward_anim
 			call vfx_init
 
 			pop b
@@ -35,7 +35,7 @@ sword_func_container:
 			mvi a, TEMP_BYTE			
 			ADD_A(1) ; container_id to WORD ptr
 			sta room_decal_draw_ptr_offset+1
-			ROOM_DECAL_DRAW(_containers_opened_gfx_ptrs, true)
+			ROOM_DECAL_DRAW(containers_opened_gfx_ptrs, true)
 
 			; update a hero container
 			lxi h, hero_cont_func_tbl
@@ -95,13 +95,13 @@ sword_func_door:
 			call draw_tile_16x16_buffs
 			; draw vfx
 			; bc - tile screen addr
-			lxi d, _vfx_puff
+			lxi d, vfx_puff_anim
 			call vfx_init
 
 @tile_idx:
 			mvi c, TEMP_BYTE
 			; c - tile_idx in the room_tiledata array
-			ROOM_DECAL_DRAW(_doors_opened_gfx_ptrs, true, true)
+			ROOM_DECAL_DRAW(doors_opened_gfx_ptrs, true, true)
 
 
 ; in:
@@ -141,7 +141,7 @@ sword_func_breakable:
 			call draw_tile_16x16_buffs
 			; draw vfx
 			; bc - tile screen addr
-			lxi d, _vfx_puff
+			lxi d, vfx_puff_anim
 			call vfx_init
 			jmp game_ui_draw_res
 

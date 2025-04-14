@@ -44,7 +44,7 @@ burner_quest_init:
 			inr m
 
 			mov a, b
-			MONSTER_INIT(burner_quest_update, burner_draw, empty_func, BURNER_HEALTH, ACTOR_STATUS_BURNER_DETECT_HERO_INIT, _burner_dash)
+			MONSTER_INIT(burner_quest_update, burner_draw, empty_func, BURNER_HEALTH, ACTOR_STATUS_BURNER_DETECT_HERO_INIT, burner_dash_anim)
 @return:
 			mvi a, TILEDATA_RESTORE_TILE
 			ret

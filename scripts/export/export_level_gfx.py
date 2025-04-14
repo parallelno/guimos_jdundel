@@ -26,8 +26,8 @@ def export_asm(asset_j_path, asm_meta_path, asm_data_path, bin_path):
 	asset_dir = str(Path(asset_j_path).parent) + "/"
 	level_j_path = asset_dir + asset_j["path_level"]
 
-	asm_ram_disk_data, data_ptrs, remap_idxs = ram_disk_data_to_asm(level_j_path)
-	asm_ram_data = ram_data_to_asm(level_j_path, data_ptrs, remap_idxs)
+	asm_ram_disk_data, relative_ptrs, remap_idxs = ram_disk_data_to_asm(level_j_path)
+	asm_ram_data = ram_data_to_asm(level_j_path, relative_ptrs, remap_idxs)
 
 	# save the asm gfx
 	asm_data_dir = str(Path(asm_data_path).parent) + "/"
@@ -50,7 +50,7 @@ def ram_disk_data_to_asm(level_j_path):
 	level_dir = str(Path(level_j_path).parent) + "/"
 
 	asm = ""
-	local_ptrs = {}
+	relative_ptrs = {}
 	local_addrs = build.SAFE_WORD_LEN
 
 	#=====================================================================
@@ -60,9 +60,9 @@ def ram_disk_data_to_asm(level_j_path):
 
 	palette_asm, colors, palette_label, palette_len = common_gfx.palette_to_asm(image, level_j, path_png, '_' + level_name)
 	asm += f"			.word 0 ; safety pair of bytes for reading by POP B\n"
-	asm += f"{palette_label}:\n"
+	asm += f"{palette_label}_relative:\n"
 	asm += palette_asm + "\n"
-	local_ptrs[palette_label] = local_addrs
+	relative_ptrs[palette_label+'_relative'] = local_addrs
 	local_addrs += palette_len
 
 	#=====================================================================
@@ -89,16 +89,16 @@ def ram_disk_data_to_asm(level_j_path):
 	
 	# add gfx ptrs
 	for label_name, gfx_ptr in gfx_ptrs.items():
-		local_ptrs[label_name] = gfx_ptr + local_addrs
+		relative_ptrs[label_name] = gfx_ptr + local_addrs
 	
 	local_addrs += gfx_data_len
 	#=====================================================================
 
 	
 
-	return asm, local_ptrs, remap_idxs
+	return asm, relative_ptrs, remap_idxs
 
-def ram_data_to_asm(level_j_path, data_ptrs, remap_idxs):
+def ram_data_to_asm(level_j_path, relative_ptrs, remap_idxs):
 	
 	with open(level_j_path, "rb") as file:
 		level_j = json.load(file)
@@ -117,7 +117,7 @@ def ram_data_to_asm(level_j_path, data_ptrs, remap_idxs):
 	#=====================================================================
 	# list of tiles
 	png_name = common.path_to_basename(path_png)
-	data_asm, list_of_tiles_label = get_list_of_tiles(remap_idxs, "_" + level_name, png_name)
+	data_asm, list_of_tiles_label = get_list_of_tiles(remap_idxs, level_name, png_name)
 	asm += data_asm
 
 	#=====================================================================
@@ -128,7 +128,7 @@ def ram_data_to_asm(level_j_path, data_ptrs, remap_idxs):
 	asm += f"			.byte RAM_DISK_M_{level_name.upper()}_GFX\n"
 	asm += f"			.word {list_of_tiles_label}\n"
 	asm += f"{palette_label[1:]}_ptr:\n"
-	asm += f"			.word {palette_label}\n"
+	asm += f"			.word {palette_label}_relative\n"
 	asm += f"@data_end:\n"
 	asm += f"{data_init_tbl_label.upper()}_LEN = @data_end - {data_init_tbl_label}\n"	
 	asm += "\n"	
@@ -159,7 +159,7 @@ def ram_data_to_asm(level_j_path, data_ptrs, remap_idxs):
 
 	#=====================================================================
 	# list of local labels
-	for label, addr in data_ptrs.items():
+	for label, addr in relative_ptrs.items():
 		asm += f"{label} = 0x{addr:04x}\n"
 	asm += "\n"
 
@@ -172,7 +172,7 @@ def get_list_of_tiles(remap_idxs, label_prefix, pngLabelPrefix):
 	asm += f"{label}:\n			.word "
 
 	for i, t_idx in enumerate(remap_idxs):
-		asm += "_" + pngLabelPrefix + "_tile" + str(remap_idxs[t_idx]) + ", "
+		asm += f"_{pngLabelPrefix}_tile{remap_idxs[t_idx]:02x}_relative, "
 	asm += "\n"
 	asm += f"			.word EOD\n\n"	
 
@@ -188,8 +188,8 @@ def gfx_to_asm(room_j, image, path, remap_idxs, label_prefix):
 	width = room_j["layers"][0]["width"]
 	height = room_j["layers"][0]["height"]
 	
-	tile_ptrs = {}
-	tile_addr_offset = 2 # added safety pair of bytes for reading by POP B
+	relative_ptrs = {}
+	tile_relative_addr = 2 # added safety pair of bytes for reading by POP B
 
 	# extract tile images and convert them into asm
 	for t_idx in remap_idxs:
@@ -219,7 +219,7 @@ def gfx_to_asm(room_j, image, path, remap_idxs, label_prefix):
 		# to support a tile render function
 		data, mask = export_level_utils.get_tiledata(bytes0, bytes1, bytes2, bytes3)
 
-		label = label_prefix + "_tile" + str(remap_idxs[t_idx])
+		label = f"{label_prefix}_tile{remap_idxs[t_idx]:02x}_relative"
 
 		asm += "			.word 0 ; safety pair of bytes for reading by POP B\n"
 		asm += label + ":\n"
@@ -227,9 +227,9 @@ def gfx_to_asm(room_j, image, path, remap_idxs, label_prefix):
 		asm += "			.byte 4 ; counter\n"
 		asm += common.bytes_to_asm(data)
 
-		tile_ptrs[label] = tile_addr_offset
-		tile_addr_offset += 2 # mask, counter
-		tile_addr_offset += len(data)
-		tile_addr_offset += build.SAFE_WORD_LEN
+		relative_ptrs[label] = tile_relative_addr
+		tile_relative_addr += 2 # mask, counter
+		tile_relative_addr += len(data)
+		tile_relative_addr += build.SAFE_WORD_LEN
 
-	return asm, tile_ptrs, tile_addr_offset - build.SAFE_WORD_LEN
+	return asm, relative_ptrs, tile_relative_addr - build.SAFE_WORD_LEN

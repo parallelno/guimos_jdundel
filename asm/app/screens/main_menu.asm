@@ -191,7 +191,7 @@ main_menu_cursor_update:
 			;jmp @vfx_init
 
 @vfx_init:  
-			lxi d, _vfx_reward
+			lxi d, vfx_reward_anim
 			jmp vfx_init
 @space_handling:
 			lda main_menu_cursor_option_id

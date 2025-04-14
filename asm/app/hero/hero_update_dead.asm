@@ -74,12 +74,12 @@ hero_dead_fade_gb:
 
 			; draw vfx
 			; bc - vfx scrXY
-			; de - vfx_anim_ptr (ex. _vfx_puff)
+			; de - vfx_anim_ptr (ex. vfx_puff_anim)
 			lxi h, hero_pos_x + 1
 			mov b, m
 			INX_H(2)
 			mov c, m
-			lxi d, _vfx4_hero_death
+			lxi d, vfx4_hero_death_anim
 			call vfx_init4
 			ret
 

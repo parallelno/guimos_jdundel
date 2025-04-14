@@ -90,7 +90,7 @@ KNIGHT_DETECT_HERO_DISTANCE = 60
 ; out:
 ; a = TILEDATA_RESTORE_TILE
 knight_init:
-			MONSTER_INIT(knight_update, knight_draw, monster_impacted, KNIGHT_HEALTH, ACTOR_STATUS_KNIGHT_DETECT_HERO_INIT, _knight_idle)
+			MONSTER_INIT(knight_update, knight_draw, monster_impacted, KNIGHT_HEALTH, ACTOR_STATUS_KNIGHT_DETECT_HERO_INIT, knight_idle_anim)
 
 ;========================================================
 ; anim and a gameplay logic update
@@ -124,9 +124,9 @@ knight_update_detect_hero_init:
 			inx h
 			mvi m, ACTOR_STATUS_KNIGHT_DETECT_HERO_TIME
 			HL_ADVANCE(monster_status_timer, monster_anim_ptr)
-			mvi m, <_knight_idle
+			mvi m, <knight_idle_anim
 			inx h
-			mvi m, >_knight_idle
+			mvi m, >knight_idle_anim
 			ret
 
 ; in:
@@ -148,10 +148,10 @@ knight_update_speedup_init:
 			HL_ADVANCE(monster_status_timer, monster_pos_x+1, BY_BC)
 			lda hero_pos_x+1
 			cmp m
-			lxi d, _knight_run_l
+			lxi d, knight_run_l_anim
 			jc @dir_x_neg
 @dir_x_positive:
-			lxi d, _knight_run_r
+			lxi d, knight_run_r_anim
 @dir_x_neg:
 			; advance hl to monster_anim_ptr
 			HL_ADVANCE(monster_pos_x+1, monster_anim_ptr, BY_BC)
@@ -168,8 +168,8 @@ knight_update_speedup_init:
 @speed_horiz:
 			; advance hl to monster_speed_x
 			HL_ADVANCE(monster_id, monster_speed_x, BY_BC)
-			; dir positive if e == _knight_run_r and vise versa
-			mvi a, <_knight_run_r
+			; dir positive if e == knight_run_r_anim and vise versa
+			mvi a, <knight_run_r_anim
 			cmp e
 			lxi d, KNIGHT_DEFENCE_SPEED_NEG
 			jnz @speed_x_neg
@@ -311,17 +311,17 @@ knight_update_move_init:
 			HL_ADVANCE(monster_speed_y+1, monster_anim_ptr, BY_BC)
 			; a = rnd
 			adi $40
-			; if rnd is positive (up or right movement), then play _knight_run_r anim
+			; if rnd is positive (up or right movement), then play knight_run_r_anim anim
 			jp @set_anim_run_r
 @set_anim_run_l:
-			mvi m, <_knight_run_l
+			mvi m, <knight_run_l_anim
 			inx h
-			mvi m, >_knight_run_l
+			mvi m, >knight_run_l_anim
 			ret
 @set_anim_run_r:
-			mvi m, <_knight_run_r
+			mvi m, <knight_run_r_anim
 			inx h
-			mvi m, >_knight_run_r
+			mvi m, >knight_run_r_anim
             ret
 
 ; in:

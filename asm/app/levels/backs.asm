@@ -37,7 +37,7 @@ backs_spawn:
 			dcx h
 			push h
 			; back_id to back_anim_ptr
-			lxi h, _backs0_anims
+			lxi h, backs0_anims
 			mov a, b
 			ani TILEDATA_ARG_MASK
 			add a ; make a ptr to an anim which depends on back_id

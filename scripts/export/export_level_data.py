@@ -126,8 +126,8 @@ def ram_disk_data_to_asm(level_j_path):
 	
 	
 	asm = ""
-	local_ptrs = {}
-	local_addrs = build.SAFE_WORD_LEN
+	relative_ptrs = {}
+	relative_addr = build.SAFE_WORD_LEN
 
 	#=====================================================================
 	level_name = common.path_to_basename(level_j_path)
@@ -137,18 +137,18 @@ def ram_disk_data_to_asm(level_j_path):
 	data_asm, label, data_len = \
 		get_resources_inst_data(level_j_path, resources, resource_max_tiledata)
 	asm += data_asm
-	local_ptrs[label] = local_addrs
-	local_addrs += data_len
-	local_addrs += build.SAFE_WORD_LEN
+	relative_ptrs[label] = relative_addr
+	relative_addr += data_len
+	relative_addr += build.SAFE_WORD_LEN
 	
 	#=====================================================================
 	# containers data
 	data_asm, label, data_len = \
 		get_containers_inst_data(level_j_path, containers, container_max_tiledata)
 	asm += data_asm
-	local_ptrs[label] = local_addrs
-	local_addrs += data_len
-	local_addrs += build.SAFE_WORD_LEN
+	relative_ptrs[label] = relative_addr
+	relative_addr += data_len
+	relative_addr += build.SAFE_WORD_LEN
 
 	#=====================================================================
 	# rooms data
@@ -157,9 +157,9 @@ def ram_disk_data_to_asm(level_j_path):
 	#=====================================================================
 	# add the room data pointers
 	for label, addr in room_data_ptrs.items():
-		local_ptrs[label] = addr + local_addrs
+		relative_ptrs[label] = addr + relative_addr
 
-	return asm, local_ptrs, \
+	return asm, relative_ptrs, \
 		resources, resource_max_tiledata, \
 		containers, container_max_tiledata
 
@@ -207,7 +207,7 @@ def get_resources_inst_data(level_j_path, resources, resource_max_tiledata):
 		data_len += build.BYTE_LEN
 
 		# make resources_inst_data data
-		asm += f"\n_;{label}:\n"
+		asm += f"\n;{label}:\n"
 		for i, tiledata in enumerate(resources_sorted):
 			if len(resources_sorted[tiledata]) > 0:
 				asm += f";			tiledata = {tiledata}, data below is pairs of tile_idx, room_id\n"
@@ -269,7 +269,7 @@ def get_containers_inst_data(level_j_path, containers, container_max_tiledata):
 		data_len += build.BYTE_LEN
 
 		# make containers_inst_data data
-		asm += f"\n_;{label}:\n"
+		asm += f"\n;{label}:\n"
 		for i, tiledata in enumerate(containers_sorted):
 			if len(containers_sorted[tiledata]) > 0:
 				asm += f";			tiledata = {tiledata}, data below is pairs of tile_idx, room_id\n"

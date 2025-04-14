@@ -27,7 +27,7 @@ snowflake_init:
 			INX_H(2)
 			mov c, m
 			; bc - hero_pos
-			BULLET_INIT(snowflake_update, snowflake_draw, ACTOR_STATUS_BIT_INVIS, SNOWFLAKE_STATUS_INVIS_TIME, _snowflake_run, snowflake_init_speed)
+			BULLET_INIT(snowflake_update, snowflake_draw, ACTOR_STATUS_BIT_INVIS, SNOWFLAKE_STATUS_INVIS_TIME, snowflake_run_anim, snowflake_init_speed)
 ; the move dir along with the hero dir
 ; in:
 ; de - ptr to bullet_speed_x	

@@ -40,8 +40,8 @@ def export_asm(asset_j_path, asm_meta_path, asm_data_path, bin_path):
 	_, colors, _, _ = common_gfx.palette_to_asm(image, asset_j)
 	image = common_gfx.remap_colors(image, colors)
 
-	asm_ram_disk_data, data_ptrs = gfx_to_asm("_", asset_name, asset_j, image, asset_j_path)
-	asm_ram_data = anims_to_asm("_", asset_name, asset_j, data_ptrs, asset_j_path)
+	asm_ram_disk_data, data_relative_ptrs = gfx_to_asm("_", asset_name, asset_j, image, asset_j_path)
+	asm_ram_data = anims_to_asm("_", asset_name, asset_j, data_relative_ptrs, asset_j_path)
 
 	# save the asm gfx
 	asm_gfx_dir = str(Path(asm_data_path).parent) + "/"
@@ -59,7 +59,7 @@ def export_asm(asset_j_path, asm_meta_path, asm_data_path, bin_path):
 def gfx_to_asm(label_prefix, asset_name, asset_j, image, asset_j_path):
 
 	sprites_j = asset_j["sprites"]
-	data_ptrs = {}
+	data_relative_ptrs = {}
 	sprite_data_relative_addr = 2 # safety pair of bytes for reading by POP B
 	asm = f"{label_prefix}{asset_name}_sprites:"
 
@@ -94,7 +94,7 @@ def gfx_to_asm(label_prefix, asset_name, asset_j, image, asset_j_path):
 
 		# to support a sprite render function
 		data = sprite_data(bytes0, bytes1, bytes2, bytes3, width, height)
-		frame_label = f"{label_prefix}{asset_name}_{sprite_name}"
+		frame_label = f"{label_prefix}{asset_name}_{sprite_name}_relative"
 		asm += "\n"
 		asm += f"			.word 0  ; safety pair of bytes for reading by POP B\n"
 		asm += frame_label + ":\n"
@@ -111,30 +111,30 @@ def gfx_to_asm(label_prefix, asset_name, asset_j, image, asset_j_path):
 		frame_data_len += build.SAFE_WORD_LEN
 		frame_data_len += 2 # offset_y, offset_x
 		frame_data_len += 2 # height, width
-		data_ptrs[frame_label] = sprite_data_relative_addr
+		data_relative_ptrs[frame_label] = sprite_data_relative_addr
 		sprite_data_relative_addr += frame_data_len
 
-	return asm, data_ptrs
+	return asm, data_relative_ptrs
 
 
-def anims_to_asm(label_prefix, asset_name, asset_j, data_ptrs, asset_j_path):
+def anims_to_asm(label_prefix, asset_name, asset_j, data_relative_ptrs, asset_j_path):
 	asm = ""
 
 	preshifted_sprites = 1 # means no preshifted sprites
-	asm += f"{label_prefix}{asset_name}_preshifted_sprites:\n"
+	asm += f"{asset_name}_preshifted_sprites:\n"
 	asm += f"			.byte {str(preshifted_sprites)}\n"
 
 	# make a list of anim_names
-	asm += f"{label_prefix}{asset_name}_anims:\n"
+	asm += f"{asset_name}_anims:\n"
 	asm += "			.word "
 	for anim_name in asset_j["anims"]:
-		asm += f"{label_prefix}{asset_name}_{anim_name}, "
+		asm += f"{asset_name}_{anim_name}, "
 	asm += "EOD\n"
 
 	# make a list of sprites for an every anim
 	for anim_name in asset_j["anims"]:
 
-		asm += f"{label_prefix}{asset_name}_{anim_name}:\n"
+		asm += f"{asset_name}_{anim_name}:\n"
  
 		anims = asset_j["anims"][anim_name]["frames"]
 		loop = asset_j["anims"][anim_name]["loop"]
@@ -159,12 +159,12 @@ def anims_to_asm(label_prefix, asset_name, asset_j, data_ptrs, asset_j_path):
 			asm += "			.word "
 			for i in range(preshifted_sprites):
 				frame_label = f"{label_prefix}{asset_name}_{frame}"
-				asm += f"{frame_label}, "
+				asm += f"{frame_label}_relative, "
 			asm += "\n"
 
 	# add the list of frame labels and their addresses
 	frame_relative_labels_asm = "; relative frame labels\n"
-	for label_name, addr in data_ptrs.items():
+	for label_name, addr in data_relative_ptrs.items():
 		frame_relative_labels_asm += f"{label_name} = {addr}\n"
 	frame_relative_labels_asm += "\n"
 	asm = frame_relative_labels_asm + asm

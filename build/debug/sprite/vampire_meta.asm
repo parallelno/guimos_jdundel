@@ -11,84 +11,84 @@ VAMPIRE_FILENAME_PTR:
 			.byte "BIN" ; extension
 
 ; relative frame labels
-_vampire_run_r0_0 = 2
-_vampire_run_r0_1 = 176
-_vampire_run_r0_2 = 350
-_vampire_run_r0_3 = 524
-_vampire_run_r1_0 = 782
-_vampire_run_r1_1 = 956
-_vampire_run_r1_2 = 1130
-_vampire_run_r1_3 = 1304
-_vampire_run_r2_0 = 1562
-_vampire_run_r2_1 = 1748
-_vampire_run_r2_2 = 1934
-_vampire_run_r2_3 = 2120
-_vampire_run_r3_0 = 2396
-_vampire_run_r3_1 = 2582
-_vampire_run_r3_2 = 2768
-_vampire_run_r3_3 = 2954
-_vampire_run_l0_0 = 3230
-_vampire_run_l0_1 = 3404
-_vampire_run_l0_2 = 3578
-_vampire_run_l0_3 = 3836
-_vampire_run_l1_0 = 4010
-_vampire_run_l1_1 = 4184
-_vampire_run_l1_2 = 4358
-_vampire_run_l1_3 = 4616
-_vampire_run_l2_0 = 4790
-_vampire_run_l2_1 = 4976
-_vampire_run_l2_2 = 5162
-_vampire_run_l2_3 = 5438
-_vampire_run_l3_0 = 5624
-_vampire_run_l3_1 = 5810
-_vampire_run_l3_2 = 5996
-_vampire_run_l3_3 = 6272
-_vampire_cast_0_0 = 6458
-_vampire_cast_0_1 = 6656
-_vampire_cast_0_2 = 6854
-_vampire_cast_0_3 = 7148
+_vampire_run_r0_0_relative = 2
+_vampire_run_r0_1_relative = 176
+_vampire_run_r0_2_relative = 350
+_vampire_run_r0_3_relative = 524
+_vampire_run_r1_0_relative = 782
+_vampire_run_r1_1_relative = 956
+_vampire_run_r1_2_relative = 1130
+_vampire_run_r1_3_relative = 1304
+_vampire_run_r2_0_relative = 1562
+_vampire_run_r2_1_relative = 1748
+_vampire_run_r2_2_relative = 1934
+_vampire_run_r2_3_relative = 2120
+_vampire_run_r3_0_relative = 2396
+_vampire_run_r3_1_relative = 2582
+_vampire_run_r3_2_relative = 2768
+_vampire_run_r3_3_relative = 2954
+_vampire_run_l0_0_relative = 3230
+_vampire_run_l0_1_relative = 3404
+_vampire_run_l0_2_relative = 3578
+_vampire_run_l0_3_relative = 3836
+_vampire_run_l1_0_relative = 4010
+_vampire_run_l1_1_relative = 4184
+_vampire_run_l1_2_relative = 4358
+_vampire_run_l1_3_relative = 4616
+_vampire_run_l2_0_relative = 4790
+_vampire_run_l2_1_relative = 4976
+_vampire_run_l2_2_relative = 5162
+_vampire_run_l2_3_relative = 5438
+_vampire_run_l3_0_relative = 5624
+_vampire_run_l3_1_relative = 5810
+_vampire_run_l3_2_relative = 5996
+_vampire_run_l3_3_relative = 6272
+_vampire_cast_0_0_relative = 6458
+_vampire_cast_0_1_relative = 6656
+_vampire_cast_0_2_relative = 6854
+_vampire_cast_0_3_relative = 7148
 
 sprite_get_scr_addr_vampire = sprite_get_scr_addr4
 
-_vampire_preshifted_sprites:
+vampire_preshifted_sprites:
 			.byte 4
-_vampire_anims:
-			.word _vampire_idle, _vampire_run_r, _vampire_run_l, _vampire_cast, EOD
-_vampire_idle:
+vampire_anims:
+			.word vampire_idle_anim, vampire_run_r_anim, vampire_run_l_anim, vampire_cast_anim, EOD
+vampire_idle_anim:
 			.byte 9, 0 ; offset to the next frame
-			.word _vampire_run_r0_0, _vampire_run_r0_1, _vampire_run_r0_2, _vampire_run_r0_3, 
+			.word _vampire_run_r0_0_relative, _vampire_run_r0_1_relative, _vampire_run_r0_2_relative, _vampire_run_r0_3_relative, 
 			.byte 9, 0 ; offset to the next frame
-			.word _vampire_run_r1_0, _vampire_run_r1_1, _vampire_run_r1_2, _vampire_run_r1_3, 
+			.word _vampire_run_r1_0_relative, _vampire_run_r1_1_relative, _vampire_run_r1_2_relative, _vampire_run_r1_3_relative, 
 			.byte 9, 0 ; offset to the next frame
-			.word _vampire_run_r2_0, _vampire_run_r2_1, _vampire_run_r2_2, _vampire_run_r2_3, 
+			.word _vampire_run_r2_0_relative, _vampire_run_r2_1_relative, _vampire_run_r2_2_relative, _vampire_run_r2_3_relative, 
 			.byte 9, 0 ; offset to the next frame
-			.word _vampire_run_r3_0, _vampire_run_r3_1, _vampire_run_r3_2, _vampire_run_r3_3, 
+			.word _vampire_run_r3_0_relative, _vampire_run_r3_1_relative, _vampire_run_r3_2_relative, _vampire_run_r3_3_relative, 
 			.byte 9, 0 ; offset to the next frame
-			.word _vampire_run_l0_0, _vampire_run_l0_1, _vampire_run_l0_2, _vampire_run_l0_3, 
+			.word _vampire_run_l0_0_relative, _vampire_run_l0_1_relative, _vampire_run_l0_2_relative, _vampire_run_l0_3_relative, 
 			.byte 9, 0 ; offset to the next frame
-			.word _vampire_run_l1_0, _vampire_run_l1_1, _vampire_run_l1_2, _vampire_run_l1_3, 
+			.word _vampire_run_l1_0_relative, _vampire_run_l1_1_relative, _vampire_run_l1_2_relative, _vampire_run_l1_3_relative, 
 			.byte 9, 0 ; offset to the next frame
-			.word _vampire_run_l2_0, _vampire_run_l2_1, _vampire_run_l2_2, _vampire_run_l2_3, 
+			.word _vampire_run_l2_0_relative, _vampire_run_l2_1_relative, _vampire_run_l2_2_relative, _vampire_run_l2_3_relative, 
 			.byte 185, $ff ; offset to the first frame
-			.word _vampire_run_l3_0, _vampire_run_l3_1, _vampire_run_l3_2, _vampire_run_l3_3, 
-_vampire_run_r:
+			.word _vampire_run_l3_0_relative, _vampire_run_l3_1_relative, _vampire_run_l3_2_relative, _vampire_run_l3_3_relative, 
+vampire_run_r_anim:
 			.byte 9, 0 ; offset to the next frame
-			.word _vampire_run_r0_0, _vampire_run_r0_1, _vampire_run_r0_2, _vampire_run_r0_3, 
+			.word _vampire_run_r0_0_relative, _vampire_run_r0_1_relative, _vampire_run_r0_2_relative, _vampire_run_r0_3_relative, 
 			.byte 9, 0 ; offset to the next frame
-			.word _vampire_run_r1_0, _vampire_run_r1_1, _vampire_run_r1_2, _vampire_run_r1_3, 
+			.word _vampire_run_r1_0_relative, _vampire_run_r1_1_relative, _vampire_run_r1_2_relative, _vampire_run_r1_3_relative, 
 			.byte 9, 0 ; offset to the next frame
-			.word _vampire_run_r2_0, _vampire_run_r2_1, _vampire_run_r2_2, _vampire_run_r2_3, 
+			.word _vampire_run_r2_0_relative, _vampire_run_r2_1_relative, _vampire_run_r2_2_relative, _vampire_run_r2_3_relative, 
 			.byte 225, $ff ; offset to the first frame
-			.word _vampire_run_r3_0, _vampire_run_r3_1, _vampire_run_r3_2, _vampire_run_r3_3, 
-_vampire_run_l:
+			.word _vampire_run_r3_0_relative, _vampire_run_r3_1_relative, _vampire_run_r3_2_relative, _vampire_run_r3_3_relative, 
+vampire_run_l_anim:
 			.byte 9, 0 ; offset to the next frame
-			.word _vampire_run_l0_0, _vampire_run_l0_1, _vampire_run_l0_2, _vampire_run_l0_3, 
+			.word _vampire_run_l0_0_relative, _vampire_run_l0_1_relative, _vampire_run_l0_2_relative, _vampire_run_l0_3_relative, 
 			.byte 9, 0 ; offset to the next frame
-			.word _vampire_run_l1_0, _vampire_run_l1_1, _vampire_run_l1_2, _vampire_run_l1_3, 
+			.word _vampire_run_l1_0_relative, _vampire_run_l1_1_relative, _vampire_run_l1_2_relative, _vampire_run_l1_3_relative, 
 			.byte 9, 0 ; offset to the next frame
-			.word _vampire_run_l2_0, _vampire_run_l2_1, _vampire_run_l2_2, _vampire_run_l2_3, 
+			.word _vampire_run_l2_0_relative, _vampire_run_l2_1_relative, _vampire_run_l2_2_relative, _vampire_run_l2_3_relative, 
 			.byte 225, $ff ; offset to the first frame
-			.word _vampire_run_l3_0, _vampire_run_l3_1, _vampire_run_l3_2, _vampire_run_l3_3, 
-_vampire_cast:
+			.word _vampire_run_l3_0_relative, _vampire_run_l3_1_relative, _vampire_run_l3_2_relative, _vampire_run_l3_3_relative, 
+vampire_cast_anim:
 			.byte 255, $ff ; offset to the first frame
-			.word _vampire_cast_0_0, _vampire_cast_0_1, _vampire_cast_0_2, _vampire_cast_0_3, 
+			.word _vampire_cast_0_0_relative, _vampire_cast_0_1_relative, _vampire_cast_0_2_relative, _vampire_cast_0_3_relative, 

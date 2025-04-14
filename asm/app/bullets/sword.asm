@@ -146,9 +146,9 @@ sword_update:
 			rrc
 			jnc @attkL
 @attkR:
-			mvi m, < _sword_attk_r
+			mvi m, < sword_attk_r_anim
 			inx h
-			mvi m, > _sword_attk_r
+			mvi m, > sword_attk_r_anim
 
 			; check enemies-attk01 sprite collision
 			; hl - ptr to bullet_anim_ptr+1
@@ -163,9 +163,9 @@ sword_update:
 			dad d
 			jmp @check_monster_collision
 @attkL:
-			mvi m, < _sword_attk_l
+			mvi m, < sword_attk_l_anim
 			inx h
-			mvi m, > _sword_attk_l
+			mvi m, > sword_attk_l_anim
 
 			; check enemies-attk01 sprite collision
 			; hl - ptr to bullet_anim_ptr+1

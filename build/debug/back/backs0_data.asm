@@ -1,6 +1,6 @@
 _backs0_sprites:
 			.word 0  ; safety pair of bytes for reading by POP B
-_backs0_torch_front0:
+_backs0_torch_front0_relative:
 			.byte 6, 0; offset_y, offset_x
 			.byte 7, 1; height, width
 			.byte 0x00, 0x00, 0xE0, 0x01, 0xE0, 0x01, 0x7F, 0xFF, 0xFF, 0x7F, 0xF0, 0x03, 0xF0, 0x03, 0x00, 0x00, 
@@ -10,7 +10,7 @@ _backs0_torch_front0:
 
 
 			.word 0  ; safety pair of bytes for reading by POP B
-_backs0_torch_front1:
+_backs0_torch_front1_relative:
 			.byte 6, 0; offset_y, offset_x
 			.byte 7, 1; height, width
 			.byte 0x00, 0x00, 0xE0, 0x01, 0xE0, 0x01, 0x3F, 0xFF, 0xFF, 0x7F, 0xF0, 0x03, 0xF0, 0x03, 0x00, 0x00, 
@@ -20,7 +20,7 @@ _backs0_torch_front1:
 
 
 			.word 0  ; safety pair of bytes for reading by POP B
-_backs0_torch_front2:
+_backs0_torch_front2_relative:
 			.byte 6, 0; offset_y, offset_x
 			.byte 7, 1; height, width
 			.byte 0x00, 0x00, 0xE0, 0x01, 0xE0, 0x01, 0x3F, 0xFF, 0xFF, 0xBF, 0xE0, 0x03, 0xE0, 0x03, 0x00, 0x00, 
@@ -30,7 +30,7 @@ _backs0_torch_front2:
 
 
 			.word 0  ; safety pair of bytes for reading by POP B
-_backs0_torch_front3:
+_backs0_torch_front3_relative:
 			.byte 6, 0; offset_y, offset_x
 			.byte 7, 1; height, width
 			.byte 0x00, 0x00, 0xE0, 0x01, 0xE0, 0x01, 0x3F, 0xFF, 0xFF, 0xFF, 0xF0, 0x03, 0xF0, 0x03, 0x00, 0x00, 
@@ -40,7 +40,7 @@ _backs0_torch_front3:
 
 
 			.word 0  ; safety pair of bytes for reading by POP B
-_backs0_flag_front0:
+_backs0_flag_front0_relative:
 			.byte 7, 0; offset_y, offset_x
 			.byte 7, 1; height, width
 			.byte 0x91, 0x08, 0x00, 0x00, 0x00, 0x11, 0xE4, 0x57, 0x5E, 0xF4, 0xC0, 0x07, 0x00, 0x00, 0xC0, 0x06, 
@@ -50,7 +50,7 @@ _backs0_flag_front0:
 
 
 			.word 0  ; safety pair of bytes for reading by POP B
-_backs0_flag_front1:
+_backs0_flag_front1_relative:
 			.byte 7, 0; offset_y, offset_x
 			.byte 7, 1; height, width
 			.byte 0x95, 0xC8, 0x00, 0x00, 0xC0, 0x15, 0xF4, 0x57, 0x4E, 0x2C, 0xE0, 0x0B, 0x00, 0x00, 0x30, 0x0A, 
@@ -60,7 +60,7 @@ _backs0_flag_front1:
 
 
 			.word 0  ; safety pair of bytes for reading by POP B
-_backs0_flag_front2:
+_backs0_flag_front2_relative:
 			.byte 7, 0; offset_y, offset_x
 			.byte 7, 1; height, width
 			.byte 0x90, 0xE8, 0x00, 0x00, 0xE0, 0x10, 0xF4, 0x53, 0x47, 0x1C, 0xF0, 0x03, 0x00, 0x00, 0x10, 0x03, 
@@ -70,7 +70,7 @@ _backs0_flag_front2:
 
 
 			.word 0  ; safety pair of bytes for reading by POP B
-_backs0_flag_front3:
+_backs0_flag_front3_relative:
 			.byte 7, 0; offset_y, offset_x
 			.byte 7, 1; height, width
 			.byte 0x90, 0x08, 0x00, 0x00, 0x00, 0x10, 0xF4, 0x50, 0x43, 0xFC, 0xF0, 0x01, 0x00, 0x00, 0xF0, 0x01, 
@@ -80,7 +80,7 @@ _backs0_flag_front3:
 
 
 			.word 0  ; safety pair of bytes for reading by POP B
-_backs0_dialog_press_key0:
+_backs0_dialog_press_key0_relative:
 			.byte 8, 1; offset_y, offset_x
 			.byte 7, 1; height, width
 			.byte 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xFE, 0x7F, 0xC0, 0x03, 0xFC, 0x3F, 0x00, 0x00, 0xFC, 0x3F, 
@@ -90,7 +90,7 @@ _backs0_dialog_press_key0:
 
 
 			.word 0  ; safety pair of bytes for reading by POP B
-_backs0_dialog_press_key1:
+_backs0_dialog_press_key1_relative:
 			.byte 8, 1; offset_y, offset_x
 			.byte 7, 1; height, width
 			.byte 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xFE, 0x7F, 0xC0, 0x03, 0xFC, 0x3F, 0x00, 0x00, 0xFC, 0x3F, 

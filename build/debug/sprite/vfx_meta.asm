@@ -11,73 +11,76 @@ VFX_FILENAME_PTR:
 			.byte "BIN" ; extension
 
 ; relative frame labels
-_vfx_invis_0 = 2
-_vfx_puff0_0 = 38
-_vfx_puff1_0 = 176
-_vfx_puff2_0 = 362
-_vfx_puff3_0 = 548
-_vfx_reward0_0 = 734
-_vfx_reward1_0 = 920
-_vfx_reward2_0 = 1118
-_vfx_reward3_0 = 1280
-_vfx_selection_0 = 1394
-_vfx_firepool0_0 = 1592
-_vfx_firepool1_0 = 1790
-_vfx_firepool2_0 = 1988
+_vfx_invis_0_relative = 2
+_vfx_puff0_0_relative = 38
+_vfx_puff1_0_relative = 176
+_vfx_puff2_0_relative = 362
+_vfx_puff3_0_relative = 548
+_vfx_reward0_0_relative = 734
+_vfx_reward1_0_relative = 920
+_vfx_reward2_0_relative = 1118
+_vfx_reward3_0_relative = 1280
+_vfx_selection0_0_relative = 1394
+_vfx_firepool0_0_relative = 1592
+_vfx_firepool1_0_relative = 1790
+_vfx_firepool2_0_relative = 1988
 
 sprite_get_scr_addr_vfx = sprite_get_scr_addr1
 
-_vfx_preshifted_sprites:
+vfx_preshifted_sprites:
 			.byte 1
-_vfx_anims:
-			.word _vfx_puff, _vfx_puff_loop, _vfx_reward, _vfx_firepool, EOD
-_vfx_puff:
+vfx_anims:
+			.word vfx_puff_anim, vfx_puff_loop_anim, vfx_reward_anim, vfx_firepool_anim, vfx_selection_anim, EOD
+vfx_puff_anim:
 			.byte 3, 0 ; offset to the next frame
-			.word _vfx_puff0_0, 
+			.word _vfx_puff0_0_relative, 
 			.byte 3, 0 ; offset to the next frame
-			.word _vfx_puff0_0, 
+			.word _vfx_puff0_0_relative, 
 			.byte 3, 0 ; offset to the next frame
-			.word _vfx_puff1_0, 
+			.word _vfx_puff1_0_relative, 
 			.byte 3, 0 ; offset to the next frame
-			.word _vfx_puff2_0, 
+			.word _vfx_puff2_0_relative, 
 			.byte -1, $ff ; offset to the same last frame
-			.word _vfx_puff3_0, 
-_vfx_puff_loop:
+			.word _vfx_puff3_0_relative, 
+vfx_puff_loop_anim:
 			.byte 3, 0 ; offset to the next frame
-			.word _vfx_puff0_0, 
+			.word _vfx_puff0_0_relative, 
 			.byte 3, 0 ; offset to the next frame
-			.word _vfx_puff0_0, 
+			.word _vfx_puff0_0_relative, 
 			.byte 3, 0 ; offset to the next frame
-			.word _vfx_puff1_0, 
+			.word _vfx_puff1_0_relative, 
 			.byte 3, 0 ; offset to the next frame
-			.word _vfx_puff2_0, 
+			.word _vfx_puff2_0_relative, 
 			.byte 3, 0 ; offset to the next frame
-			.word _vfx_puff3_0, 
+			.word _vfx_puff3_0_relative, 
 			.byte 3, 0 ; offset to the next frame
-			.word _vfx_invis_0, 
+			.word _vfx_invis_0_relative, 
 			.byte 3, 0 ; offset to the next frame
-			.word _vfx_invis_0, 
+			.word _vfx_invis_0_relative, 
 			.byte 227, $ff ; offset to the first frame
-			.word _vfx_invis_0, 
-_vfx_reward:
+			.word _vfx_invis_0_relative, 
+vfx_reward_anim:
 			.byte 3, 0 ; offset to the next frame
-			.word _vfx_reward0_0, 
+			.word _vfx_reward0_0_relative, 
 			.byte 3, 0 ; offset to the next frame
-			.word _vfx_reward1_0, 
+			.word _vfx_reward1_0_relative, 
 			.byte 3, 0 ; offset to the next frame
-			.word _vfx_reward3_0, 
+			.word _vfx_reward3_0_relative, 
 			.byte 3, 0 ; offset to the next frame
-			.word _vfx_reward2_0, 
+			.word _vfx_reward2_0_relative, 
 			.byte 3, 0 ; offset to the next frame
-			.word _vfx_reward3_0, 
+			.word _vfx_reward3_0_relative, 
 			.byte 3, 0 ; offset to the next frame
-			.word _vfx_reward0_0, 
+			.word _vfx_reward0_0_relative, 
 			.byte -1, $ff ; offset to the same last frame
-			.word _vfx_reward3_0, 
-_vfx_firepool:
+			.word _vfx_reward3_0_relative, 
+vfx_firepool_anim:
 			.byte 3, 0 ; offset to the next frame
-			.word _vfx_firepool0_0, 
+			.word _vfx_firepool0_0_relative, 
 			.byte 3, 0 ; offset to the next frame
-			.word _vfx_firepool1_0, 
+			.word _vfx_firepool1_0_relative, 
 			.byte 247, $ff ; offset to the first frame
-			.word _vfx_firepool2_0, 
+			.word _vfx_firepool2_0_relative, 
+vfx_selection_anim:
+			.byte 255, $ff ; offset to the first frame
+			.word _vfx_selection0_0_relative, 

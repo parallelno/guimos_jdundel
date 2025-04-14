@@ -40,7 +40,7 @@ hero_tile_func_item:
 			call draw_tile_16x16_buffs
 			; draw vfx
 			; bc - tile screen addr			
-			lxi d, _vfx_reward
+			lxi d, vfx_reward_anim
 			jmp vfx_init
 
 ; handler func for resources
@@ -71,7 +71,7 @@ hero_tile_func_resource:
 			call draw_tile_16x16_buffs
 			; draw vfx
 			; bc - tile screen addr			
-			lxi d, _vfx_reward
+			lxi d, vfx_reward_anim
 			call vfx_init
 
 			; update a hero resource

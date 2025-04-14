@@ -11,36 +11,36 @@ BOMB_FILENAME_PTR:
 			.byte "BIN" ; extension
 
 ; relative frame labels
-_bomb_run0_0 = 2
-_bomb_run0_1 = 44
-_bomb_run0_2 = 86
-_bomb_run0_3 = 164
-_bomb_run1_0 = 242
-_bomb_run1_1 = 284
-_bomb_run1_2 = 326
-_bomb_run1_3 = 404
-_bomb_dmg0_0 = 482
-_bomb_dmg0_1 = 524
-_bomb_dmg0_2 = 566
-_bomb_dmg0_3 = 644
-_bomb_dmg1_0 = 722
-_bomb_dmg1_1 = 764
-_bomb_dmg1_2 = 806
-_bomb_dmg1_3 = 884
+_bomb_run0_0_relative = 2
+_bomb_run0_1_relative = 44
+_bomb_run0_2_relative = 86
+_bomb_run0_3_relative = 164
+_bomb_run1_0_relative = 242
+_bomb_run1_1_relative = 284
+_bomb_run1_2_relative = 326
+_bomb_run1_3_relative = 404
+_bomb_dmg0_0_relative = 482
+_bomb_dmg0_1_relative = 524
+_bomb_dmg0_2_relative = 566
+_bomb_dmg0_3_relative = 644
+_bomb_dmg1_0_relative = 722
+_bomb_dmg1_1_relative = 764
+_bomb_dmg1_2_relative = 806
+_bomb_dmg1_3_relative = 884
 
 sprite_get_scr_addr_bomb = sprite_get_scr_addr4
 
-_bomb_preshifted_sprites:
+bomb_preshifted_sprites:
 			.byte 4
-_bomb_anims:
-			.word _bomb_run, _bomb_dmg, EOD
-_bomb_run:
+bomb_anims:
+			.word bomb_run_anim, bomb_dmg_anim, EOD
+bomb_run_anim:
 			.byte 9, 0 ; offset to the next frame
-			.word _bomb_run0_0, _bomb_run0_1, _bomb_run0_2, _bomb_run0_3, 
+			.word _bomb_run0_0_relative, _bomb_run0_1_relative, _bomb_run0_2_relative, _bomb_run0_3_relative, 
 			.byte 245, $ff ; offset to the first frame
-			.word _bomb_run1_0, _bomb_run1_1, _bomb_run1_2, _bomb_run1_3, 
-_bomb_dmg:
+			.word _bomb_run1_0_relative, _bomb_run1_1_relative, _bomb_run1_2_relative, _bomb_run1_3_relative, 
+bomb_dmg_anim:
 			.byte 9, 0 ; offset to the next frame
-			.word _bomb_dmg0_0, _bomb_dmg0_1, _bomb_dmg0_2, _bomb_dmg0_3, 
+			.word _bomb_dmg0_0_relative, _bomb_dmg0_1_relative, _bomb_dmg0_2_relative, _bomb_dmg0_3_relative, 
 			.byte 245, $ff ; offset to the first frame
-			.word _bomb_dmg1_0, _bomb_dmg1_1, _bomb_dmg1_2, _bomb_dmg1_3, 
+			.word _bomb_dmg1_0_relative, _bomb_dmg1_1_relative, _bomb_dmg1_2_relative, _bomb_dmg1_3_relative, 

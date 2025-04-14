@@ -8,6 +8,7 @@ room_init:
 			call room_init_tiles_gfx
 			call room_draw_tiles
 			call room_handle_room_tiledata
+			; TODO: optimization. do not copy UI panel
 			call room_copy_scr_to_backbuffs
 			call room_init_statuses
 			ret
@@ -283,7 +284,7 @@ room_tiledata_decal_walkable_spawn:
 
 			ADD_A(1) ; to make a WORD ptr
 			sta room_decal_draw_ptr_offset+1
-			ROOM_DECAL_DRAW(_decals_walkable_gfx_ptrs - WORD_LEN * 2)
+			ROOM_DECAL_DRAW(decals_walkable_gfx_ptrs - WORD_LEN * 2)
 			mvi a, TILEDATA_RESTORE_TILE
 			ret
 
@@ -297,7 +298,7 @@ room_tiledata_decal_walkable_spawn:
 room_tiledata_decal_collidable_spawn:
 			ADD_A(1) ; to make a WORD ptr
 			sta room_decal_draw_ptr_offset+1
-			ROOM_DECAL_DRAW(_decals_collidable_gfx_ptrs)
+			ROOM_DECAL_DRAW(decals_collidable_gfx_ptrs)
 			mvi a, TILEDATA_COLLISION
 			ret
 
@@ -316,7 +317,7 @@ room_tiledata_breakable_spawn:
 			sta room_decal_draw_ptr_offset+1
 
 			;ROOM_SPAWN_RATE_CHECK(rooms_spawn_rate_breakables, @no_spawn)
-			ROOM_DECAL_DRAW(_breakable_gfx_ptrs)
+			ROOM_DECAL_DRAW(breakable_gfx_ptrs)
 @restore_tiledata:
 			mvi a, TEMP_BYTE
 			ret
@@ -351,7 +352,7 @@ room_tiledata_item_spawn:
 			mvi a, TILEDATA_RESTORE_TILE
 			rnz ; status != 0 means this item was picked up
 
-			ROOM_DECAL_DRAW(_items_gfx_ptrs - WORD_LEN) ;  subtraction of 2*WORD_LEN needs because there is no gfx for item_id=0. check _items_gfx_ptrs:
+			ROOM_DECAL_DRAW(items_gfx_ptrs - WORD_LEN) ;  subtraction of 2*WORD_LEN needs because there is no gfx for item_id=0. check _items_gfx_ptrs:
 @restore_tiledata:
 			mvi a, TEMP_BYTE
 			ret
@@ -381,7 +382,7 @@ room_tiledata_resource_spawn:
 			FIND_INSTANCE(@picked_up, resources_inst_data_ptrs)
 			; resource is found, means it is not picked up
 			; c = tile_idx
-			ROOM_DECAL_DRAW(_resources_gfx_ptrs)
+			ROOM_DECAL_DRAW(resources_gfx_ptrs)
 @restore_tiledata:
 			mvi a, TEMP_BYTE
 			ret
@@ -412,13 +413,13 @@ room_tiledata_container_spawn:
 			FIND_INSTANCE(@opened, containers_inst_data_ptrs)
 
 			; c - tile_idx in the room_tiledata array
-			ROOM_DECAL_DRAW(_containers_gfx_ptrs)
+			ROOM_DECAL_DRAW(containers_gfx_ptrs)
 @tiledata:	mvi a, TEMP_BYTE
 			ret
 @opened:
 			; draw an opened container
 			; c - tile_idx in the room_tiledata array			
-			ROOM_DECAL_DRAW(_containers_opened_gfx_ptrs)
+			ROOM_DECAL_DRAW(containers_opened_gfx_ptrs)
 			mvi a, TILEDATA_RESTORE_TILE
 			ret
 
@@ -448,7 +449,7 @@ room_tiledata_door_spawn:
 			jz @opened	; status == ITEM_STATUS_USED means a door is opened
 
 			; c - tile_idx in the room_tiledata array
-			ROOM_DECAL_DRAW(_doors_gfx_ptrs)
+			ROOM_DECAL_DRAW(doors_gfx_ptrs)
 @tiledata:
 			mvi a, TEMP_BYTE
 			ret
@@ -456,7 +457,7 @@ room_tiledata_door_spawn:
 			; draw an opened door
 			; c - tile_idx in the room_tiledata array
 			push b
-			ROOM_DECAL_DRAW(_doors_opened_gfx_ptrs)
+			ROOM_DECAL_DRAW(doors_opened_gfx_ptrs)
 			pop b
 			call draw_tile_16x16_buffs
 			mvi a, TILEDATA_RESTORE_TILE
@@ -505,7 +506,7 @@ room_copy_scr_to_backbuffs:
 .endmacro
 
 ; draw a decal onto the screen, and backbuffers
-; ex. ROOM_DECAL_DRAW(_containers_gfx_ptrs, true)
+; ex. ROOM_DECAL_DRAW(containers_gfx_ptrs, true)
 ; requires: store item_id*2 into room_decal_draw_ptr_offset+1 addr prior calling this
 ; in:
 ; hl - ptr to the graphics, ex. _doors_gfx_ptrs

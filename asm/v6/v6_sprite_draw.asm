@@ -77,7 +77,7 @@ sprite_draw_vm:	; VM stands for: V - variable height, M - mask support
 			shld draw_sprite_scr_addr+1
 
 			; store sprite width and height
-			pop b			
+			pop b
 			mov d, b
 			mov e, c
 			xchg

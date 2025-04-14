@@ -254,16 +254,13 @@ game_ui_draw_res:
 			mov d, a
 			mvi e, <RES_SELECTION_FRAME_SCR_ADDR
 			; de - scr addr
-			; draw selection frame on a resouce
-			lxi b, _vfx_selection_0
-			CALL_RAM_DISK_FUNC(sprite_draw_vm, RAM_DISK_S_VFX | RAM_DISK_M_BACKBUFF | RAM_DISK_M_89)
-			; d - width
-			;		00 - 8pxs,
-			;		01 - 16pxs,
-			;		10 - 24pxs,
-			;		11 - 32pxs,
-			; e - height
-			; bc - sprite screen addr + offset				
+			; draw the selection frame on top of the selected resorce
+			lxi h, vfx_selection_anim + 2 ; the first aframe absolute addr
+			mov c, m
+			inx h
+			mov b, m
+			; render it to the main scr buff
+			CALL_RAM_DISK_FUNC(sprite_draw_vm, RAM_DISK_S_VFX)
 			ret
 
 @tiled_img_ptrs:

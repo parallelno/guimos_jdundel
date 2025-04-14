@@ -97,7 +97,7 @@ hero_check_keys:
 			ori HERO_DIR_RIGHT
 			mov m, a
 
-			lxi h, _hero_r_run
+			lxi h, hero_r_run_anim
 			shld hero_anim_addr
 			jmp hero_update_temp_pos
 
@@ -111,7 +111,7 @@ hero_check_keys:
 
 			mvi a, HERO_DIR_RIGHT | HERO_DIR_UP
 			sta hero_dir
-			lxi h, _hero_r_run
+			lxi h, hero_r_run_anim
 			shld hero_anim_addr
 			jmp hero_update_temp_pos
 
@@ -126,7 +126,7 @@ hero_check_keys:
 
 			mvi a, HERO_DIR_RIGHT | HERO_DIR_DOWN
 			sta hero_dir
-			lxi h, _hero_r_run
+			lxi h, hero_r_run_anim
 			shld hero_anim_addr
 			jmp hero_update_temp_pos
 
@@ -145,7 +145,7 @@ hero_check_keys:
 			ori HERO_DIR_LEFT
 			mov m, a
 
-			lxi h, _hero_l_run
+			lxi h, hero_l_run_anim
 			shld hero_anim_addr
 			jmp hero_update_temp_pos
 
@@ -160,7 +160,7 @@ hero_check_keys:
 
 			mvi a, HERO_DIR_LEFT | HERO_DIR_UP
 			sta hero_dir
-			lxi h, _hero_l_run
+			lxi h, hero_l_run_anim
 			shld hero_anim_addr
 			jmp hero_update_temp_pos
 
@@ -174,7 +174,7 @@ hero_check_keys:
 
 			mvi a, HERO_DIR_LEFT | HERO_DIR_DOWN
 			sta hero_dir
-			lxi h, _hero_l_run
+			lxi h, hero_l_run_anim
 			shld hero_anim_addr
 			jmp hero_update_temp_pos
 
@@ -195,11 +195,11 @@ hero_check_keys:
 			rrc
 			jnc @setAnimRunUfaceL
 
-			lxi h, _hero_r_run
+			lxi h, hero_r_run_anim
 			shld hero_anim_addr
 			jmp hero_update_temp_pos
 @setAnimRunUfaceL:
-			lxi h, _hero_l_run
+			lxi h, hero_l_run_anim
 			shld hero_anim_addr
 			jmp hero_update_temp_pos
 @setAnimRunD:
@@ -219,11 +219,11 @@ hero_check_keys:
 			rrc
 			jnc @setAnimRunDfaceL
 
-			lxi h, _hero_r_run
+			lxi h, hero_r_run_anim
 			shld hero_anim_addr
 			jmp hero_update_temp_pos
 @setAnimRunDfaceL:
-			lxi h, _hero_l_run
+			lxi h, hero_l_run_anim
 			shld hero_anim_addr
 
 hero_update_temp_pos:
@@ -390,7 +390,7 @@ hero_attack_init:
 			mov c, m
 			inx h
 			mov b, m
-			lxi d, _vfx_reward
+			lxi d, vfx_reward_anim
 			call vfx_init
 @no_vfx:
 
@@ -475,11 +475,11 @@ hero_attack_init:
 			rrc
 			jnc @set_anim_attk_l
 
-			lxi h, _hero_r_attk
+			lxi h, hero_r_attk_anim
 			shld hero_anim_addr
 			jmp sword_init
 @set_anim_attk_l:
-			lxi h, _hero_l_attk
+			lxi h, hero_l_attk_anim
 			shld hero_anim_addr
 			jmp sword_init
 
@@ -511,11 +511,11 @@ hero_idle_anim_start:
 			rrc
 			jnc @setAnimIdleL
 
-			lxi h, _hero_r_idle
+			lxi h, hero_r_idle_anim
 			shld hero_anim_addr
 			ret
 @setAnimIdleL:
-			lxi h, _hero_l_idle
+			lxi h, hero_l_idle_anim
 			shld hero_anim_addr
 			ret
 

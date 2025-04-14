@@ -11,23 +11,23 @@ TNT_FILENAME_PTR:
 			.byte "BIN" ; extension
 
 ; relative frame labels
-_tnt_idle0_0 = 2
-_tnt_idle0_1 = 74
-_tnt_idle0_2 = 212
-_tnt_idle0_3 = 350
-_tnt_idle1_0 = 488
-_tnt_idle1_1 = 572
-_tnt_idle1_2 = 734
-_tnt_idle1_3 = 896
+_tnt_idle0_0_relative = 2
+_tnt_idle0_1_relative = 74
+_tnt_idle0_2_relative = 212
+_tnt_idle0_3_relative = 350
+_tnt_idle1_0_relative = 488
+_tnt_idle1_1_relative = 572
+_tnt_idle1_2_relative = 734
+_tnt_idle1_3_relative = 896
 
 sprite_get_scr_addr_tnt = sprite_get_scr_addr4
 
-_tnt_preshifted_sprites:
+tnt_preshifted_sprites:
 			.byte 4
-_tnt_anims:
-			.word _tnt_run, EOD
-_tnt_run:
+tnt_anims:
+			.word tnt_run_anim, EOD
+tnt_run_anim:
 			.byte 9, 0 ; offset to the next frame
-			.word _tnt_idle0_0, _tnt_idle0_1, _tnt_idle0_2, _tnt_idle0_3, 
+			.word _tnt_idle0_0_relative, _tnt_idle0_1_relative, _tnt_idle0_2_relative, _tnt_idle0_3_relative, 
 			.byte 245, $ff ; offset to the first frame
-			.word _tnt_idle1_0, _tnt_idle1_1, _tnt_idle1_2, _tnt_idle1_3, 
+			.word _tnt_idle1_0_relative, _tnt_idle1_1_relative, _tnt_idle1_2_relative, _tnt_idle1_3_relative, 

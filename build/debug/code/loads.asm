@@ -82,7 +82,7 @@ Permanent load: 1624, Current Load: 125330, Free Space: 85782
 			RAM_DISK_S_SKELETON = RAM_DISK_S0
 			SKELETON_ADDR = 0
 			LOAD_FILE(SKELETON_FILENAME_PTR, RAM_DISK_S_SKELETON, SKELETON_ADDR, SKELETON_FILE_LEN)
-			lxi d, _skeleton_preshifted_sprites
+			lxi d, skeleton_preshifted_sprites
 			lxi h, SKELETON_ADDR
 			call sprite_update_labels
 
@@ -90,7 +90,7 @@ Permanent load: 1624, Current Load: 125330, Free Space: 85782
 			RAM_DISK_S_BURNER = RAM_DISK_S0
 			BURNER_ADDR = 9870
 			LOAD_FILE(BURNER_FILENAME_PTR, RAM_DISK_S_BURNER, BURNER_ADDR, BURNER_FILE_LEN)
-			lxi d, _burner_preshifted_sprites
+			lxi d, burner_preshifted_sprites
 			lxi h, BURNER_ADDR
 			call sprite_update_labels
 
@@ -98,7 +98,7 @@ Permanent load: 1624, Current Load: 125330, Free Space: 85782
 			RAM_DISK_S_SWORD = RAM_DISK_S0
 			SWORD_ADDR = 18900
 			LOAD_FILE(SWORD_FILENAME_PTR, RAM_DISK_S_SWORD, SWORD_ADDR, SWORD_FILE_LEN)
-			lxi d, _sword_preshifted_sprites
+			lxi d, sword_preshifted_sprites
 			lxi h, SWORD_ADDR
 			call sprite_update_labels
 
@@ -106,7 +106,7 @@ Permanent load: 1624, Current Load: 125330, Free Space: 85782
 			RAM_DISK_S_DECALS0 = RAM_DISK_S0
 			DECALS0_ADDR = 27828
 			LOAD_FILE(DECALS0_FILENAME_PTR, RAM_DISK_S_DECALS0, DECALS0_ADDR, DECALS0_FILE_LEN)
-			lxi h, _decals0_gfx_ptrs
+			lxi h, decals0_gfx_ptrs
 			lxi b, DECALS0_ADDR
 			call update_labels_eod
 
@@ -136,7 +136,7 @@ Permanent load: 1624, Current Load: 125330, Free Space: 85782
 			RAM_DISK_S_VFX4 = RAM_DISK_S1
 			VFX4_ADDR = 5190
 			LOAD_FILE(VFX4_FILENAME_PTR, RAM_DISK_S_VFX4, VFX4_ADDR, VFX4_FILE_LEN)
-			lxi d, _vfx4_preshifted_sprites
+			lxi d, vfx4_preshifted_sprites
 			lxi h, VFX4_ADDR
 			call sprite_update_labels
 
@@ -144,7 +144,7 @@ Permanent load: 1624, Current Load: 125330, Free Space: 85782
 			RAM_DISK_S_SCYTHE = RAM_DISK_S1
 			SCYTHE_ADDR = 9078
 			LOAD_FILE(SCYTHE_FILENAME_PTR, RAM_DISK_S_SCYTHE, SCYTHE_ADDR, SCYTHE_FILE_LEN)
-			lxi d, _scythe_preshifted_sprites
+			lxi d, scythe_preshifted_sprites
 			lxi h, SCYTHE_ADDR
 			call sprite_update_labels
 
@@ -152,7 +152,7 @@ Permanent load: 1624, Current Load: 125330, Free Space: 85782
 			RAM_DISK_S_SNOWFLAK = RAM_DISK_S1
 			SNOWFLAK_ADDR = 10632
 			LOAD_FILE(SNOWFLAK_FILENAME_PTR, RAM_DISK_S_SNOWFLAK, SNOWFLAK_ADDR, SNOWFLAK_FILE_LEN)
-			lxi d, _snowflake_preshifted_sprites
+			lxi d, snowflake_preshifted_sprites
 			lxi h, SNOWFLAK_ADDR
 			call sprite_update_labels
 
@@ -160,7 +160,7 @@ Permanent load: 1624, Current Load: 125330, Free Space: 85782
 			RAM_DISK_S_TNT = RAM_DISK_S1
 			TNT_ADDR = 11844
 			LOAD_FILE(TNT_FILENAME_PTR, RAM_DISK_S_TNT, TNT_ADDR, TNT_FILE_LEN)
-			lxi d, _tnt_preshifted_sprites
+			lxi d, tnt_preshifted_sprites
 			lxi h, TNT_ADDR
 			call sprite_update_labels
 
@@ -168,7 +168,7 @@ Permanent load: 1624, Current Load: 125330, Free Space: 85782
 			RAM_DISK_S_BACKS0 = RAM_DISK_S1
 			BACKS0_ADDR = 12900
 			LOAD_FILE(BACKS0_FILENAME_PTR, RAM_DISK_S_BACKS0, BACKS0_ADDR, BACKS0_FILE_LEN)
-			lxi d, _backs0_preshifted_sprites
+			lxi d, backs0_preshifted_sprites
 			lxi h, BACKS0_ADDR
 			call sprite_update_labels
 
@@ -185,14 +185,14 @@ Permanent load: 1624, Current Load: 125330, Free Space: 85782
 			SONG01_ADDR = 32768
 			LOAD_FILE(SONG01_FILENAME_PTR, RAM_DISK_S_SONG01, SONG01_ADDR, SONG01_FILE_LEN)
 			lxi d, SONG01_ADDR
-			lxi h, _song01_ay_reg_data_ptrs
+			lxi h, song01_ay_reg_data_ptrs
 			call v6_gc_init_song
 
 			RAM_DISK_M_KNIGHT = RAM_DISK_M2
 			RAM_DISK_S_KNIGHT = RAM_DISK_S2
 			KNIGHT_ADDR = 41316
 			LOAD_FILE(KNIGHT_FILENAME_PTR, RAM_DISK_S_KNIGHT, KNIGHT_ADDR, KNIGHT_FILE_LEN)
-			lxi d, _knight_preshifted_sprites
+			lxi d, knight_preshifted_sprites
 			lxi h, KNIGHT_ADDR
 			call sprite_update_labels
 
@@ -200,7 +200,7 @@ Permanent load: 1624, Current Load: 125330, Free Space: 85782
 			RAM_DISK_S_VAMPIRE = RAM_DISK_S2
 			VAMPIRE_ADDR = 57096
 			LOAD_FILE(VAMPIRE_FILENAME_PTR, RAM_DISK_S_VAMPIRE, VAMPIRE_ADDR, VAMPIRE_FILE_LEN)
-			lxi d, _vampire_preshifted_sprites
+			lxi d, vampire_preshifted_sprites
 			lxi h, VAMPIRE_ADDR
 			call sprite_update_labels
 
@@ -208,7 +208,7 @@ Permanent load: 1624, Current Load: 125330, Free Space: 85782
 			RAM_DISK_S_BOMB = RAM_DISK_S2
 			BOMB_ADDR = 64536
 			LOAD_FILE(BOMB_FILENAME_PTR, RAM_DISK_S_BOMB, BOMB_ADDR, BOMB_FILE_LEN)
-			lxi d, _bomb_preshifted_sprites
+			lxi d, bomb_preshifted_sprites
 			lxi h, BOMB_ADDR
 			call sprite_update_labels
 
@@ -222,7 +222,7 @@ Permanent load: 1624, Current Load: 125330, Free Space: 85782
 			RAM_DISK_S_HERO_L = RAM_DISK_S3
 			HERO_L_ADDR = 36540
 			LOAD_FILE(HERO_L_FILENAME_PTR, RAM_DISK_S_HERO_L, HERO_L_ADDR, HERO_L_FILE_LEN)
-			lxi d, _hero_l_preshifted_sprites
+			lxi d, hero_l_preshifted_sprites
 			lxi h, HERO_L_ADDR
 			call sprite_update_labels
 
@@ -230,7 +230,7 @@ Permanent load: 1624, Current Load: 125330, Free Space: 85782
 			RAM_DISK_S_HERO_R = RAM_DISK_S3
 			HERO_R_ADDR = 49716
 			LOAD_FILE(HERO_R_FILENAME_PTR, RAM_DISK_S_HERO_R, HERO_R_ADDR, HERO_R_FILE_LEN)
-			lxi d, _hero_r_preshifted_sprites
+			lxi d, hero_r_preshifted_sprites
 			lxi h, HERO_R_ADDR
 			call sprite_update_labels
 
@@ -238,7 +238,7 @@ Permanent load: 1624, Current Load: 125330, Free Space: 85782
 			RAM_DISK_S_VFX = RAM_DISK_S3
 			VFX_ADDR = 62892
 			LOAD_FILE(VFX_FILENAME_PTR, RAM_DISK_S_VFX, VFX_ADDR, VFX_FILE_LEN)
-			lxi d, _vfx_preshifted_sprites
+			lxi d, vfx_preshifted_sprites
 			lxi h, VFX_ADDR
 			call sprite_update_labels
 
