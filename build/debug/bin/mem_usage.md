@@ -1,72 +1,75 @@
 ## Main Ram memory usage:
-- memusage_gc_runtime_data: **3901**
-- memusage_monsters: **3194**
-- memusage_v6_build_uncludes: **2981**
-- memusage_hero: **2401**
-- memusage_bullets: **2229**
-- memusage_v6_sprite_copy_to_backbuf: **1219**
-- memusage_v6_sprite_copy_to_scr: **1203**
-- memusage_room: **993**
-- memusage_v6_sound: **807**
-- memusage_v6_utils: **535**
-- memusage_v6_os: **440**
-- memusage_ui: **392**
-- memusage_settings: **376**
-- memusage_main_menu: **345**
-- memusage_v6_sprite_draw: **340**
-- memusage_actor: **290**
-- memusage_v6_tiled_img_draw: **271**
-- memusage_v6_tile_draw: **269**
-- memusage_v6_text_ex_draw: **263**
-- memusage_v6_text_mono_draw: **229**
-- memusage_levels: **208**
-- memusage_backs: **199**
-- memusage_dialogs: **198**
-- memusage_v6_decal_draw: **173**
-- memusage_v6_sprite_erase: **168**
-- memusage_v6_controls: **166**
-- memusage_breakables: **163**
-- memusage_screen_utils: **161**
-- memusage_hero_triggers: **153**
-- memusage_score_data: **144**
-- memusage_stats: **133**
-- memusage_game: **130**
-- memusage_v6_interruption: **118**
-- memusage_v6_sprite: **105**
-- memusage_v6_back_draw: **97**
-- memusage_scores: **73**
-- memusage_score: **66**
-- memusage_levels_data: **64**
-- memusage_app_utils: **63**
-- memusage_app: **63**
-- memusage_credits: **53**
-- memusage_v6_sprite_draw_invis: **26**
-- memusage_v6: **3**
-- memusage_v6_macros: **0**
-- memusage_v6_consts: **0**
-- memusage_v6_build_consts: **0**
-- memusage_v6_sprite_draw_hit: **0**
-- memusage_consts: **0**
-- memusage_runtime_data: **0**
-- memusage_macros: **0**
+> Free ram: `3779`
 
- `Free ram: 3779`
-
----
+|Code Block| Usage|
+|-|-|
+|gc_runtime_data|3901|
+|monsters|3194|
+|v6_build_uncludes|2981|
+|hero|2401|
+|bullets|2229|
+|v6_sprite_copy_to_backbuf|1219|
+|v6_sprite_copy_to_scr|1203|
+|room|993|
+|v6_sound|807|
+|v6_utils|535|
+|v6_os|440|
+|ui|392|
+|settings|376|
+|main_menu|345|
+|v6_sprite_draw|340|
+|actor|290|
+|v6_tiled_img_draw|271|
+|v6_tile_draw|269|
+|v6_text_ex_draw|263|
+|v6_text_mono_draw|229|
+|levels|208|
+|backs|199|
+|dialogs|198|
+|v6_decal_draw|173|
+|v6_sprite_erase|168|
+|v6_controls|166|
+|breakables|163|
+|screen_utils|161|
+|hero_triggers|153|
+|score_data|144|
+|stats|133|
+|game|130|
+|v6_interruption|118|
+|v6_sprite|105|
+|v6_back_draw|97|
+|scores|73|
+|score|66|
+|levels_data|64|
+|app_utils|63|
+|app|63|
+|credits|53|
+|v6_sprite_draw_invis|26|
+|v6|3|
+|v6_macros|0|
+|v6_consts|0|
+|v6_build_consts|0|
+|v6_sprite_draw_hit|0|
+|consts|0|
+|runtime_data|0|
+|macros|0|
 
 ## Ram disk usage:
 ### `permanent` ram-disk usage:
+
+> Current Load: `1624`, Free Space: `211112`
+
 - bank0 addr8000
 	* FONT.BIN: addr: 32768, len: `1624`
 
   `Used: 1624, Free: 6568`
 
 
-`Current Load: 1624, Free Space: 211112`
-
-
 ---
 ### `level0` ram-disk usage:
+
+> Current Load: `125328`, Free Space: `85784`
+
 - bank0 addr0
 	* SKELETON.BIN: addr: 0, len: `9870`
 	* BURNER.BIN: addr: 9870, len: `9030`
@@ -111,9 +114,6 @@
 	* VFX.BIN: addr: 62890, len: `2184`
 
   `Used: 32306, Free: 462`
-
-`Permanent load: 1624, `
-`Current Load: 125328, Free Space: 85784`
 
 
 ---

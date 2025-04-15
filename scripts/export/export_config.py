@@ -330,8 +330,9 @@ def export_mem_usage(
 			continue
 		label, _, addrS = line.partition(' ')
 		addr = int(addrS[1:], 16)
-		if label.find("memusage") != -1:
-			labels_addrs[label] = addr
+		if label.startswith("memusage_"):
+			label_start = len("memusage_")
+			labels_addrs[label[label_start:]] = addr
 		if label == ram_free_space_label:
 			free_ram = addr
 	
@@ -350,11 +351,12 @@ def export_mem_usage(
 	# store the code block sizes into mem_usage_path
 	with open(mem_usage_path, "w") as file:
 		file.write(f"## Main Ram memory usage:\n")
+		file.write(f"> Free ram: `{free_ram}`\n\n")
+		file.write(f"|Code Block| Usage|\n")
+		file.write(f"|-|-|\n")
 		for label_name in code_blocks_sizes:
-			file.write(f"- {label_name}: **{code_blocks_sizes[label_name]}**\n")
+			file.write(f"|{label_name}|{code_blocks_sizes[label_name]}|\n")
 		file.write(f"\n")
-		file.write(f" `Free ram: {free_ram}`\n\n")
-		file.write(f"---\n\n")
-		
+				
 		file.write(f"## Ram disk usage:\n")
 		file.write(f"{ram_disk_usage_report}\n")
