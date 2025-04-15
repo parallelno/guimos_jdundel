@@ -28,12 +28,32 @@ def is_source_updated(asset_j_path):
 	return False
 
 def export_asm(asset_j_path, asm_meta_path, asm_data_path, bin_path, clean_tmp = True):
+	
+	with open(asset_j_path, "rb") as file:
+		asset_j = json.load(file)
 
-	# create a folder
-	export_dir = str(Path(asm_meta_path).parent) + "/"
-	if not os.path.exists(export_dir):
-		os.mkdir(export_dir)
+	label_prefix = common.path_to_basename(asset_j_path)
 
+	asm_ram_disk_data, data_relative_ptrs, ay_reg_data_labels = \
+		ramdisk_data_to_asm(asset_j_path, asset_j, label_prefix, clean_tmp)
+
+	asm_ram_data = meta_data_to_asm(label_prefix, data_relative_ptrs, ay_reg_data_labels)
+ 
+ 
+	# save the ram-disk asm
+	asm_data_dir = str(Path(asm_data_path).parent) + "/"
+	if not os.path.exists(asm_data_dir): 
+		os.mkdir(asm_data_dir)
+	with open(asm_data_path, "w") as file:
+		file.write(asm_ram_disk_data)
+ 
+	# compile and save the meta and ram-disk data 
+	build.export_fdd_file(asm_meta_path, asm_data_path, bin_path, asm_ram_data)
+
+	return True
+
+def ramdisk_data_to_asm(asset_j_path, asset_j, label_prefix, clean_tmp = True):
+	
 	try:
 		with open(asset_j_path, "rb") as file:
 			asset_j = json.load(file)
@@ -45,63 +65,89 @@ def export_asm(asset_j_path, asm_meta_path, asm_data_path, bin_path, clean_tmp =
 	except:
 		build.exit_error(f'export_music ERROR: reading file: {song_path}')
 
-	ay_reg_data_ptrs = ""
-	ay_reg_data_lens = [] 
+	ay_reg_data_lens = []
 
-	# save the asm
-	label_prefix = common.path_to_basename(asset_j_path)
+	# make the asm
+	asm = ""
+	# task stacks
+	# song's credits
+	asm += f'; {comment1}\n; {comment2}\n; {comment3}\n'
 	
-	with open(asm_data_path, "w") as file_inc:
-		# task stacks
-		# song's credits
-		file_inc.write(f'; {comment1}\n; {comment2}\n; {comment3}\n')
+	# org
+	
+	data_relative_ptrs = {}
+	addr_relative = 0
+
+	# add the v6_gc_buffer
+	GC_BUFFER_SIZE = 0x100
+	GC_TASKS = 14
+
+	asm += f'.org 0\n'
+	asm += f'GC_BUFFER_SIZE	= {GC_BUFFER_SIZE}\n'
+	asm += f'GC_TASKS		= {GC_TASKS}\n'
+	asm += f'.align GC_BUFFER_SIZE\n'
+	asm += f'; these are GC_TASKS buffers GC_BUFFER_SIZE bytes long\n'
+	asm += f'; MUST BE ALIGNED by 0x100\n'
+	asm += f'_v6_gc_buffer:\n'
+	asm += f'			.storage GC_BUFFER_SIZE * GC_TASKS, $00	\n\n'
+
+	data_relative_ptrs['_v6_gc_buffer'] = addr_relative
+	addr_relative += GC_BUFFER_SIZE * GC_TASKS
+
+	# export reg data and build reg data asm block
+	for i, c in enumerate(reg_data[0:14]):
+		bin_file = f"{label_prefix}{i:02d}{build.EXT_BIN}"
+		zx0File = f"{label_prefix}{i:02d}{build.packer_ext}"
+		with open(bin_file, "wb") as f:
+			f.write(c)
 		
-		# org
-		file_inc.write(f'.org 0\n')
+		common.delete_file(zx0File)
+		common.run_command(f"{build.packer_path.replace('/', '\\')} -w 256 {bin_file} {zx0File}")
 
-		for i, c in enumerate(reg_data[0:14]):
-			bin_file = f"{label_prefix}{i:02d}{build.EXT_BIN}"
-			zx0File = f"{label_prefix}{i:02d}{build.packer_ext}"
-			with open(bin_file, "wb") as f:
-				f.write(c)
-			
+		with open(zx0File, "rb") as f:
+			dbname = f"_{label_prefix}_ay_reg_data{i:02d}_relative"
+			data = f.read()
+			asm += f'{dbname}: .byte ' + ",".join("$%02x" % x for x in data) + "\n"
+			ay_reg_data_lens.append(len(data))
+
+		if clean_tmp:
+			print("export_music: clean up tmp resources")
+			common.delete_file(bin_file)
 			common.delete_file(zx0File)
-			common.run_command(f"{build.packer_path.replace('/', '\\')} -w 256 {bin_file} {zx0File}")
 
-			with open(zx0File, "rb") as f:
-				dbname = f"_{label_prefix}_ay_reg_data{i:02d}_relative"
-				data = f.read()
-				file_inc.write(f'{dbname}: .byte ' + ",".join("$%02x" % x for x in data) + "\n")
-				ay_reg_data_lens.append(len(data))
 
-			if clean_tmp:
-				print("export_music: clean up tmp resources")
-				common.delete_file(bin_file)
-				common.delete_file(zx0File)
-
-	# reg_data ptrs. 
-	addr = 0
-	ptrs = f'{label_prefix}_ay_reg_data_ptrs:\n			.word '
+	# convert ay register data lengths to relative ptrs
+	ay_reg_data_labels = []
 	for i, reg_data_len in enumerate(ay_reg_data_lens):
 		label_name = f'_{label_prefix}_ay_reg_data{i:02d}_relative'
-		ay_reg_data_ptrs += f'{label_name} = {addr}\n'
-		ptrs += f'{label_name}, '
-		addr += reg_data_len 
+		data_relative_ptrs[label_name] = addr_relative
+		addr_relative += reg_data_len
+		ay_reg_data_labels.append(label_name)
 
-	ay_reg_data_ptrs += '\n'
-	ay_reg_data_ptrs += ptrs
-	ay_reg_data_ptrs += '\n'
+	return asm, data_relative_ptrs, ay_reg_data_labels
 
-	# save the bin 
-	build.export_fdd_file(asm_meta_path, asm_data_path, bin_path, ay_reg_data_ptrs)
+def meta_data_to_asm(label_prefix, data_relative_ptrs, ay_reg_data_labels):
+	asm = ""
 
-	return True
+	asm += "; relative labels\n"
+	for label, val in data_relative_ptrs.items():
+		asm += f"{label} = 0x{val:04x}\n"
+	asm += "\n\n"
+
+	# reg_data ptrs.
+	asm += f'{label_prefix}_ay_reg_data_ptrs:\n			.word '
+	for label_name in ay_reg_data_labels:
+		asm += f'{label_name}, '
+	asm += "\n\n"
+
+	return asm
 
 
 def chunker(seq, size):
 	return (seq[pos:pos + size] for pos in range(0, len(seq), size))
 
 def drop_comment(f):
+	
 	comment = ''
 	print("export_music: song name/credits: ")
 	while True:

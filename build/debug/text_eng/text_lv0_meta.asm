@@ -9,7 +9,7 @@ TEXT_LV0_FILENAME_PTR:
 			.byte "TEXT_LV0" ; filename
 			.byte "BIN" ; extension
 
-; relative text labels
+; relative labels
 _main_menu_settings = 0x0002
 _main_menu_license = 0x002a
 _scores_screen_score_title = 0x0057

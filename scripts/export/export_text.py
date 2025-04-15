@@ -29,36 +29,35 @@ def export_asm(
 
 	with open(asset_j_path, "rb") as file:
 		asset_j = json.load(file)
-	
-	asset_name = common.path_to_basename(asset_j_path)
 
-	asm_ram_disk_data, data_ptrs = ramdisk_data_to_asm(asset_j_path, asset_j, localization_id)
+	asm_ram_disk_data, data_relative_ptrs = \
+		ramdisk_data_to_asm(asset_j_path, asset_j, localization_id)
 
-	asm_ram_data = meta_data_to_asm(data_ptrs)
+	asm_ram_data = meta_data_to_asm(data_relative_ptrs)
 
-	# save the asm gfx
+	# save the ram-disk asm
 	asm_gfx_dir = str(Path(asm_data_path).parent) + "/"
 	if not os.path.exists(asm_gfx_dir):
 		os.mkdir(asm_gfx_dir)
 	with open(asm_data_path, "w") as file:
 		file.write(asm_ram_disk_data)
 	
-	# compile and save the gfx bin files
+	# compile and save the meta and ram-disk data
 	build.export_fdd_file(asm_meta_path, asm_data_path, bin_path, asm_ram_data)
 
 	return True
 
-def meta_data_to_asm(data_ptrs):
+def meta_data_to_asm(data_relative_ptrs):
 	asm = ""
 
-	asm += "; relative text labels\n"
-	for label, val in data_ptrs.items():
+	asm += "; relative labels\n"
+	for label, val in data_relative_ptrs.items():
 		asm += f"{label} = 0x{val:04x}\n"
 
 	return asm
 
 def ramdisk_data_to_asm(asset_j_path, asset_j, localization_id):
-	data_local_ptrs = {}
+	data_relative_ptrs = {}
 	text_local_addr_offset = 2 # added safety pair of bytes for reading by POP B
 	asm = ""
 
@@ -124,7 +123,7 @@ def ramdisk_data_to_asm(asset_j_path, asset_j, localization_id):
 
 			copy_text_block_len = text_block_len
 			copy_text_block_len += 2 # scr pos
-			data_local_ptrs[label] = text_local_addr_offset
+			data_relative_ptrs[label] = text_local_addr_offset
 			text_local_addr_offset += copy_text_block_len
 			text_local_addr_offset += 2 # length
 			text_local_addr_offset += build.SAFE_WORD_LEN
@@ -143,7 +142,7 @@ def ramdisk_data_to_asm(asset_j_path, asset_j, localization_id):
 			asm += f"			.byte {pos_y}, {pos_x} ; scr pos (y, x)\n"
 			asm += text_block_asm
 
-	return asm, data_local_ptrs
+	return asm, data_relative_ptrs
 
 
 #=====================================================

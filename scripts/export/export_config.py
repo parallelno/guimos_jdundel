@@ -350,7 +350,7 @@ def export_mem_usage(
 	# store the code block sizes into mem_usage_path
 	with open(mem_usage_path, "w") as file:
 		file.write(f"## Main Ram memory usage:\n")
-		file.write(f"> Free ram: `{free_ram}`\n\n")
+		file.write(f"> Free Space: `{free_ram}`\n\n")
 		file.write(f"|Assembly| Usage|\n")
 		file.write(f"|-|-|\n")
 		for label_name in code_blocks_sizes:

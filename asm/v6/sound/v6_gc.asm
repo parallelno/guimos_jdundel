@@ -21,7 +21,7 @@ setting_music:
 
 v6_gc_init:
 			call v6_gc_mute
-			call v6_gc_clear_buffers
+			;call v6_gc_clear_buffers ; commented out because it's already erased in the file
 			ret
 
 ; init a new song
@@ -40,8 +40,23 @@ v6_gc_init_song:
 			pop h
 			; hl - points to the array of ptrs to the reg data
 			; de - points to the song data
+			push d
 			mvi c, GC_TASKS
 			call update_labels_len
+			
+			pop h
+			; hl - points to the song data
+			; update _v6_gc_buffer ptrs
+			lxi d, _v6_gc_buffer
+			dad d
+
+			; hl - absolute _v6_gc_buffer ptr
+			mov a, h
+			sta v6_gc_buffer_ptr0
+			;sta v6_gc_buffer_ptr1
+			adi GC_TASKS - 1
+			sta v6_gc_buffer_ptr2
+			
 			ret
 
 
@@ -109,7 +124,8 @@ v6_gc_tasks_init:
 			; store the buffer addr to a task stack
 			mov a, c
 			rrc
-			adi >v6_gc_buffer
+@v6_gc_buffer_ptr:			
+			adi TEMP_ADDR ; >v6_gc_buffer
 			mov h, a
 			mov l, b
 			push h
@@ -141,7 +157,7 @@ v6_gc_tasks_init:
 @restore_sp: lxi sp, TEMP_ADDR
 			ei
 			ret
-
+v6_gc_buffer_ptr0 = @v6_gc_buffer_ptr + 1
 
 ; Set the current task stack pointer to the first task stack pointer
 v6_gc_scheduler_init:
@@ -149,13 +165,14 @@ v6_gc_scheduler_init:
 			shld v6_gc_current_task_spp
 			ret
 
-
+/*
 ; it clears the last 14 bytes of every buffer
-; to prevent player to play gugbage data
+; to prevent player to play garbage data
 ; when it repeats the current song or
 ; play a new one
 v6_gc_clear_buffers:
-			mvi h, >v6_gc_buffer
+@v6_gc_buffer_ptr:
+			mvi h, TEMP_ADDR ; >v6_gc_buffer
 			mvi a, >v6_gc_buffer_end
 @next_buff:
 			mvi l, -GC_TASKS
@@ -167,7 +184,8 @@ v6_gc_clear_buffers:
 			cmp h
 			jnz @next_buff
 			ret
-
+v6_gc_buffer_ptr1 = @v6_gc_buffer_ptr + 1
+*/
 
 ; this func restores the context of the current task
 ; then calls v6_gc_unpack to let it continue unpacking reg_data
@@ -360,7 +378,8 @@ v6_gc_unpack:
 v6_gc_ay_update:
 			mvi e, GC_TASKS - 1
 			mov c, m
-			mvi b, (>v6_gc_buffer) + GC_TASKS - 1
+@v6_gc_buffer_ptr:			
+			mvi b, TEMP_ADDR ; (>v6_gc_buffer) + GC_TASKS - 1
 			ldax b
 			cpi $ff
 			jz @doNotSendEnvData
@@ -384,6 +403,7 @@ v6_gc_ay_update:
 
 @doNotSendData:
 			ret
+v6_gc_buffer_ptr2 = @v6_gc_buffer_ptr + 1
 
 ; to mute the player. It can continue the song after unmute
 ; to call from this module: call v6_gc_mute

@@ -83,7 +83,7 @@ def get_usage_report(load_name, allocation, free_space, segments):
 			total_used += used_len			
 
 	report += "\n"
-	report += f"> Current Load: `{total_used}`, Free Space: `{free_space}`\n\n"
+	report += f"> Used: `{total_used}`, Free Space: `{free_space}`\n\n"
 	report += seg_report
 	report += "\n---\n"
 	return report
@@ -196,6 +196,9 @@ def pack_files(load_name, assets, segments):
 def get_load_asm(load_name, allocation, segments):
 	
 	asm = ""
+	asm += f"memusage_loads_{load_name}:\n"
+	asm += f"; TODO: think of convoluting the loading function into an array and the loop\n"
+
 	asm += f";===============================================\n"
 	asm += f"; {load_name}\n"
 	asm += f";===============================================\n"
@@ -263,4 +266,6 @@ def get_load_asm(load_name, allocation, segments):
 			asm += f"\n"
 
 	asm += f".endf\n"
+	asm += f"memusage_loads_{load_name}_end:\n"
+
 	return asm

@@ -1,3 +1,5 @@
+memusage_loads_permanent:
+; TODO: think of convoluting the loading function into an array and the loop
 ;===============================================
 ; permanent
 ;===============================================
@@ -13,6 +15,9 @@
 			call text_ex_init_font
 
 .endf
+memusage_loads_permanent_end:
+memusage_loads_level0:
+; TODO: think of convoluting the loading function into an array and the loop
 ;===============================================
 ; level0
 ;===============================================
@@ -42,13 +47,21 @@
 			lxi h, SWORD_ADDR
 			call sprite_update_labels
 
-			RAM_DISK_M_DECALS0 = RAM_DISK_M0
-			RAM_DISK_S_DECALS0 = RAM_DISK_S0
-			DECALS0_ADDR = 27828
-			LOAD_FILE(DECALS0_FILENAME_PTR, RAM_DISK_S_DECALS0, DECALS0_ADDR, DECALS0_FILE_LEN)
-			lxi h, decals0_gfx_ptrs
-			lxi b, DECALS0_ADDR
-			call update_labels_eod
+			RAM_DISK_M_VFX4 = RAM_DISK_M0
+			RAM_DISK_S_VFX4 = RAM_DISK_S0
+			VFX4_ADDR = 27828
+			LOAD_FILE(VFX4_FILENAME_PTR, RAM_DISK_S_VFX4, VFX4_ADDR, VFX4_FILE_LEN)
+			lxi d, vfx4_preshifted_sprites
+			lxi h, VFX4_ADDR
+			call sprite_update_labels
+
+			RAM_DISK_M_BOMB = RAM_DISK_M0
+			RAM_DISK_S_BOMB = RAM_DISK_S0
+			BOMB_ADDR = 31716
+			LOAD_FILE(BOMB_FILENAME_PTR, RAM_DISK_S_BOMB, BOMB_ADDR, BOMB_FILE_LEN)
+			lxi d, bomb_preshifted_sprites
+			lxi h, BOMB_ADDR
+			call sprite_update_labels
 
 			RAM_DISK_M_LV0_GFX = RAM_DISK_M0
 			RAM_DISK_S_LV0_GFX = RAM_DISK_S0
@@ -64,25 +77,25 @@
 			lxi h, TI0_DATA_ADDR
 			call tiled_img_init_idxs
 
+			RAM_DISK_M_VAMPIRE = RAM_DISK_M1
+			RAM_DISK_S_VAMPIRE = RAM_DISK_S1
+			VAMPIRE_ADDR = 0
+			LOAD_FILE(VAMPIRE_FILENAME_PTR, RAM_DISK_S_VAMPIRE, VAMPIRE_ADDR, VAMPIRE_FILE_LEN)
+			lxi d, vampire_preshifted_sprites
+			lxi h, VAMPIRE_ADDR
+			call sprite_update_labels
+
 			RAM_DISK_M_TEXT_LV0 = RAM_DISK_M1
 			RAM_DISK_S_TEXT_LV0 = RAM_DISK_S1
-			TEXT_LV0_ADDR = 0
+			TEXT_LV0_ADDR = 7440
 			LOAD_FILE(TEXT_LV0_FILENAME_PTR, RAM_DISK_S_TEXT_LV0, TEXT_LV0_ADDR, TEXT_LV0_FILE_LEN)
 			mvi a, RAM_DISK_S_TEXT_LV0
 			lxi h, TEXT_LV0_ADDR
 			call text_ex_init_text
 
-			RAM_DISK_M_VFX4 = RAM_DISK_M1
-			RAM_DISK_S_VFX4 = RAM_DISK_S1
-			VFX4_ADDR = 5190
-			LOAD_FILE(VFX4_FILENAME_PTR, RAM_DISK_S_VFX4, VFX4_ADDR, VFX4_FILE_LEN)
-			lxi d, vfx4_preshifted_sprites
-			lxi h, VFX4_ADDR
-			call sprite_update_labels
-
 			RAM_DISK_M_SCYTHE = RAM_DISK_M1
 			RAM_DISK_S_SCYTHE = RAM_DISK_S1
-			SCYTHE_ADDR = 9078
+			SCYTHE_ADDR = 12630
 			LOAD_FILE(SCYTHE_FILENAME_PTR, RAM_DISK_S_SCYTHE, SCYTHE_ADDR, SCYTHE_FILE_LEN)
 			lxi d, scythe_preshifted_sprites
 			lxi h, SCYTHE_ADDR
@@ -90,7 +103,7 @@
 
 			RAM_DISK_M_SNOWFLAK = RAM_DISK_M1
 			RAM_DISK_S_SNOWFLAK = RAM_DISK_S1
-			SNOWFLAK_ADDR = 10632
+			SNOWFLAK_ADDR = 14184
 			LOAD_FILE(SNOWFLAK_FILENAME_PTR, RAM_DISK_S_SNOWFLAK, SNOWFLAK_ADDR, SNOWFLAK_FILE_LEN)
 			lxi d, snowflake_preshifted_sprites
 			lxi h, SNOWFLAK_ADDR
@@ -98,7 +111,7 @@
 
 			RAM_DISK_M_TNT = RAM_DISK_M1
 			RAM_DISK_S_TNT = RAM_DISK_S1
-			TNT_ADDR = 11844
+			TNT_ADDR = 15396
 			LOAD_FILE(TNT_FILENAME_PTR, RAM_DISK_S_TNT, TNT_ADDR, TNT_FILE_LEN)
 			lxi d, tnt_preshifted_sprites
 			lxi h, TNT_ADDR
@@ -106,7 +119,7 @@
 
 			RAM_DISK_M_BACKS0 = RAM_DISK_M1
 			RAM_DISK_S_BACKS0 = RAM_DISK_S1
-			BACKS0_ADDR = 12900
+			BACKS0_ADDR = 16452
 			LOAD_FILE(BACKS0_FILENAME_PTR, RAM_DISK_S_BACKS0, BACKS0_ADDR, BACKS0_FILE_LEN)
 			lxi d, backs0_preshifted_sprites
 			lxi h, BACKS0_ADDR
@@ -130,27 +143,19 @@
 
 			RAM_DISK_M_KNIGHT = RAM_DISK_M2
 			RAM_DISK_S_KNIGHT = RAM_DISK_S2
-			KNIGHT_ADDR = 41316
+			KNIGHT_ADDR = 44900
 			LOAD_FILE(KNIGHT_FILENAME_PTR, RAM_DISK_S_KNIGHT, KNIGHT_ADDR, KNIGHT_FILE_LEN)
 			lxi d, knight_preshifted_sprites
 			lxi h, KNIGHT_ADDR
 			call sprite_update_labels
 
-			RAM_DISK_M_VAMPIRE = RAM_DISK_M2
-			RAM_DISK_S_VAMPIRE = RAM_DISK_S2
-			VAMPIRE_ADDR = 57096
-			LOAD_FILE(VAMPIRE_FILENAME_PTR, RAM_DISK_S_VAMPIRE, VAMPIRE_ADDR, VAMPIRE_FILE_LEN)
-			lxi d, vampire_preshifted_sprites
-			lxi h, VAMPIRE_ADDR
-			call sprite_update_labels
-
-			RAM_DISK_M_BOMB = RAM_DISK_M2
-			RAM_DISK_S_BOMB = RAM_DISK_S2
-			BOMB_ADDR = 64536
-			LOAD_FILE(BOMB_FILENAME_PTR, RAM_DISK_S_BOMB, BOMB_ADDR, BOMB_FILE_LEN)
-			lxi d, bomb_preshifted_sprites
-			lxi h, BOMB_ADDR
-			call sprite_update_labels
+			RAM_DISK_M_DECALS0 = RAM_DISK_M2
+			RAM_DISK_S_DECALS0 = RAM_DISK_S2
+			DECALS0_ADDR = 60680
+			LOAD_FILE(DECALS0_FILENAME_PTR, RAM_DISK_S_DECALS0, DECALS0_ADDR, DECALS0_FILE_LEN)
+			lxi h, decals0_gfx_ptrs
+			lxi b, DECALS0_ADDR
+			call update_labels_eod
 
 			RAM_DISK_M_LV0_DATA = RAM_DISK_M3
 			RAM_DISK_S_LV0_DATA = RAM_DISK_S3
@@ -183,3 +188,4 @@
 			call sprite_update_labels
 
 .endf
+memusage_loads_level0_end:

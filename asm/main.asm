@@ -3,7 +3,7 @@
 .setting "OmitUnusedFunctions", true
 .org	0x100
 
-.include "v6/v6.asm" ; This mast be included before any other code
+.include "v6/v6.asm" ; This must be included before any other code
 
 .include "app/app_consts.asm"
 .include "app/levels/room_consts.asm"
@@ -56,10 +56,9 @@
 .include "app/app.asm"
 memusage_end:
 
-executible_end:
-RAM_FREE_SPACE = BUFFERS_START_ADDR - executible_end
+RAM_FREE_SPACE = BUFFERS_START_ADDR - memusage_end
 
-.if executible_end >= BUFFERS_START_ADDR
+.if memusage_end >= BUFFERS_START_ADDR
 	.error "Runtime data buffer overlaps the stack buffer at addr (" runtime_data_end ")." 
 	.error "It must be within the range " BUFFERS_END_ADDR "."
 .endif

@@ -496,8 +496,8 @@ def get_cpm_filename(filename, ext = EXT_BIN):
 def export_fdd_file(asm_meta_path, asm_data_path, bin_path, asm_meta_body = ""):
 	source_name = common.path_to_basename(bin_path) 
 	
-	# compile the asm
-	compile_asm(asm_data_path, bin_path)
+	# compile the ram-disk asm
+	compile_asm(asm_data_path, bin_path) 
 	
 	file_len = os.path.getsize(bin_path)
 	
