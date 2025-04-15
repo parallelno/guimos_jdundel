@@ -1,3 +1,6 @@
+memusage_stats:
+;=======================================================
+
 END_GAME_LINE_SPACING	= 12
 
 .if LOCALIZATION == 0

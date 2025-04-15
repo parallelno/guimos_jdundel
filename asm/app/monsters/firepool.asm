@@ -1,4 +1,6 @@
-; lava pool is a quest monster. it can be destroied by snowflake weapon
+memusage_firepool:
+;========================================================
+; firepool is a quest monster. it can be destroied by snowflake weapon
 
 ; statuses.
 ; personal actor statuses must be in a range of 0 to ACTOR_STATUS_CUSTOM including.

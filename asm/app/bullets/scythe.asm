@@ -1,3 +1,5 @@
+memusage_scythe:
+;=================================================
 ; bullet AI:
 ; init:
 ;	status = move_forward

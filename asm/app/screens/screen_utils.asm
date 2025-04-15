@@ -1,3 +1,6 @@
+memusage_screen_utils:
+;=======================================================
+
 screen_space_checking:
 			; return if non-space key was pressed
 			lda action_code

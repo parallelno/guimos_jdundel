@@ -1,3 +1,6 @@
+memusage_vfx:
+;=================================================
+
 ; init a preshifted VFX
 ; in:
 ; bc - vfx pos_xy

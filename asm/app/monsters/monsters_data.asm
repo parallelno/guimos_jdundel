@@ -1,3 +1,5 @@
+memusage_monsters_data:
+
 ; a newly inited room uses this list to call a monster Init func
 ; it's ordered by monster_id (see tiledata format in levels_data.asm)
 monsters_inits:

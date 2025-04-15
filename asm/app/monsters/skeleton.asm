@@ -1,3 +1,4 @@
+memusage_skeleton:
 ; mob AI:
 ; init:
 ;	 status = detectHeroInit

@@ -1,3 +1,6 @@
+memusage_scores:
+;=======================================================
+
 SCORES_LINE_SPACING = 14
 
 scores_screen:

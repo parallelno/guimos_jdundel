@@ -1,3 +1,6 @@
+memusage_main_menu:
+;=======================================================
+
 MAIN_MENU_CURSOR_POS_X		= $5800 ; .word
 MAIN_MENU_CURSOR_POS_Y_MAX	= $8100 ; .word
 

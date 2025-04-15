@@ -1,3 +1,5 @@
+memusage_sparker:
+
 ;=========================================================
 ; This is a non-gameplay bullet
 ; It is used for one of the hero death visual sequence

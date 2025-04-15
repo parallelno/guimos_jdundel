@@ -1,4 +1,3 @@
-memusage_v6 $0100
 memusage_v6_macros $0103
 BY_BC $0001
 BY_DE $0002
@@ -1680,7 +1679,6 @@ LOAD_FILE_22.odd_len $0000
 LOAD_FILE_22.recs $0012
 LOAD_FILE_22.last_rec $0008
 v6_main_init $25b9
-memusage_consts $25c5
 GAME_REQ $0080
 GLOBAL_REQ_NONE $0000
 GLOBAL_REQ_MAIN_MENU $0001
@@ -2072,7 +2070,7 @@ os_filename_ext $7efa
 os_file_data_ptr $7eff
 os_io_data_end $7f00
 OS_IO_DATA_END $0010
-memusage_gc_runtime_data $25c5
+memusage_v6_gc_runtime_data $25c5
 v6_gc_buffer $2600
 v6_gc_buffer_end $3400
 v6_gc_task_stack $3400
@@ -2083,7 +2081,6 @@ v6_gc_current_task_spp $34fc
 v6_gc_buffer_idx $34fe
 v6_gc_task_id $34ff
 v6_song_reg_data_ptrs_end $3500
-memusage_macros $3502
 BY_A $000a
 memusage_levels_data $3502
 room_tiledata_funcs $3502
@@ -2147,11 +2144,12 @@ LXI_B_TO_DIFF.offset_addr $0005
 actor_to_hero_distance $375c
 @check_pos_x_diff $3764
 @check_pos_y_diff $3770
-memusage_hero $3775
+memusage_hero_data $3775
 hero_collision_func_table $3775
 hero_tile_func_tbl $37b5
 hero_res_func_tbl $37f1
 hero_cont_func_tbl $382d
+memusage_hero_update $3869
 hero_dead $3869
 hero_dead_fade_init_gb $3881
 HERO_STATUS_DEATH_FADE_UPDATE_RATE $0011
@@ -2236,6 +2234,7 @@ hero_blink $3d4a
 @state_blink $3d4a
 hero_invincible_init $3d56
 hero_invincible_update $3d65
+memusage_hero_collision $3d6e
 hero_no_collision_no_tiledata $3d6e
 hero_no_collision $3d7b
 hero_check_collision_top_left $3d8a
@@ -2252,6 +2251,7 @@ hero_move_tile_tr $3e56
 hero_move_tile_tl $3e69
 hero_move_horizontally $3e7c
 hero_move_vertically $3e85
+memusage_hero_tile_funcs $3e8e
 hero_tile_func_item $3e8e
 hero_tile_func_resource $3eb7
 FIND_INSTANCE.@search_loop $3eca
@@ -2280,6 +2280,7 @@ hero_cont_func_chest_spoon $3f9a
 @tile_x3 $000c
 @tile_y3 $0007
 hero_cont_func_chest_weapon0 $3fd8
+memusage_hero_render $3fd9
 hero_draw $3fd9
 @spriteL $3fee
 @spriteR $3ff0
@@ -2292,11 +2293,13 @@ hero_copy_to_scr $4024
 @keepCurrentTRX $4052
 @keepCurrentTRY $4058
 hero_erase $4062
+memusage_hero $4087
 hero_game_init $4087
 hero_respawn $40ab
 hero_room_init $40be
-memusage_monsters $40d6
+memusage_monsters_data $40d6
 monsters_inits $40d6
+memusage_skeleton $40fe
 ACTOR_STATUS_SKELETON_DETECT_HERO_INIT $001c
 ACTOR_STATUS_SKELETON_DETECT_HERO $0001
 ACTOR_STATUS_SKELETON_SHOOT_PREP $0002
@@ -2393,8 +2396,10 @@ LXI_H_TO_DIFF_3.offset_addr $0010
 HL_ADVANCE_21.diff_addr $fffffffffffffff3
 LXI_B_TO_DIFF_11.offset_addr $fffffffffffffff3
 HL_ADVANCE_22.diff_addr $0003
+memusage_skeleton_quest $4307
 skeleton_quest_init $4307
 @return_4 $4313
+memusage_vampire $4316
 ACTOR_STATUS_VAMPIRE_DETECT_HERO_INIT $001c
 ACTOR_STATUS_VAMPIRE_DETECT_HERO $0001
 ACTOR_STATUS_VAMPIRE_SHOOT_PREP $0002
@@ -2484,6 +2489,7 @@ LXI_H_TO_DIFF_6.offset_addr $0010
 HL_ADVANCE_41.diff_addr $fffffffffffffff3
 LXI_B_TO_DIFF_19.offset_addr $fffffffffffffff3
 HL_ADVANCE_42.diff_addr $0003
+memusage_burner $44fe
 ACTOR_STATUS_BURNER_DETECT_HERO_INIT $0000
 ACTOR_STATUS_BURNER_DETECT_HERO $0004
 ACTOR_STATUS_BURNER_DASH_PREP $0008
@@ -2582,6 +2588,7 @@ LXI_H_TO_DIFF_9.offset_addr $0010
 HL_ADVANCE_63.diff_addr $fffffffffffffff3
 LXI_B_TO_DIFF_29.offset_addr $fffffffffffffff3
 HL_ADVANCE_64.diff_addr $0003
+memusage_burner_quest $4741
 BURNER_QUEST_SPEED $0200
 BURNER_QUEST_MAX_POS_X $00ef
 BURNER_QUEST_MAX_POS_Y $00e1
@@ -2609,6 +2616,7 @@ LXI_B_TO_DIFF_31.offset_addr $fffffffffffffff7
 HL_ADVANCE_68.diff_addr $0006
 LXI_B_TO_DIFF_32.offset_addr $0006
 @death $47a9
+memusage_knight $47ad
 ACTOR_STATUS_KNIGHT_DETECT_HERO_INIT $001c
 ACTOR_STATUS_KNIGHT_DETECT_HERO $0001
 ACTOR_STATUS_KNIGHT_DEFENCE_INIT $0002
@@ -2728,6 +2736,7 @@ LXI_H_TO_DIFF_13.offset_addr $0010
 HL_ADVANCE_93.diff_addr $fffffffffffffff3
 LXI_B_TO_DIFF_47.offset_addr $fffffffffffffff3
 HL_ADVANCE_94.diff_addr $0003
+memusage_knight_heavy $4a35
 KNIGHT_QUEST_DETECT_HERO_DISTANCE $003c
 KNIGHT_QUEST_SPEED $0400
 KNIGHT_QUEST_MAX_POS_Y $00e1
@@ -2771,6 +2780,7 @@ HL_ADVANCE_105.diff_addr $fffffffffffffff9
 LXI_B_TO_DIFF_53.offset_addr $fffffffffffffff9
 @speed_y_positive_6 $4b09
 @speed_y_neg_2 $4b0c
+memusage_firepool $4b16
 ACTOR_STATUS_FIREPOOL_IDLE $0000
 ACTOR_STATUS_FIREPOOL_DETECT_HERO_TIME $0032
 ACTOR_STATUS_FIREPOOL_SHOOT_PREP_TIME $001e
@@ -2801,6 +2811,7 @@ LXI_H_TO_DIFF_16.offset_addr $0010
 HL_ADVANCE_111.diff_addr $fffffffffffffff3
 LXI_B_TO_DIFF_55.offset_addr $fffffffffffffff3
 HL_ADVANCE_112.diff_addr $0003
+memusage_monsters $4bb9
 monsters_init $4bb9
 monster_init $4bc4
 @no_spawn_rate_check $4be7
@@ -2867,9 +2878,9 @@ LXI_D_TO_DIFF_20.offset_addr $ffffffffffffffe4
 HL_ADVANCE_144.diff_addr $ffffffffffffffea
 LXI_H_TO_DIFF_18.offset_addr $ffffffffffffffea
 monster_update_freeze $4d49
-memusage_bullets $4d50
 VFX_ANIM_SPEED $00c8
 VFX_STATUS_DEFAULT $0000
+memusage_sword $4d50
 sword_func_container $4d50
 FIND_INSTANCE_2.@search_loop $4d65
 FIND_INSTANCE_2.@check_counter $4d6b
@@ -2935,6 +2946,7 @@ LXI_D_TO_DIFF_21.offset_addr $000e
 HL_ADVANCE_149.diff_addr $fffffffffffffff3
 LXI_B_TO_DIFF_59.offset_addr $fffffffffffffff3
 HL_ADVANCE_150.diff_addr $0003
+memusage_snowflake $4f7d
 SNOWFLAKE_STATUS_ATTACK $0000
 SNOWFLAKE_STATUS_INVIS_TIME $0006
 SNOWFLAKE_STATUS_ATTACK_TIME $001e
@@ -2987,6 +2999,7 @@ LXI_D_TO_DIFF_22.offset_addr $000e
 HL_ADVANCE_157.diff_addr $fffffffffffffff3
 LXI_B_TO_DIFF_62.offset_addr $fffffffffffffff3
 HL_ADVANCE_158.diff_addr $0003
+memusage_scythe $50bf
 SCYTHE_MOVE_SPEED $0400
 SCYTHE_MOVE_SPEED_NEG $fc00
 SCYTHE_STATUS_MOVE_THROW $0000
@@ -3047,6 +3060,7 @@ LXI_H_TO_DIFF_24.offset_addr $0010
 HL_ADVANCE_163.diff_addr $fffffffffffffff3
 LXI_B_TO_DIFF_64.offset_addr $fffffffffffffff3
 HL_ADVANCE_164.diff_addr $0003
+memusage_bomb $5215
 BOMB_MOVE_SPEED $0400
 BOMB_MOVE_SPEED_NEG $fc00
 BOMB_STATUS_MOVE_THROW $0000
@@ -3082,6 +3096,7 @@ LXI_H_TO_DIFF_26.offset_addr $0010
 HL_ADVANCE_169.diff_addr $fffffffffffffff3
 LXI_B_TO_DIFF_66.offset_addr $fffffffffffffff3
 HL_ADVANCE_170.diff_addr $0003
+memusage_sparker $52f0
 SPARKER_MOVE_SPEED $0400
 SPARKER_MOVE_SPEED_NEG $fc00
 SPARKER_STATUS_MOVE $0000
@@ -3105,6 +3120,7 @@ L_ADVANCE_18.mvi_val $fff4
 L_ADVANCE_19.diff_addr $fffffffffffffffc
 L_ADVANCE_19.mvi_val $fffc
 @vfx_spawn_rate $5397
+memusage_fart $5398
 FART_STATUS_LIFE $0000
 FART_STATUS_LIFE_TIME $0014
 fart_init $5398
@@ -3124,6 +3140,7 @@ L_ADVANCE_22.mvi_val $fff2
 @die_6 $53ef
 L_ADVANCE_23.diff_addr $fffffffffffffffc
 L_ADVANCE_23.mvi_val $fffc
+memusage_vfx $53fa
 vfx_init4 $53fa
 L_ADVANCE_24.diff_addr $0004
 L_ADVANCE_24.mvi_val $0004
@@ -3151,6 +3168,7 @@ LXI_H_TO_DIFF_31.offset_addr $0010
 HL_ADVANCE_180.diff_addr $fffffffffffffff3
 LXI_B_TO_DIFF_69.offset_addr $fffffffffffffff3
 HL_ADVANCE_181.diff_addr $0003
+memusage_cursor $5505
 CURSOR_STATUS_IDLE $0000
 CURSOR_STATUS_IDLE_TIME $0000
 CURSOR_MOVE_SPEED_MAX $000e
@@ -3170,6 +3188,7 @@ L_ADVANCE_27.mvi_val $fff2
 L_ADVANCE_28.diff_addr $fffffffffffffffc
 L_ADVANCE_28.mvi_val $fffc
 @vfx_spawn_rate_2 $5552
+memusage_bullets $5553
 bullets_init $5553
 bullet_init $555e
 @restore_sp_7 $558f
@@ -3437,7 +3456,7 @@ main_menu_cursor_init $60bb
 main_menu_init $60ed
 @pos_tiles_x_3 $0009
 @pos_tiles_y_3 $0004
-memusage_credits $6101
+memusage_credits_screen $6101
 credits_screen $6101
 @loop_33 $610a
 @global_req_2 $610d

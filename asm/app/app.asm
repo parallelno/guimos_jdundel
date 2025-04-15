@@ -1,3 +1,6 @@
+memusage_app:
+;=======================================================
+
 app_start:
 			di
 			MEM_ERASE_SP(SCR_ADDR, SCR_BUFFS_LEN)

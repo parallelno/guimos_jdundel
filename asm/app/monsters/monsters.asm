@@ -9,6 +9,8 @@
 .include "asm/app/monsters/knight_heavy.asm"
 .include "asm/app/monsters/firepool.asm"
 
+memusage_monsters:
+
 monsters_init:
 			; monsters_runtime_data_sorted got inited in level_init with NULL
 			; set the last marker byte of runtime_data

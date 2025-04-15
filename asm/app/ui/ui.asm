@@ -1,3 +1,6 @@
+memusage_ui:
+;=======================================================
+
 HEALTH_SCR_ADDR = 0xA3FB
 HERO_SCORE_SCR_ADDR = 0xB9FB
 

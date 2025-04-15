@@ -1,3 +1,5 @@
+memusage_knight:
+;========================================================
 ; mob AI:
 ; init:
 ;	 status = detectHeroInit

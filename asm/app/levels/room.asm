@@ -1,3 +1,6 @@
+memusage_room:
+;=======================================================
+
 room_init:
 			call monsters_init
 			call bullets_init

@@ -1,3 +1,6 @@
+memusage_game:
+;=======================================================
+
 game:
 			; init
 			call game_stats_init

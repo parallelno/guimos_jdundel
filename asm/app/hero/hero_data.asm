@@ -1,3 +1,5 @@
+memusage_hero_data:
+
 hero_collision_func_table:
 			; bit layout:
 			; 0, 0, (bottom-left), (bottom-right), (top_right), (top-left), 0, 0

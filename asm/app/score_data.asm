@@ -1,3 +1,4 @@
+memusage_score_data:
 ; TODO: check is there is all entities listened
 
 ; func_id = 1

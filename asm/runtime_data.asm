@@ -1,5 +1,6 @@
 	; this line for VSCode proper formating
 ; TODO: write a script that generates this file
+memusage_runtime_data:
 
 ;=============================================================================
 ;

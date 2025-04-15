@@ -1,3 +1,6 @@
+memusage_dialogs:
+;=======================================================
+
 dialogs_init:
 			jmp dialog_storytelling_init
 

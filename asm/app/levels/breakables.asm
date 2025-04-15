@@ -1,4 +1,6 @@
 
+memusage_breakables:
+
 breakables_init:
 			lxi h, breakables_status_buffer_available_ptr
 			mvi m, <breakables_status_buffers ; ptr to the first available buffer

@@ -1,3 +1,4 @@
+memusage_vampire:
 ; mob AI:
 ; init:
 ;	 status = detectHeroInit

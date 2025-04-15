@@ -1,3 +1,5 @@
+memusage_hero_triggers:
+
 ;===========================================================================
 ; when the hero looses all the health
 trigger_hero_no_health:

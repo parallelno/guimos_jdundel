@@ -1,3 +1,6 @@
+memusage_settings:
+;=======================================================
+
 ; text
 SETTINGS_TEXT_SETTINGS_W	= 112 ; a width of a setting text column
 

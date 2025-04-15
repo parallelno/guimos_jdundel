@@ -1,3 +1,5 @@
+memusage_hero_render:
+
 hero_draw:
 			lxi h, hero_pos_x+1
 			call sprite_get_scr_addr_hero_r

@@ -1,3 +1,6 @@
+memusage_credits_screen:
+;=======================================================
+
 credits_screen:
 			lda global_request
 			sta @global_req+1

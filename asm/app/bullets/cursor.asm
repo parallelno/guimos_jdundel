@@ -1,3 +1,5 @@
+memusage_cursor:
+
 ;=========================================================
 ; This is a non-gameplay bullet object
 ; It is used in the main menu as a cursor to select the option

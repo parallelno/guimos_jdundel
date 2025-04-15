@@ -1,3 +1,5 @@
+memusage_levels_data:
+;=======================================================
 ; to init each tiledata in a room during a room initialization. 
 ; check room.asm room_handle_room_tiledata func
 room_tiledata_funcs:

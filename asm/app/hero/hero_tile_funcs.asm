@@ -1,3 +1,5 @@
+memusage_hero_tile_funcs:
+
 ; handler func for items
 ; in:
 ; a - item_id

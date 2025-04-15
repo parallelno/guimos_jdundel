@@ -1,3 +1,6 @@
+memusage_sword:
+;=================================================
+
 .include "app/bullets/sword_tile_funcs.asm"
 
 ; statuses.

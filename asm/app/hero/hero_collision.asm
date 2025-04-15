@@ -1,3 +1,5 @@
+memusage_hero_collision:
+
 ; we are here when a hero does not collide with colladable tiles, and there is no tiledata_func_id>0 round
 hero_no_collision_no_tiledata:
 			lhld char_temp_x

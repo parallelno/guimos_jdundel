@@ -1,3 +1,5 @@
+memusage_actor:
+
 ; mark all actors killed to let
 ; them wipe out from the screen
 ; in:

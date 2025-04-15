@@ -1,3 +1,5 @@
+memusage_bomb:
+;=================================================
 ; bullet AI:
 ; init:
 ;	status = move_forward

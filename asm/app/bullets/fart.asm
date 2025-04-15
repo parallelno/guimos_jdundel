@@ -1,3 +1,5 @@
+memusage_fart:
+
 ;=========================================================
 ; This is a quest bullet
 ; init: it gives a hero game_status_fart

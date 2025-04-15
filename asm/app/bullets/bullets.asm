@@ -9,6 +9,8 @@
 .include "app/bullets/vfx.asm"
 .include "app/bullets/cursor.asm"
 
+memusage_bullets:
+
 bullets_init:
 			; set the last marker byte of runtime_data
 			mvi a, ACTOR_RUNTIME_DATA_END

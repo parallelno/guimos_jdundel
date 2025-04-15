@@ -1,3 +1,4 @@
+memusage_levels:
 ;================================================================
 ;	levels data initialization every game start
 ;

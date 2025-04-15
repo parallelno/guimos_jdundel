@@ -1,3 +1,4 @@
+memusage_hero_update:
 .include "app/hero/hero_update_dead.asm"
 
 ; advances the current animation to the next frame

@@ -1,5 +1,5 @@
 	; this line for VSCode proper formating
-
+memusage_v6_gc_runtime_data:
 
 .align GC_BUFFER_SIZE
 ; these are GC_TASKS buffers GC_BUFFER_SIZE bytes long
