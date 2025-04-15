@@ -29,6 +29,7 @@ LABEL_POSTFIX_ASSET_START	= "_rd_data_start"
 LABEL_POSTFIX_ASSET_END		= "_rd_data_end"
 
 DEBUG_FILE_NAME	= "debug.txt"
+MEM_USAGE_FILE_NAME	= "mem_usage.md"
 
 EXT_TXT			= ".txt"
 EXT_ASM			= ".asm"

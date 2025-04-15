@@ -117,22 +117,19 @@ monsters_runtime_data_end:			= monsters_runtime_data_end_marker + ADDR_LEN
 MONSTERS_RUNTIME_DATA_LEN			= monsters_runtime_data_end - monsters_runtime_data_sorted
 
 ;=============================================================================
-/*
-; tiled image indices buffer
-; a temporal buffer to unpack data
-tiled_img_idxs:	= $7714
 
-; TODO: consider increasing this buffer and combine title1, title2, main_menu_back1, and main_menu_back2 into one image
-TILED_IMG_IDXS_LEN = $100
-*/
-; tiled image idxs buffer
-; a temporal buffer to unpack data
+; used as:
+; - a temporal buffer to unpack tiled image index data
+; - a temporal buffer to unpack text data
 
 ; TODO: consider increasing this buffer and combine
-; title1, title2, main_menu_back1, and main_menu_back2 into one image
+; 		title1, title2, main_menu_back1, and main_menu_back2 into one image
 TEMP_BUFF_LEN = $100
-temp_buff:				.storage TEMP_BUFF_LEN
+temp_buff: = $7714
 
+;=============================================================================
+; free space [$7814 - $7815]
+;
 ;=============================================================================
 ; bullets runtime data
 ; requirements:
@@ -436,12 +433,6 @@ os_filename_ext:		= os_filename + BASENAME_LEN + BYTE_LEN
 			;.storage EXT_LEN
 			;.storage 2 ; "\n$"
 
-/*
-; the last file format IO handled
-; TODO: make it useful or delete
-;os_file_format:
-;			.storage BYTE_LEN
-*/
 ; points to next byte after loaded file
 os_file_data_ptr:		= os_filename_ext + EXT_LEN + WORD_LEN
 			;.storage BYTE_LEN

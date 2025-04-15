@@ -162,7 +162,8 @@ def export(config_j_path):
 
 
 	# export the code to load assets & a memory usage report
-	loads_path = export_config_utils.export_loads(config_j, assets, build_code_dir, build_bin_dir)
+	loads_path, ram_disk_usage_report = \
+		export_config_utils.export_loads(config_j, assets, build_code_dir, build_bin_dir)
 
 	# export a build includes
 	export_build_includes(assets, [loads_path])
@@ -183,6 +184,10 @@ def export(config_j_path):
 	raw_labels_path = build_bin_dir + build.DEBUG_FILE_NAME
 	build.compile_asm(main_asm_path, bin_path)
 	common.rename_file(bin_path, com_path, True)
+
+	# export the mem usage report
+	mem_usage_path = build_bin_dir + build.MEM_USAGE_FILE_NAME
+	export_mem_usage(raw_labels_path, mem_usage_path, ram_disk_usage_report)
 
 	# export the debug data
 	debug_data_path = common.rename_extention(com_path, build.EXT_JSON)
@@ -308,3 +313,48 @@ def get_asset_export_paths(asset_j_path, build_bin_dir):
 	bin_path = build_bin_dir + build.get_cpm_filename(asset_name)
 
 	return asm_meta_path, asm_data_path, bin_path, asset_type
+
+
+def export_mem_usage(
+		raw_labels_path, mem_usage_path,
+		ram_disk_usage_report,
+		ram_free_space_label = "RAM_FREE_SPACE"):
+	with open(raw_labels_path, "r") as file:
+		raw_labels = file.readlines() 
+	
+	free_ram = 0
+	labels_addrs = {}
+
+	for line in raw_labels:
+		if line.find("$") == -1:
+			continue
+		label, _, addrS = line.partition(' ')
+		addr = int(addrS[1:], 16)
+		if label.find("memusage") != -1:
+			labels_addrs[label] = addr
+		if label == ram_free_space_label:
+			free_ram = addr
+	
+	# calc the size of each element in labels_addrs
+	labels = list(labels_addrs.keys())
+	code_blocks_sizes = {}
+	code_block_len = len(labels) - 1 # because the last one is EOD
+	for i in range(code_block_len):
+		label_name = labels[i]
+		next_label_name = labels[i+1]
+		code_blocks_sizes[label_name] = labels_addrs[next_label_name] - labels_addrs[label_name]
+
+	# sort the code block sizes by mem usage
+	code_blocks_sizes = dict(sorted(code_blocks_sizes.items(), key=lambda item: item[1], reverse=True))
+
+	# store the code block sizes into mem_usage_path
+	with open(mem_usage_path, "w") as file:
+		file.write(f"## Main Ram memory usage:\n")
+		for label_name in code_blocks_sizes:
+			file.write(f"- {label_name}: **{code_blocks_sizes[label_name]}**\n")
+		file.write(f"\n")
+		file.write(f" `Free ram: {free_ram}`\n\n")
+		file.write(f"---\n\n")
+		
+		file.write(f"## Ram disk usage:\n")
+		file.write(f"{ram_disk_usage_report}\n")

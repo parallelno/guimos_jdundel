@@ -1,63 +1,3 @@
-/*
-;===============================================
-; permanent
-;===============================================
-
-Ram-disk usage:
---- bank0 addr8000 -----------------
-	FONT.BIN: addr: 32768, len: 1624
-Used: 1624, Free: 6568
-
-Current Load: 1624, Free Space: 211112
-
-;===============================================
-; level0
-;===============================================
-
-Ram-disk usage:
---- bank0 addr0 -----------------
-	SKELETON.BIN: addr: 0, len: 9870
-	BURNER.BIN: addr: 9870, len: 9030
-	SWORD.BIN: addr: 18900, len: 8928
-	DECALS0.BIN: addr: 27828, len: 4266
-Used: 32094, Free: 610
-
---- bank0 addr8000 -----------------
-	LV0_GFX.BIN: addr: 34392, len: 5542
-	TI0_DATA.BIN: addr: 39934, len: 960
-Used: 6502, Free: 66
-
---- bank1 addr0 -----------------
-	TEXT_LV0.BIN: addr: 0, len: 5190
-	VFX4.BIN: addr: 5190, len: 3888
-	SCYTHE.BIN: addr: 9078, len: 1554
-	SNOWFLAK.BIN: addr: 10632, len: 1212
-	TNT.BIN: addr: 11844, len: 1056
-	BACKS0.BIN: addr: 12900, len: 620
-Used: 13520, Free: 19184
-
---- bank1 addr8000 -----------------
-	TI0_GFX.BIN: addr: 32768, len: 8178
-Used: 8178, Free: 14
-
---- bank2 addr8000 -----------------
-	SONG01.BIN: addr: 32768, len: 8548
-	KNIGHT.BIN: addr: 41316, len: 15780
-	VAMPIRE.BIN: addr: 57096, len: 7440
-	BOMB.BIN: addr: 64536, len: 960
-Used: 32728, Free: 40
-
---- bank3 addr8000 -----------------
-	LV0_DATA.BIN: addr: 32768, len: 3772
-	HERO_L.BIN: addr: 36540, len: 13176
-	HERO_R.BIN: addr: 49716, len: 13176
-	VFX.BIN: addr: 62892, len: 2184
-Used: 32308, Free: 460
-
-Permanent load: 1624, Current Load: 125330, Free Space: 85782
-
-*/
-
 ;===============================================
 ; permanent
 ;===============================================
@@ -220,7 +160,7 @@ Permanent load: 1624, Current Load: 125330, Free Space: 85782
 
 			RAM_DISK_M_HERO_L = RAM_DISK_M3
 			RAM_DISK_S_HERO_L = RAM_DISK_S3
-			HERO_L_ADDR = 36540
+			HERO_L_ADDR = 36538
 			LOAD_FILE(HERO_L_FILENAME_PTR, RAM_DISK_S_HERO_L, HERO_L_ADDR, HERO_L_FILE_LEN)
 			lxi d, hero_l_preshifted_sprites
 			lxi h, HERO_L_ADDR
@@ -228,7 +168,7 @@ Permanent load: 1624, Current Load: 125330, Free Space: 85782
 
 			RAM_DISK_M_HERO_R = RAM_DISK_M3
 			RAM_DISK_S_HERO_R = RAM_DISK_S3
-			HERO_R_ADDR = 49716
+			HERO_R_ADDR = 49714
 			LOAD_FILE(HERO_R_FILENAME_PTR, RAM_DISK_S_HERO_R, HERO_R_ADDR, HERO_R_FILE_LEN)
 			lxi d, hero_r_preshifted_sprites
 			lxi h, HERO_R_ADDR
@@ -236,7 +176,7 @@ Permanent load: 1624, Current Load: 125330, Free Space: 85782
 
 			RAM_DISK_M_VFX = RAM_DISK_M3
 			RAM_DISK_S_VFX = RAM_DISK_S3
-			VFX_ADDR = 62892
+			VFX_ADDR = 62890
 			LOAD_FILE(VFX_FILENAME_PTR, RAM_DISK_S_VFX, VFX_ADDR, VFX_FILE_LEN)
 			lxi d, vfx_preshifted_sprites
 			lxi h, VFX_ADDR

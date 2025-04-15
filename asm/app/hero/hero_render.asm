@@ -19,7 +19,6 @@ hero_draw:
 
 @draw:
 			mov a, l
-			; TODO: optimize. consider using unrolled loops in DrawSpriteVM for sprites 15 pxs tall
 			CALL_RAM_DISK_FUNC_BANK(sprite_draw_vm)
 			; d - width
 			;		00 - 8pxs,

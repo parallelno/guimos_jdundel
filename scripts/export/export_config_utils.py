@@ -45,35 +45,31 @@ def export_loads(config_j, assets, build_code_dir, build_bin_dir):
 			seg["load_addr"] = seg["non_permanent_load_addr"]
 
  
-	asm = "/*\n" + report_asm + "*/\n\n" + asm
+	#asm = "/*\n" + report_asm + "*/\n\n" + asm
 
 	# save the file
 	with open(load_path, 'w') as f:
 		f.write(asm)
 
-	return load_path
+	return load_path, report_asm
 
 
 def get_usage_report(load_name, allocation, free_space, segments):
 	total_used = 0
 	
 	report = ""
-	report +=  ";===============================================\n"
-	report += f"; {load_name}\n"
-	report +=  ";===============================================\n"
-	report += "\n"
+	report += f"### `{load_name}` ram-disk usage:\n"
 
-	report += "Ram-disk usage:\n"
 	total_reserved = 0
 	for seg_name, seg in allocation.items():
 		if len(seg) > 0:
-			report += f"--- {seg_name} -----------------\n"
+			report += f"- {seg_name}\n"
 			used_len = 0
 			for asset in seg: 
 				bin_file_name = os.path.basename(asset["bin_path"])
 				asset_addr = asset["addr"]
 				asset_len = asset["len"]
-				report += f"	{bin_file_name}: addr: {asset_addr}, len: {asset_len}\n"
+				report += f"	* {bin_file_name}: addr: {asset_addr}, len: `{asset_len}`\n"
 				used_len += asset_len
 			
 			non_perm_load_addr = segments[seg_name]["non_permanent_load_addr"]
@@ -81,13 +77,16 @@ def get_usage_report(load_name, allocation, free_space, segments):
 			reserved = non_perm_load_addr - start_addr
 			total_reserved += reserved 
 
-			report += f"Used: {used_len}, Free: {segments[seg_name]["len"] - used_len - reserved}\n\n"
+			report += "\n"
+			report += f"  `Used: {used_len}, Free: {segments[seg_name]["len"] - used_len - reserved}`\n\n"
 			total_used += used_len			
 
 	if total_reserved > 0:
-		report += f"Permanent load: {total_reserved}, "
-	report += f"Current Load: {total_used}, Free Space: {free_space}\n\n"
-
+		report += f"`Permanent load: {total_reserved}, `"
+	
+	report += "\n"
+	report += f"`Current Load: {total_used}, Free Space: {free_space}`\n\n"
+	report += "\n---\n"
 	return report
 
 def get_ram_disk_layout(config_j):

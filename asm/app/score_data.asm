@@ -35,11 +35,11 @@ game_score_resources:
 			.word 1		; res_id = 8 - a cabbage
 			.word 5		; res_id = 9 - a spoon			
 
-; func_id = 10
 ; TODO: it was previosly triggered by triggers, it caused a bug
 ; because friend's door can be accessed multiple times.
 ; so it dissabled and not used now
 ; think of using it only for secret places/rooms
+; func_id = 10
 game_score_secrets:
 			.word 10	; entity_id = 0 - a home door trigger
 			.word 20	; entity_id = 0 - a home door trigger
