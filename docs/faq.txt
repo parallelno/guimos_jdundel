@@ -187,3 +187,10 @@ Each function call GetSP, GetHL, etc. is expensive. Try call it once, and
 cache it with a local variable like: "local sp = GetSP()".
 
 ;===========================================================================
+; Memory usage report
+;===========================================================================
+
+If you add a label memusage_<something>, the build system adds it into the 
+memory usage report mem_usage.md and stores it into the ROM file folder.
+Please, use Open Preview on this file in the VS Code to see it properly
+formated.
