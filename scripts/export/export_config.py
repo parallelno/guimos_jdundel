@@ -185,10 +185,6 @@ def export(config_j_path):
 	build.compile_asm(main_asm_path, bin_path)
 	common.rename_file(bin_path, com_path, True)
 
-	# export the mem usage report
-	mem_usage_path = build_bin_dir + build.MEM_USAGE_FILE_NAME
-	export_mem_usage(raw_labels_path, mem_usage_path, ram_disk_usage_report)
-
 	# export the debug data
 	debug_data_path = common.rename_extention(com_path, build.EXT_JSON)
 	debug_data = build.export_debug_data(debug_data_path, raw_labels_path, config_j["scripts"])
@@ -205,10 +201,15 @@ def export(config_j_path):
 	bin_paths = [asset["bin_path"] for asset in assets]
 	fdd_path = common.rename_extention(com_path, build.EXT_FDD)
 
-	export_fdd.export(
+	fdd_free_space = export_fdd.export(
 		input_files = bin_paths,
 		basefdd_path = config_j["basefdd_path"],
 		output_fdd = fdd_path)
+	
+
+	# export the mem usage report
+	mem_usage_path = build_bin_dir + build.MEM_USAGE_FILE_NAME
+	export_mem_usage(raw_labels_path, mem_usage_path, ram_disk_usage_report, fdd_free_space)
 
 	build.printc(f";===========================================================================", build.TextColor.GREEN)
 	build.printc(f";", build.TextColor.GREEN)
@@ -317,7 +318,7 @@ def get_asset_export_paths(asset_j_path, build_bin_dir):
 
 def export_mem_usage(
 		raw_labels_path, mem_usage_path,
-		ram_disk_usage_report,
+		ram_disk_usage_report, fdd_free_space,
 		ram_free_space_label = "RAM_FREE_SPACE"):
 	with open(raw_labels_path, "r") as file:
 		raw_labels = file.readlines() 
@@ -357,5 +358,10 @@ def export_mem_usage(
 			file.write(f"|{label_name}:|{code_blocks_sizes[label_name]}|\n")
 		file.write(f"\n")
 				
+		# write the fdd free space report
+		file.write(f"## FDD Usage:\n")
+		file.write(f"> Free Space: `{fdd_free_space}`\n\n")
+		
+		# write the ram disk usage report
 		file.write(f"## Ram disk usage:\n")
 		file.write(f"{ram_disk_usage_report}\n")

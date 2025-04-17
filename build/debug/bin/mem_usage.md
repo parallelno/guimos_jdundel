@@ -77,6 +77,9 @@
 |memusage_loads_permanent_end:|0|
 |memusage_runtime_data:|0|
 
+## FDD Usage:
+> Free Space: `602112`
+
 ## Ram disk usage:
 ### `permanent` ram-disk usage:
 
