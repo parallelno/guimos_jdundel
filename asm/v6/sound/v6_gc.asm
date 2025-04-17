@@ -44,19 +44,24 @@ v6_gc_init_song:
 			mvi c, GC_TASKS
 			call update_labels_len
 			
+			; update _v6_gc_buffer ptr
 			pop h
+			push h
 			; hl - points to the song data
-			; update _v6_gc_buffer ptrs
 			lxi d, _v6_gc_buffer
 			dad d
-
 			; hl - absolute _v6_gc_buffer ptr
 			mov a, h
-			sta v6_gc_buffer_ptr0
-			;sta v6_gc_buffer_ptr1
+			sta v6_gc_buffer_ptr0 + 1
 			adi GC_TASKS - 1
 			sta v6_gc_buffer_ptr2
 			
+			; update _v6_gc_task_stack_end ptr
+			pop h
+			; hl - points to the song data			
+			lxi d, _v6_gc_task_stack_end
+			dad d
+			shld v6_gc_task_stack_end0 + 1
 			ret
 
 
@@ -110,21 +115,21 @@ v6_gc_tasks_init:
 			di			; TODO: avoid disabling/enabling interruptions. it's not obvious behavior
 			lxi h, 0
 			dad sp
-			shld @restore_sp + 1
-
-			lxi sp, v6_gc_task_stack_end
+			shld v6_gc_tasks_init_restore_sp + 1
+v6_gc_task_stack_end0:
+			lxi sp, TEMP_ADDR ; v6_gc_task_stack_end
 			lhld v6_song_reg_data_ptrs_end
 			xchg
 			; b = 0, c = a task counter * 2
 			lxi b, (GC_TASKS - 1) * ADDR_LEN
-@loop:
+v6_gc_tasks_init_loop:
 			; store zx0 entry point to a task stack
 			lxi h, v6_gc_unpack
 			push h
 			; store the buffer addr to a task stack
 			mov a, c
 			rrc
-@v6_gc_buffer_ptr:			
+v6_gc_buffer_ptr0:			
 			adi TEMP_ADDR ; >v6_gc_buffer
 			mov h, a
 			mov l, b
@@ -140,11 +145,11 @@ v6_gc_tasks_init:
 			; store taskSP to v6_gc_task_sps
 			lxi h, v6_gc_task_sps
 			dad b
-			shld @storeTaskSP+1
+			shld v6_gc_tasks_init_loop_storeTaskSP + 1
 			; move sp back 4 bytes to skip storing HL, PSW because zx0 doesnt use them to init
 			LXI_H_NEG(WORD_LEN * 2)
 			dad sp
-@storeTaskSP:
+v6_gc_tasks_init_loop_storeTaskSP:
 			shld TEMP_ADDR
 			; move SP to the previous task stack end
 			LXI_H_NEG(GC_STACK_SIZE - WORD_LEN * 3)
@@ -153,11 +158,11 @@ v6_gc_tasks_init:
 			sphl
 			dcr c
 			dcr c
-			jp @loop
-@restore_sp: lxi sp, TEMP_ADDR
+			jp v6_gc_tasks_init_loop
+v6_gc_tasks_init_restore_sp: 
+			lxi sp, TEMP_ADDR
 			ei
 			ret
-v6_gc_buffer_ptr0 = @v6_gc_buffer_ptr + 1
 
 ; Set the current task stack pointer to the first task stack pointer
 v6_gc_scheduler_init:

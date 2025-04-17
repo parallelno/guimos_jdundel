@@ -81,18 +81,25 @@ def ramdisk_data_to_asm(asset_j_path, asset_j, label_prefix, clean_tmp = True):
 	# add the v6_gc_buffer
 	GC_BUFFER_SIZE = 0x100
 	GC_TASKS = 14
+	GC_STACK_SIZE = 16
 
 	asm += f'.org 0\n'
 	asm += f'GC_BUFFER_SIZE	= {GC_BUFFER_SIZE}\n'
 	asm += f'GC_TASKS		= {GC_TASKS}\n'
+	asm += f'GC_STACK_SIZE	= {GC_STACK_SIZE}\n'
 	asm += f'.align GC_BUFFER_SIZE\n'
 	asm += f'; these are GC_TASKS buffers GC_BUFFER_SIZE bytes long\n'
 	asm += f'; MUST BE ALIGNED by 0x100\n'
 	asm += f'_v6_gc_buffer:\n'
 	asm += f'			.storage GC_BUFFER_SIZE * GC_TASKS, $00	\n\n'
+	asm += f'_v6_gc_task_stack:\n'
+	asm += f'			.storage GC_STACK_SIZE * GC_TASKS, $00	\n\n'	
+	asm += f'_v6_gc_task_stack_end:\n'
 
 	data_relative_ptrs['_v6_gc_buffer'] = addr_relative
 	addr_relative += GC_BUFFER_SIZE * GC_TASKS
+	addr_relative += GC_STACK_SIZE * GC_TASKS
+	data_relative_ptrs['_v6_gc_task_stack_end'] = addr_relative
 
 	# export reg data and build reg data asm block
 	for i, c in enumerate(reg_data[0:14]):

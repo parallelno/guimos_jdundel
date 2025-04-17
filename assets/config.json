@@ -5,7 +5,6 @@
 	"consts" : [
 		"DEBUG = 1",
 		"TEXT_MONOSPACED_CHARS = 0",
-		"DRAW_FPS = 1",
 		"LOCALIZATION = 0"
 	],
 	"scripts" : [

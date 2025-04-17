@@ -12,12 +12,14 @@ v6_gc_buffer:
 v6_gc_buffer_end:
 */
 
+/*
+; v6_gc_task_stack was moved over the ram-disk
 ; task stacks. GC_STACK_SIZE bytes stack long for each tasks
 V6_GC_TASK_STACK_LEN = GC_STACK_SIZE * GC_TASKS
 v6_gc_task_stack:
 			.storage V6_GC_TASK_STACK_LEN
 v6_gc_task_stack_end:
-
+*/
 ; array of task stack pointers. v6_gc_task_sps[i] = taskSP
 V6_GC_TASK_SPS_LEN = GC_TASKS * WORD_LEN
 v6_gc_task_sps:

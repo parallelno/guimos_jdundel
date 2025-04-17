@@ -1,5 +1,5 @@
 ## Main Ram memory usage:
-> Free Space: `7428`
+> Free Space: `7643`
 
 |Assembly| Usage|
 |-|-|
@@ -8,7 +8,7 @@
 |memusage_v6_sprite_copy_to_backbuf:|1219|
 |memusage_v6_sprite_copy_to_scr:|1203|
 |memusage_room:|993|
-|memusage_v6_sound:|801|
+|memusage_v6_sound:|810|
 |memusage_knight:|648|
 |memusage_burner:|579|
 |memusage_sword:|557|
@@ -31,7 +31,6 @@
 |memusage_v6_tile_draw:|269|
 |memusage_vfx:|267|
 |memusage_v6_text_ex_draw:|263|
-|memusage_v6_gc_runtime_data:|258|
 |memusage_hero_data:|244|
 |memusage_v6_text_mono_draw:|229|
 |memusage_knight_heavy:|225|
@@ -66,6 +65,7 @@
 |memusage_app:|63|
 |memusage_credits_screen:|53|
 |memusage_monsters_data:|40|
+|memusage_v6_gc_runtime_data:|34|
 |memusage_v6_sprite_draw_invis:|26|
 |memusage_loads_permanent:|26|
 |memusage_skeleton_quest:|15|
@@ -91,7 +91,7 @@
 ---
 ### `level0` ram-disk usage:
 
-> Used: `128912`, Free Space: `82200`
+> Used: `129136`, Free Space: `81976`
 
 - bank0 addr0
 	* SKELETON.BIN: addr: 0, len: `9870`
@@ -124,11 +124,11 @@
   `Used: 8178, Free: 14`
 
 - bank2 addr8000
-	* SONG01.BIN: addr: 32768, len: `12132`
-	* KNIGHT.BIN: addr: 44900, len: `15780`
-	* DECALS0.BIN: addr: 60680, len: `4266`
+	* SONG01.BIN: addr: 32768, len: `12356`
+	* KNIGHT.BIN: addr: 45124, len: `15780`
+	* DECALS0.BIN: addr: 60904, len: `4266`
 
-  `Used: 32178, Free: 590`
+  `Used: 32402, Free: 366`
 
 - bank3 addr8000
 	* LV0_DATA.BIN: addr: 32768, len: `3770`
