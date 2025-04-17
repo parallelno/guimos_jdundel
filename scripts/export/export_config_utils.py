@@ -23,7 +23,7 @@ def export_loads(config_j, assets, build_code_dir, build_bin_dir):
 	if perm_load and len(perm_load) > 0:
 		config_j["loads"].pop(perm_load_name)
 		# get memory usage 
-		allocation, free_space, error_s = pack_files(perm_load_name, assets, segments)
+		allocation, free_space, error_s = pack_files(perm_load_name, assets, segments, config_j)
 		report_asm += get_usage_report(perm_load_name, allocation, free_space, segments)
 		asm += get_load_asm(perm_load_name, allocation, segments)
 
@@ -37,15 +37,13 @@ def export_loads(config_j, assets, build_code_dir, build_bin_dir):
 
 	for load_name, load in config_j["loads"].items():
 		# get memory usage
-		allocation, free_space, error_s = pack_files(load_name, assets, segments)
+		allocation, free_space, error_s = pack_files(load_name, assets, segments, config_j)
 		report_asm += get_usage_report(load_name, allocation, free_space, segments)
 		asm += get_load_asm(load_name, allocation, segments)
 		# restore the segment load_addr
 		for seg_name, seg in segments.items():
 			seg["load_addr"] = seg["non_permanent_load_addr"]
 
- 
-	#asm = "/*\n" + report_asm + "*/\n\n" + asm
 
 	# save the file
 	with open(load_path, 'w') as f:
@@ -126,16 +124,18 @@ def get_ram_disk_layout(config_j):
 
 	return segments
 
-def pack_files(load_name, assets, segments):
+def pack_files(load_name, assets, segments, config_j):
 	# Split files into special (after stack only) and regular
-	special_types = [build.ASSET_TYPE_MUSIC, build.ASSET_TYPE_LEVEL_DATA]
+	special_types = config_j["loaded_after_stack"]
 	
 	special = []
 	regular = []
 	for asset in assets:
 		if asset["load_name"] != load_name:
 			continue
-		if asset["type"] in special_types:
+
+		asset_type = asset["type"]
+		if asset_type in special_types:
 			special.append(asset)
 		else:
 			regular.append(asset)
@@ -160,9 +160,15 @@ def pack_files(load_name, assets, segments):
 		placed = False
 		# Prefer larger segments (Bank 2 or 3 After Stack)
 		for seg_name in sorted(after_stack_segs, key=lambda x: seg_space[x], reverse=True):
-			if asset_len <= seg_space[seg_name]:
-				asset["addr"] = segments[seg_name]["load_addr"]
-				segments[seg_name]["load_addr"] += asset_len
+			
+			alignment_offset = 0
+			if asset_type in config_j["types_alignment"]:
+				alignment = config_j["types_alignment"][asset_type]
+				alignment_offset = (alignment - segments[seg_name]["load_addr"] % alignment) % alignment
+			
+			if asset_len + alignment_offset <= seg_space[seg_name]:
+				asset["addr"] = segments[seg_name]["load_addr"] + alignment_offset
+				segments[seg_name]["load_addr"] += asset_len + alignment_offset
 				allocation[seg_name].append(asset)
 				seg_space[seg_name] -= asset_len
 				placed = True

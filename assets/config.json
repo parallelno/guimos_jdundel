@@ -83,6 +83,15 @@
 			"comment" : "to avoid sprite flickering when it's consecutively erased/rendered"
 		}
 	],
+	"types_alignment" :
+	{
+		"music" : 256
+	},
+	"loaded_after_stack" :
+	[
+		"music",
+		"level_data"
+	],
 	"permanent_load_name" : "permanent",
 	"loads" : {
 		"permanent" :
