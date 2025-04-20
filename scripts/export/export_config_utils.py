@@ -246,7 +246,7 @@ def get_load_asm(load_name, allocation, segments):
 					asm += f"			call v6_gc_init_song\n"
 
 				case build.ASSET_TYPE_LEVEL_DATA | build.ASSET_TYPE_LEVEL_GFX:
-					asm += f"			call {name_low}_load\n"
+					asm += f"			call {name_low}_init\n"
 
 				case build.ASSET_TYPE_SPRITE | build.ASSET_TYPE_BACK:
 					asm += f"			lxi d, {name_low}_preshifted_sprites\n"

@@ -346,7 +346,7 @@ def ram_data_to_asm(data_ptrs, level_j_path,
 	#=====================================================================
 	# init func
 	asm += f"; in:\n"
-	asm += f"{level_name}_data_load:\n"
+	asm += f"{level_name}_data_init:\n"
 	asm += f"			lxi b, {level_name.upper()}_DATA_ADDR\n"
 	asm += f"			lxi h, {rooms_data_label}\n"
 	asm += f"			call update_labels_eod\n"
@@ -354,7 +354,7 @@ def ram_data_to_asm(data_ptrs, level_j_path,
 
 	asm += f"			lxi d, {level_name.upper()}_DATA_ADDR\n"
 	asm += f"			lxi h, {resources_inst_data_label[1:]}\n"
-	asm += f"			mvi c, 2 ; _lv0_resources_inst_data_ptrs abd _lv0_containers_inst_data_ptrs\n"
+	asm += f"			mvi c, 2 ; _lv0_resources_inst_data_ptrs and _lv0_containers_inst_data_ptrs\n"
 	asm += f"			call update_labels_len\n"
 	asm += f"\n"
 

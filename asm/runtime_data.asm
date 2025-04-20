@@ -6,7 +6,19 @@ memusage_runtime_data:
 ;
 ; for validation
 ; TODO: keep updated
-BUFFERS_START_ADDR	= $7300
+BUFFERS_START_ADDR	= $7200
+
+;=============================================================================
+
+; used as:
+; - a temporal buffer to unpack tiled image index data
+; - a temporal buffer to unpack text data
+
+; TODO: consider increasing this buffer and combine
+; 		title1, title2, main_menu_back1, and main_menu_back2 into one image
+TEMP_BUFF_LEN = $200
+temp_buff: = $7200
+
 
 ;=============================================================================
 ; contains statuses of breakables. should be reseted every game start and after hero respawn
@@ -32,8 +44,8 @@ BUFFERS_START_ADDR	= $7300
 ;			.byte 0000000Z
 ;	.endloop
 BREAKABLES_MAX							= 1016 ; (256-1-128)*8
-breakables_status_buffer_available_ptr:	= $7300 ; contains the pointer
-breakables_status_buffer_ptrs:			= $7301
+breakables_status_buffer_available_ptr:	= $7400 ; contains the pointer
+breakables_status_buffer_ptrs:			= breakables_status_buffer_available_ptr + 1
 breakables_status_buffers:				= breakables_status_buffer_ptrs + ROOMS_MAX * LEVELS_MAX
 breakables_statuses_end:				= breakables_status_buffer_available_ptr + $100
 
@@ -41,12 +53,12 @@ breakables_statuses_end:				= breakables_status_buffer_available_ptr + $100
 ;	it's a copy of the room tiledata stored by room_draw
 ;	it's used in room_redraw for storing states of breakable objects, and restoring states of doors and containers
 ROOM_TILEDATA_BACKUP_LEN			= ROOM_WIDTH * ROOM_HEIGHT
-room_tiledata_backup:				= $7400
-room_tiledata_backup_end:			= $7400 + ROOM_TILEDATA_BACKUP_LEN
+room_tiledata_backup:				= $7500
+room_tiledata_backup_end:			= room_tiledata_backup + ROOM_TILEDATA_BACKUP_LEN
 
 ;=============================================================================
 ; hero runtime data
-hero_runtime_data:			= $74f0
+hero_runtime_data:			= $75f0
 hero_update_ptr:			= hero_runtime_data + 0		; .word hero_update
 hero_draw_ptr:				= hero_runtime_data + 2		; .word hero_draw
 hero_impacted_ptr:			= hero_runtime_data + 4		; .word hero_impacted ; called by a monster's bullet, a monster, etc. to affect a hero
@@ -72,8 +84,8 @@ hero_runtime_data_end:		= hero_runtime_data + 33
 ;
 ; contains the current RAM-disk mode
 ; to restore by the interrupt routine after its execution
-ram_disk_mode:				= $7511
-			;.storage BYTE_LEN
+ram_disk_mode:				= $7611 ;.storage BYTE_LEN
+			
 
 ;=============================================================================
 ; monsters runtime data
@@ -84,10 +96,10 @@ ram_disk_mode:				= $7511
 ;
 MONSTERS_MAX = 15 ; max monsters in the room
 ; ptr to the first monster data in the sorted list
-monsters_runtime_data_sorted:	= $7512 ; .word monster_update_ptr
+monsters_runtime_data_sorted:	= $7612 ; .word monster_update_ptr
 
 ; a list of monster runtime data structs.
-monsters_runtime_data:		= $7514	; $7712 - $1fe (512)(MONSTER_RUNTIME_DATA_LEN * MONSTERS_MAX)
+monsters_runtime_data:		= $7614	; $7712 - $1fe (512)(MONSTER_RUNTIME_DATA_LEN * MONSTERS_MAX)
 monster_update_ptr:			= monsters_runtime_data + 0		; .word TEMP_ADDR
 monster_draw_ptr:			= monsters_runtime_data + 2		; .word TEMP_ADDR
 monster_status:				= monsters_runtime_data + 4		; .byte TEMP_BYTE
@@ -116,17 +128,6 @@ MONSTER_RUNTIME_DATA_LEN = @data_end - monsters_runtime_data
 monsters_runtime_data_end_marker:	= monsters_runtime_data + MONSTER_RUNTIME_DATA_LEN * MONSTERS_MAX	; .word ACTOR_RUNTIME_DATA_END << 8
 monsters_runtime_data_end:			= monsters_runtime_data_end_marker + ADDR_LEN
 MONSTERS_RUNTIME_DATA_LEN			= monsters_runtime_data_end - monsters_runtime_data_sorted
-
-;=============================================================================
-
-; used as:
-; - a temporal buffer to unpack tiled image index data
-; - a temporal buffer to unpack text data
-
-; TODO: consider increasing this buffer and combine
-; 		title1, title2, main_menu_back1, and main_menu_back2 into one image
-TEMP_BUFF_LEN = $100
-temp_buff: = $7714
 
 ;=============================================================================
 ; free space [$7814 - $7815]

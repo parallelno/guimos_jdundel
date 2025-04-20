@@ -24,7 +24,7 @@ lv0_palette_ptr:
 LV0_GFX_INIT_TBL_LEN = @data_end - lv0_gfx_init_tbl
 
 ; in:
-lv0_gfx_load:
+lv0_gfx_init:
 			lxi b, LV0_GFX_ADDR
 			lxi h, lv0_gfx_tiles_ptrs
 			call update_labels_eod

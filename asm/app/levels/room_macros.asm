@@ -80,7 +80,7 @@
 .endmacro
 
 ; look up a resource by its room_id, tile_idx
-; if no success, it jumps to
+; if no success, it jumps to no_container_found label
 ; in:
 ; d - room_id
 ; l - res_id
@@ -91,7 +91,8 @@
 ; hl ptr to tile_idx in instances_ptrs
 ; uses:
 ; hl, de, a
-.macro FIND_INSTANCE(picked_up, instances_ptrs)
+; 30 bytes, 
+.macro FIND_INSTANCE(no_container_found, instances_ptrs)
 			; find a resource
 			mvi h, >instances_ptrs
 			; hl - ptr to instances_ptrs, ex. resources_inst_data_ptrs
@@ -119,7 +120,7 @@
 @check_counter:
 			dcr e
 			jp @search_loop
-			jmp picked_up ; resource is not found, means it is picked up
+			jmp no_container_found ; resource is not found, means it was already picked up
 @room_match:
 			; check tile_idx
 			mov a, m

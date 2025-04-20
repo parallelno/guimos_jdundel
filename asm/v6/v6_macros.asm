@@ -455,7 +455,7 @@ BY_HL_FROM_DE	= 4
 .endmacro
 
 ; for a jmp table with 4 byte allignment
-.macro	JMP_4(DST_ADDR)
+.macro JMP_4(DST_ADDR)
 			jmp DST_ADDR
 			nop
 .endmacro

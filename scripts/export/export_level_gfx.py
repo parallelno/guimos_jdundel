@@ -136,7 +136,7 @@ def ram_data_to_asm(level_j_path, relative_ptrs, remap_idxs):
 	#=====================================================================
 	# init func
 	asm += f"; in:\n"
-	asm += f"{level_name}_gfx_load:\n"
+	asm += f"{level_name}_gfx_init:\n"
 	asm += f"			lxi b, {level_name.upper()}_GFX_ADDR\n"
 	asm += f"			lxi h, {list_of_tiles_label}\n"
 	asm += f"			call update_labels_eod\n"

@@ -42,6 +42,7 @@
 
 ; in:
 ; hl - ptr to monster_status
+; TODO: 45 bytes per instance
 .macro MONSTER_UPDATE_DETECT_HERO(distance, hero_detected_status, hero_detected_status_time, hero_detected_anim, detect_anim_speed, anim_check_collision_hero, next_status, next_status_time)
 			; hl - ptr to monster_status
 			; advance hl to monster_status_timer

@@ -29,14 +29,14 @@ LV0_RECOURCES_DATA_LEN = 121
 LV0_CONTAINERS_DATA_LEN = 7
 
 ; in:
-lv0_data_load:
+lv0_data_init:
 			lxi b, LV0_DATA_ADDR
 			lxi h, lv0_data_rooms_ptrs
 			call update_labels_eod
 
 			lxi d, LV0_DATA_ADDR
 			lxi h, lv0_resources_inst_data_ptrs
-			mvi c, 2 ; _lv0_resources_inst_data_ptrs abd _lv0_containers_inst_data_ptrs
+			mvi c, 2 ; _lv0_resources_inst_data_ptrs and _lv0_containers_inst_data_ptrs
 			call update_labels_len
 
 			; copy a level init data

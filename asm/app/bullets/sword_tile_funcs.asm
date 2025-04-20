@@ -4,7 +4,6 @@
 sword_func_container:
 			sta @restore_container_id+1
 			push b ; store tile_idx
-			mov m, c
 
 			; find a container
 			lxi h, room_id
@@ -72,7 +71,7 @@ sword_func_door:
 			mov l, a
 			mvi h, >global_items
 			mov a, m
-			cpi <ITEM_STATUS_USED
+			cpi <ITEM_STATUS_NOT_ACQUIRED
 			rz	; if status == ITEM_STATUS_NOT_ACQUIRED, means a hero doesn't have a proper key to open the door
 
 			; update the key status

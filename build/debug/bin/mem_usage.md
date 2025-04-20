@@ -1,5 +1,5 @@
 ## Main Ram memory usage:
-> Free Space: `7643`
+> Free Space: `7388`
 
 |Assembly| Usage|
 |-|-|
@@ -11,7 +11,7 @@
 |memusage_v6_sound:|810|
 |memusage_knight:|648|
 |memusage_burner:|579|
-|memusage_sword:|557|
+|memusage_sword:|556|
 |memusage_v6_utils:|535|
 |memusage_skeleton:|521|
 |memusage_vampire:|488|
