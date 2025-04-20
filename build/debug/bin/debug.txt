@@ -3543,8 +3543,8 @@ STATS_NUMBERS_SCR_ADDR $b0aa
 stats_screen $53de
 @loop_37 $53e7
 @global_req_5 $53ea
-stats_screen_init $53f9
-stats_screen_text_draw $5409
+stats_screen_text_draw $53f9
+stats_screen_init $5453
 memusage_game $5463
 game $5463
 @loop_38 $5475

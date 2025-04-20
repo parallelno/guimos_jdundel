@@ -8188,21 +8188,21 @@ $3e94 cd 69 26   call $2669
 $3e97 cd 8d 4e   call $4e8d
 $3e9a e1         pop h
 $3e9b e9         pchl
-$3e9c 21 cb 3e   lxi h,$3ecb
-$3e9f 71         mov m,c
-$3ea0 87         add a
-$3ea1 32 c3 4a   sta $4ac3
-$3ea4 0f         rrc
-$3ea5 1f         rar
-$3ea6 c6 11      adi $11
-$3ea8 6f         mov l,a
-$3ea9 26 7c      mvi h,$7c
-$3eab 7e         mov a,m
-$3eac fe 00      cpi $00
-$3eae c8         rz
-$3eaf 36 02      mvi m,$02
-$3eb1 c5         push b
-$3eb2 58         mov e,b
+$3e9c 5f         mov e,a
+$3e9d 21 cb 3e   lxi h,$3ecb
+$3ea0 71         mov m,c
+$3ea1 87         add a
+$3ea2 32 c3 4a   sta $4ac3
+$3ea5 0f         rrc
+$3ea6 1f         rar
+$3ea7 c6 11      adi $11
+$3ea9 6f         mov l,a
+$3eaa 26 7c      mvi h,$7c
+$3eac 7e         mov a,m
+$3ead fe 00      cpi $00
+$3eaf c8         rz
+$3eb0 36 02      mvi m,$02
+$3eb2 c5         push b
 $3eb3 16 0c      mvi d,$0c
 $3eb5 cd 69 26   call $2669
 $3eb8 cd 8d 4e   call $4e8d
@@ -11219,7 +11219,7 @@ $53da c3 22 53   jmp $5322
 $53dd c9         ret
 $53de 3a 0a 55   lda $550a
 $53e1 32 eb 53   sta $53eb
-$53e4 cd f9 53   call $53f9
+$53e4 cd 53 54   call $5453
 $53e7 3a 0a 55   lda $550a
 $53ea fe 00      cpi $00
 $53ec c0         rnz
@@ -11227,48 +11227,48 @@ $53ed 21 ee 4f   lxi h,$4fee
 $53f0 cd 4d 50   call $504d
 $53f3 cd 6e 50   call $506e
 $53f6 c3 e7 53   jmp $53e7
-$53f9 cd fa 4f   call $4ffa
-$53fc cd 38 50   call $5038
-$53ff cd 82 50   call $5082
-$5402 cd 09 54   call $5409
-$5405 cd 56 26   call $2656
-$5408 c9         ret
-$5409 cd d3 06   call $06d3
-$540c 11 74 04   lxi d,$0474
-$540f cd 00 07   call $0700
-$5412 0e 01      mvi c,$01
-$5414 cd 9e 26   call $269e
-$5417 eb         xchg
-$5418 01 aa b0   lxi b,$b0aa
-$541b cd 38 06   call $0638
-$541e 0e 06      mvi c,$06
-$5420 cd 9e 26   call $269e
-$5423 eb         xchg
-$5424 01 9e b0   lxi b,$b09e
-$5427 cd 38 06   call $0638
-$542a 0e 07      mvi c,$07
-$542c cd 9e 26   call $269e
-$542f eb         xchg
-$5430 01 92 b0   lxi b,$b092
-$5433 cd 38 06   call $0638
-$5436 0e 0b      mvi c,$0b
-$5438 cd 9e 26   call $269e
-$543b eb         xchg
-$543c 01 86 b0   lxi b,$b086
-$543f cd 38 06   call $0638
-$5442 0e 0c      mvi c,$0c
-$5444 cd 9e 26   call $269e
-$5447 eb         xchg
-$5448 01 7a b0   lxi b,$b07a
-$544b cd 38 06   call $0638
-$544e 0e 0d      mvi c,$0d
-$5450 cd 9e 26   call $269e
-$5453 eb         xchg
-$5454 01 6e b0   lxi b,$b06e
-$5457 cd 38 06   call $0638
-$545a 21 9e 4e   lxi h,$4e9e
-$545d 01 56 b0   lxi b,$b056
-$5460 c3 46 06   jmp $0646
+$53f9 cd d3 06   call $06d3
+$53fc 11 74 04   lxi d,$0474
+$53ff cd 00 07   call $0700
+$5402 0e 01      mvi c,$01
+$5404 cd 9e 26   call $269e
+$5407 eb         xchg
+$5408 01 aa b0   lxi b,$b0aa
+$540b cd 38 06   call $0638
+$540e 0e 06      mvi c,$06
+$5410 cd 9e 26   call $269e
+$5413 eb         xchg
+$5414 01 9e b0   lxi b,$b09e
+$5417 cd 38 06   call $0638
+$541a 0e 07      mvi c,$07
+$541c cd 9e 26   call $269e
+$541f eb         xchg
+$5420 01 92 b0   lxi b,$b092
+$5423 cd 38 06   call $0638
+$5426 0e 0b      mvi c,$0b
+$5428 cd 9e 26   call $269e
+$542b eb         xchg
+$542c 01 86 b0   lxi b,$b086
+$542f cd 38 06   call $0638
+$5432 0e 0c      mvi c,$0c
+$5434 cd 9e 26   call $269e
+$5437 eb         xchg
+$5438 01 7a b0   lxi b,$b07a
+$543b cd 38 06   call $0638
+$543e 0e 0d      mvi c,$0d
+$5440 cd 9e 26   call $269e
+$5443 eb         xchg
+$5444 01 6e b0   lxi b,$b06e
+$5447 cd 38 06   call $0638
+$544a 21 9e 4e   lxi h,$4e9e
+$544d 01 56 b0   lxi b,$b056
+$5450 c3 46 06   jmp $0646
+$5453 cd fa 4f   call $4ffa
+$5456 cd 38 50   call $5038
+$5459 cd 82 50   call $5082
+$545c cd f9 53   call $53f9
+$545f cd 56 26   call $2656
+$5462 c9         ret
 $5463 cd 94 26   call $2694
 $5466 cd 6f 31   call $316f
 $5469 cd 8f 47   call $478f

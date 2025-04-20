@@ -4,12 +4,12 @@ memusage_score:
 ; in:
 ; d - func_id
 ; e - entity_id
-; ex: to add score points of a dead vampire, a = 1, c = 1
+; ex: to add score points of a dead vampire, d = 1, e = 1
 game_score_add:
 			mov a, d
 			; get the ptr to the partucular entity
 			HL_TO_AX2_PLUS_INT16(game_stats - WORD_LEN) ; because the list starts with func_id=1
-			; increase the entity counter
+			; increase the 16 bit entity counter
 			inr m
 			jnz @score_add
 			inx h

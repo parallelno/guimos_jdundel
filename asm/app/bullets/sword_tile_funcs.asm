@@ -56,6 +56,8 @@ sword_func_container:
 ; a - door_id
 ; c - tile_idx
 sword_func_door:
+			mov e, a
+			; a, e - door_id
 			; store tile_idx
 			lxi h, @tile_idx + 1
 			mov m, c
@@ -79,7 +81,7 @@ sword_func_door:
 
 			; add score points
 			push b ; store c - tile_idx
-			mov e, b
+			; e - door_id
 			mvi d, TILEDATA_FUNC_ID_DOORS
 			call game_score_add
 			call game_ui_draw_score_text

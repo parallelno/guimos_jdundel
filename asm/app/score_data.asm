@@ -20,8 +20,8 @@ game_score_items:
 			.word 80	; item_id = 2 - key 1
 			.word 100	; item_id = 3 - key 2
 			.word 200	; item_id = 4 - key 3
-			.word 300	; item_id = 5 - key 3
-			.word 400	; item_id = 6 - key 3
+			.word 300	; item_id = 5 - key 4
+			.word 400	; item_id = 6 - key 5
 
 ; func_id = 7
 game_score_resources:
@@ -92,7 +92,7 @@ game_score_lists_ptrs:
 game_stats:
 			.word 0		; monsters
 			.word NULL	; TODO: secret room
-			.word NULL	; TODO: deaths
+			.word NULL	; TODO: deaths 
 			.word NULL
 			.word NULL
 			.word 0		; items
