@@ -95,7 +95,7 @@
 ---
 ### `level0` ram-disk usage:
 
-> Used: `132186`, Free Space: `78926`
+> Used: `132182`, Free Space: `78930`
 
 - bank0 addr0
 	* SKELETON.BIN: addr: 0, len: `9870`
@@ -136,12 +136,12 @@
   `Used: 32402, Free: 366`
 
 - bank3 addr8000
-	* LV0_DATA.BIN: addr: 32768, len: `3772`
-	* HERO_L.BIN: addr: 36540, len: `13176`
-	* HERO_R.BIN: addr: 49716, len: `13176`
-	* VFX.BIN: addr: 62892, len: `2184`
+	* LV0_DATA.BIN: addr: 32768, len: `3768`
+	* HERO_L.BIN: addr: 36536, len: `13176`
+	* HERO_R.BIN: addr: 49712, len: `13176`
+	* VFX.BIN: addr: 62888, len: `2184`
 
-  `Used: 32308, Free: 460`
+  `Used: 32304, Free: 464`
 
 
 ---

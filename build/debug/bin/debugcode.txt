@@ -4522,10 +4522,10 @@ $22e3 00 de 02 ff ff 00 05 03   .ﬁ.ˇˇ...
 $22eb 00 38 06 03 00 fe 06 f7   .8...˛.˜
 $22f3 ff c4 07 ff ff 72 05 4c   ˇƒ.ˇˇr.L
 $22fb 56 30 5f 44 41 54 41 42   V0_DATAB
-$2303 49 4e 86 00 9e 01 a8 02   INÜ.û.®.
-$230b c6 03 cf 04 da 05 16 07   ∆.œ.⁄...
-$2313 2c 08 3b 09 45 0a 68 0b   ,.;.E.h.
-$231b 88 0c 99 0d 00 00 1c 03   à.ô.....
+$2303 49 4e 86 00 9d 01 a7 02   INÜ.ù.ß.
+$230b c5 03 ca 04 d5 05 11 07   ≈. .’...
+$2313 27 08 36 09 40 0a 63 0b   '.6.@.c.
+$231b 83 0c 94 0d 00 00 1c 03   É.î.....
 $2323 05 23 02 00 7d 00 8c 78   .#..}.åx
 
 $232b 01 00 80   lxi b,$8000
@@ -4754,34 +4754,34 @@ $2673 21 29 24   lxi h,$2429
 $2676 01 e8 ed   lxi b,$ede8
 $2679 cd 7c 04   call $047c
 $267c 21 00 80   lxi h,$8000
-$267f 01 3c 1e   lxi b,$1e3c
+$267f 01 38 1e   lxi b,$1e38
 $2682 11 fa 22   lxi d,$22fa
 $2685 3e 1c      mvi a,$1c
 $2687 cd 9e 01   call $019e
 $268a cd 2b 23   call $232b
-$268d 21 bc 8e   lxi h,$8ebc
+$268d 21 b8 8e   lxi h,$8eb8
 $2690 01 78 67   lxi b,$6778
 $2693 11 e4 1a   lxi d,$1ae4
 $2696 3e 1c      mvi a,$1c
 $2698 cd 9e 01   call $019e
 $269b 11 ef 1a   lxi d,$1aef
-$269e 21 bc 8e   lxi h,$8ebc
+$269e 21 b8 8e   lxi h,$8eb8
 $26a1 cd 4e 0c   call $0c4e
-$26a4 21 34 c2   lxi h,$c234
+$26a4 21 30 c2   lxi h,$c230
 $26a7 01 78 67   lxi b,$6778
 $26aa 11 ac 1b   lxi d,$1bac
 $26ad 3e 1c      mvi a,$1c
 $26af cd 9e 01   call $019e
 $26b2 11 b7 1b   lxi d,$1bb7
-$26b5 21 34 c2   lxi h,$c234
+$26b5 21 30 c2   lxi h,$c230
 $26b8 cd 4e 0c   call $0c4e
-$26bb 21 ac f5   lxi h,$f5ac
+$26bb 21 a8 f5   lxi h,$f5a8
 $26be 01 08 12   lxi b,$1208
 $26c1 11 82 22   lxi d,$2282
 $26c4 3e 1c      mvi a,$1c
 $26c6 cd 9e 01   call $019e
 $26c9 11 8d 22   lxi d,$228d
-$26cc 21 ac f5   lxi h,$f5ac
+$26cc 21 a8 f5   lxi h,$f5a8
 $26cf cd 4e 0c   call $0c4e
 $26d2 c9         ret
 $26d3 21 78 05   lxi h,$0578
