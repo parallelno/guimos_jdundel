@@ -8,6 +8,7 @@
 .include "asm/app/monsters/knight.asm"
 .include "asm/app/monsters/knight_heavy.asm"
 .include "asm/app/monsters/firepool.asm"
+.include "asm/app/monsters/npc.asm"
 
 memusage_monsters:
 

@@ -10,16 +10,20 @@
 ;			decal_walkable_id == 3 - a skull (tiledata = 2)
 
 ; ffff == 1, spawn a monster, monster_id = d
-		SKELETON_ID 	= 0	; monster_id = 0 - skeleton (tiledata = 1*16+0=16)
-		VAMPIRE_ID		= 1	; monster_id = 1 - vampire (tiledata = 17)
-		BURNER_ID		= 2	; monster_id = 2 - burner (tiledata = 18)
-		KNIGHT_HORIZ_ID = 3	; monster_id = 3 - knight horizontal walk (tiledata = 19)
-		KNIGHT_VERT_ID	= 4 ; monster_id = 4 - knight vertical walk (tiledata = 20)
-		BURNER_RIGHT_ID = 5 ; monster_id = 5 - burner quest that runs to the right
-		BURNER_UP_ID	= 6 ; monster_id = 6 - burner quest that runs to up
-		KNIGHT_QUEST_ID = 7 ; monster_id = 7 - knight quest horizontal walk
-		FIREPOOL_ID		= 8 ; monster_id = 8 - firepool
-		SKELETON_QUEST_ID = 9 ; monster_id = 9 - skeleton quest
+		SKELETON_ID 	= 0	; tiledata = 1*16+0=16
+		VAMPIRE_ID		= 1	; tiledata = 17
+		BURNER_ID		= 2	; tiledata = 18
+		KNIGHT_HORIZ_ID = 3	; knight horizontal walk (tiledata = 19)
+		KNIGHT_VERT_ID	= 4 ; knight vertical walk (tiledata = 20)
+		BURNER_RIGHT_ID = 5 ; burner quest that runs to the right
+		BURNER_UP_ID	= 6 ; burner quest that runs to up
+		KNIGHT_QUEST_ID	= 7 ; knight quest horizontal walk
+		FIREPOOL_ID		= 8 ; firepool
+		SKELETON_QUEST_ID	= 9 ; skeleton spawned after opening a container with a spoon
+		NPC_ID			= 10 ; the npc_id is depends on the room_id, see npc.asm for details
+
+
+
 
 ; ffff = 2, teleport to 0-15 room_id, room_id = d
 ; ffff = 3, teleport to 16-31 room_id, room_id = d+16

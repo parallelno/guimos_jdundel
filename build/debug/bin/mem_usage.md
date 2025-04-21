@@ -1,9 +1,9 @@
 ## Main Ram memory usage:
-> Free Space: `7388`
+> Free Space: `6980`
 
 |Assembly| Usage|
 |-|-|
-|memusage_v6_build_uncludes:|2474|
+|memusage_v6_build_uncludes:|2730|
 |memusage_hero_update:|1285|
 |memusage_v6_sprite_copy_to_backbuf:|1219|
 |memusage_v6_sprite_copy_to_scr:|1203|
@@ -14,8 +14,8 @@
 |memusage_sword:|556|
 |memusage_v6_utils:|535|
 |memusage_skeleton:|521|
+|memusage_loads_level0:|492|
 |memusage_vampire:|488|
-|memusage_loads_level0:|469|
 |memusage_v6_os:|440|
 |memusage_monsters:|407|
 |memusage_ui:|392|
@@ -51,6 +51,7 @@
 |memusage_score_data:|144|
 |memusage_stats:|133|
 |memusage_game:|130|
+|memusage_npc:|125|
 |memusage_v6_interruption:|118|
 |memusage_burner_quest:|108|
 |memusage_v6_sprite:|105|
@@ -64,7 +65,7 @@
 |memusage_app_utils:|63|
 |memusage_app:|63|
 |memusage_credits_screen:|53|
-|memusage_monsters_data:|40|
+|memusage_monsters_data:|44|
 |memusage_v6_gc_runtime_data:|34|
 |memusage_v6_sprite_draw_invis:|26|
 |memusage_loads_permanent:|26|
@@ -78,7 +79,7 @@
 |memusage_runtime_data:|0|
 
 ## FDD Usage:
-> Free Space: `602112`
+> Free Space: `598016`
 
 ## Ram disk usage:
 ### `permanent` ram-disk usage:
@@ -94,7 +95,7 @@
 ---
 ### `level0` ram-disk usage:
 
-> Used: `129136`, Free Space: `81976`
+> Used: `132186`, Free Space: `78926`
 
 - bank0 addr0
 	* SKELETON.BIN: addr: 0, len: `9870`
@@ -114,12 +115,13 @@
 - bank1 addr0
 	* VAMPIRE.BIN: addr: 0, len: `7440`
 	* TEXT_LV0.BIN: addr: 7440, len: `5190`
-	* SCYTHE.BIN: addr: 12630, len: `1554`
-	* SNOWFLAK.BIN: addr: 14184, len: `1212`
-	* TNT.BIN: addr: 15396, len: `1056`
-	* BACKS0.BIN: addr: 16452, len: `620`
+	* NPC.BIN: addr: 12630, len: `3048`
+	* SCYTHE.BIN: addr: 15678, len: `1554`
+	* SNOWFLAK.BIN: addr: 17232, len: `1212`
+	* TNT.BIN: addr: 18444, len: `1056`
+	* BACKS0.BIN: addr: 19500, len: `620`
 
-  `Used: 17072, Free: 15632`
+  `Used: 20120, Free: 12584`
 
 - bank1 addr8000
 	* TI0_GFX.BIN: addr: 32768, len: `8178`
@@ -134,12 +136,12 @@
   `Used: 32402, Free: 366`
 
 - bank3 addr8000
-	* LV0_DATA.BIN: addr: 32768, len: `3770`
-	* HERO_L.BIN: addr: 36538, len: `13176`
-	* HERO_R.BIN: addr: 49714, len: `13176`
-	* VFX.BIN: addr: 62890, len: `2184`
+	* LV0_DATA.BIN: addr: 32768, len: `3772`
+	* HERO_L.BIN: addr: 36540, len: `13176`
+	* HERO_R.BIN: addr: 49716, len: `13176`
+	* VFX.BIN: addr: 62892, len: `2184`
 
-  `Used: 32306, Free: 462`
+  `Used: 32308, Free: 460`
 
 
 ---
