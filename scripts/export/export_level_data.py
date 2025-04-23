@@ -220,7 +220,7 @@ def get_resources_inst_data(level_j_path, resources, resource_max_tiledata):
 
 
 		if ptr + resources_inst_data_ptrs_len > 256:
-			build.exit_error(f"ERROR: {level_j_path} has resource instance data > {export_level_utils.RESOURCES_LEN} bytes")
+			build.exit_error(f"ERROR: {level_j_path} has resource instance data len: {ptr + resources_inst_data_ptrs_len} > {export_level_utils.RESOURCES_LEN} bytes")
 
 	asm += "\n"
 
@@ -246,6 +246,8 @@ def get_containers_inst_data(level_j_path, containers, container_max_tiledata):
 		# for example: all the rooms contain only container_id=1 and container_id=3
 		# to make a proper data we need to add null_ptrs for container_id=0 and container_id=2
 		# to let the asm code look up it by the container_id
+		# more about containers tiledata and a format of containers data can be found in:
+		# levels_data_consts.asm and runtime_data.asm
 		for tiledata in range(export_level_utils.TILEDATA_CONTAINER, container_max_tiledata + 1):
 			if tiledata not in containers:
 				containers[tiledata] = []
@@ -282,8 +284,8 @@ def get_containers_inst_data(level_j_path, containers, container_max_tiledata):
 				asm += common.bytes_to_asm(data)
 				data_len += len(data)
 
-		if 	ptr + containers_inst_data_ptrs_len > 256:
-			build.exit_error(f"ERROR: {level_j_path} has container instance data > {export_level_utils.CONTAINERS_LEN} bytes")
+		if 	ptr + containers_inst_data_ptrs_len > export_level_utils.CONTAINERS_LEN:
+			build.exit_error(f"ERROR: {level_j_path} has container instance data len: {ptr + containers_inst_data_ptrs_len} > {export_level_utils.CONTAINERS_LEN} bytes")
 
 	asm += "\n"
 

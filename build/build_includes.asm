@@ -15,6 +15,8 @@
 .include "build/debug/sprite/vfx_meta.asm"
 .include "build/debug/level_data/lv0_data_meta.asm"
 .include "build/debug/level_gfx/lv0_gfx_meta.asm"
+.include "build/debug/level_data/lv1_data_meta.asm"
+.include "build/debug/level_gfx/lv1_gfx_meta.asm"
 .include "build/debug/back/backs0_meta.asm"
 .include "build/debug/decal/decals0_meta.asm"
 .include "build/debug/tiled_img_data/ti0_data_meta.asm"
