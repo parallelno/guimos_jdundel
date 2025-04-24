@@ -1,9 +1,9 @@
 ## Main Ram memory usage:
-> Free Space: `6606`
+> Free Space: `6936`
 
 |Assembly| Usage|
 |-|-|
-|memusage_v6_build_uncludes:|3070|
+|memusage_v6_build_uncludes:|2774|
 |memusage_hero_update:|1285|
 |memusage_v6_sprite_copy_to_backbuf:|1219|
 |memusage_v6_sprite_copy_to_scr:|1203|
@@ -13,8 +13,8 @@
 |memusage_burner:|579|
 |memusage_sword:|556|
 |memusage_v6_utils:|535|
-|memusage_loads_level0:|526|
 |memusage_skeleton:|521|
+|memusage_loads_level0:|492|
 |memusage_vampire:|488|
 |memusage_v6_os:|440|
 |memusage_monsters:|407|
@@ -79,7 +79,7 @@
 |memusage_runtime_data:|0|
 
 ## FDD Usage:
-> Free Space: `579584`
+> Free Space: `598016`
 
 ## Ram disk usage:
 ### `permanent` ram-disk usage:
@@ -95,15 +95,16 @@
 ---
 ### `level0` ram-disk usage:
 
-> Used: `148754`, Free Space: `62358`
+> Used: `130150`, Free Space: `80962`
 
 - bank0 addr0
-	* HERO_R.BIN: addr: 0, len: `13176`
-	* SKELETON.BIN: addr: 13176, len: `9870`
-	* BURNER.BIN: addr: 23046, len: `9030`
-	* BACKS0.BIN: addr: 32076, len: `620`
+	* SKELETON.BIN: addr: 0, len: `9870`
+	* BURNER.BIN: addr: 9870, len: `9030`
+	* SWORD.BIN: addr: 18900, len: `8928`
+	* VFX4.BIN: addr: 27828, len: `3888`
+	* BOMB.BIN: addr: 31716, len: `960`
 
-  `Used: 32696, Free: 8`
+  `Used: 32676, Free: 28`
 
 - bank0 addr8000
 	* LV1_GFX.BIN: addr: 34392, len: `6470`
@@ -111,43 +112,36 @@
   `Used: 6470, Free: 98`
 
 - bank1 addr0
-	* SWORD.BIN: addr: 0, len: `8928`
-	* VAMPIRE.BIN: addr: 8928, len: `7440`
-	* TEXT_LV0.BIN: addr: 16368, len: `5190`
-	* DECALS0.BIN: addr: 21558, len: `4266`
-	* VFX4.BIN: addr: 25824, len: `3888`
-	* VFX.BIN: addr: 29712, len: `2184`
+	* VAMPIRE.BIN: addr: 0, len: `7440`
+	* NPC.BIN: addr: 7440, len: `3048`
+	* VFX.BIN: addr: 10488, len: `2184`
+	* SCYTHE.BIN: addr: 12672, len: `1554`
+	* SNOWFLAK.BIN: addr: 14226, len: `1212`
+	* TNT.BIN: addr: 15438, len: `1056`
+	* TI0_DATA.BIN: addr: 16494, len: `960`
+	* BACKS0.BIN: addr: 17454, len: `620`
 
-  `Used: 31896, Free: 808`
+  `Used: 18074, Free: 14630`
 
 - bank1 addr8000
 	* TI0_GFX.BIN: addr: 32768, len: `8178`
 
   `Used: 8178, Free: 14`
 
-- bank2 addr0
-	* SNOWFLAK.BIN: addr: 0, len: `1212`
-	* TNT.BIN: addr: 1212, len: `1056`
-	* BOMB.BIN: addr: 2268, len: `960`
-	* TI0_DATA.BIN: addr: 3228, len: `960`
-
-  `Used: 4188, Free: 28516`
-
 - bank2 addr8000
 	* SONG01.BIN: addr: 32768, len: `12356`
-	* HERO_L.BIN: addr: 45124, len: `13176`
-	* LV0_GFX.BIN: addr: 58300, len: `5542`
-	* SCYTHE.BIN: addr: 63842, len: `1554`
+	* KNIGHT.BIN: addr: 45124, len: `15780`
+	* DECALS0.BIN: addr: 60904, len: `4266`
 
-  `Used: 32628, Free: 140`
+  `Used: 32402, Free: 366`
 
 - bank3 addr8000
-	* LV1_DATA.BIN: addr: 32768, len: `10102`
-	* LV0_DATA.BIN: addr: 43008, len: `3768`
-	* KNIGHT.BIN: addr: 46776, len: `15780`
-	* NPC.BIN: addr: 62556, len: `3048`
+	* LV1_DATA.BIN: addr: 32768, len: `808`
+	* HERO_L.BIN: addr: 33576, len: `13176`
+	* HERO_R.BIN: addr: 46752, len: `13176`
+	* TEXT_LV0.BIN: addr: 59928, len: `5190`
 
-  `Used: 32698, Free: 70`
+  `Used: 32350, Free: 418`
 
 
 ---

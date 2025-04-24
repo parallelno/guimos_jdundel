@@ -13,8 +13,6 @@
 .include "build/debug/sprite/tnt_meta.asm"
 .include "build/debug/sprite/vfx4_meta.asm"
 .include "build/debug/sprite/vfx_meta.asm"
-.include "build/debug/level_data/lv0_data_meta.asm"
-.include "build/debug/level_gfx/lv0_gfx_meta.asm"
 .include "build/debug/level_data/lv1_data_meta.asm"
 .include "build/debug/level_gfx/lv1_gfx_meta.asm"
 .include "build/debug/back/backs0_meta.asm"
