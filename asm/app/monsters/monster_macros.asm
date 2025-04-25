@@ -88,3 +88,129 @@
 			mvi m, next_status
 			ret
 .endmacro
+
+; Inserts a monster runtime data at the beginning of 
+; the monster runtime data list
+; in:
+; hl - ptr to monster_update_ptr + 1
+; out:
+; hl - points to monster_data_next_ptr
+; uses:
+; de, hl
+
+.macro MONSTER_DATA_INSERT_AT_HEAD()
+			HL_ADVANCE(monster_update_ptr + 1, monster_data_next_ptr + 1, BY_DE)
+
+			; read the monster_data_next_ptr from the monster_data_head_ptr
+			xchg
+			lhld monster_data_head_ptr
+
+			; store addr from the monster_data_head_ptr
+			; into monster_data_next_ptr
+			xchg
+			; de - points to the monster_data_next_ptr of the previosly first monster data
+			mov m, d
+			HL_ADVANCE(monster_data_next_ptr + 1, monster_data_next_ptr)
+			mov m, e
+			; de - points to the monster_data_next_ptr of the previosly first monster data
+			; hl - points to monster_data_next_ptr
+			
+			; store monster_data_next_ptr to the monster_data_head_ptr
+			shld monster_data_head_ptr
+	; 18*4 cc
+/*
+	; store NULL to monster_data_prev_ptr because this monster data
+	; will be the first one in the list
+	HL_ADVANCE(monster_update_ptr + 1, monster_data_prev_ptr + 1, BY_BC)
+	mvi m, NULL
+	HL_ADVANCE(monster_data_prev_ptr + 1, monster_data_next_ptr)
+
+	; read the monster_data_next_ptr from the monster_data_head_ptr
+	xchg
+	lhld monster_data_head_ptr
+
+	; store addr from the monster_data_head_ptr
+	; into monster_data_next_ptr
+	xchg
+	mov m, e
+	HL_ADVANCE(monster_data_next_ptr, monster_data_next_ptr + 1)
+	mov m, d
+	HL_ADVANCE(monster_data_next_ptr + 1, monster_data_next_ptr)
+	; de - points to the monster_data_next_ptr of the previosly first monster data
+	; hl - points to monster_data_next_ptr
+	
+	; store monster_data_next_ptr to the monster_data_head_ptr
+	shld monster_data_head_ptr
+
+	HL_ADVANCE(monster_data_next_ptr, monster_data_prev_ptr)
+	xchg
+	; de - points to monster_data_prev_ptr
+	; hl - points to monster_data_next_ptr of the previosly first monster data
+
+	; check if hl == NULL
+	A_TO_ZERO(NULL)
+	ora h
+	jz @eod
+
+	HL_ADVANCE(monster_data_next_ptr, monster_data_prev_ptr)
+	; hl - points to monster_data_prev_ptr of the previosly first monster data
+	; de - points to monster_data_prev_ptr
+	; store monster_data_next_ptr to monster_data_next_ptr of the previosly first monster data
+	mov m, e
+	inx h
+	mov m, d
+@eod:
+*/
+.endmacro
+
+; Deletes a monster runtime data from the monster runtime data list
+; in:
+; hl - ptr to monster_update_ptr + 1
+; uses:
+; a, bc, de, hl
+.macro MONSTER_DATA_REMOVE()
+			HL_ADVANCE(monster_update_ptr + 1, monster_data_next_ptr, BY_BC)
+
+			; current element = head
+			lxi d, monster_data_head_ptr
+			xchg
+
+			; find the element that points to the element we want to delete
+@loop:			
+			; hl - current element
+			; de - element we want to delete
+			; get the next element
+			mov c, m
+			inx h
+			mov b, m
+			
+			; check if the next element is the element we want to delete
+			mov a, b
+			cmp d
+			jnz @advance			
+			mov a, c
+			cmp e
+			jz @found
+			
+@advance:
+			; bc - next element
+			; current element = next element
+			mov h, b
+			mov l, c
+			jmp @loop
+
+	@found:
+			; hl - previous element + 1
+			dcx h
+			; hl - previous element
+			; de - monster_data_next_ptr of element we want to delete
+			
+			; make the previous element point to 
+			; the next element of the element we want to delete
+			ldax d
+			mov m, a
+			inx d
+			inx h
+			ldax d
+			mov m, a
+.endmacro

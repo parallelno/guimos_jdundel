@@ -13,12 +13,15 @@
 memusage_monsters:
 
 monsters_init:
-			; monsters_runtime_data_sorted got inited in level_init with NULL
+			; monster_data_head_ptr got inited in level_init with NULL
 			; set the last marker byte of runtime_data
 			mvi a, ACTOR_RUNTIME_DATA_END
 			sta monsters_runtime_data_end_marker + 1
 			; erase runtime_data
 			ACTOR_ERASE_RUNTIME_DATA(monster_update_ptr)
+			; erase runtime_data list
+			lxi h, NULL
+			shld monster_data_head_ptr
 			ret
 
 
@@ -37,18 +40,17 @@ monsters_init:
 			mvi b, 0
 		.endif
 
-			lxi d, @init_data
+			lxi h, @monster_init_data
 			jmp monster_init
 
-			.word TEMP_WORD  ; safety word because "call actor_get_empty_data_ptr"
 			.word TEMP_WORD  ; safety word because an interruption can call
-@init_data:
+@monster_init_data:
 			.word MONSTER_UPDATE_PTR, MONSTER_DRAW_PTR, MONSTER_STATUS<<8 | MONSTER_HEALTH, MONSTER_ANIM_PTR, MONSTER_IMPACT_PTR
 .endmacro
 
 ; monster initialization
 ; in:
-; de - ptr to monster_data: .word MONSTER_UPDATE_PTR, MONSTER_DRAW_PTR, MONSTER_STATUS<<8 | MONSTER_HEALTH, MONSTER_ANIM_PTR, MONSTER_IMPACT_PTR
+; hl - points to @monster_init_data: .word MONSTER_UPDATE_PTR, MONSTER_DRAW_PTR, MONSTER_STATUS<<8 | MONSTER_HEALTH, MONSTER_ANIM_PTR, MONSTER_IMPACT_PTR
 ; c - tile_idx in the room_tiledata array.
 ; b - spawn_rate_check
 ;		1 - yes
@@ -57,55 +59,54 @@ monsters_init:
 ; out:
 ; a - TILEDATA_RESTORE_TILE
 monster_init:
-			lxi h, 0
-			dad	sp
-			shld @restore_sp + 1
-			xchg
-			sphl
-
 			RRC_(2) ; to get monster_id
-			sta @monster_id+1
+			sta @monster_id + 1
+			
+			shld @monster_data_ptr + 1
 
+			mov a, c
+			sta @tile_idx + 1			
+			
 			A_TO_ZERO(0)
 			cmp b
 			jz @no_spawn_rate_check
 
-			ROOM_SPAWN_RATE_CHECK(rooms_spawn_rate_monsters, @restore_sp)
+			ROOM_SPAWN_RATE_CHECK(rooms_spawn_rate_monsters, @exit)
 @no_spawn_rate_check:
 			lxi h, monster_update_ptr+1
 			mvi e, MONSTER_RUNTIME_DATA_LEN
 			call actor_get_empty_data_ptr
-			jnz @restore_sp ; return when it's too many objects
-
-			mov a, c
-			; a - tile_idx in the room_tiledata array
 			; hl - ptr to monster_update_ptr + 1
+			jnz @exit ; return if objects are too many
 
-			; advance hl to monster_update_ptr
-			;dcx h
-			HL_ADVANCE(monster_update_ptr + 1, monster_update_ptr)
+
+			MONSTER_DATA_INSERT_AT_HEAD()
+			; hl - points to monster_data_next_ptr
+			xchg
+
+			
+			lxi h, 0
+			dad	sp
+			shld @restore_sp + 1
+@monster_data_ptr:
+			lxi sp, TEMP_ADDR
+
+			xchg
+			; hl - ptr to monster_data_next_ptr			
+
+			HL_ADVANCE(monster_data_next_ptr, monster_update_ptr, BY_BC)
 			pop b ; using bc to read from the stack is requirenment
 			; bc - ptr to monster_update_ptr
 			mov m, c
-			;inx h
 			HL_ADVANCE(monster_update_ptr, monster_update_ptr + 1)
 			mov m, b
-			; advance hl to monster_draw_ptr
-			;inx h
 			HL_ADVANCE(monster_update_ptr + 1, monster_draw_ptr)
 			pop b
 			; bc - ptr to monster_draw_ptr
 			mov m, c
-			;inx h
 			HL_ADVANCE(monster_draw_ptr, monster_draw_ptr + 1)
 			mov m, b
 
-			; a - tile_idx in the room_tiledata array
-			mov e, a
-			; e - tile_idx
-
-			; advance hl to monster_status
-			;inx h
 			HL_ADVANCE(monster_draw_ptr + 1, monster_status)
 			pop b
 			; b - MONSTER_STATUS
@@ -114,16 +115,16 @@ monster_init:
 			; a - MONSTER_HEALTH
 			sta @health + 1
 
-			; advance hl to monster_anim_ptr
 			HL_ADVANCE(monster_status, monster_anim_ptr)
 
 			pop b
 			; bc - monster_anim_ptr
 			mov m, c
-			;inx h
 			HL_ADVANCE(monster_anim_ptr, monster_anim_ptr + 1)
 			mov m, b
 
+@tile_idx:
+			mvi e, TEMP_BYTE ; tile_idx
 			; e - tile_idx
 			; pos_x = tile_idx % ROOM_WIDTH * TILE_WIDTH
 			mvi a, %00001111
@@ -143,70 +144,43 @@ monster_init:
 			; e = 0 and SPRITE_W_PACKED_MIN
 			; hl - ptr to monster_anim_ptr + 1
 
-			; advance hl to monster_erase_scr_addr
-			;inx h
 			HL_ADVANCE(monster_anim_ptr + 1, monster_erase_scr_addr)
 			mov m, a
-			;inx h
 			HL_ADVANCE(monster_erase_scr_addr, monster_erase_scr_addr + 1)
 			mov m, d
-			; advance hl to monster_erase_scr_addr_old
-			;inx h
 			HL_ADVANCE(monster_erase_scr_addr + 1, monster_erase_scr_addr_old)
 			mov m, a
-			;inx h
 			HL_ADVANCE(monster_erase_scr_addr_old, monster_erase_scr_addr_old + 1)
 			mov m, d
-			; advance hl to monster_erase_wh
-			;inx h
 			HL_ADVANCE(monster_erase_scr_addr_old + 1, monster_erase_wh)
 			mvi m, SPRITE_H_MIN
-			;inx h
 			HL_ADVANCE(monster_erase_wh, monster_erase_wh + 1)
 			mov m, e
-			; advance hl to monster_erase_wh_old
-			;inx h
 			HL_ADVANCE(monster_erase_wh + 1, monster_erase_wh_old)
 			mvi m, SPRITE_H_MIN
-			;inx h
 			HL_ADVANCE(monster_erase_wh_old, monster_erase_wh_old + 1)
 			mov m, e
-			; advance hl to monster_pos_x
-			;inx h
 			HL_ADVANCE(monster_erase_wh_old + 1, monster_pos_x)
 			mov m, e
-			;inx h
 			HL_ADVANCE(monster_pos_x, monster_pos_x + 1)
 @pos_x:
 			mvi m, TEMP_BYTE ; pos_x
-			; advance hl to monster_pos_y
-			;inx h
 			HL_ADVANCE(monster_pos_x + 1, monster_pos_y)
 			mov m, e
-			;inx h
 			HL_ADVANCE(monster_pos_y, monster_pos_y + 1)
 			mov m, a
 
-			; advance hl to monster_impacted_ptr
 			HL_ADVANCE(monster_pos_y + 1, monster_impacted_ptr, BY_DE)
 			pop b
-			; bc - ptr to monster_impacted_ptr
 			mov m, c
-			;inx h
 			HL_ADVANCE(monster_impacted_ptr, monster_impacted_ptr + 1)
 			mov m, b
 
-			; advance hl to monster_id
-			;inx h
 			HL_ADVANCE(monster_impacted_ptr + 1, monster_id)
 @monster_id:
 			mvi m, TEMP_BYTE
-			; advance hl to monster_type
-			;inx h
 			HL_ADVANCE(monster_id, monster_type)
 			mvi m, MONSTER_TYPE_ENEMY
-			; advance hl to monster_health
-			;inx h
 			HL_ADVANCE(monster_type, monster_health)
 @health:
 			mvi m, TEMP_BYTE
@@ -214,6 +188,7 @@ monster_init:
 @restore_sp:
 			lxi sp, TEMP_ADDR
 			RAM_DISK_OFF()
+@exit:			
 			; return TILEDATA_RESTORE_TILE to make the tile where a monster spawned walkable and restorable
 			mvi a, TILEDATA_RESTORE_TILE
 			ret
@@ -247,13 +222,11 @@ monsters_get_first_collided:
 			ret
 @check_collision:
 			push h
-			; advance hl to monster_type
 			HL_ADVANCE(monster_update_ptr+1, monster_type, BY_BC)
 			mov a, m
 			CPI_ZERO(MONSTER_TYPE_ENEMY)
 			jnz @no_collision
 
-			; advance hl to monster_pos_x+1
 			HL_ADVANCE(monster_type, monster_pos_x+1, BY_BC)
 			; horizontal check
 			mov c, m 	; monster pos_x
@@ -305,11 +278,10 @@ monsters_copy_to_scr:
 monsters_erase:
 			ACTORS_CALL_IF_ALIVE(monster_erase, monster_update_ptr, MONSTER_RUNTIME_DATA_LEN, true)
 
-; copy sprites from a backbuffer to a scr
+; copy a sprite from a backbuffer to a scr
 ; in:
 ; hl - ptr to monster_update_ptr+1
 monster_copy_to_scr:
-			; advance to monster_status
 			HL_ADVANCE(monster_update_ptr+1, monster_status)
 			jmp actor_copy_to_scr
 
@@ -322,6 +294,7 @@ monster_erase:
 			LXI_D_TO_DIFF(monster_update_ptr+1, monster_status)
 			jmp actor_erase
 
+; a common routine to handle a monster impact by a hero weapon
 ; in:
 ; de - ptr to monster_impacted_ptr + 1
 ; c - hero_weapon_id
@@ -334,12 +307,10 @@ monster_impacted:
 
 			; play a hit vfx
 			; de - ptr to monster_impacted_ptr + 1
-			; advance hl to monster_pos_x+1
 			HL_ADVANCE(monster_impacted_ptr+1, monster_pos_x+1, BY_HL_FROM_DE)
 
 			mov b, m
-			; advance hl to monster_pos_y+1
-			INX_H(2)
+			HL_ADVANCE(monster_pos_x+1, monster_pos_y+1)
 			mov c, m
 			lxi d, vfx4_hit_anim
 			push h
@@ -353,7 +324,6 @@ monster_impacted:
 
 			; add score points
 			push h
-			; advance hl to monster_id
 			HL_ADVANCE(monster_health, monster_id)
 			mov e, m
 			mvi d, TILEDATA_FUNC_ID_MONSTERS
@@ -362,18 +332,14 @@ monster_impacted:
 			pop h
 
 			; mark this monster dead
-			; advance hl to monster_update_ptr+1
 			HL_ADVANCE(monster_health, monster_update_ptr+1, BY_DE)
-			ACTOR_DESTROY()
-			ret
+			jmp monster_destroy
 
 @set_state_freeze:
 			; de - ptr to monster_impacted_ptr+1
-			; advance hl to monster_pos_x+1
 			HL_ADVANCE(monster_impacted_ptr+1, monster_status, BY_HL_FROM_DE)
 			mvi m,ACTOR_STATUS_FREEZE
-			; advance hl to monster_status_timer
-			inx h
+			HL_ADVANCE(monster_status, monster_status_timer)
 			mvi m, ACTOR_STATUS_FREEZE_TIME
 
 			; check if a hero uses a snowflake the first time
@@ -394,13 +360,21 @@ monster_impacted:
 ; in:
 ; hl = monster_status
 monster_update_freeze:
-			; hl = monster_status
-			; advance hl to monster_status_timer
-			inx h
+			HL_ADVANCE(monster_status, monster_status_timer)
 			dcr m
 			rnz
-			; advance hl to monster_status
+			HL_ADVANCE(monster_status_timer, monster_status)
 			dcx h
 			mvi m, ACTOR_STATUS_INIT
 			ret
 
+; marks the actor runtime data as destroyed,
+; and removes it from the actors list
+; in:
+; hl - ptr to monster_update_ptr + 1
+monster_destroy:
+.breakpoint
+			ACTOR_DESTROY()
+			; remove from the list
+			MONSTER_DATA_REMOVE()
+			ret

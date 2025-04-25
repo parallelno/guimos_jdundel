@@ -46,7 +46,7 @@ level_init:
 			call mem_erase
 
 			; erase monsters buffs
-			lxi h, monsters_runtime_data_sorted
+			lxi h, monster_data_head_ptr
 			lxi b, monsters_runtime_data_end
 			call mem_erase
 

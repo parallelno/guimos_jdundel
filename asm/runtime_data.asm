@@ -95,8 +95,9 @@ ram_disk_mode:				= $7611 ;.storage BYTE_LEN
 ; * (bullet_erase_scr_addr+1 - bullet_erase_wh) == (monster_erase_scr_addr+1 - monster_erase_wh)
 ;
 MONSTERS_MAX = 15 ; max monsters in the room
-; ptr to the first monster data in the sorted list
-monsters_runtime_data_sorted:	= $7612 ; .word monster_update_ptr
+; points to the first monster_data_next_ptr
+; in the monster data singly directional list
+monster_data_head_ptr:	= $7612 ; NULL if the list is empty
 
 ; a list of monster runtime data structs.
 monsters_runtime_data:		= $7614	; $7712 - $1fe (512)(MONSTER_RUNTIME_DATA_LEN * MONSTERS_MAX)
@@ -118,8 +119,8 @@ monster_impacted_ptr:		= monsters_runtime_data + 25	; .word TEMP_WORD ; called b
 monster_id:					= monsters_runtime_data + 27	; .byte TEMP_BYTE
 monster_type:				= monsters_runtime_data + 28	; .byte TEMP_BYTE
 monster_health:				= monsters_runtime_data + 29	; .byte TEMP_BYTE
-monster_data_prev_pptr:		= monsters_runtime_data + 30	; .word TEMP_WORD
-monster_data_next_pptr:		= monsters_runtime_data + 32	; .word TEMP_WORD
+monster_data_prev_ptr:		= monsters_runtime_data + 30	; .word TEMP_WORD NULL if it's the first monster in the list
+monster_data_next_ptr:		= monsters_runtime_data + 32	; .word TEMP_WORD NULL if it's the last monster in the list
 @data_end:					= monsters_runtime_data + 34
 
 MONSTER_RUNTIME_DATA_LEN = @data_end - monsters_runtime_data
@@ -127,7 +128,7 @@ MONSTER_RUNTIME_DATA_LEN = @data_end - monsters_runtime_data
 ; the same structs for the rest of the monsters
 monsters_runtime_data_end_marker:	= monsters_runtime_data + MONSTER_RUNTIME_DATA_LEN * MONSTERS_MAX	; .word ACTOR_RUNTIME_DATA_END << 8
 monsters_runtime_data_end:			= monsters_runtime_data_end_marker + ADDR_LEN
-MONSTERS_RUNTIME_DATA_LEN			= monsters_runtime_data_end - monsters_runtime_data_sorted
+MONSTERS_RUNTIME_DATA_LEN			= monsters_runtime_data_end - monster_data_head_ptr
 
 ;=============================================================================
 ; free space [$7814 - $7815]

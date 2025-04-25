@@ -5,7 +5,6 @@
 ; supports runtime data that's fit inside one $100 block: backs_runtime_data, bullets_runtime_data
 ; use:
 ; reg, a
-BY_A = 10
 .macro C_ADVANCE(addr_from, addr_to, reg_a = NULL)
 		diff_addr = addr_to - addr_from
 		mvi_val .var diff_addr

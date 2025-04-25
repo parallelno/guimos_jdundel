@@ -22,9 +22,16 @@
 		SKELETON_QUEST_ID	= 9 ; skeleton spawned after opening a container with a spoon
 		NPC_ID			= 10 ; the npc_id is depends on the room_id, see npc.asm for details
 
-
-
-
+; TODO: Use only ffff = 2 for teleports. Each item represents an index.
+;		That index is used to get the real room_id from the
+;		room_teleports_data table stored on the ram-disk. Each
+;		item of room_id can contain the room_id as well as the
+;		tile idx where to teleport.
+;		To keep the level contruction simple, we can use a special
+;		tileset for teleports. The level exporter script will convert
+;		the teleport tiles to the teleport tiledata.
+; 		The other idea is to use special objects in Tiled for teleports.
+;		Every teleport object can also contain a tile_idx to teleport to.
 ; ffff = 2, teleport to 0-15 room_id, room_id = d
 ; ffff = 3, teleport to 16-31 room_id, room_id = d+16
 ; ffff = 4, teleport to 32-47 room_id, room_id = d+32
@@ -59,8 +66,8 @@
 ; every tiledata >= TILEDATA_COLLIDABLE is collidable (a hero and 
 ; 		monsters can't step on that tile)
 
-; ffff == 8, ???
-; ffff == 9, ???
+; ffff == 8, Not used
+; ffff == 9, Not used
 ; ffff == 10, triggers. activated when a hero hits it. trigger_id = d
 ;		trigger_id == 0 - when he hits his house door.
 
@@ -68,9 +75,9 @@
 ;		when a hero hits it. container_id = d.
 ;		container_id = 0 - a chest with a sword
 ;		container_id = 1 - a big chest. big money reward
-;		container_id = 2 - a chest ???
-;		container_id = 3 - a chest ???
-;		container_id = 4 - a chest ???
+;		container_id = 2 - a chest 2
+;		container_id = 3 - a chest 3
+;		container_id = 4 - a chest 4
 ;		container_id = 5 - a monster spawner chest. it spawns a chest monster when opened
 ;		container_id = 6 - a crate with a teleport under it to a unique location
 

@@ -112,8 +112,7 @@ knight_update_panic:
 			; advance hl to monster_update_ptr + 1
 			HL_ADVANCE(monster_pos_y + 1, monster_update_ptr + 1, BY_DE)
 			; mark this monster dead death
-			ACTOR_DESTROY()
-			ret
+			jmp monster_destroy
 
 ; in:
 ; hl - ptr to monster_status

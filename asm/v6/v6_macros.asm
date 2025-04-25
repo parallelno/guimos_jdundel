@@ -182,6 +182,7 @@
 ; it advances HL by the diff equals to (addr_to - addr_from)
 ; if reg_pair is not provided, it uses: INX_H(N)/DCX_H(N). 8-24cc
 ; if reg_pair = BY_BC/BY_DE/BY_HL_FROM_BC/BY_HL_FROM_DE, it uses: lxi reg_pair; dad reg_pair. 24cc
+; if reg_pair = BY_A, 40 cc
 ; it validates the diff suggesting improvements
 ; use:
 ; hl, reg_pair
@@ -191,6 +192,7 @@ BY_BC			= 1
 BY_DE			= 2
 BY_HL_FROM_BC	= 3
 BY_HL_FROM_DE	= 4
+BY_A			= 5
 .macro HL_ADVANCE(addr_from, addr_to, reg_pair = NULL)
 		diff_addr = addr_to - addr_from
 
@@ -222,6 +224,14 @@ BY_HL_FROM_DE	= 4
 		.if reg_pair == BY_HL_FROM_DE
 				LXI_H_TO_DIFF(addr_from, addr_to)
 				dad d
+		.endif
+		.if reg_pair == BY_A
+				mvi a, <int16_const
+				add l
+				mov l, a
+				aci >int16_const
+				sub l
+				mov h, a
 		.endif
 		.if (reg_pair == BY_BC || reg_pair == BY_DE )  && diff_addr >= -3 && diff_addr <= 3
 			.error "HL_ADVANCE(" addr_from ", " addr_to", BY_BC/BY_DE) with diff (" diff_addr ") is in too short range [-3, 3]. Keep the third argument undefined."

@@ -104,8 +104,6 @@ burner_quest_update:
 			jmp burner_update_anim_check_collision_hero
 @death:
 			; hl points to monster_update_ptr
-			; advance hl to monster_update_ptr + 1
-			inx h
+			HL_ADVANCE(monster_update_ptr, monster_update_ptr + 1)
 			; mark this monster dead death
-			ACTOR_DESTROY()
-			ret
+			jmp monster_destroy
