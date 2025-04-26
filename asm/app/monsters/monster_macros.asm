@@ -97,7 +97,7 @@
 ; hl - points to monster_data_next_ptr
 ; uses:
 ; de, hl
-
+; 18*4 cc
 .macro MONSTER_DATA_INSERT_AT_HEAD()
 			HL_ADVANCE(monster_update_ptr + 1, monster_data_next_ptr + 1, BY_DE)
 
@@ -117,50 +117,6 @@
 			
 			; store monster_data_next_ptr to the monster_data_head_ptr
 			shld monster_data_head_ptr
-	; 18*4 cc
-/*
-	; store NULL to monster_data_prev_ptr because this monster data
-	; will be the first one in the list
-	HL_ADVANCE(monster_update_ptr + 1, monster_data_prev_ptr + 1, BY_BC)
-	mvi m, NULL
-	HL_ADVANCE(monster_data_prev_ptr + 1, monster_data_next_ptr)
-
-	; read the monster_data_next_ptr from the monster_data_head_ptr
-	xchg
-	lhld monster_data_head_ptr
-
-	; store addr from the monster_data_head_ptr
-	; into monster_data_next_ptr
-	xchg
-	mov m, e
-	HL_ADVANCE(monster_data_next_ptr, monster_data_next_ptr + 1)
-	mov m, d
-	HL_ADVANCE(monster_data_next_ptr + 1, monster_data_next_ptr)
-	; de - points to the monster_data_next_ptr of the previosly first monster data
-	; hl - points to monster_data_next_ptr
-	
-	; store monster_data_next_ptr to the monster_data_head_ptr
-	shld monster_data_head_ptr
-
-	HL_ADVANCE(monster_data_next_ptr, monster_data_prev_ptr)
-	xchg
-	; de - points to monster_data_prev_ptr
-	; hl - points to monster_data_next_ptr of the previosly first monster data
-
-	; check if hl == NULL
-	A_TO_ZERO(NULL)
-	ora h
-	jz @eod
-
-	HL_ADVANCE(monster_data_next_ptr, monster_data_prev_ptr)
-	; hl - points to monster_data_prev_ptr of the previosly first monster data
-	; de - points to monster_data_prev_ptr
-	; store monster_data_next_ptr to monster_data_next_ptr of the previosly first monster data
-	mov m, e
-	inx h
-	mov m, d
-@eod:
-*/
 .endmacro
 
 ; Deletes a monster runtime data from the monster runtime data list

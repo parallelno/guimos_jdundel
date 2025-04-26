@@ -123,6 +123,8 @@ actor_get_empty_data_ptr:
 ; hl - runtime data len
 ; use:
 ; hl, de, a
+; intro: 27*4=108 cc
+; loop: 51*4=204 cc
 .macro ACTORS_INVOKE_IF_ALIVE(actor_calling_func_ptr, update_func_ptr, runtime_data_len, _jmp = false)
 			mvi a, <(actor_calling_func_ptr - update_func_ptr)
 			lxi d, update_func_ptr + 1

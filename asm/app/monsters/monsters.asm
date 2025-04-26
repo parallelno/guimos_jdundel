@@ -19,9 +19,17 @@ monsters_init:
 			sta monsters_runtime_data_end_marker + 1
 			; erase runtime_data
 			ACTOR_ERASE_RUNTIME_DATA(monster_update_ptr)
+			
 			; erase runtime_data list
+			/*
+			lxi h, hero_data_next_pptr
+			shld monster_data_head_ptr
+			lxi h, NULL
+			shld hero_data_next_pptr
+			*/
 			lxi h, NULL
 			shld monster_data_head_ptr
+
 			ret
 
 
@@ -269,8 +277,39 @@ monsters_get_first_collided:
 monsters_update:
 			ACTORS_INVOKE_IF_ALIVE(monster_update_ptr, monster_update_ptr, MONSTER_RUNTIME_DATA_LEN, true)
 
+; call draw func of every alive monster
+; intro: 12cc
+; loop: 37*4+24=172cc
 monsters_draw:
-			ACTORS_INVOKE_IF_ALIVE(monster_draw_ptr, monster_update_ptr, MONSTER_RUNTIME_DATA_LEN, true)
+			; iterate over the list of the monster data
+			lxi h, monster_data_head_ptr
+@loop:
+			; hl - current element
+			; get the next element
+			mov c, m
+			inx h
+			mov b, m
+
+			; check if current element is the last one (next element is NULL)
+			A_TO_ZERO(NULL)
+			cmp b
+			rz ; return if it's the last element
+
+			push b ; store the addr of the next element
+			lxi d, @return
+			push d
+
+			HL_ADVANCE(monster_data_next_ptr, monster_draw_ptr + 1, BY_HL_FROM_BC)
+			mov d, m
+			dcx h
+			mov e, m
+			xchg
+			; hl - addr of monster_draw_ptr
+			; de - ptr to monster_draw_ptr
+			pchl
+@return:
+			pop h ; current element = next element
+			jmp @loop
 
 monsters_copy_to_scr:
 			ACTORS_CALL_IF_ALIVE(monster_copy_to_scr, monster_update_ptr, MONSTER_RUNTIME_DATA_LEN, true)
@@ -289,7 +328,7 @@ monster_copy_to_scr:
 ; in:
 ; hl - ptr to monster_update_ptr+1
 ; a - MONSTER_RUNTIME_DATA_* status
-; cc ~ 3480 if it mostly restores a background
+; ~3480cc if it mostly restores a background
 monster_erase:
 			LXI_D_TO_DIFF(monster_update_ptr+1, monster_status)
 			jmp actor_erase
@@ -373,8 +412,131 @@ monster_update_freeze:
 ; in:
 ; hl - ptr to monster_update_ptr + 1
 monster_destroy:
-.breakpoint
 			ACTOR_DESTROY()
 			; remove from the list
 			MONSTER_DATA_REMOVE()
+			ret
+
+; sorts the monsters list by monster_pos_y
+; executes only one iteration of the bubble sort algorithm
+monsters_sort_pos_y:
+			; get the current element
+			lhld monster_data_head_ptr
+			; check if the list is empty
+			A_TO_ZERO(NULL)
+			cmp h
+			rz ; return if the list is empty
+			
+			xchg
+			; de - current element
+			
+			lxi h, monster_data_head_ptr
+			push h
+@loop:
+			; stack - prev element, or current element from previous loop iteration
+			; de - current element, or next element from previous loop iteration
+			xchg			
+
+			; stack - prev element
+			; hl - current element
+
+			; get the next element
+			mov e, m
+			inx h
+			mov d, m
+			; de - next element
+			; check if current element is the last one (next element is NULL)
+			A_TO_ZERO(NULL)
+			cmp d
+			jz @exit
+
+			dcx h
+			; stack - prev element
+			; hl - current element
+			; de - next element
+
+			LXI_B_TO_DIFF(monster_data_next_ptr, monster_pos_y + 1)
+			dad b
+			; get >pos_y of the current element
+			mov a, m
+
+			xchg
+			; hl - next element
+			dad b
+			; a - pos_y of the current element			
+			; m - pos_y of the next element
+			; compare >pos_y of the current element with the next one
+			cmp m
+			; bc - prev element
+			jnc @advance
+
+@swap:
+			; swap the current and next elements
+			; stack - the prev element
+			; de - monster_pos_y + 1 of the current element
+			; hl - monster_pos_y + 1 of the next element
+
+			LXI_B_TO_DIFF(monster_pos_y + 1, monster_data_next_ptr)
+			dad b
+			xchg
+			dad b
+			; stack - the prev element
+			; hl - current element
+			; de - next element
+
+
+			; current.next = next_element.next
+			ldax d
+			mov m, a
+			inx h
+			inx d
+			ldax d
+			mov m, a
+			; hl - current element + 1
+			; de - next element + 1
+
+			; next_element.next = current_element
+			xchg
+			dcx d
+			mov m, d
+			dcx h
+			mov m, e
+			; stack - the prev element
+			; de - current element
+			; hl - next element
+
+			xchg
+			XTHL
+			; hl - the prev element
+			; stack - current element
+			; de - next element
+
+			; prev_element.next = next_element
+			mov m, e
+			inx h
+			mov m, d
+			; hl - the prev element + 1
+			; stack - current element
+			; de - next element
+			jmp @loop
+
+@advance:
+			; stack - the prev element
+			; de - monster_pos_y + 1 of the current element
+			; hl - monster_pos_y + 1 of the next element
+
+			LXI_B_TO_DIFF(monster_pos_y + 1, monster_data_next_ptr)
+			dad b
+			xchg
+			dad b
+			; hl - current element
+			; de - next element
+
+			XTHL
+			; stack - current element
+			; de - next element
+			jmp @loop
+
+@exit:
+			pop h ; release prev element
 			ret

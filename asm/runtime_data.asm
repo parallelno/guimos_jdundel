@@ -59,26 +59,29 @@ room_tiledata_backup_end:			= room_tiledata_backup + ROOM_TILEDATA_BACKUP_LEN
 ;=============================================================================
 ; hero runtime data
 hero_runtime_data:			= $75f0
-hero_update_ptr:			= hero_runtime_data + 0		; .word hero_update
-hero_draw_ptr:				= hero_runtime_data + 2		; .word hero_draw
-hero_impacted_ptr:			= hero_runtime_data + 4		; .word hero_impacted ; called by a monster's bullet, a monster, etc. to affect a hero
+hero_update_ptr:			= hero_runtime_data + 0		; .word
+hero_draw_ptr:				= hero_runtime_data + 2		; .word
+hero_impacted_ptr:			= hero_runtime_data + 4		; .word ; called by a monster's bullet, a monster, etc. to affect a hero
 hero_type:					= hero_runtime_data + 6		; .byte MONSTER_TYPE_ALLY
 hero_status:				= hero_runtime_data + 7		; .byte ACTOR_STATUS_HERO_IDLE ; a status describes what set of animations and behavior is active
-hero_status_timer:			= hero_runtime_data + 8		; .byte 0	; a duration of the status. ticks every update
-hero_anim_timer:			= hero_runtime_data + 9		; .byte TEMP_BYTE ; it triggers an anim frame switching when it overflows
-hero_anim_addr:				= hero_runtime_data + 10	; .word TEMP_ADDR ; holds the current frame ptr
-hero_dir:					= hero_runtime_data + 12	; .byte 1			; VDHD, V: vertical dir, H: horiz dir, D: 0 - neg dir, 1 - positive dir
-hero_erase_scr_addr:		= hero_runtime_data + 13	; .word TEMP_ADDR	; screen addr for erasing
-hero_erase_scr_addr_old:	= hero_runtime_data + 15	; .word TEMP_ADDR	; screen addr for erasing last frame 
-hero_erase_wh:				= hero_runtime_data + 17	; .word TEMP_WORD	; width, height
-hero_erase_wh_old:			= hero_runtime_data + 19	; .word TEMP_WORD	; width, height last frame
-hero_pos_x:					= hero_runtime_data + 21	; .word TEMP_WORD ; first byte is a sub-pixel coord
-hero_pos_y:					= hero_runtime_data + 23	; .word TEMP_WORD ; first byte is a sub-pixel coord
-hero_speed_x:				= hero_runtime_data + 25	; .word TEMP_WORD ; first byte is a sub-pixel coord speed
-hero_speed_y:				= hero_runtime_data + 27	; .word TEMP_WORD ; first byte is a sub-pixel coord speed
-hero_data_prev_pptr:		= hero_runtime_data + 29	; .word TEMP_ADDR
-hero_data_next_pptr:		= hero_runtime_data + 31	; .word TEMP_ADDR
-hero_runtime_data_end:		= hero_runtime_data + 33
+hero_status_timer:			= hero_runtime_data + 8		; .byte ; a duration of the status. ticks every update
+hero_anim_timer:			= hero_runtime_data + 9		; .byte ; it triggers an anim frame switching when it overflows
+hero_anim_addr:				= hero_runtime_data + 10	; .word ; holds the current frame ptr
+hero_dir:					= hero_runtime_data + 12	; .byte ; VDHD, V: vertical dir, H: horiz dir, D: 0 - neg dir, 1 - positive dir
+hero_erase_scr_addr:		= hero_runtime_data + 13	; .word ; screen addr for erasing
+hero_erase_scr_addr_old:	= hero_runtime_data + 15	; .word ; screen addr for erasing last frame 
+hero_erase_wh:				= hero_runtime_data + 17	; .word ; width, height
+hero_erase_wh_old:			= hero_runtime_data + 19	; .word ; width, height last frame
+hero_pos_x:					= hero_runtime_data + 21	; .word ; first byte is a sub-pixel coord
+hero_pos_y:					= hero_runtime_data + 23	; .word ; first byte is a sub-pixel coord
+hero_speed_x:				= hero_runtime_data + 25	; .word ; first byte is a sub-pixel coord speed
+hero_speed_y:				= hero_runtime_data + 27	; .word ; first byte is a sub-pixel coord speed
+hero_data_next_pptr:		= hero_runtime_data + 29	; .word
+hero_runtime_data_end:		= hero_runtime_data + 31
+
+;=============================================================================
+;
+; FREE MEMORY [$760F - $7610]
 
 ;=============================================================================
 ;
@@ -100,28 +103,27 @@ MONSTERS_MAX = 15 ; max monsters in the room
 monster_data_head_ptr:	= $7612 ; NULL if the list is empty
 
 ; a list of monster runtime data structs.
-monsters_runtime_data:		= $7614	; $7712 - $1fe (512)(MONSTER_RUNTIME_DATA_LEN * MONSTERS_MAX)
-monster_update_ptr:			= monsters_runtime_data + 0		; .word TEMP_ADDR
-monster_draw_ptr:			= monsters_runtime_data + 2		; .word TEMP_ADDR
-monster_status:				= monsters_runtime_data + 4		; .byte TEMP_BYTE
-monster_status_timer:		= monsters_runtime_data + 5		; .byte TEMP_BYTE
-monster_anim_timer:			= monsters_runtime_data + 6		; .byte TEMP_BYTE
-monster_anim_ptr:			= monsters_runtime_data + 7		; .word TEMP_ADDR
-monster_erase_scr_addr:		= monsters_runtime_data + 9		; .word TEMP_WORD
-monster_erase_scr_addr_old:	= monsters_runtime_data + 11	; .word TEMP_ADDR
-monster_erase_wh:			= monsters_runtime_data + 13	; .word TEMP_WORD
-monster_erase_wh_old:		= monsters_runtime_data + 15	; .word TEMP_WORD
-monster_pos_x:				= monsters_runtime_data + 17	; .word TEMP_WORD
-monster_pos_y:				= monsters_runtime_data + 19	; .word TEMP_WORD
-monster_speed_x:			= monsters_runtime_data + 21	; .word TEMP_WORD
-monster_speed_y:			= monsters_runtime_data + 23	; .word TEMP_WORD
-monster_impacted_ptr:		= monsters_runtime_data + 25	; .word TEMP_WORD ; called by a hero's bullet, another monster, etc. to affect this monster
-monster_id:					= monsters_runtime_data + 27	; .byte TEMP_BYTE
-monster_type:				= monsters_runtime_data + 28	; .byte TEMP_BYTE
-monster_health:				= monsters_runtime_data + 29	; .byte TEMP_BYTE
-monster_data_prev_ptr:		= monsters_runtime_data + 30	; .word TEMP_WORD NULL if it's the first monster in the list
-monster_data_next_ptr:		= monsters_runtime_data + 32	; .word TEMP_WORD NULL if it's the last monster in the list
-@data_end:					= monsters_runtime_data + 34
+monsters_runtime_data:		= $7614
+monster_update_ptr:			= monsters_runtime_data + 0		; .word
+monster_draw_ptr:			= monsters_runtime_data + 2		; .word
+monster_status:				= monsters_runtime_data + 4		; .byte
+monster_status_timer:		= monsters_runtime_data + 5		; .byte
+monster_anim_timer:			= monsters_runtime_data + 6		; .byte
+monster_anim_ptr:			= monsters_runtime_data + 7		; .word
+monster_erase_scr_addr:		= monsters_runtime_data + 9		; .word
+monster_erase_scr_addr_old:	= monsters_runtime_data + 11	; .word
+monster_erase_wh:			= monsters_runtime_data + 13	; .word
+monster_erase_wh_old:		= monsters_runtime_data + 15	; .word
+monster_pos_x:				= monsters_runtime_data + 17	; .word
+monster_pos_y:				= monsters_runtime_data + 19	; .word
+monster_speed_x:			= monsters_runtime_data + 21	; .word
+monster_speed_y:			= monsters_runtime_data + 23	; .word
+monster_impacted_ptr:		= monsters_runtime_data + 25	; .word ; called by a hero's bullet, another monster, etc. to affect this monster
+monster_id:					= monsters_runtime_data + 27	; .byte
+monster_type:				= monsters_runtime_data + 28	; .byte
+monster_health:				= monsters_runtime_data + 29	; .byte
+monster_data_next_ptr:		= monsters_runtime_data + 30	; .word ; NULL if it's the last monster in the list
+@data_end:					= monsters_runtime_data + 32
 
 MONSTER_RUNTIME_DATA_LEN = @data_end - monsters_runtime_data
 
@@ -131,7 +133,7 @@ monsters_runtime_data_end:			= monsters_runtime_data_end_marker + ADDR_LEN
 MONSTERS_RUNTIME_DATA_LEN			= monsters_runtime_data_end - monster_data_head_ptr
 
 ;=============================================================================
-; free space [$7814 - $7815]
+; free space [$77F6 - $7815]
 ;
 ;=============================================================================
 ; bullets runtime data

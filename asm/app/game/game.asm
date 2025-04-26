@@ -60,7 +60,11 @@ game_draw:
 			cpi GAME_REQ_PAUSE
 			rz
 
-			call hero_draw
+;@codePerfStart_monsters_sort_pos_y:
+			call monsters_sort_pos_y
+;@codePerfEnd_monsters_sort_pos_y:
+
+			;call hero_draw
 			call monsters_draw
 			call bullets_draw
 
