@@ -54,7 +54,7 @@ hero_dead_fade_gb:
 			ora b
 			mov m, a
 
-			inx h
+			inx h ; next color
 			dcr c
 			jnz @loop_bg
 
@@ -77,7 +77,7 @@ hero_dead_fade_gb:
 			; de - vfx_anim_ptr (ex. vfx_puff_anim)
 			lxi h, hero_pos_x + 1
 			mov b, m
-			INX_H(2)
+			HL_ADVANCE(hero_pos_x + 1, hero_pos_y + 1)
 			mov c, m
 			lxi d, vfx4_hero_death_anim
 			call vfx_init4
@@ -110,7 +110,7 @@ hero_dead_fade_r:
 			jz @next
 			dcr m
 @next:
-			inx h
+			inx h ; next color
 			dcr c
 			jnz @loop_r
 
@@ -127,8 +127,9 @@ hero_dead_fade_r:
 			; set the status
 			lxi h, hero_status
 			mvi m, ACTOR_STATUS_HERO_DEATH_WAIT_SPARKER
-			;advance hl to hero_status_timer
-			inx h
+
+			; reset the timer
+			HL_ADVANCE(hero_status, hero_status_timer)
 			mvi m, HERO_STATUS_DEATH_WAIT_SPARKER_DURATION
 
 			; fill all visual buffs with thedarkers color in the current palette
@@ -144,7 +145,7 @@ hero_dead_fade_r:
 			lxi h, hero_pos_x + 1
 			mov b, m
 			mvi m, 256 - TILE_WIDTH ; sparker the end position where it goes
-			INX_H(2)
+			HL_ADVANCE(hero_pos_x + 1, hero_pos_y + 1)
 			mov c, m
 			mvi m, 128
 			jmp sparker_init

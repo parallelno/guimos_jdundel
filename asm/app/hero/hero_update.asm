@@ -297,9 +297,9 @@ hero_update_temp_pos:
 
 ; handle tiledata around a hero.
 hero_check_tiledata:
-			lxi h, hero_pos_x+1
+			lxi h, hero_pos_x + 1
 			mov d, m
-			INX_H(2)
+			HL_ADVANCE(hero_pos_x + 1, hero_pos_y + 1)
 			mov e, m
 			TILEDATA_HANDLING(HERO_COLLISION_WIDTH, HERO_COLLISION_HEIGHT, hero_tile_func_tbl)
 			ret
@@ -308,8 +308,8 @@ hero_attack_init:
 			; set the status
 			lxi h, hero_status
 			mvi m, ACTOR_STATUS_HERO_ATTACK
-			;advance hl to hero_status_timer
-			inx h
+
+			HL_ADVANCE(hero_status, hero_status_timer)
 			mvi m, HERO_STATUS_ATTACK_DURATION
 
 			; reset anim timer
@@ -387,9 +387,9 @@ hero_attack_init:
 			; a - hero health
 			cpi RES_HEALTH_MAX
 			jz @no_vfx
-			lxi h, hero_erase_scr_addr 
+			lxi h, hero_erase_scr_addr
 			mov c, m
-			inx h
+			HL_ADVANCE(hero_erase_scr_addr, hero_erase_scr_addr + 1)
 			mov b, m
 			lxi d, vfx_reward_anim
 			call vfx_init
@@ -586,8 +586,8 @@ hero_kickoff_init:
 			; set the status
 			lxi h, hero_status
 			mvi m, ACTOR_STATUS_BIT_INVINCIBLE | ACTOR_STATUS_KICKOFF
-			; advance hl to hero_status_timer
-			inx h
+
+			HL_ADVANCE(hero_status, hero_status_timer)
 			mvi m, HERO_STATUS_KICKOFF_DURATION
 
 			; set backward speed
@@ -628,8 +628,7 @@ hero_kickoff_init:
 hero_kickoff_update:
 			call hero_blink
 			; hl - points to hero_status
-			; advance to hero_status_timer
-			inx h
+			HL_ADVANCE(hero_status, hero_status_timer)
 			dcr m
 			jz hero_invincible_init
 			; move the hero
@@ -656,8 +655,8 @@ hero_invincible_init:
 			; set the status
 			lxi h, hero_status
 			mvi m, ACTOR_STATUS_BIT_INVINCIBLE | ACTOR_STATUS_HERO_INVINCIBLE
-			;advance hl to hero_status_timer
-			inx h
+
+			HL_ADVANCE(hero_status, hero_status_timer)
 			mvi m, HERO_STATUS_INVINCIBLE_DURATION
 
 			; reset key data to prevent a pressing repetition pattern in the next update
@@ -670,8 +669,8 @@ hero_invincible_init:
 ; hl - points to hero_status
 hero_invincible_update:
 			call hero_blink
-			;advance hl to hero_status_timer
-			inx h
+			; hl - points to hero_status
+			HL_ADVANCE(hero_status, hero_status_timer)
 			dcr m
 			rnz
 			jmp hero_idle_init

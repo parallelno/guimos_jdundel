@@ -34,7 +34,7 @@ hero_draw:
 			; store an old scr addr, width, and height
 			lxi h, hero_erase_scr_addr
 			mov m, c
-			inx h
+			HL_ADVANCE(hero_erase_scr_addr, hero_erase_scr_addr + 1)
 			mov m, b
 			xchg
 			shld hero_erase_wh

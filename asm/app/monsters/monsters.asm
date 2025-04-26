@@ -20,16 +20,11 @@ monsters_init:
 			; erase runtime_data
 			ACTOR_ERASE_RUNTIME_DATA(monster_update_ptr)
 			
-			; erase runtime_data list
-			/*
+			; init runtime_data list
 			lxi h, hero_data_next_pptr
 			shld monster_data_head_ptr
 			lxi h, NULL
 			shld hero_data_next_pptr
-			*/
-			lxi h, NULL
-			shld monster_data_head_ptr
-
 			ret
 
 
@@ -277,7 +272,7 @@ monsters_get_first_collided:
 monsters_update:
 			ACTORS_INVOKE_IF_ALIVE(monster_update_ptr, monster_update_ptr, MONSTER_RUNTIME_DATA_LEN, true)
 
-; call draw func of every alive monster
+; call draw func of every alive monster and hero
 ; intro: 12cc
 ; loop: 37*4+24=172cc
 monsters_draw:
