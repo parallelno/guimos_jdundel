@@ -7,7 +7,7 @@
 
 .include "app/app_consts.asm"
 .include "app/levels/room_consts.asm"
-.include "app/levels/levels_data_consts.asm"
+.include "app/levels/room_tiledata_consts.asm"
 .include "app/game/game_consts.asm"
 .include "app/levels/backs_consts.asm"
 .include "app/actor/actor_consts.asm"
@@ -29,7 +29,6 @@
 .include "app/levels/room_macros.asm"
 .include "app/actor/actor_macros.asm"
 
-.include "app/levels/levels_data.asm"
 .include "app/app_utils.asm"
 .include "app/score.asm"
 .include "app/score_data.asm"

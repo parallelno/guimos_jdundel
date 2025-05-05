@@ -87,7 +87,7 @@ hero_runtime_data_end:		= hero_runtime_data + 31
 ;
 ; contains the current RAM-disk mode
 ; to restore by the interrupt routine after its execution
-ram_disk_mode:				= $7611 ;.storage BYTE_LEN
+ram_disk_mode:				= $7611 ; BYTE_LEN
 			
 
 ;=============================================================================
@@ -144,20 +144,20 @@ MONSTERS_RUNTIME_DATA_LEN			= monsters_runtime_data_end - monster_data_head_ptr
 
 ; a list of bullet runtime data structs.
 bullets_runtime_data:		= $7815
-bullet_update_ptr:			= bullets_runtime_data + 0		;.word TEMP_ADDR
-bullet_draw_ptr:			= bullets_runtime_data + 2		;.word TEMP_ADDR
-bullet_status:				= bullets_runtime_data + 4		;.byte TEMP_BYTE
-bullet_status_timer:		= bullets_runtime_data + 5		;.byte TEMP_BYTE
-bullet_anim_timer:			= bullets_runtime_data + 6		;.byte TEMP_BYTE
-bullet_anim_ptr:			= bullets_runtime_data + 7		;.word TEMP_ADDR
-bullet_erase_scr_addr:		= bullets_runtime_data + 9		;.word TEMP_WORD
-bullet_erase_scr_addr_old:	= bullets_runtime_data + 11		;.word TEMP_ADDR
-bullet_erase_wh:			= bullets_runtime_data + 13		;.word TEMP_WORD
-bullet_erase_wh_old:		= bullets_runtime_data + 15		;.word TEMP_WORD
-bullet_pos_x:				= bullets_runtime_data + 17		;.word TEMP_WORD
-bullet_pos_y:				= bullets_runtime_data + 19		;.word TEMP_WORD
-bullet_speed_x:				= bullets_runtime_data + 21		;.word TEMP_WORD
-bullet_speed_y:				= bullets_runtime_data + 23		;.word TEMP_WORD
+bullet_update_ptr:			= bullets_runtime_data + 0		;.word
+bullet_draw_ptr:			= bullets_runtime_data + 2		;.word
+bullet_status:				= bullets_runtime_data + 4		;.byte
+bullet_status_timer:		= bullets_runtime_data + 5		;.byte
+bullet_anim_timer:			= bullets_runtime_data + 6		;.byte
+bullet_anim_ptr:			= bullets_runtime_data + 7		;.word
+bullet_erase_scr_addr:		= bullets_runtime_data + 9		;.word
+bullet_erase_scr_addr_old:	= bullets_runtime_data + 11		;.word
+bullet_erase_wh:			= bullets_runtime_data + 13		;.word
+bullet_erase_wh_old:		= bullets_runtime_data + 15		;.word
+bullet_pos_x:				= bullets_runtime_data + 17		;.word
+bullet_pos_y:				= bullets_runtime_data + 19		;.word
+bullet_speed_x:				= bullets_runtime_data + 21		;.word
+bullet_speed_y:				= bullets_runtime_data + 23		;.word
 @data_end:					= bullets_runtime_data + 25
 
 BULLET_RUNTIME_DATA_LEN = @data_end - bullets_runtime_data ; $1a; bullet_runtime_data_end_addr-bullets_runtime_data

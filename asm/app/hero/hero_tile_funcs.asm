@@ -93,9 +93,22 @@ hero_tile_func_resource:
 
 ; load a new room with room_id, move the hero to an
 ; appropriate position based on his current pos_xy
+; a - room_id (16-31)
+hero_tile_func_teleport16_31:
+			adi 16
+			jmp hero_tile_func_teleport00_15
+; a - room_id (32-47)
+hero_tile_func_teleport32_47:
+			adi 32
+			jmp hero_tile_func_teleport00_15
+; a - room_id (48-63)
+hero_tile_func_teleport48_63:
+			adi 48
+			jmp hero_tile_func_teleport00_15
+
 ; input:
-; a - room_id
-hero_tile_func_teleport:
+; a - room_id (0-15)
+hero_tile_func_teleport00_15:
 			; we don't need to handle the rest of the collided tiles because the hero is teleporting.
 			; so, we remove hl from a stack stored there in the hero_check_tiledata routine
 			; as well as the return addr

@@ -19,12 +19,11 @@ SWORD_ANIM_SPEED_ATTACK	= 150
 SWORD_DAMAGE = 1
 
 SWORD_MONSTER_COLLISION_WIDTH	= 15
-SWORD_MONSTER_COLLISION_HEIGHT	= 30
+SWORD_MONSTER_COLLISION_HEIGHT	= 29
 SWORD_MONSTER_COLLISION_OFFSET_X_R = 8
-SWORD_MONSTER_COLLISION_OFFSET_Y_R = <(-10)
-
+SWORD_MONSTER_COLLISION_OFFSET_Y_R = <(-7)
 SWORD_MONSTER_COLLISION_OFFSET_X_L = <(-7)
-SWORD_MONSTER_COLLISION_OFFSET_Y_L = <(-10)
+SWORD_MONSTER_COLLISION_OFFSET_Y_L = <(-7)
 
 SWORD_TILE_COLLISION_WIDTH	= 15
 SWORD_TILE_COLLISION_HEIGHT	= 16
@@ -52,49 +51,12 @@ sword_tile_func_tbl:
 			RET_4()								; func_id == 15 ; collision
 
 sword_init:
-			; prevent a sword from spawning if it's not available
-			lda hero_res_sword
-			CPI_ZERO(RES_EMPTY)
-			jz sword_check_tiledata
-
-			; advance hl to bullet_pos_x+1
-			lxi h, hero_pos_x+1
+			lxi h, hero_pos_x + 1
 			mov b, m
-			; advance hl to bullet_pos_y+1
-			INX_H(2)
+			HL_ADVANCE(hero_pos_x + 1, hero_pos_y + 1)
 			mov c, m
 			; bc - hero_pos
 			BULLET_INIT(sword_update, sword_draw, ACTOR_STATUS_BIT_INVIS, SWORD_STATUS_INVIS_TIME, NULL, empty_func)
-
-; check the tiledata under a sword
-sword_check_tiledata:
-			; if no sword, do not init a sword, check and handle the collision
-			; get a hero pos
-			lxi h, hero_pos_x+1
-			mov d, m
-			INX_H(2)
-			mov e, m
-			; de - the hero pos
-
-			; offset the sword collision horizontally depending on the hero move
-			lda hero_dir
-			rrc
-			mvi h, SWORD_TILE_COLLISION_OFFSET_X_L
-			jnc @left
-@right:
-			mvi h, SWORD_TILE_COLLISION_OFFSET_X_R
-@left:
-			; offset the sword collision vertically depending on the hero move
-			RRC_(2)
-			mvi l, SWORD_TILE_COLLISION_OFFSET_Y
-			jc @up
-			mvi l, <(-SWORD_TILE_COLLISION_OFFSET_Y)
-@up:
-			dad d
-			xchg
-			; de - the sword collision pos
-			TILEDATA_HANDLING(SWORD_TILE_COLLISION_WIDTH, SWORD_TILE_COLLISION_HEIGHT, sword_tile_func_tbl)
-			ret
 
 
 ; anim and a gameplay logic update
@@ -153,45 +115,53 @@ sword_update:
 			inx h
 			mvi m, > sword_attk_r_anim
 
-			; check enemies-attk01 sprite collision
-			; hl - ptr to bullet_anim_ptr+1
-			; advance hl to bullet_pos_x+1
+			; check enemies-sword sprite collision
 			L_ADVANCE(bullet_anim_ptr+1, bullet_pos_x+1, BY_A)
-			; add a collision offset
-			mov d, m
-			INX_H(2)
-			mov e, m
-			; de - pos_xy
-			lxi h, SWORD_MONSTER_COLLISION_OFFSET_X_R<<8 | SWORD_MONSTER_COLLISION_OFFSET_Y_R
-			dad d
-			jmp @check_monster_collision
+			mvi a, HERO_DIR_RIGHT
+			jmp sword_check_monsters
+
 @attkL:
 			mvi m, < sword_attk_l_anim
 			inx h
 			mvi m, > sword_attk_l_anim
 
-			; check enemies-attk01 sprite collision
-			; hl - ptr to bullet_anim_ptr+1
-			; advance hl to bullet_pos_x+1
-			L_ADVANCE(bullet_anim_ptr+1, bullet_pos_x+1, BY_A)
-			; add a collision offset
+			; check enemies-sword sprite collision
+			L_ADVANCE(bullet_anim_ptr + 1, bullet_pos_x + 1, BY_A)
+			mvi a, HERO_DIR_LEFT
+			jmp sword_check_monsters
+
+; check if a sword collides with a monster
+; in:
+; hl - bullet_pos_x + 1
+; a - hero dir
+sword_check_monsters:
+			; get the pos_xy
 			mov d, m
-			INX_H(2)
+			HL_ADVANCE(bullet_pos_x + 1, bullet_pos_y + 1)
 			mov e, m
-			; de - pos_xy
+
+			; a - hero_dir
+			rrc
 			lxi h, SWORD_MONSTER_COLLISION_OFFSET_X_L<<8 | SWORD_MONSTER_COLLISION_OFFSET_Y_L
+			jnc @attkL
+			lxi h, SWORD_MONSTER_COLLISION_OFFSET_X_R<<8 | SWORD_MONSTER_COLLISION_OFFSET_Y_R
+@attkL:			
+			; de - pos_xy
+			; add a collision offset
 			dad d
 
-@check_monster_collision:
+	
 			; check if a bullet collides with a monster
 			mvi a, SWORD_MONSTER_COLLISION_WIDTH
-			mvi c, SWORD_MONSTER_COLLISION_HEIGHT
+			lxi b, MONSTER_TYPE_ENEMY<<8 | SWORD_MONSTER_COLLISION_HEIGHT
+			; de - collision pos_xy
 			call monsters_get_first_collided
 
-			; hl - ptr to a collided monster_update_ptr+1
+			; hl - ptr to a collided monster_update_ptr + 1
 			mov a, m
 			cpi ACTOR_RUNTIME_DATA_DESTR
-			jnc sword_check_tiledata ; if no collision with a monster, check the tiledata it is on.
+			; if no collision with a monster, check the tiledata it is on.
+			jnc sword_check_tiledata
 
 			; impact the monster
 			; advance hl to monster_impacted_ptr
@@ -203,6 +173,36 @@ sword_update:
 			mvi c, HERO_WEAPON_ID_SWORD
 			; call a monster_impact func
 			pchl
+
+; check the tiledata under a sword collision
+sword_check_tiledata:
+			; if no sword, do not init a sword, check and handle the collision
+			; get a hero pos
+			lxi h, hero_pos_x+1
+			mov d, m
+			INX_H(2)
+			mov e, m
+			; de - the hero pos
+
+			; offset the sword collision horizontally depending on the hero move
+			lda hero_dir
+			rrc
+			mvi h, SWORD_TILE_COLLISION_OFFSET_X_L
+			jnc @left
+@right:
+			mvi h, SWORD_TILE_COLLISION_OFFSET_X_R
+@left:
+			; offset the sword collision vertically depending on the hero move
+			RRC_(2)
+			mvi l, SWORD_TILE_COLLISION_OFFSET_Y
+			jc @up
+			mvi l, <(-SWORD_TILE_COLLISION_OFFSET_Y)
+@up:
+			dad d
+			xchg
+			; de - the sword collision pos
+			TILEDATA_HANDLING(SWORD_TILE_COLLISION_WIDTH, SWORD_TILE_COLLISION_HEIGHT, sword_tile_func_tbl)
+			ret
 
 ; draw a sprite into a backbuffer
 ; in:

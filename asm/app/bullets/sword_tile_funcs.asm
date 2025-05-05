@@ -153,7 +153,6 @@ sword_func_triggers:
 			cpi TIMEDATA_TRIGGER_HOME_DOOR
 			jz trigger_hero_knocks_his_home_door
 			cpi TIMEDATA_TRIGGER_FRIEND_DOOR
-			jz trigger_hero_knocks_his_friend_door
 			cpi TIMEDATA_TRIGGER_DUNGEON_ENTRANCE
 			jz trigger_hero_knocks_dungeon_entrance
 			ret

@@ -35,7 +35,7 @@ monsters_init:
 ; out:
 ; a - TILEDATA_RESTORE_TILE
 ;ex. MONSTER_INIT(knight_update, knight_draw, monster_impacted, KNIGHT_HEALTH, ACTOR_STATUS_KNIGHT_DETECT_HERO_INIT, knight_idle_anim)
-.macro MONSTER_INIT(MONSTER_UPDATE_PTR, MONSTER_DRAW_PTR, MONSTER_IMPACT_PTR, MONSTER_HEALTH, MONSTER_STATUS, MONSTER_ANIM_PTR, spawn_rate_check = True)
+.macro MONSTER_INIT(MONSTER_UPDATE_PTR, MONSTER_DRAW_PTR, MONSTER_IMPACT_PTR, MONSTER_HEALTH, MONSTER_STATUS, MONSTER_ANIM_PTR, spawn_rate_check = True, _monster_type = MONSTER_TYPE_ENEMY)
 		.if spawn_rate_check
 			mvi b, 1
 		.endif
@@ -48,7 +48,7 @@ monsters_init:
 
 			.word TEMP_WORD  ; safety word because an interruption can call
 @monster_init_data:
-			.word MONSTER_UPDATE_PTR, MONSTER_DRAW_PTR, MONSTER_STATUS<<8 | MONSTER_HEALTH, MONSTER_ANIM_PTR, MONSTER_IMPACT_PTR
+			.word MONSTER_UPDATE_PTR, MONSTER_DRAW_PTR, MONSTER_STATUS<<8 | MONSTER_HEALTH, MONSTER_ANIM_PTR, MONSTER_IMPACT_PTR, _monster_type
 .endmacro
 
 ; monster initialization
@@ -182,8 +182,13 @@ monster_init:
 			HL_ADVANCE(monster_impacted_ptr + 1, monster_id)
 @monster_id:
 			mvi m, TEMP_BYTE
+
+
 			HL_ADVANCE(monster_id, monster_type)
-			mvi m, MONSTER_TYPE_ENEMY
+			pop b
+			; c - MONSTER_TYPE
+			mov m, c
+
 			HL_ADVANCE(monster_type, monster_health)
 @health:
 			mvi m, TEMP_BYTE
@@ -197,9 +202,11 @@ monster_init:
 			ret
 
 ; in:
-; hl - 	pos_x, pos_y
-; a  - 	collider width
-; c  - 	collider height
+; h - pos_x
+; l - pos_y
+; a - collider width
+; c - collider height
+; b - monster type to look up
 ; out:
 ; no collision 	- (hl) >= ACTOR_RUNTIME_DATA_DESTR
 ; collision 	- hl points to a collided monster_update_ptr+1, (hl) < ACTOR_RUNTIME_DATA_DESTR
@@ -213,6 +220,8 @@ monsters_get_first_collided:
 			sta @collider_pos_x+1
 			mov a, l
 			sta @collider_pos_y+1
+			mov a, b
+			sta @monster_type + 1			
 			lxi h, monster_update_ptr+1
 
 @loop:
@@ -226,9 +235,10 @@ monsters_get_first_collided:
 @check_collision:
 			push h
 			HL_ADVANCE(monster_update_ptr+1, monster_type, BY_BC)
-			mov a, m
-			CPI_ZERO(MONSTER_TYPE_ENEMY)
-			jnz @no_collision
+			mov a, m			
+@monster_type:			
+			ani TEMP_BYTE
+			jz @no_collision
 
 			HL_ADVANCE(monster_type, monster_pos_x+1, BY_BC)
 			; horizontal check
@@ -245,7 +255,7 @@ monsters_get_first_collided:
 			cmp b
 			jc @no_collision
 			; vertical check
-			INX_H(2)
+			HL_ADVANCE(monster_pos_x+1, monster_pos_y+1)
 			mov c, m ; monster pos_y
 @collider_pos_y:
 			mvi a, TEMP_BYTE

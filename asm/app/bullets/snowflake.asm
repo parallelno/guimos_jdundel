@@ -108,7 +108,7 @@ snowflake_update:
 			push h
 			; check if a bullet collides with a monster
 			mvi a, SNOWFLAKE_COLLISION_WIDTH-1
-			mvi c, SNOWFLAKE_COLLISION_HEIGHT-1
+			lxi b, MONSTER_TYPE_ENEMY<<8 | SNOWFLAKE_COLLISION_HEIGHT-1
 			call monsters_get_first_collided
 
 			; hl - ptr to a collided monster_update_ptr+1

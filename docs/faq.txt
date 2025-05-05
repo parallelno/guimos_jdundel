@@ -1,3 +1,5 @@
+FAQ:
+
 ;===========================================================================
 ; Why do we reserve two bytes before each data block in the ram-disk?
 ;===========================================================================
@@ -150,15 +152,26 @@ Misc:
     Break - break the execution
 UI:
 	DrawText - render a fixed size text in the Render Window.
-	DrawText(id, "TEXT", x, y, <color= 0xFFFFFFFF>)
+	DrawText(id, "TEXT", x, y, <color=0xFFFFFFFF>, <vectorScreenCoords=true>)
 	The color is in a format: RRGGBBAA
+	Negative x/y use right/bottom origin.
 
-	DrawRect - render a rectangle in the Render Window.
-	DrawRect(id, x, y, width, height, <color= 0xFFFFFFFF>)
+	DrawRect - render a rectangle frame in the Render Window.
+	DrawRect(id, x, y, width, height, <color=0xFFFFFFFF>, <vectorScreenCoords=true>)
+	x, y, width, height - are in the Vector06c pixel coords.
 	The color is in a format: RRGGBBAA
+	Negative x/y use right/bottom origin.
 
-Script example:
+	DrawRectFilled - render a filled rectangle in the Render Window.
+	DrawRect(id, x, y, width, height, <color=0xFFFFFFFF>, <vectorScreenCoords=true>)
+	x, y, width, height - are in the Vector06c pixel coords.
+	The color is in a format: RRGGBBAA
+	Negative x/y use right/bottom origin.
 
+Script examples:
+
+------------------------------------------------
+-- Check if BC pair is overriden a stack critical section
 local sp = GetSP()
 if sp > 0x7FBE and sp < 0x7FFE then return end
 local opcode = GetOpcode()
@@ -181,6 +194,28 @@ print(\Warning! Overrideing BC in a stack critical section\)
 print(string.format(\PC = %04X\, GetPC()))
 print(string.format(\Opcode = %02X\, GetOpcode()))
 Break()
+
+------------------------------------------------
+-- Draw FPS
+local pc = GetPC()
+-- return to avoid excessive execution
+if pc ~= 0x5CB then return end
+
+local fpsL = GetByteGlobal(0x5CC)
+local fpsH = GetByteGlobal(0x5CD)
+
+local fps = fpsH * 256 + fpsL
+
+DrawText(0, string.format("FPS %d", fps), 0, 0, 0xFFFFFFFF, false)
+------------------------------------------------
+-- Draw a rectangle
+local pc = GetPC()
+-- return to avoid excessive execution
+if pc ~= 0x5CB then return end
+
+DrawRect(1, 0, 0, 16, 16, 0xFFFFFF80)
+
+-----------------------------------------------
 
 Tips:
 Each function call GetSP, GetHL, etc. is expensive. Try call it once, and 

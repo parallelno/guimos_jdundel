@@ -30,15 +30,7 @@ NPC_COLLISION_HEIGHT	= 16
 ; out:
 ; a = TILEDATA_RESTORE_TILE
 npc_init:
-			mov b, a ; tmp
-			lda game_status_fire_extinguished
-			CPI_ZERO(False)
-			jnz @return
-			mov a, b
-			MONSTER_INIT(npc_update, npc_draw, npc_impacted, NPC_HEALTH, ACTOR_STATUS_NPC_IDLE, npc_mom_idle_anim, False)
-@return:
-			mvi a, TILEDATA_RESTORE_TILE
-			ret
+			MONSTER_INIT(npc_update, npc_draw, npc_impacted, NPC_HEALTH, ACTOR_STATUS_NPC_IDLE, npc_mom_idle_anim, False, MONSTER_TYPE_NPC_FRIENDS_MOM)
 
 ;========================================================
 ; anim and a gameplay logic update
@@ -61,31 +53,76 @@ npc_impacted:
 			; check the weapon_id
 			mvi a, HERO_WEAPON_ID_SNOWFLAKE
 			cmp c
-			rnz
+			rz ; return if the hero used a snowflake
 			; de - ptr to monster_impacted_ptr+1
 
-			mvi a, True
-			sta game_status_fire_extinguished
+			HL_ADVANCE(monster_impacted_ptr+1, monster_type, BY_HL_FROM_DE)
+			cpi MONSTER_TYPE_NPC_FRIENDS_MOM
+			rnz ; return if the npc is not friend's mom
+			call npc_friends_mom
+			ret
 
 
-			; die
-			; advance hl to monster_pos_x+1			
-			HL_ADVANCE(monster_impacted_ptr+1, monster_pos_x+1, BY_HL_FROM_DE)
-			push h
-			; play a hit vfx
-			mov b, m
-			; advance hl to monster_pos_y+1
-			INX_H(2)
-			mov c, m
-			lxi d, vfx4_hit_anim
-			call vfx_init4
-			pop h
-			; hl - ptr to monster_pos_x+1
+; Interaction with a friend's mom NPC.
+; In this routine the hero gets a key 0 to open the backyard
+; Then he gets a popsicle pie in exchange of a dry clothes
+npc_friends_mom:
+			; fix for multiple calls this function when a hero hits several trigger tiledatas
+			call dialog_is_inited
+			rz
 
-			; mark this monster dead
-			; advance hl to monster_update_ptr+1
-			HL_ADVANCE(monster_pos_x+1, monster_update_ptr+1, BY_DE)
-			jmp monster_destroy
+			lxi h, global_items + ITEM_ID_KEY_0 - 1 ; because the first item_id = 1
+			; check the key 0 status
+			A_TO_ZERO(ITEM_STATUS_NOT_ACQUIRED)
+			cmp m
+			jnz @check_clothes; if it is acquired or used, check clothes item
+
+			; if a key_0 isn't acquired, set key_0 status = ITEM_STATUS_ACQUIRED
+			mvi m, ITEM_STATUS_ACQUIRED
+			
+			lxi d, TILEDATA_FUNC_ID_ITEMS<<8 | ITEM_ID_KEY_0
+			call game_score_add
+			call game_ui_draw_score_text
+
+			; init a dialog
+			mvi a, GAME_REQ_PAUSE
+			lxi h, dialog_callback_room_redraw
+			lxi d, _dialogs_knocked_his_friend_door
+			jmp dialog_init
+
+@check_clothes:
+			; key_0 is acquired
+			; check if clothes are acquired
+			lxi h, hero_res_clothes
+			A_TO_ZERO(0)
+			cmp m
+			jnz @clothes_acquired
+@clothes_not_acquired:
+			; the hero returns without clothes
+			mvi a, GAME_REQ_PAUSE
+			lxi h, dialog_callback_room_redraw
+			lxi d, _dialogs_knocked_his_friend_door_no_clothes
+			jmp dialog_init
+
+@clothes_acquired:
+			; a hero returns with clothes
+			; remove the clothes item
+			; a = 0
+			mov m, a
+			lxi h, hero_res_popsicle_pie
+			inr m
+			lxi h, hero_res_sword
+			call game_ui_res_select_and_draw
+
+			lxi d, TILEDATA_FUNC_ID_RESOURCES<<8 | RES_ID_PIE
+			call game_score_add
+			call game_ui_draw_score_text
+
+			; init a dialog
+			mvi a, GAME_REQ_PAUSE
+			lxi h, dialog_callback_room_redraw
+			lxi d, _dialogs_knocked_his_friend_door_clothes_returns
+			jmp dialog_init
 
 ; draw a sprite into a backbuffer
 ; in:
