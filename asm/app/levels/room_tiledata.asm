@@ -264,14 +264,10 @@ room_get_collision_tiledata:
 ; used by room_tiledata_handling as an EOD marker
 room_get_tiledata_idxs_eod:			
 			.byte TILE_IDX_INVALID
-; contains up to 9 unique tile indices
+; contains up to 4 unique tile indices
 room_get_tiledata_idxs:
-			.byte 0, 0, 0,
-			.byte 0, 0, 0,
-			.byte 0, 0, 0,
+			.byte 0,0,0,0
 
-@watchpointStartOffRW_room_get_tiledata_idxs: = room_get_tiledata_idxs
-@watchpointEnd_room_get_tiledata_idxs: = room_get_tiledata_idxs + 9
 ; v1. 2x2 tiles MAX only!
 ; 1x1: 41*4 = 164 cc
 ; 2x1: 47*4 = 188 cc
@@ -307,118 +303,106 @@ room_get_tiledata_idxs:
 ; 2x2: 248 cc
 ; 2x3: 488 cc
 ; 3x3: 624 cc
+
+; it's crazy, but I have to go back to the v1!
+; Sprites are 16 pxls max. No reason for 3x3 checking 
+; area. Teleport's logic fails if the check area bigger
+; than 2x2 tiles.
+; v1. 2x2 tiles MAX only!
+; 1x1: 41*4 = 164 cc
+; 2x1: 47*4 = 188 cc
+; 2x2: 59*4 = 236 cc
 room_get_tiledata:
-			xchg
-			; de - sprite left-bottom pos_xy
-			; bc - sprite width, height
-
-			; calc x in tile coords
+			; calc y in tiles
 			mvi a, %11110000
-			ana h
-			RRC_(4)
-			mov e, a
-			; e = x in tile coords
+			ana e
+			mov l, a
+			; l = y in tiles
 
-			; calc y in tile coords
-			mvi a, %11110000
-			ana l
-			; combine x and y in tile coords
-			ora e
-			mov e, a
-			; e - lerf-bottom corner idx
-
-			dad b
-			; hl - right-top corner pos_xy in screen coords
-			
-			; calc x+dx in tile coords
-			mvi a, %11110000
-			ana h
-			RRC_(4)
-			mov d, a
-			; d = x+dx in tile coords
-
-			; calc y+dy in tile coords
-			mvi a, %11110000
-			ana l
-			; combine x+dx and y+dy in tile coords
-			ora d
-			; a - right-top corner idx
-			
-			sub e
-			; a - diff between left_bottom and right_top tile indices
-
-			cpi %0001_0001
-
-			jz @tile2x2
-			jc @tile2x1_1x2
-@tile3xN_Nx3:
-			; e - left-bottom tile
-			mov c, a
-			; a, c - diff between left_bottom and right_top tile indices
-			
-			mvi b, ROOM_WIDTH
-
-			add e
-			mov d, a
-			; d - right-top corner idx
-
-			mvi a, %1111_0000
-			ana c
-			adi ROOM_WIDTH - 1
-			mov c, a
-			; c - offset (dy+1)*ROOM_WIDTH - 1
-
+			; calc y+dy in tiles
 			mov a, e
-			
-			; use (room_get_tiledata_idxs-1) to exit with hl
-			; pointing to the last element
-			lxi h, room_get_tiledata_idxs - 1
-@loop:
-			; a - left-bottom corner idx
-			; d - right-top corner idx
-			; c - offset (dy+1)*ROOM_WIDTH - 1
-			; b - ROOM_WIDTH
+			add c
+			ani %11110000
+			cmp l
+			; if y = y+dy, do not top two corners
+			jz @tileSizeH1
 
-			inx h
-			mov m, a
-
-			add b ; to row above
-			cmp d ; check if it passed the right-top idx
-			jc @loop
-			jz @exit ; it's the right-top idx
-
-			sub c
-			jmp @loop
-@exit:
-			inx h
-			mov m, a
-			ret
-
-@tile2x2:
-			xchg
-			; a - diff between left_bottom and right_top tile indices
-			; l - left-bottom tile
-			add l
+			; calc x+dx in tiles
+			mov a, d
+			add b
+			ani %11110000
 			mov h, a
-			; h - right-top tile
-			shld room_get_tiledata_idxs
-			dcr h
-			inr l
-			; h - left-top tile
-			; l - right-bottom tile
-			shld room_get_tiledata_idxs+2
+			; h = x+dx in tiles
+			mvi a, %11110000
+			ana d
+			; a = x in tiles
+			cmp h
+			jz @tileSizeW1H2
 
-			lxi h, room_get_tiledata_idxs + 3
-			ret
+			RRC_(4)
+			ora l
+			; a - left-bottom corner
 
-@tile2x1_1x2:
+			; store tile_idxs
 			lxi h, room_get_tiledata_idxs
 			mov m, a
-			ora a
-			rz ; return if 1x1 case
-
 			inx h
-			add e ; to the top-right tile
+			inr a
+			mov m, a
+			inx h
+			adi ROOM_WIDTH-1
+			mov m, a
+			inx h
+			inr a
+			mov m, a
+			; 23 * 4 cc
+			ret
+
+@tileSizeH1:
+			; calc x+dx in tiles
+			mov a, d
+			add b
+			ani %11110000
+			mov h, a
+			; h = x+dx in tiles
+			mvi a, %11110000
+			ana d
+			; a = x in tiles
+			cmp h
+			jz @tileSizeW1H1
+
+@tileSizeW2H1:
+			RRC_(4)
+			ora l
+			; a - left-bottom corner
+
+			; store tile_idxs
+			lxi h, room_get_tiledata_idxs
+			mov m, a
+			inx h
+			inr a
+			mov m, a
+			ret
+
+@tileSizeW1H1:
+			RRC_(4)
+			ora l
+
+			; store tile_idxs
+			lxi h, room_get_tiledata_idxs
+			mov m, a
+			ret
+
+@tileSizeW1H2:
+			RRC_(4)
+			ora l
+			; a - left-bottom corner
+
+			; store tile_idxs
+			lxi h, room_get_tiledata_idxs
+			mov m, a
+			inx h
+			adi ROOM_WIDTH
 			mov m, a
 			ret
 
@@ -443,7 +427,7 @@ room_fill_tiledata:
 ; in:
 ; de - pos_xy
 .macro TILEDATA_HANDLING(width, height, actor_tile_func_table)
-			lxi b, (width<<8) | height
+			lxi b, (width-1)<<8 | height - 1
 			lxi h, actor_tile_func_table - JMP_4_LEN ; because we skip tiledata_func_id = 0			
 			call room_tiledata_handling
 .endmacro 
@@ -454,9 +438,7 @@ room_fill_tiledata:
 room_tiledata_handling:
 			shld @actor_tile_func_table + 1
 			; de - pos_xy
-@codePerfStart_room_tiledata_handling
 			call room_get_tiledata
-@codePerfEnd_room_tiledata_handling
 			; hl - ptr to the last tile_idx in the array room_get_tiledata_idxs			
 @loop:
 			mov a, m

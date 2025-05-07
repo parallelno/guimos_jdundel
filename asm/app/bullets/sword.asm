@@ -25,13 +25,6 @@ SWORD_MONSTER_COLLISION_OFFSET_Y_R = <(-7)
 SWORD_MONSTER_COLLISION_OFFSET_X_L = <(-7)
 SWORD_MONSTER_COLLISION_OFFSET_Y_L = <(-7)
 
-SWORD_TILE_COLLISION_WIDTH	= 15
-SWORD_TILE_COLLISION_HEIGHT	= 16
-SWORD_TILE_COLLISION_OFFSET_X_R = 8
-SWORD_TILE_COLLISION_OFFSET_X_L = <(-7)
-
-SWORD_TILE_COLLISION_OFFSET_Y = 3
-
 ; funcs to handle the tiledata. tiledata format is in level_data.asm->room_tiledata
 sword_tile_func_tbl:
 			RET_4()								; func_id == 1 ; spawn a monster
@@ -161,7 +154,7 @@ sword_check_monsters:
 			mov a, m
 			cpi ACTOR_RUNTIME_DATA_DESTR
 			; if no collision with a monster, check the tiledata it is on.
-			jnc sword_check_tiledata
+			jnc hero_attack_check_tiledata
 
 			; impact the monster
 			; advance hl to monster_impacted_ptr
@@ -174,35 +167,6 @@ sword_check_monsters:
 			; call a monster_impact func
 			pchl
 
-; check the tiledata under a sword collision
-sword_check_tiledata:
-			; if no sword, do not init a sword, check and handle the collision
-			; get a hero pos
-			lxi h, hero_pos_x+1
-			mov d, m
-			INX_H(2)
-			mov e, m
-			; de - the hero pos
-
-			; offset the sword collision horizontally depending on the hero move
-			lda hero_dir
-			rrc
-			mvi h, SWORD_TILE_COLLISION_OFFSET_X_L
-			jnc @left
-@right:
-			mvi h, SWORD_TILE_COLLISION_OFFSET_X_R
-@left:
-			; offset the sword collision vertically depending on the hero move
-			RRC_(2)
-			mvi l, SWORD_TILE_COLLISION_OFFSET_Y
-			jc @up
-			mvi l, <(-SWORD_TILE_COLLISION_OFFSET_Y)
-@up:
-			dad d
-			xchg
-			; de - the sword collision pos
-			TILEDATA_HANDLING(SWORD_TILE_COLLISION_WIDTH, SWORD_TILE_COLLISION_HEIGHT, sword_tile_func_tbl)
-			ret
 
 ; draw a sprite into a backbuffer
 ; in:

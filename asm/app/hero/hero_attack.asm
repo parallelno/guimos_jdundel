@@ -188,10 +188,16 @@ hero_attack_use_hands:
 			call hero_attack_anim_init
 			jmp hero_attack_check_monsters
 
-HANDS_COLLISION_WIDTH	= 19
-HANDS_COLLISION_HEIGHT	= 20
-HANDS_COLLISION_OFFSET_X = <(-2)
-HANDS_COLLISION_OFFSET_Y = <(-2)
+HANDS_COLLISION_WIDTH	= 15
+HANDS_COLLISION_HEIGHT	= 16
+HANDS_COLLISION_OFFSET_X = 0
+HANDS_COLLISION_OFFSET_Y = 0
+
+SWORD_TILE_COLLISION_WIDTH	= 15
+SWORD_TILE_COLLISION_HEIGHT	= 16
+SWORD_TILE_COLLISION_OFFSET_X_R = 8
+SWORD_TILE_COLLISION_OFFSET_X_L = <(-7)
+SWORD_TILE_COLLISION_OFFSET_Y = 3
 
 ; Check if the area near the hero collides with an allay (npc, pets, friendly animals, etc) monster
 hero_attack_check_monsters:
@@ -230,24 +236,6 @@ hero_attack_check_monsters:
 			; call a monster_impact func
 			pchl
 
-
-; check the tiledata under a sword collision
-hero_attack_check_tiledata:
-			; get a hero pos
-			lxi h, hero_pos_x+1
-			mov d, m
-			HL_ADVANCE(hero_pos_x+1, hero_pos_y+1)
-			mov e, m
-			; de - the hero pos_xy
-
-			; offset the collision
-			lxi h, HANDS_COLLISION_OFFSET_X<<8 | HANDS_COLLISION_OFFSET_Y
-			dad d
-			xchg
-			; de - the hand collision pos_xy 
-			TILEDATA_HANDLING(HANDS_COLLISION_WIDTH, HANDS_COLLISION_HEIGHT, sword_tile_func_tbl)
-			ret
-
 hero_attack_update:
 			HERO_UPDATE_ANIM(HERO_ANIM_SPEED_ATTACK)
 			lxi h, hero_status_timer
@@ -255,3 +243,34 @@ hero_attack_update:
 			rnz
 			; if the timer == 0, set the status to Idle
 			jmp hero_idle_init
+
+
+; check the tiledata under a sword collision
+hero_attack_check_tiledata:
+			; if no sword, do not init a sword, check and handle the collision
+			; get a hero pos
+			lxi h, hero_pos_x + 1
+			mov d, m
+			HL_ADVANCE(hero_pos_x + 1, hero_pos_y + 1)
+			mov e, m
+			; de - the hero pos
+
+			; offset the sword collision horizontally depending on the hero move
+			lda hero_dir
+			rrc
+			mvi h, SWORD_TILE_COLLISION_OFFSET_X_L
+			jnc @left
+@right:
+			mvi h, SWORD_TILE_COLLISION_OFFSET_X_R
+@left:
+			; offset the sword collision vertically depending on the hero move
+			RRC_(2)
+			mvi l, SWORD_TILE_COLLISION_OFFSET_Y
+			jc @up
+			mvi l, <(-SWORD_TILE_COLLISION_OFFSET_Y)
+@up:
+			dad d
+			xchg
+			; de - the sword collision pos
+			TILEDATA_HANDLING(SWORD_TILE_COLLISION_WIDTH, SWORD_TILE_COLLISION_HEIGHT, sword_tile_func_tbl)
+			ret
