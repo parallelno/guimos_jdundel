@@ -221,10 +221,11 @@ def get_load_asm(load_name, allocation, segments):
 			const_ram_disk_m = f"RAM_DISK_M_{NAME}"
 			const_ram_disk_s = f"RAM_DISK_S_{NAME}"
 			const_addr = f"{NAME}_ADDR"
+			asset_addrS = f"0x{asset['addr']:04X}" 
 			
 			asm += f"			{const_ram_disk_m} = RAM_DISK_M{bank_idx}\n"
 			asm += f"			{const_ram_disk_s} = RAM_DISK_S{bank_idx}\n"
-			asm += f"			{const_addr} = {asset['addr']}\n"
+			asm += f"			{const_addr} = {asset_addrS}\n"
 			asm += f"			LOAD_FILE({NAME}_FILENAME_PTR, {const_ram_disk_s}, {const_addr}, {NAME}_FILE_LEN)\n"
 
 			asset_type = asset["type"]

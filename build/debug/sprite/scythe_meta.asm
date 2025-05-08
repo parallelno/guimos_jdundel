@@ -43,3 +43,5 @@ scythe_run_anim:
 			.word _scythe_run2_0_relative, _scythe_run2_1_relative, _scythe_run2_2_relative, _scythe_run2_3_relative, 
 			.byte 225, $ff ; offset to the first frame
 			.word _scythe_run3_0_relative, _scythe_run3_1_relative, _scythe_run3_2_relative, _scythe_run3_3_relative, 
+scythe_anims_end:
+scythe_anims_len: = scythe_anims_end - scythe_anims

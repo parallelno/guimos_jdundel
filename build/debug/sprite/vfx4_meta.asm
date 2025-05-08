@@ -89,3 +89,5 @@ vfx4_spark_anim:
 			.word _vfx4_hit2_0_relative, _vfx4_hit2_1_relative, _vfx4_hit2_2_relative, _vfx4_hit2_3_relative, 
 			.byte 225, $ff ; offset to the first frame
 			.word _vfx4_hit3_0_relative, _vfx4_hit3_1_relative, _vfx4_hit3_2_relative, _vfx4_hit3_3_relative, 
+vfx4_anims_end:
+vfx4_anims_len: = vfx4_anims_end - vfx4_anims

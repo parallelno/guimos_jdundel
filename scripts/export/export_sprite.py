@@ -180,6 +180,12 @@ def anims_to_asm(label_prefix, asset_name, asset_j, data_relative_ptrs, asset_j_
 				asm += frame_label + ", "
 			asm += "\n"
 
+	# add the end label
+	asm += f"{asset_name}_anims_end:\n"
+	# add len of the anims data
+	asm += f"{asset_name}_anims_len: = {asset_name}_anims_end - {asset_name}_anims\n"
+
+
 	# add the list of frame labels and their addresses
 	frame_relative_labels_asm = "; relative frame labels\n"
 	for label_name, addr in data_relative_ptrs.items():

@@ -80,3 +80,5 @@ skeleton_run_l_anim:
 			.word _skeleton_run_l2_0_relative, _skeleton_run_l2_1_relative, _skeleton_run_l2_2_relative, _skeleton_run_l2_3_relative, 
 			.byte 225, $ff ; offset to the first frame
 			.word _skeleton_run_l3_0_relative, _skeleton_run_l3_1_relative, _skeleton_run_l3_2_relative, _skeleton_run_l3_3_relative, 
+skeleton_anims_end:
+skeleton_anims_len: = skeleton_anims_end - skeleton_anims

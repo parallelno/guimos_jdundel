@@ -332,23 +332,19 @@ def export_debug_data(out_path, labels_path, scriptsJ):
 
 		# check if it's a watchpoint
 		elif lineParts[0].upper().find("WATCHPOINTSTART") != -1:
-			line = lineParts[0].upper()
 			globalAddr = int(lineParts[1][1:], 16)
 			globalAddrS = f"0x{globalAddr:X}"
-			token_pos = line.find("WATCHPOINTSTART") + len("WATCHPOINTSTART")
-			active_start = line.find("ON", token_pos, token_pos + len("ON"))
-			active = active_start != -1
-			token_pos += len("ON") if active_start != -1 else len("OFF")
 
-			access_start = line.find("R", token_pos, token_pos + len("R"))
-			access_end = line.find("_", token_pos, token_pos + len("RW_"))
-			access_len = access_end - access_start
-			accessS = "RW" if access_start != -1 and access_len == 2 else \
-				"R" if access_start != -1 else "W"
-			token_pos += len(accessS) + len("_")
+			tokensCommentPos = lineParts[0].upper().find("WATCHPOINTSTART")
+			tokensComment = lineParts[0][tokensCommentPos + len("WATCHPOINTSTART"):]
+			[tokens, comment] = tokensComment.split("_", 1)
+			
+			tokens = tokens.upper()
 
-			comment = lineParts[0][token_pos:]
-
+			active = not tokens.find("OFF") != -1
+			accessS = "R" if tokens.find("R_") != -1 else \
+				"W" if tokens.find("W_") != -1 else "RW"
+			
 			watchpoint = watchpoints.setdefault(comment, {})
 			watchpoint["comment"] = comment
 			watchpoint["globalAddr"] = globalAddrS
@@ -360,11 +356,11 @@ def export_debug_data(out_path, labels_path, scriptsJ):
 			watchpoint["value"] = "0x0000"
 			watchpoint["cond"] = "=ANY"
 		
-		# check if it's a watchpoint end label
+		# check if it's a watchpoint end label 
 		elif lineParts[0].upper().find("WATCHPOINTEND") != -1:
 			line = lineParts[0].upper()
-			token_pos = line.find("WATCHPOINTEND") + len("WATCHPOINTEND") + 1
-			comment = lineParts[0][token_pos:]
+			comment_pos = line.find("WATCHPOINTEND") + len("WATCHPOINTEND") + 1
+			comment = lineParts[0][comment_pos:]
 
 			watchpoint = watchpoints.setdefault(comment, {})
 			globalAddr = int(lineParts[1][1:], 16)

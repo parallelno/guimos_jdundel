@@ -38,3 +38,5 @@ snowflake_run_anim:
 			.word _snowflake_run2_0_relative, _snowflake_run2_1_relative, _snowflake_run2_2_relative, _snowflake_run2_3_relative, 
 			.byte 225, $ff ; offset to the first frame
 			.word _snowflake_run1_0_relative, _snowflake_run1_1_relative, _snowflake_run1_2_relative, _snowflake_run1_3_relative, 
+snowflake_anims_end:
+snowflake_anims_len: = snowflake_anims_end - snowflake_anims

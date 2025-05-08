@@ -31,3 +31,5 @@ tnt_run_anim:
 			.word _tnt_idle0_0_relative, _tnt_idle0_1_relative, _tnt_idle0_2_relative, _tnt_idle0_3_relative, 
 			.byte 245, $ff ; offset to the first frame
 			.word _tnt_idle1_0_relative, _tnt_idle1_1_relative, _tnt_idle1_2_relative, _tnt_idle1_3_relative, 
+tnt_anims_end:
+tnt_anims_len: = tnt_anims_end - tnt_anims

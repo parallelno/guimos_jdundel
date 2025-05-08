@@ -131,3 +131,5 @@ knight_defence_l_anim:
 			.word _knight_defence_l2_0_relative, _knight_defence_l2_1_relative, _knight_defence_l2_2_relative, _knight_defence_l2_3_relative, 
 			.byte 225, $ff ; offset to the first frame
 			.word _knight_defence_l3_0_relative, _knight_defence_l3_1_relative, _knight_defence_l3_2_relative, _knight_defence_l3_3_relative, 
+knight_anims_end:
+knight_anims_len: = knight_anims_end - knight_anims

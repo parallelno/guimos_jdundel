@@ -23,7 +23,7 @@
 	"mask" : true,
 	"anims" : {
 		"mom_idle" : {
-			"frames" : ["mom_idle0", "mom_idle0", "mom_idle1", "mom_idle2", "mom_idle2", "mom_idle1", "mom_idle0", "mom_idle0", "mom_idle1", "mom_idle0", "mom_idle0", "mom_idle0", "mom_idle0", "mom_idle0", "mom_idle0", "mom_idle0", "mom_idle2", "mom_idle0", "mom_idle0", "mom_idle1", "mom_idle2", "mom_idle2", "mom_idle2", "mom_idle2"],
+			"frames" : ["mom_idle0", "mom_idle0", "mom_idle1", "mom_idle2", "mom_idle2", "mom_idle1"],
 			"loop" : true
 		}
 	},

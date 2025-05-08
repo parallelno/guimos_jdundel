@@ -71,3 +71,5 @@ sword_attk_l_anim:
 			.word _sword_sword_l0_0_relative, _sword_sword_l0_1_relative, _sword_sword_l0_2_relative, _sword_sword_l0_3_relative, _sword_sword_l0_4_relative, _sword_sword_l0_5_relative, _sword_sword_l0_6_relative, _sword_sword_l0_7_relative, 
 			.byte -1, $ff ; offset to the same last frame
 			.word _sword_sword_l1_0_relative, _sword_sword_l1_1_relative, _sword_sword_l1_2_relative, _sword_sword_l1_3_relative, _sword_sword_l1_4_relative, _sword_sword_l1_5_relative, _sword_sword_l1_6_relative, _sword_sword_l1_7_relative, 
+sword_anims_end:
+sword_anims_len: = sword_anims_end - sword_anims

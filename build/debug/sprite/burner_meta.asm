@@ -110,3 +110,5 @@ burner_dash_anim:
 			.word _burner_dash_2_0_relative, _burner_dash_2_1_relative, _burner_dash_2_2_relative, _burner_dash_2_3_relative, 
 			.byte 225, $ff ; offset to the first frame
 			.word _burner_dash_3_0_relative, _burner_dash_3_1_relative, _burner_dash_3_2_relative, _burner_dash_3_3_relative, 
+burner_anims_end:
+burner_anims_len: = burner_anims_end - burner_anims

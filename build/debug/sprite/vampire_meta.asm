@@ -92,3 +92,5 @@ vampire_run_l_anim:
 vampire_cast_anim:
 			.byte 255, $ff ; offset to the first frame
 			.word _vampire_cast_0_0_relative, _vampire_cast_0_1_relative, _vampire_cast_0_2_relative, _vampire_cast_0_3_relative, 
+vampire_anims_end:
+vampire_anims_len: = vampire_anims_end - vampire_anims

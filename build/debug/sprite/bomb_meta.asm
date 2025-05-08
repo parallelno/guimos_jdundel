@@ -44,3 +44,5 @@ bomb_dmg_anim:
 			.word _bomb_dmg0_0_relative, _bomb_dmg0_1_relative, _bomb_dmg0_2_relative, _bomb_dmg0_3_relative, 
 			.byte 245, $ff ; offset to the first frame
 			.word _bomb_dmg1_0_relative, _bomb_dmg1_1_relative, _bomb_dmg1_2_relative, _bomb_dmg1_3_relative, 
+bomb_anims_end:
+bomb_anims_len: = bomb_anims_end - bomb_anims

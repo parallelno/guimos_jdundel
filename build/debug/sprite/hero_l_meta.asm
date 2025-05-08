@@ -97,3 +97,5 @@ hero_l_attk_anim:
 			.word _hero_l_attk0_0_relative, _hero_l_attk0_1_relative, _hero_l_attk0_2_relative, _hero_l_attk0_3_relative, _hero_l_attk0_4_relative, _hero_l_attk0_5_relative, _hero_l_attk0_6_relative, _hero_l_attk0_7_relative, 
 			.byte -1, $ff ; offset to the same last frame
 			.word _hero_l_attk1_0_relative, _hero_l_attk1_1_relative, _hero_l_attk1_2_relative, _hero_l_attk1_3_relative, _hero_l_attk1_4_relative, _hero_l_attk1_5_relative, _hero_l_attk1_6_relative, _hero_l_attk1_7_relative, 
+hero_l_anims_end:
+hero_l_anims_len: = hero_l_anims_end - hero_l_anims

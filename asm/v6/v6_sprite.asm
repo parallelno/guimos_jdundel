@@ -120,9 +120,10 @@ sprite_update_labels:
 ; hl - anim ptr
 @update_frame_labels:
 			; check if it's the last frame (offset to the next frame < 0)
+			
+			inx h
 			mov a, m
 			push psw
-			inx h
 			inx h
 			; hl - ptr to array of frame ptrs
 			; the len of array = @preshifted_sprites

@@ -84,3 +84,5 @@ vfx_firepool_anim:
 vfx_selection_anim:
 			.byte 255, $ff ; offset to the first frame
 			.word _vfx_selection0_0_relative, 
+vfx_anims_end:
+vfx_anims_len: = vfx_anims_end - vfx_anims

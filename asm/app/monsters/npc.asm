@@ -1,4 +1,6 @@
 memusage_npc:
+
+.include "asm/app/monsters/goose.asm"
 ;========================================================
 ; npc is a quest monster. it can't be destroied.
 ; all all npcs visual and logic is in this assembly.
@@ -30,6 +32,14 @@ NPC_COLLISION_HEIGHT	= 16
 ; out:
 ; a = TILEDATA_RESTORE_TILE
 npc_init:
+			mov b, a ; tmp store
+			; if it's the level 0 & the room 0
+			; spawn a goose
+			lda room_id
+			CPI_ZERO(ROOM_ID_0)
+			mov a, b
+			jz goose_init
+@friends_mom:
 			MONSTER_INIT(npc_update, npc_draw, npc_impacted, NPC_HEALTH, ACTOR_STATUS_NPC_IDLE, npc_mom_idle_anim, False, MONSTER_TYPE_NPC_FRIENDS_MOM)
 
 ;========================================================
@@ -128,5 +138,4 @@ npc_friends_mom:
 ; in:
 ; de - ptr to monster_draw_ptr 
 npc_draw:
-			; TODO: error. do not use sprite_get_scr_addr_burner
 			ACTOR_DRAW(sprite_get_scr_addr_npc, RAM_DISK_S_NPC, false)

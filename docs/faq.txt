@@ -75,6 +75,12 @@ Examples:
 .breakpoint "HL < 0x1d23"
 .breakpoint "DE < 0xA000 sprite_copy_to_scr_v"
 
+If you want specify an addr, you can use it as an ordinary label. Only make sure
+the addrs are unique.
+Breakpoint: = 09
+BREAKPOINT1: = $09
+@breakpoint2: = 0x10
+
 ;===========================================================================
 ; How to extract watchpoints from the code into a debug data?
 ;===========================================================================

@@ -79,3 +79,5 @@ npc_mom_idle_anim:
 			.word _npc_mom_idle2_0_relative, _npc_mom_idle2_1_relative, _npc_mom_idle2_2_relative, _npc_mom_idle2_3_relative, 
 			.byte 25, $ff ; offset to the first frame
 			.word _npc_mom_idle2_0_relative, _npc_mom_idle2_1_relative, _npc_mom_idle2_2_relative, _npc_mom_idle2_3_relative, 
+npc_anims_end:
+npc_anims_len: = npc_anims_end - npc_anims
