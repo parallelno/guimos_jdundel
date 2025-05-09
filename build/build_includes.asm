@@ -6,7 +6,7 @@
 .include "build/debug/sprite/vampire_meta.asm"
 .include "build/debug/sprite/knight_meta.asm"
 .include "build/debug/sprite/npc_meta.asm"
-.include "build/debug/sprite/goose_meta.asm"
+.include "build/debug/sprite/npc4_meta.asm"
 .include "build/debug/sprite/sword_meta.asm"
 .include "build/debug/sprite/scythe_meta.asm"
 .include "build/debug/sprite/bomb_meta.asm"

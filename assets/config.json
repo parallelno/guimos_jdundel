@@ -9,13 +9,13 @@
 	],
 	"scripts": [
 		{
-			"active": true,
+			"active": false,
 			"code": "local pc = GetPC()\nif pc ~= 0x2B9F then return end\n\nlocal x = GetByteGlobal(0x75f0 + 18)\nlocal y = GetByteGlobal(0x75f0 + 20)\n\nlocal cx = GetD()\nlocal cy = GetE()\n\nlocal cw = GetB()\nlocal ch = GetC()\n\nDrawRect(1, x, y, 15, 16, 0xFFFFFFA0)\nDrawRect(2, cx, cy, cw, ch, 0x00FF00F0)\n",
 			"comment": "Draw Tile Collision",
 			"id": 3
 		},
 		{
-			"active": true,
+			"active": false,
 			"code": "local pc = GetPC()\nif pc ~= 0x3f2a then return end\n\nlocal cx = GetH()\nlocal cy = GetL()\n\nlocal cw = GetA()\nlocal ch = GetC()\n\nDrawRect(3, cx, cy, cw, ch, 0xFF0000F0)",
 			"comment": "Draw Monster Collision",
 			"id": 2
@@ -113,7 +113,7 @@
 			"assets/sprites/vampire.json",
 			"assets/sprites/knight.json",
 			"assets/sprites/npc.json",
-			"assets/sprites/goose.json",
+			"assets/sprites/npc4.json",
 
 			"assets/sprites/sword.json",
 			"assets/sprites/scythe.json",

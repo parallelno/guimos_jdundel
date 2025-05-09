@@ -1,6 +1,4 @@
 memusage_npc:
-
-.include "asm/app/monsters/goose.asm"
 ;========================================================
 ; npc is a quest monster. it can't be destroied.
 ; all all npcs visual and logic is in this assembly.

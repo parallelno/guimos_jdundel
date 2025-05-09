@@ -1,17 +1,17 @@
 ## Main Ram memory usage:
-> Free Space: `6095`
+> Free Space: `6277`
 
 |Assembly| Usage|
 |-|-|
-|memusage_v6_build_uncludes:|2830|
+|memusage_v6_build_uncludes:|2648|
 |memusage_hero_update:|1337|
 |memusage_v6_sprite_copy_to_backbuf:|1219|
 |memusage_v6_sprite_copy_to_scr:|1203|
 |memusage_levels_data:|910|
 |memusage_v6_sound:|810|
-|memusage_goose:|768|
 |memusage_knight:|648|
 |memusage_burner:|579|
+|memusage_goose:|579|
 |memusage_monsters:|574|
 |memusage_v6_utils:|535|
 |memusage_skeleton:|521|
@@ -40,6 +40,7 @@
 |memusage_backs:|199|
 |memusage_dialogs:|198|
 |memusage_room:|191|
+|memusage_npc:|189|
 |memusage_bullets:|178|
 |memusage_hero_render:|174|
 |memusage_v6_decal_draw:|173|
@@ -77,10 +78,9 @@
 |memusage_v6_sprite_draw_hit:|0|
 |memusage_loads_permanent_end:|0|
 |memusage_runtime_data:|0|
-|memusage_npc:|0|
 
 ## FDD Usage:
-> Free Space: `589824`
+> Free Space: `591872`
 
 ## Ram disk usage:
 ### `permanent` ram-disk usage:
@@ -96,34 +96,34 @@
 ---
 ### `level0` ram-disk usage:
 
-> Used: `137010`, Free Space: `74102`
+> Used: `135522`, Free Space: `75590`
 
 - bank0 addr0
 	* SKELETON.BIN: addr: 0, len: `9870`
 	* BURNER.BIN: addr: 9870, len: `9030`
 	* SWORD.BIN: addr: 18900, len: `8928`
-	* GOOSE.BIN: addr: 27828, len: `4824`
+	* VFX4.BIN: addr: 27828, len: `3888`
+	* BOMB.BIN: addr: 31716, len: `960`
 
-  `Used: 32652, Free: 52`
+  `Used: 32676, Free: 28`
 
 - bank0 addr8000
-	* LV0_GFX.BIN: addr: 34392, len: `5542`
-	* BOMB.BIN: addr: 39934, len: `960`
+	* NPC4.BIN: addr: 34392, len: `5790`
+	* BACKS0.BIN: addr: 40182, len: `620`
 
-  `Used: 6502, Free: 66`
+  `Used: 6410, Free: 158`
 
 - bank1 addr0
 	* VAMPIRE.BIN: addr: 0, len: `7440`
-	* TEXT_LV0.BIN: addr: 7440, len: `5190`
-	* VFX4.BIN: addr: 12630, len: `3888`
-	* NPC.BIN: addr: 16518, len: `3048`
-	* SCYTHE.BIN: addr: 19566, len: `1554`
-	* SNOWFLAK.BIN: addr: 21120, len: `1212`
-	* TNT.BIN: addr: 22332, len: `1056`
-	* TI0_DATA.BIN: addr: 23388, len: `960`
-	* BACKS0.BIN: addr: 24348, len: `620`
+	* LV0_GFX.BIN: addr: 7440, len: `5542`
+	* TEXT_LV0.BIN: addr: 12982, len: `5190`
+	* SCYTHE.BIN: addr: 18172, len: `1554`
+	* SNOWFLAK.BIN: addr: 19726, len: `1212`
+	* TNT.BIN: addr: 20938, len: `1056`
+	* TI0_DATA.BIN: addr: 21994, len: `960`
+	* NPC.BIN: addr: 22954, len: `594`
 
-  `Used: 24968, Free: 7736`
+  `Used: 23548, Free: 9156`
 
 - bank1 addr8000
 	* TI0_GFX.BIN: addr: 32768, len: `8178`

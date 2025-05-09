@@ -47,26 +47,36 @@ memusage_loads_level0:
 			lxi h, SWORD_ADDR
 			call sprite_update_labels
 
-			RAM_DISK_M_GOOSE = RAM_DISK_M0
-			RAM_DISK_S_GOOSE = RAM_DISK_S0
-			GOOSE_ADDR = 0x6CB4
-			LOAD_FILE(GOOSE_FILENAME_PTR, RAM_DISK_S_GOOSE, GOOSE_ADDR, GOOSE_FILE_LEN)
-			lxi d, goose_preshifted_sprites
-			lxi h, GOOSE_ADDR
+			RAM_DISK_M_VFX4 = RAM_DISK_M0
+			RAM_DISK_S_VFX4 = RAM_DISK_S0
+			VFX4_ADDR = 0x6CB4
+			LOAD_FILE(VFX4_FILENAME_PTR, RAM_DISK_S_VFX4, VFX4_ADDR, VFX4_FILE_LEN)
+			lxi d, vfx4_preshifted_sprites
+			lxi h, VFX4_ADDR
 			call sprite_update_labels
-
-			RAM_DISK_M_LV0_GFX = RAM_DISK_M0
-			RAM_DISK_S_LV0_GFX = RAM_DISK_S0
-			LV0_GFX_ADDR = 0x8658
-			LOAD_FILE(LV0_GFX_FILENAME_PTR, RAM_DISK_S_LV0_GFX, LV0_GFX_ADDR, LV0_GFX_FILE_LEN)
-			call lv0_gfx_init
 
 			RAM_DISK_M_BOMB = RAM_DISK_M0
 			RAM_DISK_S_BOMB = RAM_DISK_S0
-			BOMB_ADDR = 0x9BFE
+			BOMB_ADDR = 0x7BE4
 			LOAD_FILE(BOMB_FILENAME_PTR, RAM_DISK_S_BOMB, BOMB_ADDR, BOMB_FILE_LEN)
 			lxi d, bomb_preshifted_sprites
 			lxi h, BOMB_ADDR
+			call sprite_update_labels
+
+			RAM_DISK_M_NPC4 = RAM_DISK_M0
+			RAM_DISK_S_NPC4 = RAM_DISK_S0
+			NPC4_ADDR = 0x8658
+			LOAD_FILE(NPC4_FILENAME_PTR, RAM_DISK_S_NPC4, NPC4_ADDR, NPC4_FILE_LEN)
+			lxi d, npc4_preshifted_sprites
+			lxi h, NPC4_ADDR
+			call sprite_update_labels
+
+			RAM_DISK_M_BACKS0 = RAM_DISK_M0
+			RAM_DISK_S_BACKS0 = RAM_DISK_S0
+			BACKS0_ADDR = 0x9CF6
+			LOAD_FILE(BACKS0_FILENAME_PTR, RAM_DISK_S_BACKS0, BACKS0_ADDR, BACKS0_FILE_LEN)
+			lxi d, backs0_preshifted_sprites
+			lxi h, BACKS0_ADDR
 			call sprite_update_labels
 
 			RAM_DISK_M_VAMPIRE = RAM_DISK_M1
@@ -77,33 +87,23 @@ memusage_loads_level0:
 			lxi h, VAMPIRE_ADDR
 			call sprite_update_labels
 
+			RAM_DISK_M_LV0_GFX = RAM_DISK_M1
+			RAM_DISK_S_LV0_GFX = RAM_DISK_S1
+			LV0_GFX_ADDR = 0x1D10
+			LOAD_FILE(LV0_GFX_FILENAME_PTR, RAM_DISK_S_LV0_GFX, LV0_GFX_ADDR, LV0_GFX_FILE_LEN)
+			call lv0_gfx_init
+
 			RAM_DISK_M_TEXT_LV0 = RAM_DISK_M1
 			RAM_DISK_S_TEXT_LV0 = RAM_DISK_S1
-			TEXT_LV0_ADDR = 0x1D10
+			TEXT_LV0_ADDR = 0x32B6
 			LOAD_FILE(TEXT_LV0_FILENAME_PTR, RAM_DISK_S_TEXT_LV0, TEXT_LV0_ADDR, TEXT_LV0_FILE_LEN)
 			mvi a, RAM_DISK_S_TEXT_LV0
 			lxi h, TEXT_LV0_ADDR
 			call text_ex_init_text
 
-			RAM_DISK_M_VFX4 = RAM_DISK_M1
-			RAM_DISK_S_VFX4 = RAM_DISK_S1
-			VFX4_ADDR = 0x3156
-			LOAD_FILE(VFX4_FILENAME_PTR, RAM_DISK_S_VFX4, VFX4_ADDR, VFX4_FILE_LEN)
-			lxi d, vfx4_preshifted_sprites
-			lxi h, VFX4_ADDR
-			call sprite_update_labels
-
-			RAM_DISK_M_NPC = RAM_DISK_M1
-			RAM_DISK_S_NPC = RAM_DISK_S1
-			NPC_ADDR = 0x4086
-			LOAD_FILE(NPC_FILENAME_PTR, RAM_DISK_S_NPC, NPC_ADDR, NPC_FILE_LEN)
-			lxi d, npc_preshifted_sprites
-			lxi h, NPC_ADDR
-			call sprite_update_labels
-
 			RAM_DISK_M_SCYTHE = RAM_DISK_M1
 			RAM_DISK_S_SCYTHE = RAM_DISK_S1
-			SCYTHE_ADDR = 0x4C6E
+			SCYTHE_ADDR = 0x46FC
 			LOAD_FILE(SCYTHE_FILENAME_PTR, RAM_DISK_S_SCYTHE, SCYTHE_ADDR, SCYTHE_FILE_LEN)
 			lxi d, scythe_preshifted_sprites
 			lxi h, SCYTHE_ADDR
@@ -111,7 +111,7 @@ memusage_loads_level0:
 
 			RAM_DISK_M_SNOWFLAK = RAM_DISK_M1
 			RAM_DISK_S_SNOWFLAK = RAM_DISK_S1
-			SNOWFLAK_ADDR = 0x5280
+			SNOWFLAK_ADDR = 0x4D0E
 			LOAD_FILE(SNOWFLAK_FILENAME_PTR, RAM_DISK_S_SNOWFLAK, SNOWFLAK_ADDR, SNOWFLAK_FILE_LEN)
 			lxi d, snowflake_preshifted_sprites
 			lxi h, SNOWFLAK_ADDR
@@ -119,7 +119,7 @@ memusage_loads_level0:
 
 			RAM_DISK_M_TNT = RAM_DISK_M1
 			RAM_DISK_S_TNT = RAM_DISK_S1
-			TNT_ADDR = 0x573C
+			TNT_ADDR = 0x51CA
 			LOAD_FILE(TNT_FILENAME_PTR, RAM_DISK_S_TNT, TNT_ADDR, TNT_FILE_LEN)
 			lxi d, tnt_preshifted_sprites
 			lxi h, TNT_ADDR
@@ -127,18 +127,18 @@ memusage_loads_level0:
 
 			RAM_DISK_M_TI0_DATA = RAM_DISK_M1
 			RAM_DISK_S_TI0_DATA = RAM_DISK_S1
-			TI0_DATA_ADDR = 0x5B5C
+			TI0_DATA_ADDR = 0x55EA
 			LOAD_FILE(TI0_DATA_FILENAME_PTR, RAM_DISK_S_TI0_DATA, TI0_DATA_ADDR, TI0_DATA_FILE_LEN)
 			mvi a, RAM_DISK_S_TI0_DATA
 			lxi h, TI0_DATA_ADDR
 			call tiled_img_init_idxs
 
-			RAM_DISK_M_BACKS0 = RAM_DISK_M1
-			RAM_DISK_S_BACKS0 = RAM_DISK_S1
-			BACKS0_ADDR = 0x5F1C
-			LOAD_FILE(BACKS0_FILENAME_PTR, RAM_DISK_S_BACKS0, BACKS0_ADDR, BACKS0_FILE_LEN)
-			lxi d, backs0_preshifted_sprites
-			lxi h, BACKS0_ADDR
+			RAM_DISK_M_NPC = RAM_DISK_M1
+			RAM_DISK_S_NPC = RAM_DISK_S1
+			NPC_ADDR = 0x59AA
+			LOAD_FILE(NPC_FILENAME_PTR, RAM_DISK_S_NPC, NPC_ADDR, NPC_FILE_LEN)
+			lxi d, npc_preshifted_sprites
+			lxi h, NPC_ADDR
 			call sprite_update_labels
 
 			RAM_DISK_M_TI0_GFX = RAM_DISK_M1
