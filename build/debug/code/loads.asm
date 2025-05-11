@@ -63,20 +63,18 @@ memusage_loads_level0:
 			lxi h, BOMB_ADDR
 			call sprite_update_labels
 
-			RAM_DISK_M_NPC4 = RAM_DISK_M0
-			RAM_DISK_S_NPC4 = RAM_DISK_S0
-			NPC4_ADDR = 0x8658
-			LOAD_FILE(NPC4_FILENAME_PTR, RAM_DISK_S_NPC4, NPC4_ADDR, NPC4_FILE_LEN)
-			lxi d, npc4_preshifted_sprites
-			lxi h, NPC4_ADDR
-			call sprite_update_labels
+			RAM_DISK_M_LV0_GFX = RAM_DISK_M0
+			RAM_DISK_S_LV0_GFX = RAM_DISK_S0
+			LV0_GFX_ADDR = 0x8658
+			LOAD_FILE(LV0_GFX_FILENAME_PTR, RAM_DISK_S_LV0_GFX, LV0_GFX_ADDR, LV0_GFX_FILE_LEN)
+			call lv0_gfx_init
 
-			RAM_DISK_M_BACKS0 = RAM_DISK_M0
-			RAM_DISK_S_BACKS0 = RAM_DISK_S0
-			BACKS0_ADDR = 0x9CF6
-			LOAD_FILE(BACKS0_FILENAME_PTR, RAM_DISK_S_BACKS0, BACKS0_ADDR, BACKS0_FILE_LEN)
-			lxi d, backs0_preshifted_sprites
-			lxi h, BACKS0_ADDR
+			RAM_DISK_M_NPC = RAM_DISK_M0
+			RAM_DISK_S_NPC = RAM_DISK_S0
+			NPC_ADDR = 0x9D6A
+			LOAD_FILE(NPC_FILENAME_PTR, RAM_DISK_S_NPC, NPC_ADDR, NPC_FILE_LEN)
+			lxi d, npc_preshifted_sprites
+			lxi h, NPC_ADDR
 			call sprite_update_labels
 
 			RAM_DISK_M_VAMPIRE = RAM_DISK_M1
@@ -87,15 +85,17 @@ memusage_loads_level0:
 			lxi h, VAMPIRE_ADDR
 			call sprite_update_labels
 
-			RAM_DISK_M_LV0_GFX = RAM_DISK_M1
-			RAM_DISK_S_LV0_GFX = RAM_DISK_S1
-			LV0_GFX_ADDR = 0x1D10
-			LOAD_FILE(LV0_GFX_FILENAME_PTR, RAM_DISK_S_LV0_GFX, LV0_GFX_ADDR, LV0_GFX_FILE_LEN)
-			call lv0_gfx_init
+			RAM_DISK_M_NPC4 = RAM_DISK_M1
+			RAM_DISK_S_NPC4 = RAM_DISK_S1
+			NPC4_ADDR = 0x1D10
+			LOAD_FILE(NPC4_FILENAME_PTR, RAM_DISK_S_NPC4, NPC4_ADDR, NPC4_FILE_LEN)
+			lxi d, npc4_preshifted_sprites
+			lxi h, NPC4_ADDR
+			call sprite_update_labels
 
 			RAM_DISK_M_TEXT_LV0 = RAM_DISK_M1
 			RAM_DISK_S_TEXT_LV0 = RAM_DISK_S1
-			TEXT_LV0_ADDR = 0x32B6
+			TEXT_LV0_ADDR = 0x33AE
 			LOAD_FILE(TEXT_LV0_FILENAME_PTR, RAM_DISK_S_TEXT_LV0, TEXT_LV0_ADDR, TEXT_LV0_FILE_LEN)
 			mvi a, RAM_DISK_S_TEXT_LV0
 			lxi h, TEXT_LV0_ADDR
@@ -103,7 +103,7 @@ memusage_loads_level0:
 
 			RAM_DISK_M_SCYTHE = RAM_DISK_M1
 			RAM_DISK_S_SCYTHE = RAM_DISK_S1
-			SCYTHE_ADDR = 0x46FC
+			SCYTHE_ADDR = 0x47F4
 			LOAD_FILE(SCYTHE_FILENAME_PTR, RAM_DISK_S_SCYTHE, SCYTHE_ADDR, SCYTHE_FILE_LEN)
 			lxi d, scythe_preshifted_sprites
 			lxi h, SCYTHE_ADDR
@@ -111,7 +111,7 @@ memusage_loads_level0:
 
 			RAM_DISK_M_SNOWFLAK = RAM_DISK_M1
 			RAM_DISK_S_SNOWFLAK = RAM_DISK_S1
-			SNOWFLAK_ADDR = 0x4D0E
+			SNOWFLAK_ADDR = 0x4E06
 			LOAD_FILE(SNOWFLAK_FILENAME_PTR, RAM_DISK_S_SNOWFLAK, SNOWFLAK_ADDR, SNOWFLAK_FILE_LEN)
 			lxi d, snowflake_preshifted_sprites
 			lxi h, SNOWFLAK_ADDR
@@ -119,7 +119,7 @@ memusage_loads_level0:
 
 			RAM_DISK_M_TNT = RAM_DISK_M1
 			RAM_DISK_S_TNT = RAM_DISK_S1
-			TNT_ADDR = 0x51CA
+			TNT_ADDR = 0x52C2
 			LOAD_FILE(TNT_FILENAME_PTR, RAM_DISK_S_TNT, TNT_ADDR, TNT_FILE_LEN)
 			lxi d, tnt_preshifted_sprites
 			lxi h, TNT_ADDR
@@ -127,18 +127,18 @@ memusage_loads_level0:
 
 			RAM_DISK_M_TI0_DATA = RAM_DISK_M1
 			RAM_DISK_S_TI0_DATA = RAM_DISK_S1
-			TI0_DATA_ADDR = 0x55EA
+			TI0_DATA_ADDR = 0x56E2
 			LOAD_FILE(TI0_DATA_FILENAME_PTR, RAM_DISK_S_TI0_DATA, TI0_DATA_ADDR, TI0_DATA_FILE_LEN)
 			mvi a, RAM_DISK_S_TI0_DATA
 			lxi h, TI0_DATA_ADDR
 			call tiled_img_init_idxs
 
-			RAM_DISK_M_NPC = RAM_DISK_M1
-			RAM_DISK_S_NPC = RAM_DISK_S1
-			NPC_ADDR = 0x59AA
-			LOAD_FILE(NPC_FILENAME_PTR, RAM_DISK_S_NPC, NPC_ADDR, NPC_FILE_LEN)
-			lxi d, npc_preshifted_sprites
-			lxi h, NPC_ADDR
+			RAM_DISK_M_BACKS0 = RAM_DISK_M1
+			RAM_DISK_S_BACKS0 = RAM_DISK_S1
+			BACKS0_ADDR = 0x5AA2
+			LOAD_FILE(BACKS0_FILENAME_PTR, RAM_DISK_S_BACKS0, BACKS0_ADDR, BACKS0_FILE_LEN)
+			lxi d, backs0_preshifted_sprites
+			lxi h, BACKS0_ADDR
 			call sprite_update_labels
 
 			RAM_DISK_M_TI0_GFX = RAM_DISK_M1
@@ -181,7 +181,7 @@ memusage_loads_level0:
 
 			RAM_DISK_M_HERO_L = RAM_DISK_M3
 			RAM_DISK_S_HERO_L = RAM_DISK_S3
-			HERO_L_ADDR = 0x8EBC
+			HERO_L_ADDR = 0x8EBE
 			LOAD_FILE(HERO_L_FILENAME_PTR, RAM_DISK_S_HERO_L, HERO_L_ADDR, HERO_L_FILE_LEN)
 			lxi d, hero_l_preshifted_sprites
 			lxi h, HERO_L_ADDR
@@ -189,7 +189,7 @@ memusage_loads_level0:
 
 			RAM_DISK_M_HERO_R = RAM_DISK_M3
 			RAM_DISK_S_HERO_R = RAM_DISK_S3
-			HERO_R_ADDR = 0xC234
+			HERO_R_ADDR = 0xC236
 			LOAD_FILE(HERO_R_FILENAME_PTR, RAM_DISK_S_HERO_R, HERO_R_ADDR, HERO_R_FILE_LEN)
 			lxi d, hero_r_preshifted_sprites
 			lxi h, HERO_R_ADDR
@@ -197,7 +197,7 @@ memusage_loads_level0:
 
 			RAM_DISK_M_VFX = RAM_DISK_M3
 			RAM_DISK_S_VFX = RAM_DISK_S3
-			VFX_ADDR = 0xF5AC
+			VFX_ADDR = 0xF5AE
 			LOAD_FILE(VFX_FILENAME_PTR, RAM_DISK_S_VFX, VFX_ADDR, VFX_FILE_LEN)
 			lxi d, vfx_preshifted_sprites
 			lxi h, VFX_ADDR
