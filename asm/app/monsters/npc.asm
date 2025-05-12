@@ -33,12 +33,26 @@ npc_init:
 			mov b, a ; tmp store
 			; if it's the level 0 & the room 0
 			; spawn a goose
+			lda level_id
+			CPI_ZERO(LEVEL_ID_0)
+			jnz @lv1
+
+@lv0:			
 			lda room_id
 			CPI_ZERO(ROOM_ID_0)
 			mov a, b
 			jz goose_init
+			lda room_id
+			cpi ROOM_ID_1
+			mov a, b
+			jz @friends_sister
 @friends_mom:
 			MONSTER_INIT(npc_update, npc_draw, npc_impacted, NPC_HEALTH, ACTOR_STATUS_NPC_IDLE, npc_mom_idle_anim, False, MONSTER_TYPE_NPC_FRIENDS_MOM)
+@friends_sister:
+			MONSTER_INIT(npc_update, npc_draw, npc_impacted, NPC_HEALTH, ACTOR_STATUS_NPC_IDLE, npc_sis_idle_anim, False, MONSTER_TYPE_NPC_FRIENDS_SIS)
+
+@lv1:
+			ret
 
 ;========================================================
 ; anim and a gameplay logic update

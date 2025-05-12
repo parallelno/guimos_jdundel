@@ -1,9 +1,9 @@
 ## Main Ram memory usage:
-> Free Space: `6247`
+> Free Space: `6190`
 
 |Assembly| Usage|
 |-|-|
-|memusage_v6_build_uncludes:|2678|
+|memusage_v6_build_uncludes:|2696|
 |memusage_hero_update:|1337|
 |memusage_v6_sprite_copy_to_backbuf:|1219|
 |memusage_v6_sprite_copy_to_scr:|1203|
@@ -34,13 +34,13 @@
 |memusage_v6_text_ex_draw:|263|
 |memusage_hero_data:|244|
 |memusage_v6_text_mono_draw:|229|
+|memusage_npc:|228|
 |memusage_knight_heavy:|225|
 |memusage_bomb:|219|
 |memusage_levels:|208|
 |memusage_backs:|199|
 |memusage_dialogs:|198|
 |memusage_room:|191|
-|memusage_npc:|189|
 |memusage_bullets:|178|
 |memusage_hero_render:|174|
 |memusage_v6_decal_draw:|173|
@@ -96,7 +96,7 @@
 ---
 ### `level0` ram-disk usage:
 
-> Used: `136670`, Free Space: `74442`
+> Used: `137438`, Free Space: `73674`
 
 - bank0 addr0
 	* SKELETON.BIN: addr: 0, len: `9870`
@@ -117,13 +117,13 @@
 	* LV0_GFX.BIN: addr: 7440, len: `5906`
 	* TEXT_LV0.BIN: addr: 13346, len: `5190`
 	* SCYTHE.BIN: addr: 18536, len: `1554`
-	* SNOWFLAK.BIN: addr: 20090, len: `1212`
-	* TNT.BIN: addr: 21302, len: `1056`
-	* TI0_DATA.BIN: addr: 22358, len: `960`
-	* BACKS0.BIN: addr: 23318, len: `874`
-	* NPC.BIN: addr: 24192, len: `594`
+	* NPC.BIN: addr: 20090, len: `1362`
+	* SNOWFLAK.BIN: addr: 21452, len: `1212`
+	* TNT.BIN: addr: 22664, len: `1056`
+	* TI0_DATA.BIN: addr: 23720, len: `960`
+	* BACKS0.BIN: addr: 24680, len: `874`
 
-  `Used: 24786, Free: 7918`
+  `Used: 25554, Free: 7150`
 
 - bank1 addr8000
 	* TI0_GFX.BIN: addr: 32768, len: `8178`

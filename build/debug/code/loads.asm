@@ -101,9 +101,17 @@ memusage_loads_level0:
 			lxi h, SCYTHE_ADDR
 			call sprite_update_labels
 
+			RAM_DISK_M_NPC = RAM_DISK_M1
+			RAM_DISK_S_NPC = RAM_DISK_S1
+			NPC_ADDR = 0x4E7A
+			LOAD_FILE(NPC_FILENAME_PTR, RAM_DISK_S_NPC, NPC_ADDR, NPC_FILE_LEN)
+			lxi d, npc_preshifted_sprites
+			lxi h, NPC_ADDR
+			call sprite_update_labels
+
 			RAM_DISK_M_SNOWFLAK = RAM_DISK_M1
 			RAM_DISK_S_SNOWFLAK = RAM_DISK_S1
-			SNOWFLAK_ADDR = 0x4E7A
+			SNOWFLAK_ADDR = 0x53CC
 			LOAD_FILE(SNOWFLAK_FILENAME_PTR, RAM_DISK_S_SNOWFLAK, SNOWFLAK_ADDR, SNOWFLAK_FILE_LEN)
 			lxi d, snowflake_preshifted_sprites
 			lxi h, SNOWFLAK_ADDR
@@ -111,7 +119,7 @@ memusage_loads_level0:
 
 			RAM_DISK_M_TNT = RAM_DISK_M1
 			RAM_DISK_S_TNT = RAM_DISK_S1
-			TNT_ADDR = 0x5336
+			TNT_ADDR = 0x5888
 			LOAD_FILE(TNT_FILENAME_PTR, RAM_DISK_S_TNT, TNT_ADDR, TNT_FILE_LEN)
 			lxi d, tnt_preshifted_sprites
 			lxi h, TNT_ADDR
@@ -119,7 +127,7 @@ memusage_loads_level0:
 
 			RAM_DISK_M_TI0_DATA = RAM_DISK_M1
 			RAM_DISK_S_TI0_DATA = RAM_DISK_S1
-			TI0_DATA_ADDR = 0x5756
+			TI0_DATA_ADDR = 0x5CA8
 			LOAD_FILE(TI0_DATA_FILENAME_PTR, RAM_DISK_S_TI0_DATA, TI0_DATA_ADDR, TI0_DATA_FILE_LEN)
 			mvi a, RAM_DISK_S_TI0_DATA
 			lxi h, TI0_DATA_ADDR
@@ -127,18 +135,10 @@ memusage_loads_level0:
 
 			RAM_DISK_M_BACKS0 = RAM_DISK_M1
 			RAM_DISK_S_BACKS0 = RAM_DISK_S1
-			BACKS0_ADDR = 0x5B16
+			BACKS0_ADDR = 0x6068
 			LOAD_FILE(BACKS0_FILENAME_PTR, RAM_DISK_S_BACKS0, BACKS0_ADDR, BACKS0_FILE_LEN)
 			lxi d, backs0_preshifted_sprites
 			lxi h, BACKS0_ADDR
-			call sprite_update_labels
-
-			RAM_DISK_M_NPC = RAM_DISK_M1
-			RAM_DISK_S_NPC = RAM_DISK_S1
-			NPC_ADDR = 0x5E80
-			LOAD_FILE(NPC_FILENAME_PTR, RAM_DISK_S_NPC, NPC_ADDR, NPC_FILE_LEN)
-			lxi d, npc_preshifted_sprites
-			lxi h, NPC_ADDR
 			call sprite_update_labels
 
 			RAM_DISK_M_TI0_GFX = RAM_DISK_M1
