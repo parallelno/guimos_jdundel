@@ -96,7 +96,7 @@
 ---
 ### `level0` ram-disk usage:
 
-> Used: `136142`, Free Space: `74970`
+> Used: `136406`, Free Space: `74706`
 
 - bank0 addr0
 	* SKELETON.BIN: addr: 0, len: `9870`
@@ -108,22 +108,22 @@
   `Used: 32676, Free: 28`
 
 - bank0 addr8000
-	* LV0_GFX.BIN: addr: 34392, len: `5906`
-	* NPC.BIN: addr: 40298, len: `594`
+	* NPC4.BIN: addr: 34392, len: `6054`
 
-  `Used: 6500, Free: 68`
+  `Used: 6054, Free: 514`
 
 - bank1 addr0
 	* VAMPIRE.BIN: addr: 0, len: `7440`
-	* NPC4.BIN: addr: 7440, len: `5790`
-	* TEXT_LV0.BIN: addr: 13230, len: `5190`
-	* SCYTHE.BIN: addr: 18420, len: `1554`
-	* SNOWFLAK.BIN: addr: 19974, len: `1212`
-	* TNT.BIN: addr: 21186, len: `1056`
-	* TI0_DATA.BIN: addr: 22242, len: `960`
-	* BACKS0.BIN: addr: 23202, len: `874`
+	* LV0_GFX.BIN: addr: 7440, len: `5906`
+	* TEXT_LV0.BIN: addr: 13346, len: `5190`
+	* SCYTHE.BIN: addr: 18536, len: `1554`
+	* SNOWFLAK.BIN: addr: 20090, len: `1212`
+	* TNT.BIN: addr: 21302, len: `1056`
+	* TI0_DATA.BIN: addr: 22358, len: `960`
+	* BACKS0.BIN: addr: 23318, len: `874`
+	* NPC.BIN: addr: 24192, len: `594`
 
-  `Used: 24076, Free: 8628`
+  `Used: 24786, Free: 7918`
 
 - bank1 addr8000
 	* TI0_GFX.BIN: addr: 32768, len: `8178`
