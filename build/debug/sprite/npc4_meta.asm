@@ -2,8 +2,8 @@
 ; asm data file: build/debug/sprite/npc4_data.asm
 ; bin file: build/debug/bin/NPC4.BIN
 
-NPC4_FILE_LEN = 6054
-NPC4_LAST_RECORD_LEN = 38
+NPC4_FILE_LEN = 6318
+NPC4_LAST_RECORD_LEN = 46
 
 NPC4_FILENAME_PTR:
 			.byte "NPC4" ; filename
@@ -20,29 +20,29 @@ _npc4_goose_idle_1_1_relative = 956
 _npc4_goose_idle_1_2_relative = 1214
 _npc4_goose_idle_1_3_relative = 1472
 _npc4_goose_run_r0_0_relative = 1730
-_npc4_goose_run_r0_1_relative = 1892
-_npc4_goose_run_r0_2_relative = 2132
-_npc4_goose_run_r0_3_relative = 2372
-_npc4_goose_run_r1_0_relative = 2612
-_npc4_goose_run_r1_1_relative = 2774
-_npc4_goose_run_r1_2_relative = 3014
-_npc4_goose_run_r1_3_relative = 3254
-_npc4_goose_run_l0_0_relative = 3494
-_npc4_goose_run_l0_1_relative = 3656
-_npc4_goose_run_l0_2_relative = 3896
-_npc4_goose_run_l0_3_relative = 4136
-_npc4_goose_run_l1_0_relative = 4376
-_npc4_goose_run_l1_1_relative = 4538
-_npc4_goose_run_l1_2_relative = 4778
-_npc4_goose_run_l1_3_relative = 5018
-_npc4_caterpillar_run_0_0_relative = 5258
-_npc4_caterpillar_run_0_1_relative = 5348
-_npc4_caterpillar_run_0_2_relative = 5438
-_npc4_caterpillar_run_0_3_relative = 5570
-_npc4_caterpillar_run_1_0_relative = 5702
-_npc4_caterpillar_run_1_1_relative = 5768
-_npc4_caterpillar_run_1_2_relative = 5864
-_npc4_caterpillar_run_1_3_relative = 5960
+_npc4_goose_run_r0_1_relative = 1904
+_npc4_goose_run_r0_2_relative = 2162
+_npc4_goose_run_r0_3_relative = 2420
+_npc4_goose_run_r1_0_relative = 2678
+_npc4_goose_run_r1_1_relative = 2852
+_npc4_goose_run_r1_2_relative = 3110
+_npc4_goose_run_r1_3_relative = 3368
+_npc4_goose_run_l0_0_relative = 3626
+_npc4_goose_run_l0_1_relative = 3800
+_npc4_goose_run_l0_2_relative = 4058
+_npc4_goose_run_l0_3_relative = 4316
+_npc4_goose_run_l1_0_relative = 4574
+_npc4_goose_run_l1_1_relative = 4748
+_npc4_goose_run_l1_2_relative = 5006
+_npc4_goose_run_l1_3_relative = 5264
+_npc4_caterpillar_run_0_0_relative = 5522
+_npc4_caterpillar_run_0_1_relative = 5612
+_npc4_caterpillar_run_0_2_relative = 5702
+_npc4_caterpillar_run_0_3_relative = 5834
+_npc4_caterpillar_run_1_0_relative = 5966
+_npc4_caterpillar_run_1_1_relative = 6032
+_npc4_caterpillar_run_1_2_relative = 6128
+_npc4_caterpillar_run_1_3_relative = 6224
 
 sprite_get_scr_addr_npc4 = sprite_get_scr_addr4
 

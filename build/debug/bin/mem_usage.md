@@ -80,7 +80,7 @@
 |memusage_runtime_data:|0|
 
 ## FDD Usage:
-> Free Space: `591872`
+> Free Space: `589824`
 
 ## Ram disk usage:
 ### `permanent` ram-disk usage:
@@ -96,7 +96,7 @@
 ---
 ### `level0` ram-disk usage:
 
-> Used: `136406`, Free Space: `74706`
+> Used: `136670`, Free Space: `74442`
 
 - bank0 addr0
 	* SKELETON.BIN: addr: 0, len: `9870`
@@ -108,9 +108,9 @@
   `Used: 32676, Free: 28`
 
 - bank0 addr8000
-	* NPC4.BIN: addr: 34392, len: `6054`
+	* NPC4.BIN: addr: 34392, len: `6318`
 
-  `Used: 6054, Free: 514`
+  `Used: 6318, Free: 250`
 
 - bank1 addr0
 	* VAMPIRE.BIN: addr: 0, len: `7440`
