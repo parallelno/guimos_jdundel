@@ -293,24 +293,32 @@ jmp_tbl:
 ; de, a
 ; out:
 ; bc - data
+; de - data addr in the ram-disk
 ; used: hl
-; cc = 148
-get_word_from_ram_disk:
+; 116 cc
+.function get_word_from_ram_disk()
 			RAM_DISK_ON_BANK()
 			; store sp
 			lxi h, $0000
 			dad sp
-			shld restore_sp+1
 
 			; copy unpacked data into the ram_disk
 			xchg
 			sphl
 			pop b ; bc has to be used when interruptions is on
 
-			jmp restore_sp
+			; restore sp
+			xchg
+			sphl
+			RAM_DISK_OFF()
+			;ret
+.endf
 
 ; a special version of a func above for accessing addr $8000 and higher
-; cc = 100
+; out:
+; bc - data
+; hl - data addr + 1 in the ram-disk
+; 100 cc
 .function get_word_from_scr_ram_disk()
 			RAM_DISK_ON_BANK()
 			xchg

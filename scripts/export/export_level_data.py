@@ -77,14 +77,23 @@ def ram_disk_data_to_asm(level_j_path):
 		room_path = room_paths[room_id]['path']
 
 		# clamp tiledata values into the range
-		tiledatas_unclamped = room_j["layers"][1]["data"]
-		tiledatas = [x % 256 for x in tiledatas_unclamped]
+		room_tiledatas_unclamped = room_j["layers"][1]["data"]
+		room_tiledata = [x % 256 for x in room_tiledatas_unclamped]
 
 		width = room_j["width"]
 		height = room_j["height"]
 
+		# add room gfx data
 		asm_room_data = export_level_utils.room_tiles_to_asm(room_j["layers"][0], remap_idxs)
-		asm_room_data += export_level_utils.room_tiles_data_to_asm(tiledatas, width, height, room_path)
+
+		# add teleport data 
+		teleport_tiles, asm_teleport_data = \
+			export_level_utils.room_teleport_data(room_j["layers"][2], level_j_path)
+		# merge teleport data with the room tiledata
+		room_tiledata = export_level_utils.merge_teleport_data(teleport_tiles, room_tiledata)
+
+		# add room tiledata
+		asm_room_data += export_level_utils.room_tiles_data_to_asm(room_tiledata, width, height)
 
 		room_data_label = export_level_utils.get_room_data_label(room_path)
 		compressed_room_asm, data_len = common.asm_compress_to_asm(asm_room_data)
@@ -92,17 +101,28 @@ def ram_disk_data_to_asm(level_j_path):
 		room_data_asm += "			.word 0 ; safety pair of bytes for reading by POP B\n"
 		room_data_asm += "; " + room_path + "\n"
 		room_data_asm += room_data_label + ":\n"
+		room_data_asm += "; compressed room data len\n"
+		room_data_asm += f"			.word {data_len}\n"
+		room_data_asm += "			.word 0 ; safety pair of bytes for reading by POP B\n"
 		room_data_asm += compressed_room_asm + "\n"
+		
+		room_data_asm += "; teleport data\n"
+		room_data_asm += "			.word 0 ; safety pair of bytes for reading by POP B\n"		
+		room_data_asm += asm_teleport_data + "\n"
+
+		TELEPORT_IDS_MAX = 16 
 
 		room_data_ptrs[room_data_label] = room_addr_offset
+		room_addr_offset += build.WORD_LEN # stored compressed_roomdata_len
+		room_addr_offset += build.SAFE_WORD_LEN
 		room_addr_offset += data_len
+		room_addr_offset += build.SAFE_WORD_LEN
+		room_addr_offset += len(teleport_tiles)
 		room_addr_offset += build.SAFE_WORD_LEN
 
 		# collect resource data
 
-		for i, tiledata in enumerate(tiledatas):
-			width = room_j["width"]
-			height = room_j["height"]
+		for i, tiledata in enumerate(room_tiledata):
 			dy, dx = divmod(i, width)
 			tile_idx = (height - 1 - dy) * width + dx
 			if export_level_utils.TILEDATA_RESOURCE <= tiledata < export_level_utils.TILEDATA_RESOURCE + export_level_utils.RESOURCES_UNIQUE_MAX:

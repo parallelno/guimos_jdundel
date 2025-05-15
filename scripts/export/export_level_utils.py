@@ -7,6 +7,7 @@ import utils.common as common_gfx
 import utils.build as build
 
 # TODO: get this from asm file
+TILEDATA_TELEPORT	= 2*16
 TILEDATA_RESOURCE	= 7*16
 RESOURCES_UNIQUE_MAX = 16
 RESOURCES_LEN	= 0x100		
@@ -86,38 +87,22 @@ def get_list_of_rooms(room_paths, label_prefix):
 def get_room_data_label(room_path):
 	return '_' + common.path_to_basename(room_path)
 
-def room_tiles_to_asm(room_j, remap_idxs):
+def room_tiles_to_asm(layer_j, remap_idxs):
 	asm = ""
-	width = room_j["width"]
-	height = room_j["height"]
+	width = layer_j["width"]
+	height = layer_j["height"]
 
 	for y in reversed(range(height)):
 		asm += "			.byte "
 		for x in range(width):
 			i = y*width + x
-			t_idx = room_j["data"][i]
+			t_idx = layer_j["data"][i]
 			asm += str(remap_idxs[t_idx]) + ", "
 		asm += "\n"
 	return asm
 
-def room_tiles_to_bytes(room_j, remap_idxs):
-	out = []
-	width = room_j["width"]
-	height = room_j["height"]
-
-	for y in reversed(range(height)):
-		for x in range(width):
-			i = y*width + x
-			t_idx = room_j["data"][i]
-			out.append(remap_idxs[t_idx])
-	return out
-
-def room_tiles_data_to_asm(data, width, height, room_path):
-	asm = "; " + room_path + "\n"
-	label_prefix = common.path_to_basename(room_path)
-
-	asm += label_prefix + "_tilesData:\n"
-
+def room_tiles_data_to_asm(data, width, height):
+	asm = ""
 	for y in reversed(range(height)):
 		asm += "			.byte "
 		for x in range(width):
@@ -126,6 +111,48 @@ def room_tiles_data_to_asm(data, width, height, room_path):
 			asm += str(t_idx) + ", "
 		asm += "\n"
 	return asm
+
+def room_teleport_data(layer_j, level_j_path):
+
+	teleport_tiles = {} 
+	teleport_ids = {}
+	teleport_id = 0
+
+	for tile_idx, room_id_unclamped in enumerate(layer_j["data"]):
+		if room_id_unclamped == 0:
+			continue
+
+		if room_id_unclamped < 1024:
+			build.exit_error(f"ERROR: {level_j_path} teleport layer contains tiles from a wrong tileset: tile_id: {room_id_unclamped}.")
+		room_id = room_id_unclamped % 256
+
+		if room_id not in teleport_tiles:
+			teleport_tiles[room_id] = []
+			teleport_ids[room_id] = teleport_id
+			teleport_id += 1
+
+			if teleport_id > 16:
+				build.exit_error(f"ERROR: {level_j_path} the room contains more than 16 different rooms to teleport.")
+
+		teleport_tiles[room_id].append((tile_idx, teleport_ids[room_id]))
+
+	
+	asm_teleport_data = "			.byte "
+	for room_id, teleport_id in teleport_ids.items():
+		asm_teleport_data += f"{room_id}, "
+		
+	asm_teleport_data += "\n"
+			
+	return teleport_tiles, asm_teleport_data
+
+def merge_teleport_data(teleport_tiles, room_tiledata):
+	
+	for _, tile_idxs_teleport_ids in teleport_tiles.items():
+		for [tile_idx, teleport_id] in tile_idxs_teleport_ids:
+			room_tiledata[tile_idx] = TILEDATA_TELEPORT + teleport_id
+
+	return room_tiledata
+
 
 def room_tiles_data_to_bytes(data, width, height, room_path):
 	out = []

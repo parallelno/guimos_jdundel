@@ -22,20 +22,12 @@
 		SKELETON_QUEST_ID	= 9 ; skeleton spawned after opening a container with a spoon
 		NPC_ID			= 10 ; the npc_id is depends on the room_id, see npc.asm for details
 
-; TODO: Use only ffff = 2 for teleports. Each item represents an index.
-;		That index is used to get the real room_id from the
-;		room_teleports_data table stored on the ram-disk. Each
-;		item of room_id can contain the room_id as well as the
-;		tile idx where to teleport.
-;		To keep the level contruction simple, we can use a special
-;		tileset for teleports. The level exporter script will convert
-;		the teleport tiles to the teleport tiledata.
-; 		The other idea is to use special objects in Tiled for teleports.
-;		Every teleport object can also contain a tile_idx to teleport to.
-; ffff = 2, teleport to 0-15 room_id, room_id = d
-; ffff = 3, teleport to 16-31 room_id, room_id = d+16
-; ffff = 4, teleport to 32-47 room_id, room_id = d+32
-; ffff = 5, teleport to 48-63 room_id, room_id = d+48
+; ffff = 2, teleport_ids 0-15. To convert in into a room_id use the 
+;		room_teleports_data table.
+
+; ffff = 3, Not used
+; ffff = 4, Not used
+; ffff = 5, Not used
 
 ; ffff == 6, a global item. a hero interacts with it when he steps on 
 ;		it. Item_id = d. See runtime_data.asm->global_items for details.

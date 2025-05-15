@@ -36,8 +36,7 @@ npc_init:
 			lda level_id
 			CPI_ZERO(LEVEL_ID_0)
 			jnz @lv1
-
-@lv0:			
+@lv0:
 			lda room_id
 			CPI_ZERO(ROOM_ID_0)
 			mov a, b

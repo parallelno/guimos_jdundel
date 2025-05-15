@@ -73,12 +73,44 @@ room_unpack:
 			inx h
 			mov d, m
 
+			push d ; store the room data addr
+
+			; get the compressed room data addr
+			lxi h, ADDR_LEN + SAFE_WORD_LEN ; 2 bytes of compressed room data len + 2 safety bytes
+			dad d
+			xchg
+			; de - ptr to the compressed room data
+
 			; copy the room data into the room_tiles_gfx_ptrs + offset
 			; offset = ROOM_TILES_GFX_PTRS_LEN / 2
 			lxi b, room_tiles_gfx_ptrs + ROOM_TILES_GFX_PTRS_LEN / 2
 			lda lv_ram_disk_m_data
 			ori RAM_DISK_M_8F
 			CALL_RAM_DISK_FUNC_BANK(dzx0)
+
+			; copy the teleport data from the ram-disk
+			; restore the room data addr
+			pop d
+
+			; get the compressed room data len
+			lda lv_ram_disk_m_data
+			ori RAM_DISK_M_8F
+			get_word_from_scr_ram_disk()
+			; hl - ptr to the room data + 1
+			; bc - compressed room data len
+			; get the addr of room_teleports_data in a ram-disk
+			dad b
+			; 2 bytes of compressed room data len + 2 safety bytes minus 1
+			; because get_word_from_scr_ram_disk returns room data + 1
+			; plus 2 safety bytes before the teleport data
+			lxi b, ADDR_LEN + SAFE_WORD_LEN - 1 + SAFE_WORD_LEN
+			dad b
+			; hl - ptr to the room_teleports_data
+			lxi d, room_teleports_data
+			lxi b, TELEPORT_IDS_MAX
+			lda lv_ram_disk_m_data
+			ori RAM_DISK_M_8F			
+			mem_copy_from_ram_disk()	
 			ret
 
 

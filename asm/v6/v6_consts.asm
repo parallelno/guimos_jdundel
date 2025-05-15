@@ -121,6 +121,7 @@ STACK_MIN_ADDR			= STACK_TEMP_ADDR - TMP_STACK_LEN
 
 BYTE_LEN	= 1
 WORD_LEN	= 2
+SAFE_WORD_LEN = 2 ; safty pair of bytes for reading by POP B
 ADDR_LEN	= 2
 JMP_4_LEN	= 4
 

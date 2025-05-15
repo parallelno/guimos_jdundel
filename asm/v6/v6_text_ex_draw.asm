@@ -108,7 +108,7 @@ text_ex_draw_ramdisk_access_data:
 			push psw
 			; a - idx data ram-disk activation command
 			; de - points to the idx data len
-			call get_word_from_ram_disk
+			get_word_from_ram_disk()
 			; bc = idxs_data_len
 			lxi d, temp_buff
 			pop psw

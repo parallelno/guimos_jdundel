@@ -250,7 +250,7 @@ rooms_spawn_rates_end:			= rooms_spawn_rate_monsters + ROOMS_MAX ; $7b80
 
 ; the current room idx of the current level
 room_id:		= $7b82			; .byte ; in the range [0, ROOMS_MAX-1]
-; the current level idx
+; the current level index. it must have the addr next to the room_id
 level_id:   	= room_id + 1	; .byte
 
 game_ui_item_visible_addr:	= $7b84		; .byte TEMP_BYTE ; currently shown item on the panel. range [0, ITEMS_MAX-1]
@@ -419,10 +419,6 @@ room_tiledata_end:	= room_tiledata + ROOM_TILEDATA_LEN
 
 ;=============================================================================
 ;
-;	free space [$7ef0 - $7eff]
-;
-;=============================================================================
-;
 ; OS I/O vars
 ;
 os_io_data:				= $7ef0
@@ -440,15 +436,23 @@ os_filename_ext:		= os_filename + BASENAME_LEN + BYTE_LEN
 
 ; points to next byte after loaded file
 os_file_data_ptr:		= os_filename_ext + EXT_LEN + WORD_LEN
-			;.storage BYTE_LEN
-os_io_data_end:			= os_file_data_ptr + BYTE_LEN
-OS_IO_DATA_END = os_io_data_end - os_io_data
+			;.word
+os_io_data_end:			= os_file_data_ptr + WORD_LEN
+OS_IO_DATA_LEN = os_io_data_end - os_io_data
 
 ;=============================================================================
 ;
-;	free space [$7F00 - $7FBE]
+; teleport room ids
+
+TELEPORT_IDS_MAX = 16 ; unique teleport ids in a room
+; array indexed by teleport_id. Contains room_ids to teleport to
+; from the current room
+room_teleports_data:		= $7F02
+room_teleports_data_end:	= room_teleports_data + TELEPORT_IDS_MAX
 ;
 ;=============================================================================
+;
+;	free space [$7F12 - $7FBE]
 
 ;=============================================================================
 ;

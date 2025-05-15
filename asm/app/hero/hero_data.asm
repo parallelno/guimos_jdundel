@@ -23,10 +23,10 @@ hero_collision_func_table:
 ; funcs to handle the tiledata. more info is in level_data.asm->room_tiledata
 hero_tile_func_tbl:
 			RET_4()							; func_id == 1
-			JMP_4( hero_tile_func_teleport00_15)	; func_id == 2
-			JMP_4( hero_tile_func_teleport16_31)	; func_id == 2
-			JMP_4( hero_tile_func_teleport32_47)	; func_id == 2
-			JMP_4( hero_tile_func_teleport48_63)	; func_id == 2
+			JMP_4( hero_tile_func_teleport)	; func_id == 2
+			RET_4()							; func_id == 3
+			RET_4()							; func_id == 4
+			RET_4()							; func_id == 5
 			JMP_4( hero_tile_func_item)		; func_id == 6
 			JMP_4( hero_tile_func_resource)	; func_id == 7
 			RET_4()							; func_id == 8
