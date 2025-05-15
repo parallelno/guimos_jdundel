@@ -80,7 +80,8 @@ palette_update_request_:
 interruption_fps:
 			lxi h, TEMP_WORD
 			/*
-			; commented out because FPS indication is drawn by the script in the Devector emulator
+			; commented out because FPS indication is drawn by 
+			; the script in the Devector emulator
 			; hl - fps
 			mov a, l
 			; draw fps
@@ -92,7 +93,7 @@ interruption_fps:
 			lxi h, ints_per_sec_counter
 			mvi m, INTS_PER_SEC
 interruption_no_fps_update:				
-;======================================================================================================================			
+;===========================================================================
 ;
 ;			; interruption main logic end
 

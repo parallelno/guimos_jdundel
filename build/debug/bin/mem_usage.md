@@ -1,5 +1,5 @@
 ## Main Ram memory usage:
-> Free Space: `6146`
+> Free Space: `6594`
 
 |Assembly| Usage|
 |-|-|
@@ -9,51 +9,52 @@
 |memusage_v6_sprite_copy_to_scr:|1203|
 |memusage_levels_data:|944|
 |memusage_v6_sound:|810|
-|memusage_knight:|648|
-|memusage_burner:|579|
-|memusage_goose:|579|
+|memusage_knight:|609|
 |memusage_monsters:|574|
 |memusage_v6_utils:|554|
-|memusage_skeleton:|521|
+|memusage_burner:|540|
+|memusage_goose:|540|
 |memusage_loads_level0:|515|
-|memusage_vampire:|488|
-|memusage_sword:|480|
+|memusage_skeleton:|482|
+|memusage_vampire:|449|
 |memusage_v6_os:|440|
+|memusage_sword:|433|
 |memusage_ui:|392|
 |memusage_settings:|376|
 |memusage_main_menu:|345|
-|memusage_scythe:|342|
 |memusage_v6_sprite_draw:|340|
 |memusage_hero_tile_funcs:|339|
-|memusage_snowflake:|323|
+|memusage_scythe:|303|
 |memusage_actor:|290|
 |memusage_hero_collision:|288|
+|memusage_snowflake:|276|
 |memusage_v6_tiled_img_draw:|271|
 |memusage_v6_tile_draw:|269|
-|memusage_vfx:|267|
 |memusage_v6_text_ex_draw:|263|
 |memusage_hero_data:|244|
 |memusage_v6_text_mono_draw:|229|
-|memusage_npc:|228|
 |memusage_knight_heavy:|225|
-|memusage_bomb:|219|
 |memusage_levels:|208|
 |memusage_backs:|199|
 |memusage_dialogs:|198|
 |memusage_room:|191|
+|memusage_npc:|189|
+|memusage_vfx:|189|
+|memusage_bomb:|180|
 |memusage_bullets:|178|
 |memusage_hero_render:|174|
 |memusage_v6_decal_draw:|173|
 |memusage_v6_sprite_erase:|168|
 |memusage_sparker:|168|
 |memusage_v6_controls:|166|
-|memusage_firepool:|163|
 |memusage_breakables:|163|
 |memusage_screen_utils:|161|
 |memusage_score_data:|144|
 |memusage_stats:|133|
 |memusage_game:|130|
+|memusage_firepool:|124|
 |memusage_v6_interruption:|118|
+|memusage_v6_gc_runtime_data:|109|
 |memusage_burner_quest:|108|
 |memusage_v6_sprite:|105|
 |memusage_fart:|98|
@@ -67,7 +68,6 @@
 |memusage_app:|63|
 |memusage_credits_screen:|53|
 |memusage_monsters_data:|44|
-|memusage_v6_gc_runtime_data:|34|
 |memusage_v6_sprite_draw_invis:|26|
 |memusage_loads_permanent:|26|
 |memusage_skeleton_quest:|15|
@@ -80,7 +80,7 @@
 |memusage_runtime_data:|0|
 
 ## FDD Usage:
-> Free Space: `589824`
+> Free Space: `591872`
 
 ## Ram disk usage:
 ### `permanent` ram-disk usage:

@@ -281,7 +281,7 @@
 			mvi m, ACTOR_RUNTIME_DATA_EMPTY
 .endmacro
 
-; draw an actor sprite into a backbuffer
+; draws an actor sprite into a backbuffer
 ; ex. ACTOR_DRAW(sprite_get_scr_addr_scythe, RAM_DISK_S_SCYTHE)
 ; requires  ((bullet_draw_ptr - bullet_status) == (monster_draw_ptr - monster_status))
 ; requires  (bullet_status - bullet_pos_x+1) == (monster_status - monster_pos_x+1)
@@ -290,8 +290,23 @@
 ; requires (bullet_erase_scr_addr+1 - bullet_erase_wh) == (monster_erase_scr_addr+1 - monster_erase_wh)
 ; in:
 ; de - ptr to actor_draw_ptr 
-; TODO: try to convert it into a function
-.macro ACTOR_DRAW(sprite_get_scr_addr_actor, RAM_DISK_S, check_invis = true)
+.macro ACTOR_DRAW(sprite_get_scr_addr_actor, RAM_DISK_S, check_invis = true, jump_to_func = true)
+			lxi h, sprite_get_scr_addr_actor
+			mvi a, RAM_DISK_S | RAM_DISK_M_BACKBUFF | RAM_DISK_M_8F
+		.if check_invis
+			mvi c, 1
+		.endif
+		.if check_invis == false
+			mvi c, 0
+		.endif
+
+		.if jump_to_func == false
+			call actor_draw
+		.endif
+		.if jump_to_func
+			jmp actor_draw
+		.endif
+
 			; validation
 		.if ~((bullet_draw_ptr - bullet_status) == (monster_draw_ptr - monster_status))
 			.error "actor_erase func fails because !((bullet_draw_ptr - bullet_status) == (monster_draw_ptr - monster_status))"
@@ -308,8 +323,21 @@
 		.if ~((bullet_erase_scr_addr+1 - bullet_erase_wh) == (monster_erase_scr_addr+1 - monster_erase_wh))
 			.error "actor_erase func fails because !((bullet_erase_scr_addr+1 - bullet_erase_wh) == (monster_erase_scr_addr+1 - monster_erase_wh))"
 		.endif
+.endmacro
 
-        .if check_invis
+; in:
+; de - ptr to actor_draw_ptr
+; hl - sprite_get_scr_addr1, sprite_get_scr_addr4, or sprite_get_scr_addr8
+; a - ram_disk_access_cmd | RAM_DISK_M_BACKBUFF | RAM_DISK_M_8F
+; c - check invisibility, 0 - no check, 1 - check
+actor_draw:
+			shld actor_draw_get_scr_addr_actor + 1
+			sta @ramdisk_cmd + 1
+
+			A_TO_ZERO(NULL)
+			cmp c
+			jz @no_check_invis
+@check_invis:
 			; advance to monster_status
 			HL_ADVANCE(monster_draw_ptr, monster_status, BY_HL_FROM_DE)
 			mov a, m
@@ -317,12 +345,14 @@
 			rnz
 
 			HL_ADVANCE(monster_status, monster_pos_x+1, BY_DE)
-		.endif 
-		.if check_invis == false
+			jmp @next
+@no_check_invis:
 			HL_ADVANCE(monster_draw_ptr, monster_pos_x+1, BY_HL_FROM_DE)
-		.endif
+@next:
+
 			; hl - ptr to monster_pos_x+1
-			call sprite_get_scr_addr_actor
+@get_scr_addr_actor:
+			call TEMP_ADDR ; sprite_get_scr_addr1 or sprite_get_scr_addr4 or sprite_get_scr_addr8
 			; de - sprite screen addr
 			; c - preshifted sprite idx*2 offset based on pos_x then +2
 			; hl - ptr to pos_y+1
@@ -339,7 +369,9 @@
 			; c - preshifted sprite idx*2 offset
 			call sprite_get_addr
 			
-			CALL_RAM_DISK_FUNC(sprite_draw_vm, RAM_DISK_S | RAM_DISK_M_BACKBUFF | RAM_DISK_M_8F)
+@ramdisk_cmd:
+			mvi a, TEMP_BYTE
+			CALL_RAM_DISK_FUNC_BANK(sprite_draw_vm)
 			pop h			
 			inx h
 			; d - width
@@ -355,10 +387,11 @@
 			inx h
 			mov m, b
 			; advance to monster_erase_wh
-			HL_ADVANCE(monster_erase_scr_addr+1, monster_erase_wh)
+			HL_ADVANCE(monster_erase_scr_addr + 1, monster_erase_wh)
 			; store a width and a height into monster_erase_wh
 			mov m, e
 			inx h
 			mov m, d
 			ret
-.endmacro
+
+actor_draw_get_scr_addr_actor: = @get_scr_addr_actor
