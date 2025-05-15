@@ -1,5 +1,5 @@
 ## Main Ram memory usage:
-> Free Space: `6145`
+> Free Space: `6146`
 
 |Assembly| Usage|
 |-|-|
@@ -34,7 +34,7 @@
 |memusage_v6_text_ex_draw:|263|
 |memusage_hero_data:|244|
 |memusage_v6_text_mono_draw:|229|
-|memusage_npc:|229|
+|memusage_npc:|228|
 |memusage_knight_heavy:|225|
 |memusage_bomb:|219|
 |memusage_levels:|208|
@@ -96,7 +96,7 @@
 ---
 ### `level0` ram-disk usage:
 
-> Used: `137420`, Free Space: `73692`
+> Used: `137444`, Free Space: `73668`
 
 - bank0 addr0
 	* SKELETON.BIN: addr: 0, len: `9870`
@@ -138,12 +138,12 @@
   `Used: 32402, Free: 366`
 
 - bank3 addr8000
-	* LV0_DATA.BIN: addr: 32768, len: `3856`
-	* HERO_L.BIN: addr: 36624, len: `13176`
-	* HERO_R.BIN: addr: 49800, len: `13176`
-	* VFX.BIN: addr: 62976, len: `2184`
+	* LV0_DATA.BIN: addr: 32768, len: `3880`
+	* HERO_L.BIN: addr: 36648, len: `13176`
+	* HERO_R.BIN: addr: 49824, len: `13176`
+	* VFX.BIN: addr: 63000, len: `2184`
 
-  `Used: 32392, Free: 376`
+  `Used: 32416, Free: 352`
 
 
 ---

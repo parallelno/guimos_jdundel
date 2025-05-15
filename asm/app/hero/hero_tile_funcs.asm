@@ -101,7 +101,6 @@ hero_tile_func_teleport:
 			; as well as the return addr
 			pop h
 			pop h
-.breakpoint
 			; convert a teleport_id into a room_id
 			; a - teleport_idx
 			HL_TO_A_PLUS_INT16(room_teleports_data)

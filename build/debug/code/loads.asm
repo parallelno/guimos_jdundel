@@ -181,7 +181,7 @@ memusage_loads_level0:
 
 			RAM_DISK_M_HERO_L = RAM_DISK_M3
 			RAM_DISK_S_HERO_L = RAM_DISK_S3
-			HERO_L_ADDR = 0x8F10
+			HERO_L_ADDR = 0x8F28
 			LOAD_FILE(HERO_L_FILENAME_PTR, RAM_DISK_S_HERO_L, HERO_L_ADDR, HERO_L_FILE_LEN)
 			lxi d, hero_l_preshifted_sprites
 			lxi h, HERO_L_ADDR
@@ -189,7 +189,7 @@ memusage_loads_level0:
 
 			RAM_DISK_M_HERO_R = RAM_DISK_M3
 			RAM_DISK_S_HERO_R = RAM_DISK_S3
-			HERO_R_ADDR = 0xC288
+			HERO_R_ADDR = 0xC2A0
 			LOAD_FILE(HERO_R_FILENAME_PTR, RAM_DISK_S_HERO_R, HERO_R_ADDR, HERO_R_FILE_LEN)
 			lxi d, hero_r_preshifted_sprites
 			lxi h, HERO_R_ADDR
@@ -197,7 +197,7 @@ memusage_loads_level0:
 
 			RAM_DISK_M_VFX = RAM_DISK_M3
 			RAM_DISK_S_VFX = RAM_DISK_S3
-			VFX_ADDR = 0xF600
+			VFX_ADDR = 0xF618
 			LOAD_FILE(VFX_FILENAME_PTR, RAM_DISK_S_VFX, VFX_ADDR, VFX_FILE_LEN)
 			lxi d, vfx_preshifted_sprites
 			lxi h, VFX_ADDR
