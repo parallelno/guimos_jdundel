@@ -34,12 +34,28 @@
 			"frames" : ["goose_run_l0", "goose_run_l1"],
 			"loop" : true
 		},
-		"caterpillar_idle"	: {
-			"frames" : ["caterpillar_run_1"],
-			"loop" : true
-		},
 		"caterpillar_run"	: {
 			"frames" : ["caterpillar_run_0", "caterpillar_run_1"],
+			"loop" : true
+		},
+		"cat_idle"	: {
+			"frames" : ["cat_idle_0", "cat_idle_1", "cat_idle_0", "cat_idle_2"],
+			"loop" : true
+		},
+		"cat_run_r"	: {
+			"frames" : ["cat_idle_0", "cat_idle_1", "cat_idle_0", "cat_idle_2"],
+			"loop" : true
+		},
+		"cat_run_l"	: {
+			"frames" : ["cat_idle_0", "cat_idle_1", "cat_idle_0", "cat_idle_2"],
+			"loop" : true
+		},
+		"chiken_idle_r" : {
+			"frames" : ["chiken_idle_r0", "chiken_idle_r1"],
+			"loop" : true
+		},
+		"chiken_idle_l" : {
+			"frames" : ["chiken_idle_l0", "chiken_idle_l1"],
 			"loop" : true
 		}
 	},
@@ -138,6 +154,30 @@
 			"height" : 5,
 			"offset_x" : 0,
 			"offset_y" : 0,
+			"mask_x" : 48
+		},
+		{
+			"name" : "cat_idle_0",
+			"x" : 32,
+			"y"	: 67,
+			"width" : 16,
+			"height" : 13,
+			"mask_x" : 48
+		},
+		{
+			"name" : "cat_idle_1",
+			"x" : 32,
+			"y"	: 83,
+			"width" : 16,
+			"height" : 13,
+			"mask_x" : 48
+		},
+		{
+			"name" : "cat_idle_2",
+			"x" : 32,
+			"y"	: 99,
+			"width" : 16,
+			"height" : 13,
 			"mask_x" : 48
 		}
 	]

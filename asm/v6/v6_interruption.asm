@@ -81,7 +81,7 @@ interruption_fps:
 			lxi h, TEMP_WORD
 			/*
 			; commented out because FPS indication is drawn by 
-			; the script in the Devector emulator
+			; the Devector emulator script
 			; hl - fps
 			mov a, l
 			; draw fps

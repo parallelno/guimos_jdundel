@@ -1,4 +1,4 @@
-memusage_npc:
+memusage_friends_mom:
 ;========================================================
 ; npc is a quest monster. it can't be destroied.
 ; all all npcs visual and logic is in this assembly.
@@ -6,21 +6,21 @@ memusage_npc:
 
 ; statuses.
 ; personal actor statuses must be in a range of 0 to ACTOR_STATUS_CUSTOM including.
-ACTOR_STATUS_NPC_IDLE				= ACTOR_STATUS_INIT
+ACTOR_STATUS_FRIENDS_MOM_IDLE				= ACTOR_STATUS_INIT
 
 ; status duration in updates.
-ACTOR_STATUS_NPC_RELAX_TIME			= 25
-ACTOR_STATUS_NPC_MOVE_TIME			= 55
+ACTOR_STATUS_FRIENDS_MOM_RELAX_TIME			= 25
+ACTOR_STATUS_FRIENDS_MOM_MOVE_TIME			= 55
 
 ; animation speed (the less the slower, 0-255, 255 means the next frame is almost every update)
-NPC_ANIM_SPEED_IDLE	= 20
+FRIENDS_MOM_ANIM_SPEED_IDLE	= 20
 
 ; gameplay
-NPC_DAMAGE = 0
-NPC_HEALTH = 0
+FRIENDS_MOM_DAMAGE = 0
+FRIENDS_MOM_HEALTH = 0
 
-NPC_COLLISION_WIDTH		= 16
-NPC_COLLISION_HEIGHT	= 16
+FRIENDS_MOM_COLLISION_WIDTH		= 16
+FRIENDS_MOM_COLLISION_HEIGHT	= 16
 
 ;========================================================
 ; spawn and init a monster
@@ -29,29 +29,8 @@ NPC_COLLISION_HEIGHT	= 16
 ; a - monster_id * 4
 ; out:
 ; a = TILEDATA_RESTORE_TILE
-npc_init:
-			mov b, a ; tmp store
-			; if it's the level 0 & the room 0
-			; spawn a goose
-			lda level_id
-			CPI_ZERO(LEVEL_ID_0)
-			jnz @lv1
-@lv0:
-			lda room_id
-			CPI_ZERO(ROOM_ID_0)
-			mov a, b
-			jz goose_init
-			lda room_id
-			cpi ROOM_ID_1
-			mov a, b
-			jz @friends_sister
-@friends_mom:
-			MONSTER_INIT(npc_update, npc_draw, npc_impacted, NPC_HEALTH, ACTOR_STATUS_NPC_IDLE, npc_mom_idle_anim, False, MONSTER_TYPE_NPC_FRIENDS_MOM)
-@friends_sister:
-			MONSTER_INIT(npc_update, npc_draw, npc_impacted, NPC_HEALTH, ACTOR_STATUS_NPC_IDLE, npc_sis_idle_anim, False, MONSTER_TYPE_NPC_FRIENDS_SIS)
-
-@lv1:
-			ret
+friends_mom_init:
+			MONSTER_INIT(npc_update, npc_draw, friends_mom_impacted, FRIENDS_MOM_HEALTH, ACTOR_STATUS_FRIENDS_MOM_IDLE, npc_mom_idle_anim, False, MONSTER_TYPE_FRIENDS_MOM)
 
 ;========================================================
 ; anim and a gameplay logic update
@@ -60,26 +39,23 @@ npc_init:
 npc_update:
 			; advance hl to monster_anim_timer
 			HL_ADVANCE(monster_update_ptr, monster_anim_timer, BY_HL_FROM_DE)
-			mvi a, NPC_ANIM_SPEED_IDLE
+			mvi a, FRIENDS_MOM_ANIM_SPEED_IDLE
 			; hl - monster_anim_timer
 			; a - anim speed
 			call actor_anim_update
-			;MONSTER_CHECK_COLLISION_HERO(NPC_COLLISION_WIDTH, NPC_COLLISION_HEIGHT, NPC_DAMAGE)
+			;MONSTER_CHECK_COLLISION_HERO(FRIENDS_MOM_COLLISION_WIDTH, FRIENDS_MOM_COLLISION_HEIGHT, FRIENDS_MOM_DAMAGE)
 			ret
 
 ; in:
 ; de - ptr to monster_impacted_ptr + 1
 ; c - hero_weapon_id
-npc_impacted:
+friends_mom_impacted:
 			; check the weapon_id
 			mvi a, HERO_WEAPON_ID_SNOWFLAKE
 			cmp c
 			rz ; return if the hero used a snowflake
 			; de - ptr to monster_impacted_ptr+1
 
-			HL_ADVANCE(monster_impacted_ptr+1, monster_type, BY_HL_FROM_DE)
-			cpi MONSTER_TYPE_NPC_FRIENDS_MOM
-			rnz ; return if the npc is not friend's mom
 			call npc_friends_mom
 			ret
 

@@ -13,4 +13,17 @@ monsters_inits:
 			JMP_4( knight_heavy_init)
 			JMP_4( firepool_init)
 			JMP_4( skeleton_quest_init)
-			JMP_4( npc_init)
+
+monsters2_inits:
+			JMP_4( friends_mom_init)
+			JMP_4( friends_sis_init)
+			JMP_4( goose_init)
+			JMP_4( cat_init)
+			JMP_4( caterpillar_init)
+			JMP_4( chiken_init)
+			JMP_4( crow_init)
+			JMP_4( crazy_man_init)
+			JMP_4( villager1_init)
+			JMP_4( villager2_init)
+			JMP_4( villager3_init)
+			JMP_4( villager4_init)

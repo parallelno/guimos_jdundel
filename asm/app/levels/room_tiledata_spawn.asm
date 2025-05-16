@@ -6,7 +6,7 @@ room_tiledata_funcs:
 			JMP_4(room_tiledata_decal_walkable_spawn)	; func_id = 0
 			JMP_4(room_tiledata_monster_spawn)			; func_id = 1
 			JMP_4(room_tiledata_copy)					; func_id = 2
-			JMP_4(room_tiledata_copy)					; func_id = 3
+			JMP_4(room_tiledata_monster2_spawn)			; func_id = 3
 			JMP_4(room_tiledata_copy)					; func_id = 4
 			JMP_4(room_tiledata_copy)					; func_id = 5
 			JMP_4(room_tiledata_item_spawn)				; func_id = 6
@@ -52,12 +52,25 @@ room_tiledata_erase:
 room_tiledata_monster_spawn:
 			; get a monster init func addr ptr
 			lxi h, monsters_inits
+room_tiledata_monster_spawn_:
 			ADD_A(2) ; to make a JMP_4 ptr
 			mov e, a
 			mvi d, 0
 			dad d
 			; call a monster init func
 			pchl
+
+; a tiledata handler. spawn a monster.
+; input:
+; b - tiledata
+; c - tile_idx in the room_tiledata array.
+; a - monster2_id
+; out:
+; a - tiledata that will be saved back into room_tiledata
+room_tiledata_monster2_spawn:
+			; get a monster init func addr ptr
+			lxi h, monsters2_inits
+			jmp room_tiledata_monster_spawn_
 
 ; a tiledata handler. spawn an animated back + collision.
 ; if id == TILEDATA_FUNC_ID_COLLISION, it does not spawn an animated back

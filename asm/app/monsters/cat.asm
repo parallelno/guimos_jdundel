@@ -1,41 +1,41 @@
-memusage_goose:
+memusage_cat:
 
 
 ; statuses.
 ; personal actor statuses must be in a range of 0 to ACTOR_STATUS_CUSTOM including.
-ACTOR_STATUS_GOOSE_DETECT_HERO_INIT	= ACTOR_STATUS_INIT
-ACTOR_STATUS_GOOSE_DETECT_HERO			= 1 * JMP_4_LEN ; TODO: why * JMP_4_LEN???
-ACTOR_STATUS_GOOSE_DASH_PREP			= 2 * JMP_4_LEN
-ACTOR_STATUS_GOOSE_DASH				= 3 * JMP_4_LEN
-ACTOR_STATUS_GOOSE_RELAX				= 4 * JMP_4_LEN
-ACTOR_STATUS_GOOSE_MOVE_INIT			= 5 * JMP_4_LEN
-ACTOR_STATUS_GOOSE_MOVE				= 6 * JMP_4_LEN
+ACTOR_STATUS_CAT_DETECT_HERO_INIT	= ACTOR_STATUS_INIT
+ACTOR_STATUS_CAT_DETECT_HERO			= 1 * JMP_4_LEN ; TODO: why * JMP_4_LEN???
+ACTOR_STATUS_CAT_DASH_PREP			= 2 * JMP_4_LEN
+ACTOR_STATUS_CAT_DASH				= 3 * JMP_4_LEN
+ACTOR_STATUS_CAT_RELAX				= 4 * JMP_4_LEN
+ACTOR_STATUS_CAT_MOVE_INIT			= 5 * JMP_4_LEN
+ACTOR_STATUS_CAT_MOVE				= 6 * JMP_4_LEN
 
 ; status duration in updates.
-ACTOR_STATUS_GOOSE_DETECT_HERO_TIME	= 50
-ACTOR_STATUS_GOOSE_DASH_PREP_TIME		= 10
-ACTOR_STATUS_GOOSE_DASH_TIME			= 16
-ACTOR_STATUS_GOOSE_RELAX_TIME			= 25
-ACTOR_STATUS_GOOSE_MOVE_TIME			= 60
+ACTOR_STATUS_CAT_DETECT_HERO_TIME	= 50
+ACTOR_STATUS_CAT_DASH_PREP_TIME		= 10
+ACTOR_STATUS_CAT_DASH_TIME			= 16
+ACTOR_STATUS_CAT_RELAX_TIME			= 25
+ACTOR_STATUS_CAT_MOVE_TIME			= 60
 
 ; animation speed (the less the slower, 0-255, 255 means the next frame is almost every update)
-GOOSE_ANIM_SPEED_DETECT_HERO	= 50
-GOOSE_ANIM_SPEED_RELAX			= 20
-GOOSE_ANIM_SPEED_MOVE			= 60
-GOOSE_ANIM_SPEED_DASH_PREP		= 100
-GOOSE_ANIM_SPEED_DASH			= 150
+CAT_ANIM_SPEED_DETECT_HERO	= 50
+CAT_ANIM_SPEED_RELAX			= 20
+CAT_ANIM_SPEED_MOVE			= 60
+CAT_ANIM_SPEED_DASH_PREP		= 100
+CAT_ANIM_SPEED_DASH			= 150
 
 ; gameplay
-GOOSE_DAMAGE = 1
-GOOSE_HEALTH = 6
+CAT_DAMAGE = 1
+CAT_HEALTH = 6
 
-GOOSE_COLLISION_WIDTH	= 15
-GOOSE_COLLISION_HEIGHT	= 10
+CAT_COLLISION_WIDTH	= 15
+CAT_COLLISION_HEIGHT	= 10
 
-GOOSE_MOVE_SPEED		= $0100
-GOOSE_MOVE_SPEED_NEG	= $ffff - $100 + 1
+CAT_MOVE_SPEED		= $0100
+CAT_MOVE_SPEED_NEG	= $ffff - $100 + 1
 
-GOOSE_DETECT_HERO_DISTANCE = 60
+CAT_DETECT_HERO_DISTANCE = 60
 
 ;========================================================
 ; spawn and init a monster
@@ -44,64 +44,64 @@ GOOSE_DETECT_HERO_DISTANCE = 60
 ; a - monster_id * 4
 ; out:
 ; a = TILEDATA_RESTORE_TILE
-goose_init:
-			MONSTER_INIT(goose_update, goose_draw, monster_impacted, GOOSE_HEALTH, ACTOR_STATUS_GOOSE_DETECT_HERO_INIT, npc4_goose_idle_anim)
+cat_init:
+			MONSTER_INIT(cat_update, cat_draw, monster_impacted, CAT_HEALTH, ACTOR_STATUS_CAT_DETECT_HERO_INIT, npc4_cat_idle_anim)
 
-; uppdate for GOOSE_ID
+; uppdate for CAT_ID
 ; anim and a gameplay logic update
 ; in:
 ; de - ptr to monster_update_ptr 
-goose_update:
+cat_update:
 			; advance hl to monster_status
 			HL_ADVANCE(monster_update_ptr, monster_status, BY_HL_FROM_DE)
 			mov a, m
-			cpi ACTOR_STATUS_GOOSE_MOVE
-			jz goose_update_move
-			cpi ACTOR_STATUS_GOOSE_DETECT_HERO
-			jz goose_update_detect_hero
-			cpi ACTOR_STATUS_GOOSE_DASH
-			jz goose_update_dash		
-			cpi ACTOR_STATUS_GOOSE_RELAX
-			jz goose_update_relax
-			cpi ACTOR_STATUS_GOOSE_DASH_PREP
-			jz goose_update_dash_prep
-			cpi ACTOR_STATUS_GOOSE_MOVE_INIT
-			jz goose_update_move_init
-			cpi ACTOR_STATUS_GOOSE_DETECT_HERO_INIT
-			jz goose_update_detect_hero_init
+			cpi ACTOR_STATUS_CAT_MOVE
+			jz cat_update_move
+			cpi ACTOR_STATUS_CAT_DETECT_HERO
+			jz cat_update_detect_hero
+			cpi ACTOR_STATUS_CAT_DASH
+			jz cat_update_dash		
+			cpi ACTOR_STATUS_CAT_RELAX
+			jz cat_update_relax
+			cpi ACTOR_STATUS_CAT_DASH_PREP
+			jz cat_update_dash_prep
+			cpi ACTOR_STATUS_CAT_MOVE_INIT
+			jz cat_update_move_init
+			cpi ACTOR_STATUS_CAT_DETECT_HERO_INIT
+			jz cat_update_detect_hero_init
 			cpi ACTOR_STATUS_FREEZE
-			jz goose_update_freeze
+			jz cat_update_freeze
 			ret
 
-; goose is immune to freeze
+; cat is immune to freeze
 ; in:
 ; hl - ptr to monster_status
-goose_update_freeze:
-			mvi m, ACTOR_STATUS_GOOSE_DETECT_HERO_INIT
+cat_update_freeze:
+			mvi m, ACTOR_STATUS_CAT_DETECT_HERO_INIT
 			ret
 
 ; in:
 ; hl - ptr to monster_status
-goose_update_detect_hero_init:
+cat_update_detect_hero_init:
 			; hl = monster_status
-			mvi m, ACTOR_STATUS_GOOSE_DETECT_HERO
+			mvi m, ACTOR_STATUS_CAT_DETECT_HERO
 			inx h
-			mvi m, ACTOR_STATUS_GOOSE_DETECT_HERO_TIME
+			mvi m, ACTOR_STATUS_CAT_DETECT_HERO_TIME
 			HL_ADVANCE(monster_status_timer, monster_anim_ptr)
-			mvi m, <npc4_goose_idle_anim
+			mvi m, <npc4_cat_idle_anim
 			inx h
-			mvi m, >npc4_goose_idle_anim
+			mvi m, >npc4_cat_idle_anim
 			ret
 
 ; in:
 ; hl - ptr to monster_status
-goose_update_detect_hero:
-			MONSTER_UPDATE_DETECT_HERO(GOOSE_DETECT_HERO_DISTANCE, ACTOR_STATUS_GOOSE_DASH_PREP, ACTOR_STATUS_GOOSE_DASH_PREP_TIME, npc4_goose_run_l_anim, GOOSE_ANIM_SPEED_DETECT_HERO, goose_update_anim_check_collision_hero, ACTOR_STATUS_GOOSE_MOVE_INIT, ACTOR_STATUS_GOOSE_MOVE_TIME)
+cat_update_detect_hero:
+			MONSTER_UPDATE_DETECT_HERO(CAT_DETECT_HERO_DISTANCE, ACTOR_STATUS_CAT_DASH_PREP, ACTOR_STATUS_CAT_DASH_PREP_TIME, npc4_cat_run_l_anim, CAT_ANIM_SPEED_DETECT_HERO, cat_update_anim_check_collision_hero, ACTOR_STATUS_CAT_MOVE_INIT, ACTOR_STATUS_CAT_MOVE_TIME)
 
 ; in:
 ; hl - ptr to monster_status
-goose_update_move_init:
-			mvi m, ACTOR_STATUS_GOOSE_MOVE
+cat_update_move_init:
+			mvi m, ACTOR_STATUS_CAT_MOVE
 
 			xchg
 			call random
@@ -120,32 +120,32 @@ goose_update_move_init:
 			inx h
 			mov m, c
 			inx h
-			mvi m, <GOOSE_MOVE_SPEED_NEG
+			mvi m, <CAT_MOVE_SPEED_NEG
 			inx h
-			mvi m, >GOOSE_MOVE_SPEED_NEG
+			mvi m, >CAT_MOVE_SPEED_NEG
 			jmp @set_anim
 @speed_y_positive:
 			mov m, c
 			inx h
 			mov m, c
 			inx h
-			mvi m, <GOOSE_MOVE_SPEED
+			mvi m, <CAT_MOVE_SPEED
 			inx h
-			mvi m, >GOOSE_MOVE_SPEED
+			mvi m, >CAT_MOVE_SPEED
 			jmp @set_anim
 @speed_x_negative:
-			mvi m, <GOOSE_MOVE_SPEED_NEG
+			mvi m, <CAT_MOVE_SPEED_NEG
 			inx h
-			mvi m, >GOOSE_MOVE_SPEED_NEG
+			mvi m, >CAT_MOVE_SPEED_NEG
 			inx h
 			mov m, c
 			inx h
 			mov m, c
 			jmp @set_anim
 @speed_x_positive:
-			mvi m, <GOOSE_MOVE_SPEED
+			mvi m, <CAT_MOVE_SPEED
 			inx h
-			mvi m, >GOOSE_MOVE_SPEED
+			mvi m, >CAT_MOVE_SPEED
 			inx h
 			mov m, c
 			inx h
@@ -154,53 +154,53 @@ goose_update_move_init:
 			HL_ADVANCE(monster_speed_y+1, monster_anim_ptr, BY_BC)
 			; a = rnd
 			CPI_ZERO()
-			; if rnd is positive (up or right movement), then play npc4_goose_run_r anim
+			; if rnd is positive (up or right movement), then play npc4_cat_run_r anim
 			jp @set_anim_run_r
 @set_anim_run_l:
-			mvi m, <npc4_goose_run_l_anim
+			mvi m, <npc4_cat_run_l_anim
 			inx h
-			mvi m, >npc4_goose_run_l_anim
+			mvi m, >npc4_cat_run_l_anim
 			ret
 @set_anim_run_r:
-			mvi m, <npc4_goose_run_r_anim
+			mvi m, <npc4_cat_run_r_anim
 			inx h
-			mvi m, >npc4_goose_run_r_anim
+			mvi m, >npc4_cat_run_r_anim
             ret
 
 ; in:
 ; hl - ptr to monster_status
-goose_update_move:
+cat_update_move:
 			; advance hl to monster_status_timer
 			inx h
 			dcr m
 			jz @set_detect_hero_init
 @update_movement:
-			ACTOR_UPDATE_MOVEMENT_CHECK_TILE_COLLISION(monster_status_timer, monster_pos_x, GOOSE_COLLISION_WIDTH, GOOSE_COLLISION_HEIGHT, @set_move_init) 
+			ACTOR_UPDATE_MOVEMENT_CHECK_TILE_COLLISION(monster_status_timer, monster_pos_x, CAT_COLLISION_WIDTH, CAT_COLLISION_HEIGHT, @set_move_init) 
 			
 			; hl points to monster_pos_y+1
 			; advance hl to monster_anim_timer
 			HL_ADVANCE(monster_pos_y+1, monster_anim_timer, BY_BC)
-			mvi a, GOOSE_ANIM_SPEED_MOVE
-			jmp goose_update_anim_check_collision_hero
+			mvi a, CAT_ANIM_SPEED_MOVE
+			jmp cat_update_anim_check_collision_hero
 
 @set_move_init:
 			; hl points to monster_pos_x
 			; advance hl to monster_status
 			HL_ADVANCE(monster_pos_x, monster_status, BY_BC)
-			mvi m, ACTOR_STATUS_GOOSE_MOVE_INIT
+			mvi m, ACTOR_STATUS_CAT_MOVE_INIT
 			inx h
-			mvi m, ACTOR_STATUS_GOOSE_MOVE_TIME
+			mvi m, ACTOR_STATUS_CAT_MOVE_TIME
 			ret
 @set_detect_hero_init:
  			; hl - ptr to monster_status_timer
 			; advance hl to monster_status
 			dcx h
-			mvi m, ACTOR_STATUS_GOOSE_DETECT_HERO_INIT
+			mvi m, ACTOR_STATUS_CAT_DETECT_HERO_INIT
 			ret
 
 ; in:
 ; hl - ptr to monster_status
-goose_update_relax:
+cat_update_relax:
 			; hl = monster_status
 			; advance hl to monster_status_timer
 			inx h
@@ -208,19 +208,19 @@ goose_update_relax:
 			jz @set_move_init
 			; advance hl to monster_anim_timer
 			HL_ADVANCE(monster_status_timer, monster_anim_timer)
-			mvi a, GOOSE_ANIM_SPEED_RELAX
-			jmp goose_update_anim_check_collision_hero
+			mvi a, CAT_ANIM_SPEED_RELAX
+			jmp cat_update_anim_check_collision_hero
  @set_move_init:
  			; hl - ptr to monster_status_timer
-			mvi m, ACTOR_STATUS_GOOSE_MOVE_TIME
+			mvi m, ACTOR_STATUS_CAT_MOVE_TIME
 			; advance hl to monster_status
 			dcx h
-			mvi m, ACTOR_STATUS_GOOSE_MOVE_INIT
+			mvi m, ACTOR_STATUS_CAT_MOVE_INIT
 			ret
 
 ; in:
 ; hl - ptr to monster_status
-goose_update_dash_prep:
+cat_update_dash_prep:
 			; hl = monster_status
 			; advance hl to monster_status_timer
 			inx h
@@ -228,22 +228,22 @@ goose_update_dash_prep:
 			jz @set_dash
 			; advance hl to monster_anim_timer
 			HL_ADVANCE(monster_status_timer, monster_anim_timer)
-			mvi a, GOOSE_ANIM_SPEED_DASH_PREP
-			jmp goose_update_anim_check_collision_hero
+			mvi a, CAT_ANIM_SPEED_DASH_PREP
+			jmp cat_update_anim_check_collision_hero
  @set_dash:
   			; hl - ptr to monster_status_timer
-			mvi m, ACTOR_STATUS_GOOSE_DASH_TIME
+			mvi m, ACTOR_STATUS_CAT_DASH_TIME
 			; advance hl to monster_status
 			dcx h
-			mvi m, ACTOR_STATUS_GOOSE_DASH
+			mvi m, ACTOR_STATUS_CAT_DASH
 			; advance hl to monster_pos_x
 			HL_ADVANCE(monster_status, monster_pos_x, BY_BC)
 			; reset sub pixel pos_x
 			mvi m, 0
 			; advance hl to pos_x+1
 			inx h
-			; pos_diff =  hero_pos - goosePosX
-			; speed = pos_diff / ACTOR_STATUS_GOOSE_DASH_TIME
+			; pos_diff =  hero_pos - catPosX
+			; speed = pos_diff / ACTOR_STATUS_CAT_DASH_TIME
 			lda hero_pos_x+1
 			sub m
 			mov e, a 
@@ -252,13 +252,13 @@ goose_update_dash_prep:
 			sbb a
 			mov d, a
 			xchg
-			; posDiffX / ACTOR_STATUS_GOOSE_DASH_TIME 
+			; posDiffX / ACTOR_STATUS_CAT_DASH_TIME 
 			dad h 
 			dad h 
 			dad h 
 			dad h
 			; to fill up L with %1111 if pos_diff < 0
-			ani %1111 ; <(%0000000011111111 / ACTOR_STATUS_GOOSE_DASH_TIME)
+			ani %1111 ; <(%0000000011111111 / ACTOR_STATUS_CAT_DASH_TIME)
 			ora l
 			mov l, a
 			push h
@@ -278,13 +278,13 @@ goose_update_dash_prep:
 			sbb a
 			mov d, a 
 			xchg
-			; posDiffY / ACTOR_STATUS_GOOSE_DASH_TIME 
+			; posDiffY / ACTOR_STATUS_CAT_DASH_TIME 
 			dad h 
 			dad h 
 			dad h 
 			dad h 
 			; to fill up L with %1111 if pos_diff < 0
-			ani %1111 ; <(%0000000011111111 / ACTOR_STATUS_GOOSE_DASH_TIME)
+			ani %1111 ; <(%0000000011111111 / ACTOR_STATUS_CAT_DASH_TIME)
 			ora l 
 			mov l, a
 			xchg
@@ -303,7 +303,7 @@ goose_update_dash_prep:
 
 ; in:
 ; hl - ptr to monster_status
-goose_update_dash:
+cat_update_dash:
 			; hl = monster_status
 			; advance hl to monster_status_timer
 			inx h
@@ -314,26 +314,26 @@ goose_update_dash:
 			; hl - ptr to monster_pos_x+1
 			; advance hl to monster_anim_timer
 			HL_ADVANCE(monster_pos_x+1, monster_anim_timer, BY_BC)
-			mvi a, GOOSE_ANIM_SPEED_DASH
+			mvi a, CAT_ANIM_SPEED_DASH
 			jmp actor_anim_update
 @set_move_init:
 			; hl points to monster_status_timer
-			mvi m, ACTOR_STATUS_GOOSE_MOVE_TIME			
+			mvi m, ACTOR_STATUS_CAT_MOVE_TIME			
 			; advance hl to monster_status
 			dcx h
-			mvi m, ACTOR_STATUS_GOOSE_MOVE_INIT
+			mvi m, ACTOR_STATUS_CAT_MOVE_INIT
 			ret	
 
 
 ; in:
 ; hl - monster_anim_timer
 ; a - anim speed
-goose_update_anim_check_collision_hero:
+cat_update_anim_check_collision_hero:
 			call actor_anim_update
-			MONSTER_CHECK_COLLISION_HERO(GOOSE_COLLISION_WIDTH, GOOSE_COLLISION_HEIGHT, GOOSE_DAMAGE)
+			MONSTER_CHECK_COLLISION_HERO(CAT_COLLISION_WIDTH, CAT_COLLISION_HEIGHT, CAT_DAMAGE)
 
 ; draw a sprite into a backbuffer
 ; in:
 ; de - ptr to monster_draw_ptr 
-goose_draw:
+cat_draw:
 			ACTOR_DRAW(sprite_get_scr_addr_npc4, RAM_DISK_S_NPC4, false)
