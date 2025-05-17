@@ -45,6 +45,7 @@ CATERPILLAR_DETECT_HERO_DISTANCE = 60
 ; out:
 ; a = TILEDATA_RESTORE_TILE
 caterpillar_init:
+chiken_init:
 			MONSTER_INIT(caterpillar_update, caterpillar_draw, monster_impacted, CATERPILLAR_HEALTH, ACTOR_STATUS_CATERPILLAR_DETECT_HERO_INIT, npc4_caterpillar_run_anim)
 
 ; uppdate for CATERPILLAR_ID

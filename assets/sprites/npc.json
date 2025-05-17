@@ -29,6 +29,30 @@
 		"sis_idle" : {
 			"frames" : ["sis_idle0", "sis_idle1", "sis_idle2", "sis_idle3"],
 			"loop" : true
+		},
+		"crazyman_idle" : {
+			"frames" : ["crazyman_idle0"],
+			"loop" : true
+		},
+		"grandma_idle" : {
+			"frames" : ["grandma_idle0", "grandma_idle1"],
+			"loop" : true
+		},
+		"greenhat_idle" : {
+			"frames" : ["greenhat_idle0", "greenhat_idle1"],
+			"loop" : true
+		},
+		"boy_idle" : {
+			"frames" : ["boy_idle0", "boy_idle1"],
+			"loop" : true
+		},
+		"oldman_idle" : {
+			"frames" : ["oldman_idle0", "oldman_idle1"],
+			"loop" : true
+		},
+		"scarecrow_idle" : {
+			"frames" : ["scarecrow_idle0", "scarecrow_idle1", "scarecrow_idle2", "scarecrow_idle1"],
+			"loop" : true
 		}
 	},
 	"sprites" : [
@@ -96,6 +120,102 @@
 			"width" : 16,
 			"height" : 15,
 			"mask_x" : 48
+		},
+		{
+			"name" : "crazyman_idle0",
+			"x" : 64,
+			"y"	: 33,
+			"width" : 16,
+			"height" : 15,
+			"mask_x" : 80
+		},
+		{
+			"name" : "grandma_idle0",
+			"x" : 96,
+			"y"	: 32,
+			"width" : 16,
+			"height" : 16,
+			"mask_x" : 112
+		},
+		{
+			"name" : "grandma_idle1",
+			"x" : 96,
+			"y"	: 48,
+			"width" : 16,
+			"height" : 16,
+			"mask_x" : 112
+		},
+		{
+			"name" : "greenhat_idle0",
+			"x" : 128,
+			"y"	: 32,
+			"width" : 16,
+			"height" : 16,
+			"mask_x" : 144
+		},
+		{
+			"name" : "greenhat_idle1",
+			"x" : 128,
+			"y"	: 48,
+			"width" : 16,
+			"height" : 16,
+			"mask_x" : 144
+		},
+		{
+			"name" : "boy_idle0",
+			"x" : 160,
+			"y"	: 33,
+			"width" : 16,
+			"height" : 15,
+			"mask_x" : 176
+		},
+		{
+			"name" : "boy_idle1",
+			"x" : 160,
+			"y"	: 49,
+			"width" : 16,
+			"height" : 15,
+			"mask_x" : 176
+		},
+		{
+			"name" : "oldman_idle0",
+			"x" : 192,
+			"y"	: 32,
+			"width" : 16,
+			"height" : 16,
+			"mask_x" : 208
+		},
+		{
+			"name" : "oldman_idle1",
+			"x" : 192,
+			"y"	: 48,
+			"width" : 16,
+			"height" : 16,
+			"mask_x" : 208
+		},
+		{
+			"name" : "scarecrow_idle0",
+			"x" : 0,
+			"y"	: 96,
+			"width" : 16,
+			"height" : 16,
+			"mask_x" : 16
+		},
+		{
+			"name" : "scarecrow_idle1",
+			"x" : 0,
+			"y"	: 112,
+			"width" : 16,
+			"height" : 16,
+			"mask_x" : 16
+		},
+		{
+			"name" : "scarecrow_idle2",
+			"x" : 0,
+			"y"	: 128,
+			"width" : 16,
+			"height" : 16,
+			"mask_x" : 16
 		}
 	]
 }

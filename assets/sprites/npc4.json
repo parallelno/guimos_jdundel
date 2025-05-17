@@ -22,122 +22,42 @@
 	"preshifted_sprites" : 4,
 	"mask" : true,	
 	"anims" : {
-		"goose_idle"	: {
-			"frames" : ["goose_idle_0", "goose_idle_0", "goose_idle_1", "goose_idle_1"],
-			"loop" : true
-		},
-		"goose_run_r"	: {
-			"frames" : ["goose_run_r0", "goose_run_r1"],
-			"loop" : true
-		},
-		"goose_run_l"	: {
-			"frames" : ["goose_run_l0", "goose_run_l1"],
-			"loop" : true
-		},
 		"caterpillar_run"	: {
-			"frames" : ["caterpillar_run_0", "caterpillar_run_1"],
-			"loop" : true
-		},
-		"cat_idle"	: {
-			"frames" : ["cat_idle_0", "cat_idle_1", "cat_idle_0", "cat_idle_2"],
-			"loop" : true
-		},
-		"cat_run_r"	: {
-			"frames" : ["cat_idle_0", "cat_idle_1", "cat_idle_0", "cat_idle_2"],
-			"loop" : true
-		},
-		"cat_run_l"	: {
-			"frames" : ["cat_idle_0", "cat_idle_1", "cat_idle_0", "cat_idle_2"],
+			"frames" : ["caterpillar_run0", "caterpillar_run1"],
 			"loop" : true
 		},
 		"chiken_idle_r" : {
-			"frames" : ["chiken_idle_r0", "chiken_idle_r1"],
+			"frames" : ["chiken_idle_r0", "chiken_run_r0"],
 			"loop" : true
 		},
 		"chiken_idle_l" : {
-			"frames" : ["chiken_idle_l0", "chiken_idle_l1"],
+			"frames" : ["chiken_idle_l0", "chiken_run_l0"],
+			"loop" : true
+		},
+		"chiken_run_r" : {
+			"frames" : ["chiken_run_r0", "chiken_run_r1"],
+			"loop" : true
+		},
+		"chiken_run_l" : {
+			"frames" : ["chiken_run_l0", "chiken_run_l1"],
+			"loop" : true
+		},
+		"crow_idle" : {
+			"frames" : ["crow_idle0", "crow_idle1"],
+			"loop" : true
+		},
+		"crow_run_r" : {
+			"frames" : ["crow_run_r0", "crow_run_r1", "crow_run_r2"],
+			"loop" : true
+		},
+		"crow_run_l" : {
+			"frames" : ["crow_run_l0", "crow_run_l1", "crow_run_l2"],
 			"loop" : true
 		}
 	},
 	"sprites" : [
 		{
-			"name" : "goose_idle_0",
-			"x" : 1,
-			"y"	: 34,
-			"width" : 16,
-			"height" : 14,
-			"offset_x" : 0,
-			"offset_y" : 0,			
-			"mask_x" : 17,
-			"mask_y" : 34,
-			"mask_alpha" : 0,
-			"mask_color" : 1
-		},
-		{
-			"name" : "goose_idle_1",
-			"x" : 1,
-			"y"	: 50,
-			"width" : 16,
-			"height" : 14,
-			"offset_x" : 0,
-			"offset_y" : 0,			
-			"mask_x" : 17,
-			"mask_y" : 50,
-			"mask_alpha" : 0,
-			"mask_color" : 1
-		},
-		{
-			"name" : "goose_run_r0",
-			"x" : 0,
-			"y"	: 66,
-			"width" : 16,
-			"height" : 14,
-			"offset_x" : -1,
-			"offset_y" : 0,			
-			"mask_x" : 16,
-			"mask_alpha" : 0,
-			"mask_color" : 1
-		},
-		{
-			"name" : "goose_run_r1",
-			"x" : 0, 
-			"y"	: 82,
-			"width" : 16,
-			"height" : 14,
-			"offset_x" : -1,
-			"offset_y" : 0,			
-			"mask_x" : 16,
-			"mask_alpha" : 0,
-			"mask_color" : 1
-		},
-		{
-			"name" : "goose_run_l0",
-			"x" : 0,
-			"y"	: 98,
-			"width" : 16,
-			"height" : 14,
-			"offset_x" : -1,
-			"offset_y" : 0,
-			"mask_x" : 16,
-			"mask_alpha" : 0,
-			"mask_color" : 1,
-			"mirrored" : false
-		},
-		{
-			"name" : "goose_run_l1",
-			"x" : 0, 
-			"y"	: 114,
-			"width" : 16,
-			"height" : 14,
-			"offset_x" : -1,
-			"offset_y" : 0,
-			"mask_x" : 16,
-			"mask_alpha" : 0,
-			"mask_color" : 1,
-			"mirrored" : false
-		},
-		{
-			"name" : "caterpillar_run_0",
+			"name" : "caterpillar_run0",
 			"x" : 32,
 			"y"	: 41,
 			"width" : 16,
@@ -147,7 +67,7 @@
 			"mask_x" : 49
 		},
 		{
-			"name" : "caterpillar_run_1",
+			"name" : "caterpillar_run1",
 			"x" : 32,
 			"y"	: 59,
 			"width" : 16,
@@ -157,28 +77,116 @@
 			"mask_x" : 48
 		},
 		{
-			"name" : "cat_idle_0",
-			"x" : 32,
-			"y"	: 67,
+			"name" : "chiken_run_r0",
+			"x" : 64,
+			"y"	: 162,
 			"width" : 16,
-			"height" : 13,
-			"mask_x" : 48
+			"height" : 14,
+			"mask_x" : 80
 		},
 		{
-			"name" : "cat_idle_1",
-			"x" : 32,
-			"y"	: 83,
+			"name" : "chiken_run_r1",
+			"x" : 64,
+			"y"	: 178,
 			"width" : 16,
-			"height" : 13,
-			"mask_x" : 48
+			"height" : 14,
+			"mask_x" : 80
 		},
 		{
-			"name" : "cat_idle_2",
-			"x" : 32,
-			"y"	: 99,
+			"name" : "chiken_idle_r0",
+			"x" : 64,
+			"y"	: 195,
 			"width" : 16,
 			"height" : 13,
-			"mask_x" : 48
+			"mask_x" : 80
+		},
+		{
+			"name" : "chiken_run_l0",
+			"x" : 64,
+			"y"	: 210,
+			"width" : 16,
+			"height" : 14,
+			"mask_x" : 80
+		},
+		{
+			"name" : "chiken_run_l1",
+			"x" : 64,
+			"y"	: 226,
+			"width" : 16,
+			"height" : 14,
+			"mask_x" : 80
+		},
+		{
+			"name" : "chiken_idle_l0",
+			"x" : 64,
+			"y"	: 243,
+			"width" : 16,
+			"height" : 13,
+			"mask_x" : 80
+		},
+		{
+			"name" : "crow_idle0",
+			"x" : 64,
+			"y"	: 37,
+			"width" : 16,
+			"height" : 11,
+			"mask_x" : 80
+		},
+		{
+			"name" : "crow_idle1",
+			"x" : 64,
+			"y"	: 53,
+			"width" : 16,
+			"height" : 11,
+			"mask_x" : 80
+		},
+		{
+			"name" : "crow_run_r0",
+			"x" : 64,
+			"y"	: 65,
+			"width" : 16,
+			"height" : 13,
+			"mask_x" : 80
+		},
+		{
+			"name" : "crow_run_r1",
+			"x" : 64,
+			"y"	: 86,
+			"width" : 16,
+			"height" : 9,
+			"mask_x" : 80
+		},
+		{
+			"name" : "crow_run_r2",
+			"x" : 64,
+			"y"	: 101,
+			"width" : 16,
+			"height" : 9,
+			"mask_x" : 80
+		},
+		{
+			"name" : "crow_run_l0",
+			"x" : 64,
+			"y"	: 113,
+			"width" : 16,
+			"height" : 13,
+			"mask_x" : 80
+		},
+		{
+			"name" : "crow_run_l1",
+			"x" : 64,
+			"y"	: 134,
+			"width" : 16,
+			"height" : 9,
+			"mask_x" : 80
+		},
+		{
+			"name" : "crow_run_l2",
+			"x" : 64,
+			"y"	: 149,
+			"width" : 16,
+			"height" : 9,
+			"mask_x" : 80
 		}
 	]
 }

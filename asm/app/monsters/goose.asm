@@ -46,7 +46,7 @@ GOOSE_DETECT_HERO_DISTANCE = 60
 ; a = TILEDATA_RESTORE_TILE
 goose_init:
 crow_init:
-			MONSTER_INIT(goose_update, goose_draw, monster_impacted, GOOSE_HEALTH, ACTOR_STATUS_GOOSE_DETECT_HERO_INIT, npc4_goose_idle_anim)
+			MONSTER_INIT(goose_update, goose_draw, monster_impacted, GOOSE_HEALTH, ACTOR_STATUS_GOOSE_DETECT_HERO_INIT, goose_idle_anim)
 
 ; uppdate for GOOSE_ID
 ; anim and a gameplay logic update
@@ -89,15 +89,15 @@ goose_update_detect_hero_init:
 			inx h
 			mvi m, ACTOR_STATUS_GOOSE_DETECT_HERO_TIME
 			HL_ADVANCE(monster_status_timer, monster_anim_ptr)
-			mvi m, <npc4_goose_idle_anim
+			mvi m, <goose_idle_anim
 			inx h
-			mvi m, >npc4_goose_idle_anim
+			mvi m, >goose_idle_anim
 			ret
 
 ; in:
 ; hl - ptr to monster_status
 goose_update_detect_hero:
-			MONSTER_UPDATE_DETECT_HERO(GOOSE_DETECT_HERO_DISTANCE, ACTOR_STATUS_GOOSE_DASH_PREP, ACTOR_STATUS_GOOSE_DASH_PREP_TIME, npc4_goose_run_l_anim, GOOSE_ANIM_SPEED_DETECT_HERO, goose_update_anim_check_collision_hero, ACTOR_STATUS_GOOSE_MOVE_INIT, ACTOR_STATUS_GOOSE_MOVE_TIME)
+			MONSTER_UPDATE_DETECT_HERO(GOOSE_DETECT_HERO_DISTANCE, ACTOR_STATUS_GOOSE_DASH_PREP, ACTOR_STATUS_GOOSE_DASH_PREP_TIME, goose_run_l_anim, GOOSE_ANIM_SPEED_DETECT_HERO, goose_update_anim_check_collision_hero, ACTOR_STATUS_GOOSE_MOVE_INIT, ACTOR_STATUS_GOOSE_MOVE_TIME)
 
 ; in:
 ; hl - ptr to monster_status
@@ -155,17 +155,17 @@ goose_update_move_init:
 			HL_ADVANCE(monster_speed_y+1, monster_anim_ptr, BY_BC)
 			; a = rnd
 			CPI_ZERO()
-			; if rnd is positive (up or right movement), then play npc4_goose_run_r anim
+			; if rnd is positive (up or right movement), then play goose_run_r anim
 			jp @set_anim_run_r
 @set_anim_run_l:
-			mvi m, <npc4_goose_run_l_anim
+			mvi m, <goose_run_l_anim
 			inx h
-			mvi m, >npc4_goose_run_l_anim
+			mvi m, >goose_run_l_anim
 			ret
 @set_anim_run_r:
-			mvi m, <npc4_goose_run_r_anim
+			mvi m, <goose_run_r_anim
 			inx h
-			mvi m, >npc4_goose_run_r_anim
+			mvi m, >goose_run_r_anim
             ret
 
 ; in:
