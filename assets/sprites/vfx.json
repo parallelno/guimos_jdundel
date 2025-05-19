@@ -33,10 +33,6 @@
 		"reward"	: {
 			"frames" : ["reward0", "reward1", "reward3", "reward2", "reward3", "reward0", "reward3"],
 			"loop" : false
-		},
-		"firepool"	: {
-			"frames" : ["firepool0", "firepool1", "firepool2"],
-			"loop" : true
 		},			
 		"selection"	: {
 			"frames" : ["selection0"],

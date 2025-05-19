@@ -114,7 +114,7 @@ bomb_update:
 			dcr m
 			jz @die
 			; @update_movement:
-			ACTOR_UPDATE_MOVEMENT(bullet_status_timer, bullet_speed_y)
+			ACTOR_UPDATE_MOVEMENT()
 			; hl - ptr to bullet_pos_x+1
 			; advance hl to bullet_anim_timer
 			L_ADVANCE(bullet_pos_x+1, bullet_anim_timer, BY_A)

@@ -30,7 +30,7 @@ sprite_get_scr_addr_vfx = sprite_get_scr_addr1
 vfx_preshifted_sprites:
 			.byte 1
 vfx_anims:
-			.word vfx_puff_anim, vfx_puff_loop_anim, vfx_reward_anim, vfx_firepool_anim, vfx_selection_anim, EOD
+			.word vfx_puff_anim, vfx_puff_loop_anim, vfx_reward_anim, vfx_selection_anim, EOD
 vfx_puff_anim:
 			.byte 3, 0 ; offset to the next frame
 			.word _vfx_puff0_0_relative, 
@@ -74,13 +74,6 @@ vfx_reward_anim:
 			.word _vfx_reward0_0_relative, 
 			.byte -1, $ff ; offset to the same last frame
 			.word _vfx_reward3_0_relative, 
-vfx_firepool_anim:
-			.byte 3, 0 ; offset to the next frame
-			.word _vfx_firepool0_0_relative, 
-			.byte 3, 0 ; offset to the next frame
-			.word _vfx_firepool1_0_relative, 
-			.byte 247, $ff ; offset to the first frame
-			.word _vfx_firepool2_0_relative, 
 vfx_selection_anim:
 			.byte 255, $ff ; offset to the first frame
 			.word _vfx_selection0_0_relative, 

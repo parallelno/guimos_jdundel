@@ -371,7 +371,7 @@ burner_update_dash:
 			dcr m
 			jm @set_move_init
 @apply_movement:
-			ACTOR_UPDATE_MOVEMENT(monster_status_timer, monster_speed_y)
+			ACTOR_UPDATE_MOVEMENT()
 			; hl - ptr to monster_pos_x+1
 			; advance hl to monster_anim_timer
 			HL_ADVANCE(monster_pos_x+1, monster_anim_timer, BY_BC)

@@ -2,8 +2,8 @@
 ; asm data file: build/debug/level_gfx/lv0_gfx_data.asm
 ; bin file: build/debug/bin/LV0_GFX.BIN
 
-LV0_GFX_FILE_LEN = 5806
-LV0_GFX_LAST_RECORD_LEN = 46
+LV0_GFX_FILE_LEN = 6038
+LV0_GFX_LAST_RECORD_LEN = 22
 
 LV0_GFX_FILENAME_PTR:
 			.byte "LV0_GFX" ; filename
@@ -11,7 +11,7 @@ LV0_GFX_FILENAME_PTR:
 			.byte "BIN" ; extension
 
 lv0_gfx_tiles_ptrs:
-			.word _lv0_tile00_relative, _lv0_tile01_relative, _lv0_tile02_relative, _lv0_tile03_relative, _lv0_tile04_relative, _lv0_tile05_relative, _lv0_tile06_relative, _lv0_tile07_relative, _lv0_tile08_relative, _lv0_tile09_relative, _lv0_tile0a_relative, _lv0_tile0b_relative, _lv0_tile0c_relative, _lv0_tile0d_relative, _lv0_tile0e_relative, _lv0_tile0f_relative, _lv0_tile10_relative, _lv0_tile11_relative, _lv0_tile12_relative, _lv0_tile13_relative, _lv0_tile14_relative, _lv0_tile15_relative, _lv0_tile16_relative, _lv0_tile17_relative, _lv0_tile18_relative, _lv0_tile19_relative, _lv0_tile1a_relative, _lv0_tile1b_relative, _lv0_tile1c_relative, _lv0_tile1d_relative, _lv0_tile1e_relative, _lv0_tile1f_relative, _lv0_tile20_relative, _lv0_tile21_relative, _lv0_tile22_relative, _lv0_tile23_relative, _lv0_tile24_relative, _lv0_tile25_relative, _lv0_tile26_relative, _lv0_tile27_relative, _lv0_tile28_relative, _lv0_tile29_relative, _lv0_tile2a_relative, _lv0_tile2b_relative, _lv0_tile2c_relative, _lv0_tile2d_relative, _lv0_tile2e_relative, 
+			.word _lv0_tile00_relative, _lv0_tile01_relative, _lv0_tile02_relative, _lv0_tile03_relative, _lv0_tile04_relative, _lv0_tile05_relative, _lv0_tile06_relative, _lv0_tile07_relative, _lv0_tile08_relative, _lv0_tile09_relative, _lv0_tile0a_relative, _lv0_tile0b_relative, _lv0_tile0c_relative, _lv0_tile0d_relative, _lv0_tile0e_relative, _lv0_tile0f_relative, _lv0_tile10_relative, _lv0_tile11_relative, _lv0_tile12_relative, _lv0_tile13_relative, _lv0_tile14_relative, _lv0_tile15_relative, _lv0_tile16_relative, _lv0_tile17_relative, _lv0_tile18_relative, _lv0_tile19_relative, _lv0_tile1a_relative, _lv0_tile1b_relative, _lv0_tile1c_relative, _lv0_tile1d_relative, _lv0_tile1e_relative, _lv0_tile1f_relative, _lv0_tile20_relative, _lv0_tile21_relative, _lv0_tile22_relative, _lv0_tile23_relative, _lv0_tile24_relative, _lv0_tile25_relative, _lv0_tile26_relative, _lv0_tile27_relative, _lv0_tile28_relative, _lv0_tile29_relative, _lv0_tile2a_relative, _lv0_tile2b_relative, _lv0_tile2c_relative, _lv0_tile2d_relative, _lv0_tile2e_relative, _lv0_tile2f_relative, _lv0_tile30_relative, 
 			.word EOD
 
 lv0_gfx_init_tbl:
@@ -89,4 +89,6 @@ _lv0_tile2b_relative = 0x14a0
 _lv0_tile2c_relative = 0x1524
 _lv0_tile2d_relative = 0x15a8
 _lv0_tile2e_relative = 0x162c
+_lv0_tile2f_relative = 0x1690
+_lv0_tile30_relative = 0x1714
 

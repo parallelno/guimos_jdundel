@@ -32,7 +32,7 @@ firepool_init:
 			CPI_ZERO(False)
 			jnz @return
 			mov a, b
-			MONSTER_INIT(firepool_update, firepool_draw, firepool_impacted, FIREPOOL_HEALTH, ACTOR_STATUS_FIREPOOL_IDLE, vfx_firepool_anim, False)
+			MONSTER_INIT(firepool_update, firepool_draw, firepool_impacted, FIREPOOL_HEALTH, ACTOR_STATUS_FIREPOOL_IDLE, firepool_idle_anim, False)
 @return:
 			mvi a, TILEDATA_RESTORE_TILE
 			ret			
@@ -87,4 +87,4 @@ firepool_impacted:
 ; in:
 ; de - ptr to monster_draw_ptr 
 firepool_draw:
-			ACTOR_DRAW(sprite_get_scr_addr1, RAM_DISK_S_VFX, false)
+			ACTOR_DRAW(sprite_get_scr_addr1, RAM_DISK_S_FIREPOOL, false)

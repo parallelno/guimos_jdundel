@@ -1,9 +1,9 @@
 ## Main Ram memory usage:
-> Free Space: `5007`
+> Free Space: `5017`
 
 |Assembly| Usage|
 |-|-|
-|memusage_v6_build_uncludes:|3110|
+|memusage_v6_build_uncludes:|3100|
 |memusage_hero_update:|1337|
 |memusage_v6_sprite_copy_to_backbuf:|1219|
 |memusage_v6_sprite_copy_to_scr:|1203|
@@ -99,7 +99,7 @@
 ---
 ### `level0` ram-disk usage:
 
-> Used: `161084`, Free Space: `50028`
+> Used: `161310`, Free Space: `49802`
 
 - bank0 addr0
 	* NPC4.BIN: addr: 0, len: `11466`
@@ -110,9 +110,9 @@
   `Used: 32700, Free: 4`
 
 - bank0 addr8000
-	* LV0_GFX.BIN: addr: 34392, len: `5806`
+	* LV0_GFX.BIN: addr: 34392, len: `6038`
 
-  `Used: 5806, Free: 762`
+  `Used: 6038, Free: 530`
 
 - bank1 addr0
 	* BURNER.BIN: addr: 0, len: `9030`
@@ -148,12 +148,12 @@
   `Used: 32402, Free: 366`
 
 - bank3 addr8000
-	* LV0_DATA.BIN: addr: 32768, len: `3880`
-	* HERO_L.BIN: addr: 36648, len: `13176`
-	* HERO_R.BIN: addr: 49824, len: `13176`
-	* VFX.BIN: addr: 63000, len: `2184`
+	* LV0_DATA.BIN: addr: 32768, len: `3874`
+	* HERO_L.BIN: addr: 36642, len: `13176`
+	* HERO_R.BIN: addr: 49818, len: `13176`
+	* VFX.BIN: addr: 62994, len: `2184`
 
-  `Used: 32416, Free: 352`
+  `Used: 32410, Free: 358`
 
 
 ---

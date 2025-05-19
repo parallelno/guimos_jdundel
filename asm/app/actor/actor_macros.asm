@@ -3,9 +3,8 @@
 ; hl - ptr to actor_pos_x+1
 ; rev 1 268cc
 ; rev 2 212cc (26.4% faster!)
-.macro ACTOR_UPDATE_MOVEMENT(actor_status_timer, actor_speed_y)
-			; old cc = 268
-			HL_ADVANCE(monster_status_timer, monster_speed_y+1, BY_BC)
+.macro ACTOR_UPDATE_MOVEMENT()
+			HL_ADVANCE(monster_status_timer, monster_speed_y + 1, BY_BC)
 			mov d, m
 			dcx h
 			mov a, m
@@ -29,7 +28,7 @@
 			adc d
 			mov m, a
 
-			HL_ADVANCE(monster_pos_y+1, monster_pos_x)
+			HL_ADVANCE(monster_pos_y + 1, monster_pos_x)
 			mov a, m
 			add c
 			mov m, a
@@ -39,7 +38,6 @@
 			adc b
 			mov m, a
 			; cc = 212
-			; 26.4% faster!
 
 			/*
 			; TODO: if the pos_xy data layout is like below
