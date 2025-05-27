@@ -2,15 +2,15 @@
 ; asm data file: build/debug/level_data/lv0_data_data.asm
 ; bin file: build/debug/bin/LV0_DATA.BIN
 
-LV0_DATA_FILE_LEN = 3874
-LV0_DATA_LAST_RECORD_LEN = 34
+LV0_DATA_FILE_LEN = 5672
+LV0_DATA_LAST_RECORD_LEN = 40
 
 LV0_DATA_FILENAME_PTR:
 			.byte "LV0_DATA" ; filename
 			.byte "BIN" ; extension
 
 lv0_data_rooms_ptrs:
-			.word _lv0_00_home, _lv0_01_farm_fence, _lv0_02_road_to_friends_home, _lv0_03_friends_home, _lv0_04_friends_home_backyard, _lv0_05_friends_secret_place, _lv0_06_crossroad, _lv0_07_farm_entrance, _lv0_08_farm_storage, _lv0_09_loop, _lv0_10_dungeon_entrance, _lv0_11_abandoned_home, _lv0_12_lost_coins, 
+			.word _lv0_00_home, _lv0_01_farm_fence, _lv0_02_road_to_friends_home, _lv0_03_friends_home, _lv0_04_friends_home_backyard, _lv0_05_friends_secret_place, _lv0_06_crossroad, _lv0_07_farm_entrance, _lv0_08_farm_storage, _lv0_09_loop, _lv0_10_dungeon_entrance, _lv0_11_abandoned_home, _lv0_12_lost_coins, _lv0_13_forest, _lv0_14_farmer_bob, _lv0_15_backyard, _lv0_16_closed_gate, _lv0_17_dottys_home, _lv0_18_forest, 
 			.word EOD
 
 lv0_data_init_tbl:
@@ -25,7 +25,7 @@ lv0_resources_inst_data_ptrs:
 @data_end:
 LV0_DATA_INIT_TBL_LEN = @data_end - lv0_data_init_tbl
 
-LV0_RECOURCES_DATA_LEN = 117
+LV0_RECOURCES_DATA_LEN = 143
 LV0_CONTAINERS_DATA_LEN = 7
 
 ; in:
@@ -47,18 +47,24 @@ lv0_data_init:
 			ret 
 
 _lv0_resources_inst_data_ptrs = 0x0002
-_lv0_containers_inst_data_ptrs = 0x0079
-_lv0_00_home = 0x0082
-_lv0_01_farm_fence = 0x01a3
-_lv0_02_road_to_friends_home = 0x02b8
-_lv0_03_friends_home = 0x03df
-_lv0_04_friends_home_backyard = 0x04ec
-_lv0_05_friends_secret_place = 0x0600
-_lv0_06_crossroad = 0x0745
-_lv0_07_farm_entrance = 0x0865
-_lv0_08_farm_storage = 0x097a
-_lv0_09_loop = 0x0a8b
-_lv0_10_dungeon_entrance = 0x0bb7
-_lv0_11_abandoned_home = 0x0cdf
-_lv0_12_lost_coins = 0x0df7
+_lv0_containers_inst_data_ptrs = 0x0093
+_lv0_00_home = 0x009c
+_lv0_01_farm_fence = 0x01bf
+_lv0_02_road_to_friends_home = 0x02d3
+_lv0_03_friends_home = 0x03f4
+_lv0_04_friends_home_backyard = 0x0501
+_lv0_05_friends_secret_place = 0x061b
+_lv0_06_crossroad = 0x0764
+_lv0_07_farm_entrance = 0x0890
+_lv0_08_farm_storage = 0x09b5
+_lv0_09_loop = 0x0adf
+_lv0_10_dungeon_entrance = 0x0c11
+_lv0_11_abandoned_home = 0x0d3a
+_lv0_12_lost_coins = 0x0e6a
+_lv0_13_forest = 0x0f96
+_lv0_14_farmer_bob = 0x10c0
+_lv0_15_backyard = 0x11c1
+_lv0_16_closed_gate = 0x12ed
+_lv0_17_dottys_home = 0x13f7
+_lv0_18_forest = 0x1505
 

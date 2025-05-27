@@ -37,6 +37,13 @@
 		{"path" : "tiled/lv0_09_loop.tmj"},
 		{"path" : "tiled/lv0_10_dungeon_entrance.tmj"},
 		{"path" : "tiled/lv0_11_abandoned_home.tmj"},
-		{"path" : "tiled/lv0_12_lost_coins.tmj"}
+		{"path" : "tiled/lv0_12_lost_coins.tmj"},
+		{"path" : "tiled/lv0_13_forest.tmj"},
+		{"path" : "tiled/lv0_14_farmer_bob.tmj"},
+		{"path" : "tiled/lv0_15_backyard.tmj"},
+		{"path" : "tiled/lv0_16_closed_gate.tmj"},
+		{"path" : "tiled/lv0_17_dottys_home.tmj"},
+		{"path" : "tiled/lv0_18_forest.tmj"}
+
 	]
 }

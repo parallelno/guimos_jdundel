@@ -59,9 +59,15 @@
 ; 		monsters can't step on that tile)
 
 ; ffff == 8, Not used
-; ffff == 9, Not used
+
+; ffff == 9, Switches with two visual states switching them when a hero hits it.
+;		switch_id == 0 - Bongo Cat
+;		switch_id == 1 - Pop Cat
+;		switch_id == 2 - Nyan Cat
+
 ; ffff == 10, triggers. activated when a hero hits it. trigger_id = d
 ;		trigger_id == 0 - when he hits his house door.
+;		trigger_id == 1 - when he hits the dungeon door.
 
 ; ffff == 11, collidable containers that leave rewards on the floor 
 ;		when a hero hits it. container_id = d.

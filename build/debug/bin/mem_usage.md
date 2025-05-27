@@ -1,9 +1,9 @@
 ## Main Ram memory usage:
-> Free Space: `5017`
+> Free Space: `5003`
 
 |Assembly| Usage|
 |-|-|
-|memusage_v6_build_uncludes:|3100|
+|memusage_v6_build_uncludes:|3114|
 |memusage_hero_update:|1337|
 |memusage_v6_sprite_copy_to_backbuf:|1219|
 |memusage_v6_sprite_copy_to_scr:|1203|
@@ -83,7 +83,7 @@
 |memusage_runtime_data:|0|
 
 ## FDD Usage:
-> Free Space: `565248`
+> Free Space: `561152`
 
 ## Ram disk usage:
 ### `permanent` ram-disk usage:
@@ -99,7 +99,7 @@
 ---
 ### `level0` ram-disk usage:
 
-> Used: `161310`, Free Space: `49802`
+> Used: `163240`, Free Space: `47872`
 
 - bank0 addr0
 	* NPC4.BIN: addr: 0, len: `11466`
@@ -110,9 +110,9 @@
   `Used: 32700, Free: 4`
 
 - bank0 addr8000
-	* LV0_GFX.BIN: addr: 34392, len: `6038`
+	* LV0_GFX.BIN: addr: 34392, len: `6170`
 
-  `Used: 6038, Free: 530`
+  `Used: 6170, Free: 398`
 
 - bank1 addr0
 	* BURNER.BIN: addr: 0, len: `9030`
@@ -132,13 +132,14 @@
 	* TEXT_LV0.BIN: addr: 0, len: `5190`
 	* VFX4.BIN: addr: 5190, len: `3888`
 	* NPC.BIN: addr: 9078, len: `3702`
-	* TNT.BIN: addr: 12780, len: `1056`
-	* BOMB.BIN: addr: 13836, len: `960`
-	* TI0_DATA.BIN: addr: 14796, len: `960`
-	* BACKS0.BIN: addr: 15756, len: `874`
-	* FIREPOOL.BIN: addr: 16630, len: `822`
+	* VFX.BIN: addr: 12780, len: `2184`
+	* TNT.BIN: addr: 14964, len: `1056`
+	* BOMB.BIN: addr: 16020, len: `960`
+	* TI0_DATA.BIN: addr: 16980, len: `960`
+	* BACKS0.BIN: addr: 17940, len: `874`
+	* FIREPOOL.BIN: addr: 18814, len: `822`
 
-  `Used: 17452, Free: 15252`
+  `Used: 19636, Free: 13068`
 
 - bank2 addr8000
 	* SONG01.BIN: addr: 32768, len: `12356`
@@ -148,12 +149,11 @@
   `Used: 32402, Free: 366`
 
 - bank3 addr8000
-	* LV0_DATA.BIN: addr: 32768, len: `3874`
-	* HERO_L.BIN: addr: 36642, len: `13176`
-	* HERO_R.BIN: addr: 49818, len: `13176`
-	* VFX.BIN: addr: 62994, len: `2184`
+	* LV0_DATA.BIN: addr: 32768, len: `5672`
+	* HERO_L.BIN: addr: 38440, len: `13176`
+	* HERO_R.BIN: addr: 51616, len: `13176`
 
-  `Used: 32410, Free: 358`
+  `Used: 32024, Free: 744`
 
 
 ---

@@ -133,9 +133,17 @@ memusage_loads_level0:
 			lxi h, NPC_ADDR
 			call sprite_update_labels
 
+			RAM_DISK_M_VFX = RAM_DISK_M2
+			RAM_DISK_S_VFX = RAM_DISK_S2
+			VFX_ADDR = 0x31EC
+			LOAD_FILE(VFX_FILENAME_PTR, RAM_DISK_S_VFX, VFX_ADDR, VFX_FILE_LEN)
+			lxi d, vfx_preshifted_sprites
+			lxi h, VFX_ADDR
+			call sprite_update_labels
+
 			RAM_DISK_M_TNT = RAM_DISK_M2
 			RAM_DISK_S_TNT = RAM_DISK_S2
-			TNT_ADDR = 0x31EC
+			TNT_ADDR = 0x3A74
 			LOAD_FILE(TNT_FILENAME_PTR, RAM_DISK_S_TNT, TNT_ADDR, TNT_FILE_LEN)
 			lxi d, tnt_preshifted_sprites
 			lxi h, TNT_ADDR
@@ -143,7 +151,7 @@ memusage_loads_level0:
 
 			RAM_DISK_M_BOMB = RAM_DISK_M2
 			RAM_DISK_S_BOMB = RAM_DISK_S2
-			BOMB_ADDR = 0x360C
+			BOMB_ADDR = 0x3E94
 			LOAD_FILE(BOMB_FILENAME_PTR, RAM_DISK_S_BOMB, BOMB_ADDR, BOMB_FILE_LEN)
 			lxi d, bomb_preshifted_sprites
 			lxi h, BOMB_ADDR
@@ -151,7 +159,7 @@ memusage_loads_level0:
 
 			RAM_DISK_M_TI0_DATA = RAM_DISK_M2
 			RAM_DISK_S_TI0_DATA = RAM_DISK_S2
-			TI0_DATA_ADDR = 0x39CC
+			TI0_DATA_ADDR = 0x4254
 			LOAD_FILE(TI0_DATA_FILENAME_PTR, RAM_DISK_S_TI0_DATA, TI0_DATA_ADDR, TI0_DATA_FILE_LEN)
 			mvi a, RAM_DISK_S_TI0_DATA
 			lxi h, TI0_DATA_ADDR
@@ -159,7 +167,7 @@ memusage_loads_level0:
 
 			RAM_DISK_M_BACKS0 = RAM_DISK_M2
 			RAM_DISK_S_BACKS0 = RAM_DISK_S2
-			BACKS0_ADDR = 0x3D8C
+			BACKS0_ADDR = 0x4614
 			LOAD_FILE(BACKS0_FILENAME_PTR, RAM_DISK_S_BACKS0, BACKS0_ADDR, BACKS0_FILE_LEN)
 			lxi d, backs0_preshifted_sprites
 			lxi h, BACKS0_ADDR
@@ -167,7 +175,7 @@ memusage_loads_level0:
 
 			RAM_DISK_M_FIREPOOL = RAM_DISK_M2
 			RAM_DISK_S_FIREPOOL = RAM_DISK_S2
-			FIREPOOL_ADDR = 0x40F6
+			FIREPOOL_ADDR = 0x497E
 			LOAD_FILE(FIREPOOL_FILENAME_PTR, RAM_DISK_S_FIREPOOL, FIREPOOL_ADDR, FIREPOOL_FILE_LEN)
 			lxi d, firepool_preshifted_sprites
 			lxi h, FIREPOOL_ADDR
@@ -205,7 +213,7 @@ memusage_loads_level0:
 
 			RAM_DISK_M_HERO_L = RAM_DISK_M3
 			RAM_DISK_S_HERO_L = RAM_DISK_S3
-			HERO_L_ADDR = 0x8F22
+			HERO_L_ADDR = 0x9628
 			LOAD_FILE(HERO_L_FILENAME_PTR, RAM_DISK_S_HERO_L, HERO_L_ADDR, HERO_L_FILE_LEN)
 			lxi d, hero_l_preshifted_sprites
 			lxi h, HERO_L_ADDR
@@ -213,18 +221,10 @@ memusage_loads_level0:
 
 			RAM_DISK_M_HERO_R = RAM_DISK_M3
 			RAM_DISK_S_HERO_R = RAM_DISK_S3
-			HERO_R_ADDR = 0xC29A
+			HERO_R_ADDR = 0xC9A0
 			LOAD_FILE(HERO_R_FILENAME_PTR, RAM_DISK_S_HERO_R, HERO_R_ADDR, HERO_R_FILE_LEN)
 			lxi d, hero_r_preshifted_sprites
 			lxi h, HERO_R_ADDR
-			call sprite_update_labels
-
-			RAM_DISK_M_VFX = RAM_DISK_M3
-			RAM_DISK_S_VFX = RAM_DISK_S3
-			VFX_ADDR = 0xF612
-			LOAD_FILE(VFX_FILENAME_PTR, RAM_DISK_S_VFX, VFX_ADDR, VFX_FILE_LEN)
-			lxi d, vfx_preshifted_sprites
-			lxi h, VFX_ADDR
 			call sprite_update_labels
 
 .endf
