@@ -20,12 +20,24 @@
 		KNIGHT_QUEST_ID	= 7 ; knight quest horizontal walk
 		FIREPOOL_ID		= 8 ; firepool
 		SKELETON_QUEST_ID	= 9 ; skeleton spawned after opening a container with a spoon
-		NPC_ID			= 10 ; the actual npc character depends on the room_id, see npc.asm for details
 
 ; ffff = 2, teleport_ids 0-15. To convert in into a room_id use the 
 ;		room_teleports_data table.
 
-; ffff = 3, Not used
+; ffff = 3, spawn an npc, npc_id = d
+		NPC_ID_FRIENDS_MOM	= 0 ; tiledata = 3*16+0=48
+		NPC_ID_FRIENDS_SIS	= 1 ; tiledata = 49
+		NPC_ID_GOOSE			= 2 ; tiledata = 50
+		NPC_ID_CAT				= 3 ; tiledata = 51
+		NPC_ID_CATERPILLAR		= 4 ; tiledata = 52
+		NPC_ID_CHICKEN			= 5 ; tiledata = 53
+		NPC_ID_CROW				= 6 ; tiledata = 54
+		NPC_ID_BOB				= 7 ; tiledata = 55
+		NPC_ID_DOTTY			= 8 ; tiledata = 56
+		NPC_ID_VILLAGER2		= 9 ; tiledata = 57
+		NPC_ID_VILLAGER3		= 10; tiledata = 58
+		NPC_ID_VILLAGER4		= 11; tiledata = 59
+
 ; ffff = 4, Not used
 ; ffff = 5, Not used
 

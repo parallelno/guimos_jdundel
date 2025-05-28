@@ -30,7 +30,7 @@ FRIENDS_MOM_COLLISION_HEIGHT	= 16
 ; out:
 ; a = TILEDATA_RESTORE_TILE
 friends_mom_init:
-			MONSTER_INIT(npc_update, npc_draw, friends_mom_impacted, FRIENDS_MOM_HEALTH, ACTOR_STATUS_FRIENDS_MOM_IDLE, npc_mom_idle_anim, False, MONSTER_TYPE_FRIENDS_MOM)
+			MONSTER_INIT(npc_update, npc_draw, friends_mom_impacted, FRIENDS_MOM_HEALTH, ACTOR_STATUS_FRIENDS_MOM_IDLE, npc_mom_idle_anim, False, MONSTER_TYPE_ALLY)
 
 ;========================================================
 ; anim and a gameplay logic update
@@ -121,8 +121,3 @@ npc_friends_mom:
 			lxi d, _dialogs_knocked_his_friend_door_clothes_returns
 			jmp dialog_init
 
-; draw a sprite into a backbuffer
-; in:
-; de - ptr to monster_draw_ptr 
-npc_draw:
-			ACTOR_DRAW(sprite_get_scr_addr_npc, RAM_DISK_S_NPC, false)

@@ -46,7 +46,7 @@ CATERPILLAR_DETECT_HERO_DISTANCE = 60
 ; a = TILEDATA_RESTORE_TILE
 caterpillar_init:
 chiken_init:
-			MONSTER_INIT(caterpillar_update, caterpillar_draw, monster_impacted, CATERPILLAR_HEALTH, ACTOR_STATUS_CATERPILLAR_DETECT_HERO_INIT, npc4_caterpillar_run_anim)
+			MONSTER_INIT(caterpillar_update, npc4_draw, monster_impacted, CATERPILLAR_HEALTH, ACTOR_STATUS_CATERPILLAR_DETECT_HERO_INIT, npc4_caterpillar_run_anim)
 
 ; uppdate for CATERPILLAR_ID
 ; anim and a gameplay logic update
@@ -333,8 +333,3 @@ caterpillar_update_anim_check_collision_hero:
 			call actor_anim_update
 			MONSTER_CHECK_COLLISION_HERO(CATERPILLAR_COLLISION_WIDTH, CATERPILLAR_COLLISION_HEIGHT, CATERPILLAR_DAMAGE)
 
-; draw a sprite into a backbuffer
-; in:
-; de - ptr to monster_draw_ptr 
-caterpillar_draw:
-			ACTOR_DRAW(sprite_get_scr_addr_npc4, RAM_DISK_S_NPC4, false)

@@ -1,5 +1,5 @@
 ## Main Ram memory usage:
-> Free Space: `5001`
+> Free Space: `4947`
 
 |Assembly| Usage|
 |-|-|
@@ -14,9 +14,9 @@
 |memusage_monsters:|574|
 |memusage_v6_utils:|554|
 |memusage_burner:|540|
-|memusage_cat:|540|
-|memusage_caterpillar:|540|
 |memusage_goose:|540|
+|memusage_cat:|540|
+|memusage_caterpillar:|530|
 |memusage_skeleton:|482|
 |memusage_vampire:|449|
 |memusage_v6_os:|440|
@@ -51,10 +51,10 @@
 |memusage_breakables:|163|
 |memusage_screen_utils:|161|
 |memusage_score_data:|144|
-|memusage_friends_mom:|134|
 |memusage_stats:|133|
 |memusage_game:|130|
 |memusage_firepool:|124|
+|memusage_friends_mom:|124|
 |memusage_v6_interruption:|118|
 |memusage_v6_gc_runtime_data:|109|
 |memusage_burner_quest:|108|
@@ -71,10 +71,14 @@
 |memusage_app:|63|
 |memusage_credits_screen:|53|
 |memusage_friends_sis:|27|
+|memusage_dotty:|27|
+|memusage_bob:|27|
 |memusage_v6_sprite_draw_invis:|26|
 |memusage_loads_permanent:|26|
 |memusage_skeleton_quest:|15|
 |memusage_loads_level0_end:|12|
+|memusage_npc:|10|
+|memusage_npc4:|10|
 |memusage_v6_macros:|0|
 |memusage_v6_consts:|0|
 |memusage_v6_build_consts:|0|

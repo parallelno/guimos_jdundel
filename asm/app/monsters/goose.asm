@@ -337,4 +337,4 @@ goose_update_anim_check_collision_hero:
 ; in:
 ; de - ptr to monster_draw_ptr 
 goose_draw:
-			ACTOR_DRAW(sprite_get_scr_addr_npc4, RAM_DISK_S_NPC4, false)
+			ACTOR_DRAW(sprite_get_scr_addr_goose, RAM_DISK_S_GOOSE, false)

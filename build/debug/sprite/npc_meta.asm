@@ -18,9 +18,9 @@ _npc_sis_idle0_0_relative = 596
 _npc_sis_idle1_0_relative = 782
 _npc_sis_idle2_0_relative = 980
 _npc_sis_idle3_0_relative = 1178
-_npc_crazyman_idle0_0_relative = 1364
-_npc_grandma_idle0_0_relative = 1550
-_npc_grandma_idle1_0_relative = 1748
+_npc_bob_idle0_0_relative = 1364
+_npc_dotty_idle0_0_relative = 1550
+_npc_dotty_idle1_0_relative = 1748
 _npc_greenhat_idle0_0_relative = 1946
 _npc_greenhat_idle1_0_relative = 2144
 _npc_boy_idle0_0_relative = 2342
@@ -36,7 +36,7 @@ sprite_get_scr_addr_npc = sprite_get_scr_addr1
 npc_preshifted_sprites:
 			.byte 1
 npc_anims:
-			.word npc_mom_idle_anim, npc_sis_idle_anim, npc_crazyman_idle_anim, npc_grandma_idle_anim, npc_greenhat_idle_anim, npc_boy_idle_anim, npc_oldman_idle_anim, npc_scarecrow_idle_anim, EOD
+			.word npc_mom_idle_anim, npc_sis_idle_anim, npc_bob_idle_anim, npc_dotty_idle_anim, npc_greenhat_idle_anim, npc_boy_idle_anim, npc_oldman_idle_anim, npc_scarecrow_idle_anim, EOD
 npc_mom_idle_anim:
 			.byte 3, 0 ; offset to the next frame
 			.word _npc_mom_idle0_0_relative, 
@@ -59,14 +59,14 @@ npc_sis_idle_anim:
 			.word _npc_sis_idle2_0_relative, 
 			.byte 243, $ff ; offset to the first frame
 			.word _npc_sis_idle3_0_relative, 
-npc_crazyman_idle_anim:
+npc_bob_idle_anim:
 			.byte 255, $ff ; offset to the first frame
-			.word _npc_crazyman_idle0_0_relative, 
-npc_grandma_idle_anim:
+			.word _npc_bob_idle0_0_relative, 
+npc_dotty_idle_anim:
 			.byte 3, 0 ; offset to the next frame
-			.word _npc_grandma_idle0_0_relative, 
+			.word _npc_dotty_idle0_0_relative, 
 			.byte 251, $ff ; offset to the first frame
-			.word _npc_grandma_idle1_0_relative, 
+			.word _npc_dotty_idle1_0_relative, 
 npc_greenhat_idle_anim:
 			.byte 3, 0 ; offset to the next frame
 			.word _npc_greenhat_idle0_0_relative, 

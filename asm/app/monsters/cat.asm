@@ -332,8 +332,9 @@ cat_update_anim_check_collision_hero:
 			call actor_anim_update
 			MONSTER_CHECK_COLLISION_HERO(CAT_COLLISION_WIDTH, CAT_COLLISION_HEIGHT, CAT_DAMAGE)
 
+
 ; draw a sprite into a backbuffer
 ; in:
 ; de - ptr to monster_draw_ptr 
 cat_draw:
-			ACTOR_DRAW(sprite_get_scr_addr_npc4, RAM_DISK_S_NPC4, false)
+			ACTOR_DRAW(sprite_get_scr_addr_cat, RAM_DISK_S_CAT, false)

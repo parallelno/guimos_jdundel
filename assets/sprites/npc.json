@@ -30,12 +30,12 @@
 			"frames" : ["sis_idle0", "sis_idle1", "sis_idle2", "sis_idle3"],
 			"loop" : true
 		},
-		"crazyman_idle" : {
-			"frames" : ["crazyman_idle0"],
+		"bob_idle" : {
+			"frames" : ["bob_idle0"],
 			"loop" : true
 		},
-		"grandma_idle" : {
-			"frames" : ["grandma_idle0", "grandma_idle1"],
+		"dotty_idle" : {
+			"frames" : ["dotty_idle0", "dotty_idle1"],
 			"loop" : true
 		},
 		"greenhat_idle" : {
@@ -122,7 +122,7 @@
 			"mask_x" : 48
 		},
 		{
-			"name" : "crazyman_idle0",
+			"name" : "bob_idle0",
 			"x" : 64,
 			"y"	: 33,
 			"width" : 16,
@@ -130,7 +130,7 @@
 			"mask_x" : 80
 		},
 		{
-			"name" : "grandma_idle0",
+			"name" : "dotty_idle0",
 			"x" : 96,
 			"y"	: 32,
 			"width" : 16,
@@ -138,7 +138,7 @@
 			"mask_x" : 112
 		},
 		{
-			"name" : "grandma_idle1",
+			"name" : "dotty_idle1",
 			"x" : 96,
 			"y"	: 48,
 			"width" : 16,

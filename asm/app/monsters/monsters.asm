@@ -7,12 +7,21 @@
 .include "asm/app/monsters/burner_quest.asm"
 .include "asm/app/monsters/knight.asm"
 .include "asm/app/monsters/knight_heavy.asm"
+.include "asm/app/monsters/goose.asm"
+.include "asm/app/monsters/cat.asm"
+
 .include "asm/app/monsters/firepool.asm"
+
+.include "asm/app/monsters/npc.asm"
 .include "asm/app/monsters/friends_mom.asm"
 .include "asm/app/monsters/friends_sis.asm"
-.include "asm/app/monsters/cat.asm"
+.include "asm/app/monsters/dotty.asm"
+.include "asm/app/monsters/bob.asm"
+
+.include "asm/app/monsters/npc4.asm"
+
 .include "asm/app/monsters/caterpillar.asm"
-.include "asm/app/monsters/goose.asm"
+
 
 memusage_monsters:
 
