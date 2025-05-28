@@ -1,9 +1,9 @@
 ## Main Ram memory usage:
-> Free Space: `5003`
+> Free Space: `5001`
 
 |Assembly| Usage|
 |-|-|
-|memusage_v6_build_uncludes:|3114|
+|memusage_v6_build_uncludes:|3116|
 |memusage_hero_update:|1337|
 |memusage_v6_sprite_copy_to_backbuf:|1219|
 |memusage_v6_sprite_copy_to_scr:|1203|
@@ -99,7 +99,7 @@
 ---
 ### `level0` ram-disk usage:
 
-> Used: `163220`, Free Space: `47892`
+> Used: `163488`, Free Space: `47624`
 
 - bank0 addr0
 	* NPC4.BIN: addr: 0, len: `11466`
@@ -149,11 +149,11 @@
   `Used: 32402, Free: 366`
 
 - bank3 addr8000
-	* LV0_DATA.BIN: addr: 32768, len: `5652`
-	* HERO_L.BIN: addr: 38420, len: `13176`
-	* HERO_R.BIN: addr: 51596, len: `13176`
+	* LV0_DATA.BIN: addr: 32768, len: `5920`
+	* HERO_L.BIN: addr: 38688, len: `13176`
+	* HERO_R.BIN: addr: 51864, len: `13176`
 
-  `Used: 32004, Free: 764`
+  `Used: 32272, Free: 496`
 
 
 ---
