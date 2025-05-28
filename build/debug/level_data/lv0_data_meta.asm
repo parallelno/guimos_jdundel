@@ -2,8 +2,8 @@
 ; asm data file: build/debug/level_data/lv0_data_data.asm
 ; bin file: build/debug/bin/LV0_DATA.BIN
 
-LV0_DATA_FILE_LEN = 5672
-LV0_DATA_LAST_RECORD_LEN = 40
+LV0_DATA_FILE_LEN = 5654
+LV0_DATA_LAST_RECORD_LEN = 22
 
 LV0_DATA_FILENAME_PTR:
 			.byte "LV0_DATA" ; filename
@@ -25,7 +25,7 @@ lv0_resources_inst_data_ptrs:
 @data_end:
 LV0_DATA_INIT_TBL_LEN = @data_end - lv0_data_init_tbl
 
-LV0_RECOURCES_DATA_LEN = 143
+LV0_RECOURCES_DATA_LEN = 135
 LV0_CONTAINERS_DATA_LEN = 7
 
 ; in:
@@ -47,24 +47,24 @@ lv0_data_init:
 			ret 
 
 _lv0_resources_inst_data_ptrs = 0x0002
-_lv0_containers_inst_data_ptrs = 0x0093
-_lv0_00_home = 0x009c
-_lv0_01_farm_fence = 0x01bf
-_lv0_02_road_to_friends_home = 0x02d3
-_lv0_03_friends_home = 0x03f4
-_lv0_04_friends_home_backyard = 0x0501
-_lv0_05_friends_secret_place = 0x061b
-_lv0_06_crossroad = 0x0764
-_lv0_07_farm_entrance = 0x0890
-_lv0_08_farm_storage = 0x09b5
-_lv0_09_loop = 0x0adf
-_lv0_10_dungeon_entrance = 0x0c11
-_lv0_11_abandoned_home = 0x0d3a
-_lv0_12_lost_coins = 0x0e6a
-_lv0_13_forest = 0x0f96
-_lv0_14_farmer_bob = 0x10c0
-_lv0_15_backyard = 0x11c1
-_lv0_16_closed_gate = 0x12ed
-_lv0_17_dottys_home = 0x13f7
-_lv0_18_forest = 0x1505
+_lv0_containers_inst_data_ptrs = 0x008b
+_lv0_00_home = 0x0094
+_lv0_01_farm_fence = 0x01b7
+_lv0_02_road_to_friends_home = 0x02cb
+_lv0_03_friends_home = 0x03eb
+_lv0_04_friends_home_backyard = 0x04f8
+_lv0_05_friends_secret_place = 0x060b
+_lv0_06_crossroad = 0x0755
+_lv0_07_farm_entrance = 0x0881
+_lv0_08_farm_storage = 0x09a6
+_lv0_09_loop = 0x0ad0
+_lv0_10_dungeon_entrance = 0x0bff
+_lv0_11_abandoned_home = 0x0d28
+_lv0_12_lost_coins = 0x0e58
+_lv0_13_forest = 0x0f84
+_lv0_14_farmer_bob = 0x10ad
+_lv0_15_backyard = 0x11ae
+_lv0_16_closed_gate = 0x12da
+_lv0_17_dottys_home = 0x13e4
+_lv0_18_forest = 0x14f2
 

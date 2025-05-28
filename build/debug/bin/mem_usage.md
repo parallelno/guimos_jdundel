@@ -99,7 +99,7 @@
 ---
 ### `level0` ram-disk usage:
 
-> Used: `163240`, Free Space: `47872`
+> Used: `163222`, Free Space: `47890`
 
 - bank0 addr0
 	* NPC4.BIN: addr: 0, len: `11466`
@@ -149,11 +149,11 @@
   `Used: 32402, Free: 366`
 
 - bank3 addr8000
-	* LV0_DATA.BIN: addr: 32768, len: `5672`
-	* HERO_L.BIN: addr: 38440, len: `13176`
-	* HERO_R.BIN: addr: 51616, len: `13176`
+	* LV0_DATA.BIN: addr: 32768, len: `5654`
+	* HERO_L.BIN: addr: 38422, len: `13176`
+	* HERO_R.BIN: addr: 51598, len: `13176`
 
-  `Used: 32024, Free: 744`
+  `Used: 32006, Free: 762`
 
 
 ---
