@@ -213,7 +213,7 @@ memusage_loads_level0:
 
 			RAM_DISK_M_HERO_L = RAM_DISK_M3
 			RAM_DISK_S_HERO_L = RAM_DISK_S3
-			HERO_L_ADDR = 0x9720
+			HERO_L_ADDR = 0x9722
 			LOAD_FILE(HERO_L_FILENAME_PTR, RAM_DISK_S_HERO_L, HERO_L_ADDR, HERO_L_FILE_LEN)
 			lxi d, hero_l_preshifted_sprites
 			lxi h, HERO_L_ADDR
@@ -221,7 +221,7 @@ memusage_loads_level0:
 
 			RAM_DISK_M_HERO_R = RAM_DISK_M3
 			RAM_DISK_S_HERO_R = RAM_DISK_S3
-			HERO_R_ADDR = 0xCA98
+			HERO_R_ADDR = 0xCA9A
 			LOAD_FILE(HERO_R_FILENAME_PTR, RAM_DISK_S_HERO_R, HERO_R_ADDR, HERO_R_FILE_LEN)
 			lxi d, hero_r_preshifted_sprites
 			lxi h, HERO_R_ADDR
