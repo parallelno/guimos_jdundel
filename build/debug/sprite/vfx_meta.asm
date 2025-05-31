@@ -2,8 +2,8 @@
 ; asm data file: build/debug/sprite/vfx_data.asm
 ; bin file: build/debug/bin/VFX.BIN
 
-VFX_FILE_LEN = 2184
-VFX_LAST_RECORD_LEN = 8
+VFX_FILE_LEN = 1896
+VFX_LAST_RECORD_LEN = 104
 
 VFX_FILENAME_PTR:
 			.byte "VFX" ; filename
@@ -22,8 +22,8 @@ _vfx_reward2_0_relative = 1118
 _vfx_reward3_0_relative = 1280
 _vfx_selection0_0_relative = 1394
 _vfx_firepool0_0_relative = 1592
-_vfx_firepool1_0_relative = 1790
-_vfx_firepool2_0_relative = 1988
+_vfx_firepool1_0_relative = 1694
+_vfx_firepool2_0_relative = 1796
 
 sprite_get_scr_addr_vfx = sprite_get_scr_addr1
 

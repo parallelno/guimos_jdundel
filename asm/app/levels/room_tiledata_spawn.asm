@@ -4,21 +4,21 @@ memusage_levels_data:
 ; check room.asm room_handle_room_tiledata func
 room_tiledata_funcs:
 			JMP_4(room_tiledata_decal_walkable_spawn)	; func_id = 0
-			JMP_4(room_tiledata_monster_spawn)			; func_id = 1
-			JMP_4(room_tiledata_copy)					; func_id = 2
-			JMP_4(room_tiledata_monster2_spawn)			; func_id = 3
-			JMP_4(room_tiledata_copy)					; func_id = 4
-			JMP_4(room_tiledata_copy)					; func_id = 5
-			JMP_4(room_tiledata_item_spawn)				; func_id = 6
-			JMP_4(room_tiledata_resource_spawn)			; func_id = 7
-			JMP_4(room_tiledata_copy)					; func_id = 8
-			JMP_4(room_tiledata_copy)					; func_id = 9
-			JMP_4(room_tiledata_copy)					; func_id = 10
-			JMP_4(room_tiledata_container_spawn)		; func_id = 11
-			JMP_4(room_tiledata_door_spawn)				; func_id = 12
-			JMP_4(room_tiledata_breakable_spawn)		; func_id = 13
-			JMP_4(room_tiledata_decal_collidable_spawn)	; func_id = 14
-			JMP_4(room_tiledata_back_spawn)				; func_id = 15
+			JMP_4(room_tiledata_monster_spawn)			; func_id = 1 ; monsters
+			JMP_4(room_tiledata_copy)					; func_id = 2 ; teleports
+			JMP_4(room_tiledata_monster2_spawn)			; func_id = 3 ; npcs
+			JMP_4(room_tiledata_copy)					; func_id = 4 ; not used
+			JMP_4(room_tiledata_copy)					; func_id = 5 ; not used
+			JMP_4(room_tiledata_item_spawn)				; func_id = 6 ; global items
+			JMP_4(room_tiledata_resource_spawn)			; func_id = 7 ; resources
+			JMP_4(room_tiledata_copy)					; func_id = 8 ; not used
+			JMP_4(room_tiledata_switch_spawn)			; func_id = 9 ; switches
+			JMP_4(room_tiledata_copy)					; func_id = 10 ; triggers
+			JMP_4(room_tiledata_container_spawn)		; func_id = 11 ; collidable containers
+			JMP_4(room_tiledata_door_spawn)				; func_id = 12 ; doors
+			JMP_4(room_tiledata_breakable_spawn)		; func_id = 13 ; breakable items
+			JMP_4(room_tiledata_decal_collidable_spawn)	; func_id = 14 ; decals collidable
+			JMP_4(room_tiledata_back_spawn)				; func_id = 15 ; collision + animated background tiles
 
 
 ; a tiledata handler. it just copies the tiledata.
@@ -178,7 +178,7 @@ room_tiledata_item_spawn:
 ; input:
 ; b - tiledata
 ; c - tile_idx in the room_tiledata array.
-; a - res_id
+; a - resource_id
 ; out:
 ; a - tiledata that will be saved back into room_tiledata
 room_tiledata_resource_spawn:
@@ -189,12 +189,12 @@ room_tiledata_resource_spawn:
 			mov d, m
 
 			mov l, a
-			ADD_A(1) ; res_id to WORD ptr
+			ADD_A(1) ; resource_id to WORD ptr
 			sta room_decal_draw_ptr_offset+1
 
 			; find a resource
 			; d - room_id
-			; l - res_id
+			; l - resource_id
 			; c - tile_idx
 			FIND_INSTANCE(@picked_up, resources_inst_data_ptrs)
 			; resource is found, means it is not picked up
@@ -280,3 +280,48 @@ room_tiledata_door_spawn:
 			mvi a, TILEDATA_RESTORE_TILE
 			ret
 
+; a tiledata handler. spawn switches.
+; input:
+; b - tiledata
+; c - tile_idx in the room_tiledata array.
+; a - switch_id
+; out:
+; a - tiledata that will be saved back into room_tiledata
+room_tiledata_switch_spawn:
+			lxi h, @tiledata + 1
+			mov m, b
+
+			; requirement for ROOM_DECAL_DRAW
+			ADD_A(1) ; to make a WORD ptr
+			sta room_decal_draw_ptr_offset + 1
+
+			; restore switch_id
+			rrc
+			mov c, a
+
+			; convert switch_id into the swith_status (1<<switch_id)
+			lxi h, 1
+@loop:		dcr c
+			jm @stop
+			dad h
+			jmp @loop
+@stop:
+			; hl - switch_statuse
+			lda switch_statuses
+			ana l
+			jnz @draw_switch
+			; check hi switches
+			lda switch_statuses
+			ana h
+			jz @not_activated
+
+@draw_switch:
+			; c - tile_idx in the room_tiledata array
+			ROOM_DECAL_DRAW(switches_gfx_ptrs)
+@tiledata:
+			mvi a, TEMP_BYTE
+			ret
+@not_activated:
+			; a switch wasn't activated, do not draw
+			mvi a, TILEDATA_COLLISION
+			ret

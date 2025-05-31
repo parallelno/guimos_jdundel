@@ -79,8 +79,10 @@ def gfx_to_asm(label_prefix, asset_name, asset_j, image, asset_j_path):
 		h = sprite["height"]
 		offset_x = sprite["offset_x"] if sprite.get("offset_x") is not None else 0
 		offset_y = sprite["offset_y"] if sprite.get("offset_y") is not None else 0
+		mask_x = sprite.get("mask_x", x)
+		mask_y = sprite.get("mask_y", y)		
 		mask_alpha = sprite.get("mask_alpha", 0)
-		mask_color = sprite.get("mask_color", 1)
+		mask_color = sprite.get("mask_color", 1)		
 
 		# 2d pixel array RGB
 		sprite_img = []
@@ -98,8 +100,6 @@ def gfx_to_asm(label_prefix, asset_name, asset_j, image, asset_j_path):
 		if mask_flag == 1:
 			mask_bits = []
 			# get a sprite as a color index 2d array
-			mask_x = sprite.get("mask_x", x)
-			mask_y = sprite.get("mask_y", y)
 
 			for pos_y in reversed(range(mask_y, mask_y + h)) : # Y is reversed because it is from bottom to top in the game
 				for pos_x in range(mask_x, mask_x + w) :

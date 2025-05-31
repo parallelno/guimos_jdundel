@@ -2,18 +2,26 @@ memusage_game:
 ;=======================================================
 
 game:
-			; init
-			call game_stats_init
-			call hero_game_init
-			call levels_init
-			call dialogs_init
-			call game_ui_init
-			call reset_game_updates_required_counter
+			call game_init
 
 @loop:		; main loop
 			call game_update
 			call game_draw
 			jmp	@loop
+
+game_init:
+
+			call hero_game_init
+			call levels_init
+			call dialogs_init
+			call game_ui_init
+			call reset_game_updates_required_counter
+			call game_stats_init
+
+			; erase switch statuses
+			lxi h, 0
+			shld switch_statuses
+			ret
 
 game_update:
 			lxi h, game_update_counter

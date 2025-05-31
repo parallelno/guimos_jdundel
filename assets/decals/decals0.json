@@ -17,18 +17,19 @@
 		{"x": 224,	"y" : 0},
 		{"x": 240,	"y" : 0}
 	],
-	"asset_type" : "decal",	
+	"asset_type" : "decal",
 	"path_png" : "art/sprites_decals.png",
 	"lists" : {
-		"decals_walkable" : ["bones", "skull"],
+		"decals_walkable" : ["bones", "skull"], 
 		"decals_collidable" : ["web1"],
 		"items" : ["key_0", "key_1", "key_1", "key_2", "key_3"],
 		"resources" : ["coin", "coin", "coin", "coin", "tnt", "potion_red", "popsicle_pie", "dry_clothes"],
 		"breakable" : ["barrel", "crate", "cabbage"],
-		"doors" : ["door_0_l", "door_0_r", "door_1_l", "door_1_r", "door_1_l", "door_1_r", "door_0_l", "door_0_r", "door_4_l", "door_4_r"],
+		"doors" : ["door_0_l", "door_0_r", "door_1_l", "door_1_r", "door_2_l", "door_2_r", "door_0_l", "door_0_r", "door_4_l", "door_4_r"],
 		"doors_opened" : ["door_0_open_l", "door_0_open_r", "door_1_open_l", "door_1_open_r", "door_1_open_l", "door_1_open_r", "door_0_open_l", "door_0_open_r", "door_1_open_l", "door_1_open_r"],
 		"containers" : ["chest_small", "chest_big", "chest_weapon0"],
-		"containers_opened" : ["chest_small_opened", "chest_big_opened", "chest_weapon0_opened"]
+		"containers_opened" : ["chest_small_opened", "chest_big_opened", "chest_weapon0_opened"],
+		"switches" : ["bongo_cat_bottom", "bongo_cat_bottom", "nyan_cat_bottom"] 
 	},
 	"sprites" : [
 		{
@@ -39,7 +40,7 @@
 			"height" : 12,
 			"offset_y" : 0,
 			"mask_x" : 0,
-			"mask_y" : 50, 
+			"mask_y" : 50,
 			"mask_alpha" : 0,
 			"mask_color" : 1
 		},
@@ -51,7 +52,7 @@
 			"height" : 14,
 			"offset_y" : 0,
 			"mask_x" : 16,
-			"mask_y" : 49, 
+			"mask_y" : 49,
 			"mask_alpha" : 0,
 			"mask_color" : 1
 		},
@@ -63,7 +64,7 @@
 			"height" : 14,
 			"offset_y" : 0,
 			"mask_x" : 0,
-			"mask_y" : 240, 
+			"mask_y" : 240,
 			"mask_alpha" : 0,
 			"mask_color" : 1
 		},
@@ -75,7 +76,7 @@
 			"height" : 16,
 			"offset_y" : 0,
 			"mask_x" : 0,
-			"mask_y" : 208, 
+			"mask_y" : 208,
 			"mask_alpha" : 0,
 			"mask_color" : 1
 		},
@@ -87,7 +88,7 @@
 			"height" : 16,
 			"offset_y" : 0,
 			"mask_x" : 16,
-			"mask_y" : 208, 
+			"mask_y" : 208,
 			"mask_alpha" : 0,
 			"mask_color" : 1
 		},
@@ -99,7 +100,7 @@
 			"height" : 15,
 			"offset_y" : 0,
 			"mask_x" : 32,
-			"mask_y" : 209, 
+			"mask_y" : 209,
 			"mask_alpha" : 0,
 			"mask_color" : 1
 		},
@@ -111,10 +112,10 @@
 			"height" : 10,
 			"offset_y" : 1,
 			"mask_x" : 16,
-			"mask_y" : 117, 
+			"mask_y" : 117,
 			"mask_alpha" : 0,
 			"mask_color" : 1
-		},		
+		},
 		{
 			"name" : "key_1",
 			"x" : 0,
@@ -123,7 +124,7 @@
 			"height" : 10,
 			"offset_y" : 1,
 			"mask_x" : 0,
-			"mask_y" : 117, 
+			"mask_y" : 117,
 			"mask_alpha" : 0,
 			"mask_color" : 1
 		},
@@ -135,10 +136,10 @@
 			"height" : 10,
 			"offset_y" : 1,
 			"mask_x" : 32,
-			"mask_y" : 117, 
+			"mask_y" : 117,
 			"mask_alpha" : 0,
 			"mask_color" : 1
-		},	
+		},
 		{
 			"name" : "key_3",
 			"x" : 48,
@@ -147,7 +148,7 @@
 			"height" : 10,
 			"offset_y" : 1,
 			"mask_x" : 48,
-			"mask_y" : 117, 
+			"mask_y" : 117,
 			"mask_alpha" : 0,
 			"mask_color" : 1
 		},
@@ -183,10 +184,10 @@
 			"height" : 15,
 			"offset_y" : 1,
 			"mask_x" : 16,
-			"mask_y" : 145, 
+			"mask_y" : 145,
 			"mask_alpha" : 0,
 			"mask_color" : 1
-		},	
+		},
 		{
 			"name" : "potion_red",
 			"x" : 32,
@@ -195,10 +196,10 @@
 			"height" : 12,
 			"offset_y" : 1,
 			"mask_x" : 32,
-			"mask_y" : 115, 
+			"mask_y" : 115,
 			"mask_alpha" : 0,
 			"mask_color" : 1
-		},			
+		},
 		{
 			"name" : "dry_clothes",
 			"x" : 48,
@@ -207,10 +208,10 @@
 			"height" : 10,
 			"offset_y" : 0,
 			"mask_x" : 48,
-			"mask_y" : 150, 
+			"mask_y" : 150,
 			"mask_alpha" : 0,
 			"mask_color" : 1
-		},		
+		},
 		{
 			"name" : "door_0_l",
 			"x" : 0,
@@ -219,10 +220,10 @@
 			"height" : 16,
 			"offset_y" : 0,
 			"mask_x" : 0,
-			"mask_y" : 176, 
+			"mask_y" : 176,
 			"mask_alpha" : 0,
 			"mask_color" : 1
-		},	
+		},
 		{
 			"name" : "door_0_r",
 			"x" : 16,
@@ -231,7 +232,7 @@
 			"height" : 16,
 			"offset_y" : 0,
 			"mask_x" : 16,
-			"mask_y" : 176, 
+			"mask_y" : 176,
 			"mask_alpha" : 0,
 			"mask_color" : 1
 		},
@@ -243,10 +244,10 @@
 			"height" : 15,
 			"offset_y" : 0,
 			"mask_x" : 32,
-			"mask_y" : 177, 
+			"mask_y" : 177,
 			"mask_alpha" : 0,
 			"mask_color" : 1
-		},	
+		},
 		{
 			"name" : "door_1_r",
 			"x" : 48,
@@ -255,7 +256,7 @@
 			"height" : 15,
 			"offset_y" : 0,
 			"mask_x" : 48,
-			"mask_y" : 177, 
+			"mask_y" : 177,
 			"mask_alpha" : 0,
 			"mask_color" : 1
 		},
@@ -267,7 +268,7 @@
 			"height" : 15,
 			"offset_y" : 0,
 			"mask_x" : 64,
-			"mask_y" : 177, 
+			"mask_y" : 177,
 			"mask_alpha" : 0,
 			"mask_color" : 1
 		},
@@ -279,9 +280,25 @@
 			"height" : 15,
 			"offset_y" : 0,
 			"mask_x" : 80,
-			"mask_y" : 177, 
+			"mask_y" : 177,
 			"mask_alpha" : 0,
 			"mask_color" : 1
+		},
+		{
+			"name" : "door_2_l",
+			"x" : 96,
+			"y"	: 160,
+			"width" : 16,
+			"height" : 16,
+			"mask_y" : 176
+		},
+		{
+			"name" : "door_2_r",
+			"x" : 96,
+			"y"	: 160,
+			"width" : 16,
+			"height" : 16,
+			"mask_y" : 176
 		},
 		{
 			"name" : "door_0_open_l",
@@ -292,10 +309,10 @@
 			"offset_x" : -16,
 			"offset_y" : 0,
 			"mask_x" : 16,
-			"mask_y" : 240, 
+			"mask_y" : 240,
 			"mask_alpha" : 0,
 			"mask_color" : 1
-		},	
+		},
 		{
 			"name" : "door_0_open_r",
 			"x" : 32,
@@ -305,7 +322,7 @@
 			"offset_x" : 16,
 			"offset_y" : 0,
 			"mask_x" : 32,
-			"mask_y" : 240, 
+			"mask_y" : 240,
 			"mask_alpha" : 0,
 			"mask_color" : 1
 		},
@@ -317,10 +334,10 @@
 			"height" : 11,
 			"offset_y" : 0,
 			"mask_x" : 48,
-			"mask_y" : 245, 
+			"mask_y" : 245,
 			"mask_alpha" : 0,
 			"mask_color" : 1
-		},	
+		},
 		{
 			"name" : "door_1_open_r",
 			"x" : 64,
@@ -329,10 +346,10 @@
 			"height" : 11,
 			"offset_y" : 0,
 			"mask_x" : 64,
-			"mask_y" : 245, 
+			"mask_y" : 245,
 			"mask_alpha" : 0,
 			"mask_color" : 1
-		},	
+		},
 		{
 			"name" : "chest_small",
 			"x" : 0,
@@ -342,7 +359,7 @@
 			"offset_x" : 0,
 			"offset_y" : 1,
 			"mask_x" : 0,
-			"mask_y" : 84, 
+			"mask_y" : 84,
 			"mask_alpha" : 0,
 			"mask_color" : 1
 		},
@@ -355,7 +372,7 @@
 			"offset_x" : 0,
 			"offset_y" : 1,
 			"mask_x" : 16,
-			"mask_y" : 82, 
+			"mask_y" : 82,
 			"mask_alpha" : 0,
 			"mask_color" : 1
 		},
@@ -368,7 +385,7 @@
 			"offset_x" : 0,
 			"offset_y" : 1,
 			"mask_x" : 32,
-			"mask_y" : 82, 
+			"mask_y" : 82,
 			"mask_alpha" : 0,
 			"mask_color" : 1
 		},
@@ -381,7 +398,7 @@
 			"offset_x" : 0,
 			"offset_y" : 1,
 			"mask_x" : 48,
-			"mask_y" : 85, 
+			"mask_y" : 85,
 			"mask_alpha" : 0,
 			"mask_color" : 1
 		},
@@ -394,7 +411,7 @@
 			"offset_x" : 0,
 			"offset_y" : 1,
 			"mask_x" : 64,
-			"mask_y" : 82, 
+			"mask_y" : 82,
 			"mask_alpha" : 0,
 			"mask_color" : 1
 		},
@@ -407,9 +424,29 @@
 			"offset_x" : 0,
 			"offset_y" : 1,
 			"mask_x" : 80,
-			"mask_y" : 80, 
+			"mask_y" : 80,
 			"mask_alpha" : 0,
 			"mask_color" : 1
-		}	
+		},
+		{
+			"name" : "bongo_cat_bottom",
+			"x" : 136,
+			"y"	: 199,
+			"width" : 16,
+			"height" : 2,
+			"offset_x" : 0,
+			"offset_y" : 7,
+			"mask_y" : 217
+		},
+		{
+			"name" : "nyan_cat_bottom",
+			"x" : 152,
+			"y"	: 200,
+			"width" : 16,
+			"height" : 3,
+			"offset_x" : 0,
+			"offset_y" : 5,
+			"mask_y" : 216
+		}
 	]
 }

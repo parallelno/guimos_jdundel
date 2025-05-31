@@ -81,7 +81,16 @@ hero_runtime_data_end:		= hero_runtime_data + 31
 
 ;=============================================================================
 ;
-; FREE MEMORY [$760F - $7610]
+; Switch statuses:
+; All statuses stored in a two byte value. Each bit represents an individual switch status.
+; If a hero enters a room, and a specific switch was activated, the decal assotiated
+; with this switch is rendered.
+switch_statuses:			= $760F ; 0x0000_0NPB, where:
+QUEST_BONGO_CAT	= 0b0000_0001
+QUEST_POP_CAT	= 0b0000_0010
+QUEST_NYAN_CAT	= 0b0000_0100
+
+switch_statuses_end:			= switch_statuses + 2
 
 ;=============================================================================
 ;

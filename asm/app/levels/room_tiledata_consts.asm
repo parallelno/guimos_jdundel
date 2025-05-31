@@ -21,10 +21,10 @@
 		FIREPOOL_ID		= 8 ; firepool
 		SKELETON_QUEST_ID	= 9 ; skeleton spawned after opening a container with a spoon
 
-; ffff = 2, teleport_ids 0-15. To convert in into a room_id use the 
+; ffff = 2, teleports, teleport_ids 0-15. To convert in into a room_id use the 
 ;		room_teleports_data table.
 
-; ffff = 3, spawn an npc, npc_id = d
+; ffff = 3, npcs, npc_id = d
 		NPC_ID_FRIENDS_MOM	= 0 ; tiledata = 3*16+0=48
 		NPC_ID_FRIENDS_SIS	= 1 ; tiledata = 49
 		NPC_ID_GOOSE			= 2 ; tiledata = 50
@@ -38,10 +38,10 @@
 		NPC_ID_VILLAGER3		= 10; tiledata = 58
 		NPC_ID_VILLAGER4		= 11; tiledata = 59
 
-; ffff = 4, Not used
-; ffff = 5, Not used
+; ffff = 4, not used
+; ffff = 5, not used
 
-; ffff == 6, a global item. a hero interacts with it when he steps on 
+; ffff == 6, global items. a hero interacts with it when he steps on 
 ;		it. Item_id = d. See runtime_data.asm->global_items for details.
 ;		item_id = 0 - storytelling - an invisible tiledata to open a dialog window
 		ITEM_ID_KEY_0	= 1	; 	key 0
@@ -52,7 +52,7 @@
 ;		item_id 		= 6 ; key 5
 		ITEM_ID_UI_MAX	= 8		; items with item_id >= ITEM_ID_UI_MAX do not show up on the ui panel
 
-; ffff == 7, a resource. a hero interacts with it when he steps on it. 
+; ffff == 7, resources. a hero interacts with it when he steps on it. 
 ;		Max instances in all rooms = RESOURCES_LEN/2-RESOURCES_UNIQUE_MAX. 
 ;		res_id = d. see runtime_data.asm->resources_inst_data for 
 ;		details.
@@ -70,12 +70,12 @@
 ; every tiledata >= TILEDATA_COLLIDABLE is collidable (a hero and 
 ; 		monsters can't step on that tile)
 
-; ffff == 8, Not used
+; ffff == 8, not used
 
-; ffff == 9, Switches with two visual states switching them when a hero hits it.
-;		switch_id == 0 - Bongo Cat
-;		switch_id == 1 - Pop Cat
-;		switch_id == 2 - Nyan Cat
+; ffff == 9, switches with two visual states switching them when a hero hits it.
+		SWITCH_BONGO_CAT	= 0
+		SWITCH_POP_CAT		= 1
+		SWITCH_NYAN_CAT		= 2
 
 ; ffff == 10, triggers. activated when a hero hits it. trigger_id = d
 ;		trigger_id == 0 - when he hits his house door.
@@ -114,7 +114,7 @@
 
 ; ffff == 15,
 ;		d = %1111 - collision (tiledata = TILEDATA_COLLISION)
-;		d <  %1111 - collision + animated background, back_id = d.
+;		d < %1111 - collision + animated background tiles, back_id = d.
 ;	 		back_id = 0 - torch front (tiledata = 15*16+0=241)
 ;   	    back_id = 1 - flag front (tiledata = 161)
 ;   	    back_id = 2 - dialog_press_key (tiledata = 162)
