@@ -47,12 +47,12 @@ memusage_loads_level0:
 			lxi h, CAT_ADDR
 			call sprite_update_labels
 
-			RAM_DISK_M_SCYTHE = RAM_DISK_M0
-			RAM_DISK_S_SCYTHE = RAM_DISK_S0
-			SCYTHE_ADDR = 0x77DC
-			LOAD_FILE(SCYTHE_FILENAME_PTR, RAM_DISK_S_SCYTHE, SCYTHE_ADDR, SCYTHE_FILE_LEN)
-			lxi d, scythe_preshifted_sprites
-			lxi h, SCYTHE_ADDR
+			RAM_DISK_M_VFX = RAM_DISK_M0
+			RAM_DISK_S_VFX = RAM_DISK_S0
+			VFX_ADDR = 0x77DC
+			LOAD_FILE(VFX_FILENAME_PTR, RAM_DISK_S_VFX, VFX_ADDR, VFX_FILE_LEN)
+			lxi d, vfx_preshifted_sprites
+			lxi h, VFX_ADDR
 			call sprite_update_labels
 
 			RAM_DISK_M_LV0_GFX = RAM_DISK_M0
@@ -77,37 +77,29 @@ memusage_loads_level0:
 			lxi h, SWORD_ADDR
 			call sprite_update_labels
 
-			RAM_DISK_M_VAMPIRE = RAM_DISK_M1
-			RAM_DISK_S_VAMPIRE = RAM_DISK_S1
-			VAMPIRE_ADDR = 0x4626
-			LOAD_FILE(VAMPIRE_FILENAME_PTR, RAM_DISK_S_VAMPIRE, VAMPIRE_ADDR, VAMPIRE_FILE_LEN)
-			lxi d, vampire_preshifted_sprites
-			lxi h, VAMPIRE_ADDR
-			call sprite_update_labels
+			RAM_DISK_M_TI0_GFX = RAM_DISK_M1
+			RAM_DISK_S_TI0_GFX = RAM_DISK_S1
+			TI0_GFX_ADDR = 0x4626
+			LOAD_FILE(TI0_GFX_FILENAME_PTR, RAM_DISK_S_TI0_GFX, TI0_GFX_ADDR, TI0_GFX_FILE_LEN)
+			mvi a, RAM_DISK_S_TI0_GFX
+			lxi h, TI0_GFX_ADDR
+			call tiled_img_init_gfx
 
 			RAM_DISK_M_GOOSE = RAM_DISK_M1
 			RAM_DISK_S_GOOSE = RAM_DISK_S1
-			GOOSE_ADDR = 0x6336
+			GOOSE_ADDR = 0x6816
 			LOAD_FILE(GOOSE_FILENAME_PTR, RAM_DISK_S_GOOSE, GOOSE_ADDR, GOOSE_FILE_LEN)
 			lxi d, goose_preshifted_sprites
 			lxi h, GOOSE_ADDR
 			call sprite_update_labels
 
-			RAM_DISK_M_VFX = RAM_DISK_M1
-			RAM_DISK_S_VFX = RAM_DISK_S1
-			VFX_ADDR = 0x781E
-			LOAD_FILE(VFX_FILENAME_PTR, RAM_DISK_S_VFX, VFX_ADDR, VFX_FILE_LEN)
-			lxi d, vfx_preshifted_sprites
-			lxi h, VFX_ADDR
+			RAM_DISK_M_VAMPIRE = RAM_DISK_M1
+			RAM_DISK_S_VAMPIRE = RAM_DISK_S1
+			VAMPIRE_ADDR = 0x8000
+			LOAD_FILE(VAMPIRE_FILENAME_PTR, RAM_DISK_S_VAMPIRE, VAMPIRE_ADDR, VAMPIRE_FILE_LEN)
+			lxi d, vampire_preshifted_sprites
+			lxi h, VAMPIRE_ADDR
 			call sprite_update_labels
-
-			RAM_DISK_M_TI0_GFX = RAM_DISK_M1
-			RAM_DISK_S_TI0_GFX = RAM_DISK_S1
-			TI0_GFX_ADDR = 0x8000
-			LOAD_FILE(TI0_GFX_FILENAME_PTR, RAM_DISK_S_TI0_GFX, TI0_GFX_ADDR, TI0_GFX_FILE_LEN)
-			mvi a, RAM_DISK_S_TI0_GFX
-			lxi h, TI0_GFX_ADDR
-			call tiled_img_init_gfx
 
 			RAM_DISK_M_TEXT_LV0 = RAM_DISK_M2
 			RAM_DISK_S_TEXT_LV0 = RAM_DISK_S2
@@ -133,9 +125,17 @@ memusage_loads_level0:
 			lxi h, NPC_ADDR
 			call sprite_update_labels
 
+			RAM_DISK_M_SCYTHE = RAM_DISK_M2
+			RAM_DISK_S_SCYTHE = RAM_DISK_S2
+			SCYTHE_ADDR = 0x34F0
+			LOAD_FILE(SCYTHE_FILENAME_PTR, RAM_DISK_S_SCYTHE, SCYTHE_ADDR, SCYTHE_FILE_LEN)
+			lxi d, scythe_preshifted_sprites
+			lxi h, SCYTHE_ADDR
+			call sprite_update_labels
+
 			RAM_DISK_M_SNOWFLAK = RAM_DISK_M2
 			RAM_DISK_S_SNOWFLAK = RAM_DISK_S2
-			SNOWFLAK_ADDR = 0x34F0
+			SNOWFLAK_ADDR = 0x3B02
 			LOAD_FILE(SNOWFLAK_FILENAME_PTR, RAM_DISK_S_SNOWFLAK, SNOWFLAK_ADDR, SNOWFLAK_FILE_LEN)
 			lxi d, snowflake_preshifted_sprites
 			lxi h, SNOWFLAK_ADDR
@@ -143,7 +143,7 @@ memusage_loads_level0:
 
 			RAM_DISK_M_TNT = RAM_DISK_M2
 			RAM_DISK_S_TNT = RAM_DISK_S2
-			TNT_ADDR = 0x39AC
+			TNT_ADDR = 0x3FBE
 			LOAD_FILE(TNT_FILENAME_PTR, RAM_DISK_S_TNT, TNT_ADDR, TNT_FILE_LEN)
 			lxi d, tnt_preshifted_sprites
 			lxi h, TNT_ADDR
@@ -151,7 +151,7 @@ memusage_loads_level0:
 
 			RAM_DISK_M_TI0_DATA = RAM_DISK_M2
 			RAM_DISK_S_TI0_DATA = RAM_DISK_S2
-			TI0_DATA_ADDR = 0x3DCC
+			TI0_DATA_ADDR = 0x43DE
 			LOAD_FILE(TI0_DATA_FILENAME_PTR, RAM_DISK_S_TI0_DATA, TI0_DATA_ADDR, TI0_DATA_FILE_LEN)
 			mvi a, RAM_DISK_S_TI0_DATA
 			lxi h, TI0_DATA_ADDR
@@ -159,7 +159,7 @@ memusage_loads_level0:
 
 			RAM_DISK_M_BOMB = RAM_DISK_M2
 			RAM_DISK_S_BOMB = RAM_DISK_S2
-			BOMB_ADDR = 0x41A4
+			BOMB_ADDR = 0x47CE
 			LOAD_FILE(BOMB_FILENAME_PTR, RAM_DISK_S_BOMB, BOMB_ADDR, BOMB_FILE_LEN)
 			lxi d, bomb_preshifted_sprites
 			lxi h, BOMB_ADDR
@@ -167,7 +167,7 @@ memusage_loads_level0:
 
 			RAM_DISK_M_BACKS0 = RAM_DISK_M2
 			RAM_DISK_S_BACKS0 = RAM_DISK_S2
-			BACKS0_ADDR = 0x4564
+			BACKS0_ADDR = 0x4B8E
 			LOAD_FILE(BACKS0_FILENAME_PTR, RAM_DISK_S_BACKS0, BACKS0_ADDR, BACKS0_FILE_LEN)
 			lxi d, backs0_preshifted_sprites
 			lxi h, BACKS0_ADDR
@@ -175,7 +175,7 @@ memusage_loads_level0:
 
 			RAM_DISK_M_FIREPOOL = RAM_DISK_M2
 			RAM_DISK_S_FIREPOOL = RAM_DISK_S2
-			FIREPOOL_ADDR = 0x48CE
+			FIREPOOL_ADDR = 0x4EF8
 			LOAD_FILE(FIREPOOL_FILENAME_PTR, RAM_DISK_S_FIREPOOL, FIREPOOL_ADDR, FIREPOOL_FILE_LEN)
 			lxi d, firepool_preshifted_sprites
 			lxi h, FIREPOOL_ADDR

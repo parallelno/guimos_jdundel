@@ -2,8 +2,8 @@
 ; asm data file: build/debug/tiled_img_data/ti0_data_data.asm
 ; bin file: build/debug/bin/TI0_DATA.BIN
 
-TI0_DATA_FILE_LEN = 984
-TI0_DATA_LAST_RECORD_LEN = 88
+TI0_DATA_FILE_LEN = 1008
+TI0_DATA_LAST_RECORD_LEN = 112
 
 TI0_DATA_FILENAME_PTR:
 			.byte "TI0_DATA" ; filename
