@@ -1,4 +1,4 @@
-memusage_loads_permanent:
+memusage_loads_loads:
 ; TODO: think of convoluting the loading function into an array and the loop
 ;===============================================
 ; permanent
@@ -63,9 +63,6 @@ memusage_loads_permanent:
 			call v6_gc_init_song
 
 .endf
-memusage_loads_permanent_end:
-memusage_loads_menu:
-; TODO: think of convoluting the loading function into an array and the loop
 ;===============================================
 ; menu
 ;===============================================
@@ -96,9 +93,6 @@ memusage_loads_menu:
 			call tiled_img_init_gfx
 
 .endf
-memusage_loads_menu_end:
-memusage_loads_level0:
-; TODO: think of convoluting the loading function into an array and the loop
 ;===============================================
 ; level0
 ;===============================================
@@ -249,9 +243,6 @@ memusage_loads_level0:
 			call sprite_update_labels
 
 .endf
-memusage_loads_level0_end:
-memusage_loads_level1:
-; TODO: think of convoluting the loading function into an array and the loop
 ;===============================================
 ; level1
 ;===============================================
@@ -274,4 +265,4 @@ memusage_loads_level1:
 			call sprite_update_labels
 
 .endf
-memusage_loads_level1_end:
+memusage_loads_loads_end:

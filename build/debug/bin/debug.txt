@@ -1831,7 +1831,7 @@ tnt_anims $2671
 tnt_run_anim $2675
 tnt_anims_end $2689
 tnt_anims_len $0018
-memusage_loads_permanent $2689
+memusage_loads_loads $2689
 load_permanent $2689
 RAM_DISK_M_DECALS0 $0000
 RAM_DISK_S_DECALS0 $0010
@@ -1875,8 +1875,6 @@ SONG01_ADDR $8000
 LOAD_FILE_7.odd_len $0000
 LOAD_FILE_7.recs $0061
 LOAD_FILE_7.last_rec $0044
-memusage_loads_permanent_end $272d
-memusage_loads_menu $272d
 load_menu $272d
 RAM_DISK_M_TXT_MENU $0001
 RAM_DISK_S_TXT_MENU $0014
@@ -1896,8 +1894,6 @@ TIM_GFX_ADDR $b044
 LOAD_FILE_10.odd_len $0000
 LOAD_FILE_10.recs $002e
 LOAD_FILE_10.last_rec $0048
-memusage_loads_menu_end $2770
-memusage_loads_level0 $2770
 load_level0 $2770
 RAM_DISK_M_NPC4 $0000
 RAM_DISK_S_NPC4 $0010
@@ -2007,8 +2003,6 @@ HERO_R_ADDR $ca9c
 LOAD_FILE_28.odd_len $0000
 LOAD_FILE_28.recs $0067
 LOAD_FILE_28.last_rec $0078
-memusage_loads_level0_end $290c
-memusage_loads_level1 $290c
 load_level1 $290c
 RAM_DISK_M_TNT $0001
 RAM_DISK_S_TNT $0014
@@ -2022,7 +2016,7 @@ VAMPIRE_ADDR $b044
 LOAD_FILE_30.odd_len $0000
 LOAD_FILE_30.recs $003b
 LOAD_FILE_30.last_rec $0010
-memusage_loads_level1_end $293b
+memusage_loads_loads_end $293b
 v6_main_init $293b
 GAME_REQ $0080
 GLOBAL_REQ_NONE $0000

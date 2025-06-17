@@ -9,6 +9,7 @@
 |memusage_v6_sprite_copy_to_scr:|1203|
 |memusage_levels_data:|1002|
 |memusage_v6_sound:|810|
+|memusage_loads_loads:|690|
 |memusage_knight:|609|
 |memusage_monsters:|574|
 |memusage_v6_utils:|554|
@@ -20,7 +21,6 @@
 |memusage_vampire:|449|
 |memusage_v6_os:|440|
 |memusage_sword:|431|
-|memusage_loads_level0:|412|
 |memusage_ui:|392|
 |memusage_settings:|376|
 |memusage_main_menu:|344|
@@ -48,7 +48,6 @@
 |memusage_v6_sprite_erase:|168|
 |memusage_sparker:|168|
 |memusage_v6_controls:|166|
-|memusage_loads_permanent:|164|
 |memusage_breakables:|163|
 |memusage_screen_utils:|161|
 |memusage_score_data:|144|
@@ -68,26 +67,21 @@
 |memusage_cursor:|78|
 |memusage_scores:|73|
 |memusage_hero_triggers:|69|
-|memusage_loads_menu:|67|
 |memusage_score:|66|
 |memusage_app_utils:|63|
 |memusage_credits_screen:|53|
-|memusage_loads_level1:|47|
 |memusage_friends_sis:|27|
 |memusage_dotty:|27|
 |memusage_bob:|27|
 |memusage_v6_sprite_draw_invis:|26|
 |memusage_skeleton_quest:|15|
-|memusage_loads_level1_end:|12|
+|memusage_loads_loads_end:|12|
 |memusage_npc:|10|
 |memusage_npc4:|10|
 |memusage_v6_macros:|0|
 |memusage_v6_consts:|0|
 |memusage_v6_build_consts:|0|
 |memusage_v6_sprite_draw_hit:|0|
-|memusage_loads_permanent_end:|0|
-|memusage_loads_menu_end:|0|
-|memusage_loads_level0_end:|0|
 |memusage_runtime_data:|0|
 
 ## FDD Usage:

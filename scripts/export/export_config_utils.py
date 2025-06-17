@@ -5,7 +5,8 @@ import utils.common as common
 def export_loads(config_j, assets, build_code_dir, build_bin_dir):
 	
 	# prepare the include path
-	load_path = build_code_dir + "loads" + build.EXT_ASM
+	file_basename = "loads"
+	load_path = build_code_dir + file_basename + build.EXT_ASM
 
 	# delete output file if it exists
 	if os.path.exists(load_path):
@@ -15,6 +16,9 @@ def export_loads(config_j, assets, build_code_dir, build_bin_dir):
 	segments = get_ram_disk_layout(config_j)
 
 	asm = ""
+	asm += f"memusage_loads_{file_basename}:\n"
+	asm += f"; TODO: think of convoluting the loading function into an array and the loop\n"
+
 	report_asm = ""
 
 	# permanent load
@@ -44,6 +48,7 @@ def export_loads(config_j, assets, build_code_dir, build_bin_dir):
 		for seg_name, seg in segments.items():
 			seg["load_addr"] = seg["non_permanent_load_addr"]
 
+	asm += f"memusage_loads_{file_basename}_end:\n"
 
 	# save the file
 	with open(load_path, 'w') as f:
@@ -202,8 +207,6 @@ def pack_files(load_name, assets, segments, config_j):
 def get_load_asm(load_name, allocation, segments):
 	
 	asm = ""
-	asm += f"memusage_loads_{load_name}:\n"
-	asm += f"; TODO: think of convoluting the loading function into an array and the loop\n"
 
 	asm += f";===============================================\n"
 	asm += f"; {load_name}\n"
@@ -275,6 +278,5 @@ def get_load_asm(load_name, allocation, segments):
 			asm += f"\n"
 
 	asm += f".endf\n"
-	asm += f"memusage_loads_{load_name}_end:\n"
 
 	return asm
