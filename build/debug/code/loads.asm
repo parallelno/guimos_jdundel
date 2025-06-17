@@ -3,7 +3,7 @@ memusage_loads_loads:
 ;===============================================
 ; permanent
 ;===============================================
-.function load_permanent
+load_permanent:
 			; ram-disk:
 			RAM_DISK_M_DECALS0 = RAM_DISK_M0
 			RAM_DISK_S_DECALS0 = RAM_DISK_S0
@@ -62,11 +62,11 @@ memusage_loads_loads:
 			lxi h, song01_ay_reg_data_ptrs
 			call v6_gc_init_song
 
-.endf
+			ret
 ;===============================================
 ; menu
 ;===============================================
-.function load_menu
+load_menu:
 			; ram-disk:
 			RAM_DISK_M_TXT_MENU = RAM_DISK_M1
 			RAM_DISK_S_TXT_MENU = RAM_DISK_S1
@@ -92,11 +92,11 @@ memusage_loads_loads:
 			lxi h, TIM_GFX_ADDR
 			call tiled_img_init_gfx
 
-.endf
+			ret
 ;===============================================
 ; level0
 ;===============================================
-.function load_level0
+load_level0:
 			; ram-disk:
 			RAM_DISK_M_NPC4 = RAM_DISK_M0
 			RAM_DISK_S_NPC4 = RAM_DISK_S0
@@ -242,11 +242,11 @@ memusage_loads_loads:
 			lxi h, HERO_R_ADDR
 			call sprite_update_labels
 
-.endf
+			ret
 ;===============================================
 ; level1
 ;===============================================
-.function load_level1
+load_level1:
 			; ram-disk:
 			RAM_DISK_M_TNT = RAM_DISK_M1
 			RAM_DISK_S_TNT = RAM_DISK_S1
@@ -264,5 +264,5 @@ memusage_loads_loads:
 			lxi h, VAMPIRE_ADDR
 			call sprite_update_labels
 
-.endf
+			ret
 memusage_loads_loads_end:

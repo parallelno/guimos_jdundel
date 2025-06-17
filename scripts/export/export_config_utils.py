@@ -211,7 +211,7 @@ def get_load_asm(load_name, allocation, segments):
 	asm += f";===============================================\n"
 	asm += f"; {load_name}\n"
 	asm += f";===============================================\n"
-	asm += f".function load_{load_name}\n"
+	asm += f"load_{load_name}:\n"
 	
 	# load the data
 	asm += "			; ram-disk:\n"
@@ -277,6 +277,6 @@ def get_load_asm(load_name, allocation, segments):
 			
 			asm += f"\n"
 
-	asm += f".endf\n"
+	asm += f"			ret\n"
 
 	return asm

@@ -12476,18 +12476,26 @@ $5f4f eb         xchg
 $5f50 e9         pchl
 
 $5f51 e4 04 c2 5a 63 5f 98 5c   ä.ÂZc_˜\
-$5f59 4e 5c 19 5c 0f 5e 78 5f   N\.\.^x_
-$5f61 7b 5f                     {_
+$5f59 4e 5c 19 5c 0f 5e 6c 5f   N\.\.^l_
+$5f61 72 5f                     r_
 
-$5f63 f3         di
-$5f64 cd 09 0b   call $0b09
-$5f67 cd 70 27   call $2770
-$5f6a fb         ei
-$5f6b 3e e2      mvi a,$e2
-$5f6d d3 11      out $11
-$5f6f cd 1e 08   call $081e
-$5f72 af         xra a
-$5f73 d3 11      out $11
-$5f75 c3 94 5e   jmp $5e94
-$5f78 cd 70 27   call $2770
-$5f7b cd 0c 29   call $290c
+$5f63 21 70 27   lxi h,$2770
+$5f66 cd 78 5f   call $5f78
+$5f69 c3 94 5e   jmp $5e94
+$5f6c 21 70 27   lxi h,$2770
+$5f6f cd 78 5f   call $5f78
+$5f72 21 0c 29   lxi h,$290c
+$5f75 cd 78 5f   call $5f78
+$5f78 e5         push h
+$5f79 f3         di
+$5f7a cd 09 0b   call $0b09
+$5f7d 21 82 5f   lxi h,$5f82
+$5f80 e3         xthl
+$5f81 e9         pchl
+$5f82 fb         ei
+$5f83 3e e2      mvi a,$e2
+$5f85 d3 11      out $11
+$5f87 cd 1e 08   call $081e
+$5f8a af         xra a
+$5f8b d3 11      out $11
+$5f8d c9         ret

@@ -6,8 +6,8 @@ app_start:
 			MEM_ERASE_SP(SCR_ADDR, SCR_BUFFS_LEN)
 			call v6_sound_init
 
-			load_permanent()
-			load_menu()
+			call load_permanent
+			call load_menu
 			ei
 			CALL_RAM_DISK_FUNC_NO_RESTORE(v6_gc_start, RAM_DISK_M_SONG01 | RAM_DISK_M_8F)
 @loop:
@@ -39,18 +39,32 @@ global_funcs:
 			.word global_load_lv1	; GLOBAL_REQ_LOAD_LEVEL1 = 8
 
 global_start_game:
-			di
-			call v6_sound_init
-			load_level0()
-			ei
-			CALL_RAM_DISK_FUNC_NO_RESTORE(v6_gc_start, RAM_DISK_M_SONG01 | RAM_DISK_M_8F)
-
+			lxi h, load_level0
+			call global_load
 			jmp game
 
 global_load_lv0:
-			load_level0()
+			lxi h, load_level0
+			call global_load
 			;jmp game_continue
 
 global_load_lv1:
-			load_level1()
+			lxi h, load_level1
+			call global_load
 			;jmp game_continue
+
+; in: 
+; hl - load func addr, ex. load_level0
+global_load:
+			push h			
+			di
+
+			call v6_sound_init
+
+			lxi h, @return
+			xthl
+			pchl
+@return:
+			ei
+			CALL_RAM_DISK_FUNC_NO_RESTORE(v6_gc_start, RAM_DISK_M_SONG01 | RAM_DISK_M_8F)
+			ret

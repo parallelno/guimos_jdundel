@@ -4282,7 +4282,9 @@ app_start $5f20
 global_request $5f45
 global_funcs $5f51
 global_start_game $5f63
-global_load_lv0 $5f78
-global_load_lv1 $5f7b
-memusage_end $5f7e
-RAM_FREE_SPACE $1282
+global_load_lv0 $5f6c
+global_load_lv1 $5f72
+global_load $5f78
+@return_9 $5f82
+memusage_end $5f8e
+RAM_FREE_SPACE $1272
