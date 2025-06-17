@@ -362,7 +362,7 @@ def export_mem_usage(
 
 		# write the fdd free space report
 		file.write(f"## FDD Usage:\n")
-		file.write(f"> Used: {fddimage.FDD_SIZE - fdd_free_space}, Free Space: `{fdd_free_space}`\n\n")
+		file.write(f"> Used: `{fddimage.FDD_SIZE - fdd_free_space}`, Free Space: `{fdd_free_space}`\n\n")
 
 		# write the ram disk usage report
 		file.write(f"## Ram disk usage:\n")
