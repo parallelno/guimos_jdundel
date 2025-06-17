@@ -47,15 +47,15 @@ screen_simple_init:
 			ret
 
 screen_palette_and_frame:
-			lxi h, TI0_GFX_ADDR + WORD_LEN ; WORD_LEN because it's the palette local offset
-			mvi a, RAM_DISK_S_TI0_GFX
+			lxi h, TIM_GFX_ADDR + WORD_LEN ; WORD_LEN because it's the palette local offset
+			mvi a, RAM_DISK_S_TIM_GFX
 			call copy_palette_request_update_rd
 
 			; back1
-			lxi d, _ti0_main_menu_back1
+			lxi d, _tim_main_menu_back1
 			call tiled_img_draw
 			; back2
-			lxi d, _ti0_main_menu_back2
+			lxi d, _tim_main_menu_back2
 			call tiled_img_draw
 			ret
 

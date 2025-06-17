@@ -44,13 +44,13 @@ main_menu:
 			call screen_simple_draw
 			jmp	 @loop
 			
-main_menu_back_draw:
+main_menu_backgound_draw:
 			call screen_palette_and_frame
 			; title1
-			lxi d, _ti0_title1
+			lxi d, _tim_title1
 			call tiled_img_draw
 			; settings frame
-			lxi d, _ti0_frame_main_menu
+			lxi d, _tim_frame_main_menu
 			call tiled_img_draw
 
 			@line_spacing = <(-SETTING_LINE_SPACING)
@@ -64,6 +64,7 @@ main_menu_back_draw:
 			lxi d, _main_menu_license
 			call text_ex_draw
 			ret
+
 main_menu_cursor_update:
 			; spawn vfx
 			call random
@@ -245,14 +246,13 @@ main_menu_cursor_init:
 
 main_menu_init:
 			call screen_simple_init
-			call main_menu_back_draw
+			call main_menu_backgound_draw
 			call main_menu_cursor_init
 
 			; dialog_press_key (tiledata = 162)
-			mvi b, 162
 			@pos_tiles_x = 9
 			@pos_tiles_y = 4
-			mvi c, @pos_tiles_x + @pos_tiles_y * TILE_HEIGHT
+			lxi b, TILEDATA_DIALOG_PRESS_KEY << 8 | @pos_tiles_x + @pos_tiles_y * TILE_HEIGHT
 			; b - tiledata
 			; c - tile_idx in the room_tiledata array.
 			call backs_spawn

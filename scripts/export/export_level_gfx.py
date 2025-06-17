@@ -124,8 +124,10 @@ def ram_data_to_asm(level_j_path, relative_ptrs, remap_idxs):
 	# level data init tbl
 	data_init_tbl_label = f"{level_name}_gfx_init_tbl"
 	asm += f"{data_init_tbl_label}:\n"
-	asm += f"			.byte RAM_DISK_S_{level_name.upper()}_GFX\n"
-	asm += f"			.byte RAM_DISK_M_{level_name.upper()}_GFX\n"
+	# asm += f"			.byte RAM_DISK_S_{level_name.upper()}_DATA\n"
+	# asm += f"			.byte RAM_DISK_M_{level_name.upper()}_DATA\n"	
+	asm += f"			.byte TEMP_BYTE ; defined in loads.asm and inited by _gfx_init\n"
+	asm += f"			.byte TEMP_BYTE ; defined in loads.asm and inited by _gfx_init\n"
 	asm += f"			.word {list_of_tiles_label}\n"
 	asm += f"{palette_label[1:]}_ptr:\n"
 	asm += f"			.word {palette_label}_relative\n"
@@ -136,13 +138,25 @@ def ram_data_to_asm(level_j_path, relative_ptrs, remap_idxs):
 	#=====================================================================
 	# init func
 	asm += f"; in:\n"
+	asm += f"; bc - {level_name.upper()}_DATA_ADDR\n"
+	asm += f"; l - RAM_DISK_S\n"
+	asm += f"; h - RAM_DISK_M\n"
+	asm += f"; ex. hl = RAM_DISK_M_LV0_GFX<<8 | RAM_DISK_S_LV0_GFX\n"
 	asm += f"{level_name}_gfx_init:\n"
-	asm += f"			lxi b, {level_name.upper()}_GFX_ADDR\n"
+	asm += f"			shld {data_init_tbl_label}\n"
+	asm += f"\n"
+
+	asm += f"			push b\n"
+	asm += f"\n"
+	
 	asm += f"			lxi h, {list_of_tiles_label}\n"
 	asm += f"			call update_labels_eod\n"
 	asm += f"\n"
 
-	asm += f"			lxi d, {level_name.upper()}_GFX_ADDR\n"
+	asm += f"			pop d\n"
+	asm += f"			; d = {level_name.upper()}_DATA_ADDR\n"
+	asm += f"\n"
+
 	asm += f"			lxi h, {palette_label[1:]}_ptr\n"
 	asm += f"			mvi c, 1\n"
 	asm += f"			call update_labels_len\n"

@@ -102,7 +102,23 @@
 	"loads" : {
 		"permanent" :
 		[
-			"assets/fonts/eng/font.json"
+			"assets/fonts/eng/font.json",
+			
+			"assets/backs/backs0.json",
+			"assets/decals/decals0.json",
+			
+			"assets/sprites/vfx4.json",
+			"assets/sprites/vfx.json",
+
+			"assets/sprites/bomb.json",
+			
+			"assets/music/song01.json"
+		],
+		"menu" :
+		[
+			"assets/tiled_imgs/tim_data.json",
+			"assets/tiled_imgs/tim_gfx.json",
+			"assets/text/txt_menu.json"
 		],
 		"level0" :
 		[
@@ -110,7 +126,6 @@
 			"assets/sprites/hero_r.json",
 			"assets/sprites/burner.json",
 			"assets/sprites/skeleton.json",
-			"assets/sprites/vampire.json",
 			"assets/sprites/knight.json",
 			"assets/sprites/npc.json",
 			"assets/sprites/npc4.json",
@@ -120,25 +135,21 @@
 
 			"assets/sprites/sword.json",
 			"assets/sprites/scythe.json",
-			"assets/sprites/bomb.json",
-			"assets/sprites/snowflake.json",
-			"assets/sprites/tnt.json",
 
-			"assets/sprites/vfx4.json",
-			"assets/sprites/vfx.json",
-			
+			"assets/sprites/snowflake.json",
+
 			"assets/levels/lv0_data.json",
 			"assets/levels/lv0_gfx.json",
-			
-			"assets/backs/backs0.json",
-			"assets/decals/decals0.json",
-			
+
 			"assets/tiled_imgs/ti0_data.json",
 			"assets/tiled_imgs/ti0_gfx.json",
 
-			"assets/text/text_lv0.json",
-
-			"assets/music/song01.json"
+			"assets/text/txt_lv0.json"
+		],
+		"level1" :
+		[
+			"assets/sprites/vampire.json",
+			"assets/sprites/tnt.json"
 		]
 	}
 }

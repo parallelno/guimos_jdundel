@@ -14,8 +14,8 @@ lv0_data_rooms_ptrs:
 			.word EOD
 
 lv0_data_init_tbl:
-			.byte RAM_DISK_S_LV0_DATA
-			.byte RAM_DISK_M_LV0_DATA
+			.byte TEMP_BYTE ; defined in loads.asm and inited by _data_init
+			.byte TEMP_BYTE ; defined in loads.asm and inited by _data_init
 			.word lv0_data_rooms_ptrs
 lv0_resources_inst_data_ptrs:
 			.word _lv0_resources_inst_data_ptrs
@@ -29,12 +29,21 @@ LV0_RECOURCES_DATA_LEN = 135
 LV0_CONTAINERS_DATA_LEN = 7
 
 ; in:
+; bc - LV0_DATA_ADDR
+; l - RAM_DISK_S
+; h - RAM_DISK_M
+; ex. hl = RAM_DISK_M_LV0_GFX<<8 | RAM_DISK_S_LV0_GFX
 lv0_data_init:
-			lxi b, LV0_DATA_ADDR
+			shld lv0_data_init_tbl
+
+			push b
+
 			lxi h, lv0_data_rooms_ptrs
 			call update_labels_eod
 
-			lxi d, LV0_DATA_ADDR
+			pop d
+			; d = LV0_DATA_ADDR
+
 			lxi h, lv0_resources_inst_data_ptrs
 			mvi c, 2 ; _lv0_resources_inst_data_ptrs and _lv0_containers_inst_data_ptrs
 			call update_labels_len

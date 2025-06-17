@@ -7,7 +7,7 @@ app_start:
 			call v6_sound_init
 
 			load_permanent()
-			load_level0()
+			load_menu()
 			ei
 			CALL_RAM_DISK_FUNC_NO_RESTORE(v6_gc_start, RAM_DISK_M_SONG01 | RAM_DISK_M_8F)
 @loop:
@@ -30,8 +30,27 @@ global_request: = * + 1
 global_funcs:
 			.word empty_func		; GLOBAL_REQ_NONE		= 0
 			.word main_menu			; GLOBAL_REQ_MAIN_MENU	= 1
-			.word game				; GLOBAL_REQ_GAME		= 2
+			.word global_start_game	; GLOBAL_REQ_GAME		= 2
 			.word settings_screen	; GLOBAL_REQ_OPTIONS	= 3
 			.word scores_screen		; GLOBAL_REQ_SCORES		= 4
 			.word credits_screen	; GLOBAL_REQ_CREDITS	= 5
 			.word stats_screen		; GLOBAL_REQ_END_HOME	= 6
+			.word global_load_lv0	; GLOBAL_REQ_LOAD_LEVEL0 = 7
+			.word global_load_lv1	; GLOBAL_REQ_LOAD_LEVEL1 = 8
+
+global_start_game:
+			di
+			call v6_sound_init
+			load_level0()
+			ei
+			CALL_RAM_DISK_FUNC_NO_RESTORE(v6_gc_start, RAM_DISK_M_SONG01 | RAM_DISK_M_8F)
+
+			jmp game
+
+global_load_lv0:
+			load_level0()
+			;jmp game_continue
+
+global_load_lv1:
+			load_level1()
+			;jmp game_continue

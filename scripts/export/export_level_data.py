@@ -139,7 +139,7 @@ def ram_disk_data_to_asm(level_j_path):
 				if container_max_tiledata < tiledata:
 					container_max_tiledata = tiledata
 
-			if export_level_utils.TILEDATA_BREAKABLES <= tiledata < export_level_utils.TILEDATA_BREAKABLES + export_level_utils.BREAKABLES_UNIQUE_MAX:
+			if export_level_utils.TILEDATA_BREAKABLESS <= tiledata < export_level_utils.TILEDATA_BREAKABLESS + export_level_utils.BREAKABLES_UNIQUE_MAX:
 				breakables_count += 1
 				if breakables_count > export_level_utils.BREAKABLES_MAX:
 					build.exit_error(f"ERROR: {level_j_path} has breakables amount > {export_level_utils.BREAKABLES_MAX}")
@@ -348,8 +348,10 @@ def ram_data_to_asm(data_ptrs, level_j_path,
 	# level data init tbl
 	data_init_tbl_label = f"{level_name}_data_init_tbl"
 	asm += f"{data_init_tbl_label}:\n"
-	asm += f"			.byte RAM_DISK_S_{level_name.upper()}_DATA\n"
-	asm += f"			.byte RAM_DISK_M_{level_name.upper()}_DATA\n"
+	# asm += f"			.byte RAM_DISK_S_{level_name.upper()}_DATA\n"
+	# asm += f"			.byte RAM_DISK_M_{level_name.upper()}_DATA\n"	
+	asm += f"			.byte TEMP_BYTE ; defined in loads.asm and inited by _data_init\n"
+	asm += f"			.byte TEMP_BYTE ; defined in loads.asm and inited by _data_init\n"
 	asm += f"			.word {rooms_data_label}\n"
 	asm += f"{resources_inst_data_label[1:]}:\n"
 	asm += f"			.word {resources_inst_data_label}\n"
@@ -368,13 +370,25 @@ def ram_data_to_asm(data_ptrs, level_j_path,
 	#=====================================================================
 	# init func
 	asm += f"; in:\n"
+	asm += f"; bc - {level_name.upper()}_DATA_ADDR\n"
+	asm += f"; l - RAM_DISK_S\n"
+	asm += f"; h - RAM_DISK_M\n"
+	asm += f"; ex. hl = RAM_DISK_M_LV0_GFX<<8 | RAM_DISK_S_LV0_GFX\n"	
 	asm += f"{level_name}_data_init:\n"
-	asm += f"			lxi b, {level_name.upper()}_DATA_ADDR\n"
+	asm += f"			shld {data_init_tbl_label}\n"
+	asm += f"\n"
+	
+	asm += f"			push b\n"
+	asm += f"\n"
+
 	asm += f"			lxi h, {rooms_data_label}\n"
 	asm += f"			call update_labels_eod\n"
 	asm += f"\n"
 
-	asm += f"			lxi d, {level_name.upper()}_DATA_ADDR\n"
+	asm += f"			pop d\n"
+	asm += f"			; d = {level_name.upper()}_DATA_ADDR\n"
+	asm += f"\n"
+
 	asm += f"			lxi h, {resources_inst_data_label[1:]}\n"
 	asm += f"			mvi c, 2 ; _lv0_resources_inst_data_ptrs and _lv0_containers_inst_data_ptrs\n"
 	asm += f"			call update_labels_len\n"
