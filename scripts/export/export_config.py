@@ -16,6 +16,8 @@ from export import export_text
 from export import export_decal
 from export import export_back
 
+import fddutil_python.src.fddimage as fddimage
+
 
 def export(config_j_path):
 
@@ -95,55 +97,55 @@ def export(config_j_path):
 							asset_j_path,
 							asm_meta_path, asm_data_path, bin_path,
 							force_export)
-				
+
 				case build.ASSET_TYPE_LEVEL_DATA:
 					export_level_data.export_if_updated(
 							asset_j_path,
 							asm_meta_path, asm_data_path, bin_path,
 							force_export)
-					
+
 				case build.ASSET_TYPE_LEVEL_GFX:
 					export_level_gfx.export_if_updated(
 							asset_j_path,
 							asm_meta_path, asm_data_path, bin_path,
 							force_export)
-					
+
 				case build.ASSET_TYPE_SPRITE:
 					export_sprite.export_if_updated(
 							asset_j_path,
 							asm_meta_path, asm_data_path, bin_path,
 							force_export)
-					
+
 				case build.ASSET_TYPE_TILED_IMG_DATA:
 					export_tiled_img_data.export_if_updated(
 							asset_j_path,
 							asm_meta_path, asm_data_path, bin_path,
 							force_export)
-					
+
 				case build.ASSET_TYPE_TILED_IMG_GFX:
 					export_tiled_img_gfx.export_if_updated(
 							asset_j_path,
 							asm_meta_path, asm_data_path, bin_path,
 							force_export)
-					
+
 				case build.ASSET_TYPE_TEXT_ENG:
 					export_text.export_if_updated(
 							asset_j_path,
 							asm_meta_path, asm_data_path, bin_path,
 							force_export, build.LOCAL_ENG)
-					
+
 				case build.ASSET_TYPE_TEXT_RUS:
 					export_text.export_if_updated(
 							asset_j_path,
 							asm_meta_path, asm_data_path, bin_path,
 							force_export, build.LOCAL_RUS)
-					
+
 				case build.ASSET_TYPE_DECAL:
 					export_decal.export_if_updated(
 							asset_j_path,
 							asm_meta_path, asm_data_path, bin_path,
 							force_export)
-					
+
 				case build.ASSET_TYPE_BACK:
 					export_back.export_if_updated(
 							asset_j_path,
@@ -151,7 +153,7 @@ def export(config_j_path):
 							force_export)
 			asset = {
 				"load_name": load_name,
-				"asset_j_path" : asset_j_path,				
+				"asset_j_path" : asset_j_path,
 				"asm_meta_path": asm_meta_path,
 				"asm_data_path": asm_data_path,
 				"bin_path": bin_path,
@@ -197,7 +199,7 @@ def export(config_j_path):
 	asset_autoexec = {"bin_path": autoexec_path}
 	asset_executible = {"bin_path": com_path}
 	assets += [asset_autoexec, asset_executible]
-	
+
 	bin_paths = [asset["bin_path"] for asset in assets]
 	fdd_path = common.rename_extention(com_path, build.EXT_FDD)
 
@@ -205,7 +207,7 @@ def export(config_j_path):
 		input_files = bin_paths,
 		basefdd_path = config_j["basefdd_path"],
 		output_fdd = fdd_path)
-	
+
 
 	# export the mem usage report
 	mem_usage_path = build_bin_dir + build.MEM_USAGE_FILE_NAME
@@ -252,12 +254,12 @@ def export_autoexec(com_filename, autoexec_path):
 def export_build_consts(config_j, build_code_dir):
 
 	# save an inter-build const file
-	inter_build_consts_path = build.BUILD_PATH + "build_consts" + build.EXT_ASM	
+	inter_build_consts_path = build.BUILD_PATH + "build_consts" + build.EXT_ASM
 	with open(inter_build_consts_path, 'w') as f:
 		f.write(f'.include "{build_code_dir}/build_consts.asm"')
-	
+
 	build_consts_path = build_code_dir + "build_consts" + build.EXT_ASM
-	
+
 	asm = ""
 
 	for reservation in config_j["ram_disk_reserve"]:
@@ -302,7 +304,7 @@ def export_build_includes(assets, extra_includes):
 def get_asset_export_paths(asset_j_path, build_bin_dir):
 	with open(asset_j_path, "rb") as file:
 		asset_j = json.load(file)
- 
+
 	asset_name = common.path_to_basename(asset_j_path)
 	asset_type = asset_j["asset_type"]
 	export_asm_dir = build.build_subfolder + asset_type + "/"
@@ -321,8 +323,8 @@ def export_mem_usage(
 		ram_disk_usage_report, fdd_free_space,
 		ram_free_space_label = "RAM_FREE_SPACE"):
 	with open(raw_labels_path, "r") as file:
-		raw_labels = file.readlines() 
-	
+		raw_labels = file.readlines()
+
 	free_ram = 0
 	labels_addrs = {}
 
@@ -335,7 +337,7 @@ def export_mem_usage(
 			labels_addrs[label] = addr
 		if label == ram_free_space_label:
 			free_ram = addr
-	
+
 	# calc the size of each element in labels_addrs
 	labels = list(labels_addrs.keys())
 	code_blocks_sizes = {}
@@ -357,11 +359,11 @@ def export_mem_usage(
 		for label_name in code_blocks_sizes:
 			file.write(f"|{label_name}:|{code_blocks_sizes[label_name]}|\n")
 		file.write(f"\n")
-				
+
 		# write the fdd free space report
 		file.write(f"## FDD Usage:\n")
-		file.write(f"> Free Space: `{fdd_free_space}`\n\n")
-		
+		file.write(f"> Used: {fddimage.FDD_SIZE - fdd_free_space}, Free Space: `{fdd_free_space}`\n\n")
+
 		# write the ram disk usage report
 		file.write(f"## Ram disk usage:\n")
 		file.write(f"{ram_disk_usage_report}\n")
