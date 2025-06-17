@@ -153,7 +153,7 @@ room_tiledata_item_spawn:
 			lxi h, @restore_tiledata+1
 			mov m, b
 			; check if it's storytelling dialog tiledata
-			CPI_ZERO(TILEDATA_STORYTELLING)
+			CPI_ZERO(ITEM_ID_STORYTELLING)
 			jz @restore_tiledata
 
 			ADD_A(1) ; to make a WORD ptr

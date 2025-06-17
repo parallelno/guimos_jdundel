@@ -150,8 +150,8 @@ sword_func_breakable:
 ; a - trigger_id
 ; c - tile_idx
 sword_func_triggers:
-			cpi TIMEDATA_TRIGGER_HOME_DOOR
+			cpi TRIGGER_ID_HOME_DOOR
 			jz trigger_hero_knocks_his_home_door
-			cpi TIMEDATA_TRIGGER_DUNGEON_ENTRANCE
+			cpi TRIGGER_ID_HOME_DUNGEON_ENTRANCE
 			jz trigger_hero_knocks_dungeon_entrance
 			ret

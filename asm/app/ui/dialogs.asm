@@ -85,7 +85,7 @@ dialog_draw_frame_text:
 
 
 ;===========================================================================
-; dialog when a hero picks up the global item called TILEDATA_STORYTELLING
+; dialog when a hero picks up the global item called ITEM_ID_STORYTELLING
 ; it proceeds only if the dialog wasn't shown before
 ; it pauses everything except backs and ui, it erases backs
 ; when this dialog closes, the game redraws the room, then continues
@@ -132,7 +132,7 @@ dialog_storytelling_init:
 			jnz @loop
 			ret
 
-; called to handle TILEDATA_STORYTELLING
+; called to handle ITEM_ID_STORYTELLING
 ; level_id and room_id define what dialog to show
 dialog_storytelling:
 			; get the text ptr based on the level_id and room_id

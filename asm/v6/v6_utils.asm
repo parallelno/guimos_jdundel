@@ -339,6 +339,7 @@ jmp_tbl:
 ; out:
 ; hl - points to the last byte of EOD
 ; bc - same
+; use: bc, de, hl, a
 update_labels_eod:
 @loop:
 			; read the local ptr
