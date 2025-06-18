@@ -1,5 +1,5 @@
 ## Main Ram memory usage:
-> Free Space: `4644`
+> Free Space: `4620`
 
 |Assembly| Usage|
 |-|-|
@@ -52,11 +52,11 @@
 |memusage_screen_utils:|161|
 |memusage_score_data:|144|
 |memusage_game:|140|
+|memusage_app:|139|
 |memusage_stats:|133|
 |memusage_firepool:|124|
 |memusage_friends_mom:|124|
 |memusage_v6_interruption:|118|
-|memusage_app:|115|
 |memusage_v6_gc_runtime_data:|109|
 |memusage_burner_quest:|108|
 |memusage_v6_sprite:|105|

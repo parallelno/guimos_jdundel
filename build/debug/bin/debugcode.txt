@@ -12536,18 +12536,25 @@ $5fb9 01 00 00   lxi b,$0000
 $5fbc 11 ff 03   lxi d,$03ff
 $5fbf 3e 00      mvi a,$00
 $5fc1 cd 45 03   call $0345
-$5fc4 f3         di
-$5fc5 f1         pop psw
-$5fc6 dc 52 0b   cc $0b52
-$5fc9 21 ce 5f   lxi h,$5fce
-$5fcc e3         xthl
-$5fcd e9         pchl
-$5fce fb         ei
-$5fcf f1         pop psw
-$5fd0 d0         rnc
-$5fd1 3e e2      mvi a,$e2
-$5fd3 d3 11      out $11
-$5fd5 cd 67 08   call $0867
-$5fd8 af         xra a
-$5fd9 d3 11      out $11
-$5fdb c9         ret
+$5fc4 21 e4 5f   lxi h,$5fe4
+$5fc7 af         xra a
+$5fc8 cd c6 04   call $04c6
+$5fcb 76         hlt
+$5fcc f3         di
+$5fcd f1         pop psw
+$5fce dc 52 0b   cc $0b52
+$5fd1 21 d6 5f   lxi h,$5fd6
+$5fd4 e3         xthl
+$5fd5 e9         pchl
+$5fd6 fb         ei
+$5fd7 f1         pop psw
+$5fd8 d0         rnc
+$5fd9 3e e2      mvi a,$e2
+$5fdb d3 11      out $11
+$5fdd cd 67 08   call $0867
+$5fe0 af         xra a
+$5fe1 d3 11      out $11
+$5fe3 c9         ret
+
+$5fe4 00 00 00 00 00 00 00 00   ........
+$5fec 00 00 00 00 00 00 00 ff   .......ÿ

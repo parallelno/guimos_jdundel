@@ -4297,6 +4297,7 @@ global_start_game $5f9a
 global_load_lv0 $5fa4
 global_load_lv1 $5fab
 global_load $5fb2
-@return_9 $5fce
-memusage_end $5fdc
-RAM_FREE_SPACE $1224
+@return_9 $5fd6
+loading_palette $5fe4
+memusage_end $5ff4
+RAM_FREE_SPACE $120c

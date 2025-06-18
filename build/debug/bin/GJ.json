@@ -658,7 +658,7 @@
         "RAM_DISK_S_VAMPIRE": "0x0018",
         "RAM_DISK_S_VFX": "0x0010",
         "RAM_DISK_S_VFX4": "0x0014",
-        "RAM_FREE_SPACE": "0x1224",
+        "RAM_FREE_SPACE": "0x120C",
         "RDS_DISK": "0x0004",
         "RDS_MODE": "0x003E",
         "RDS_MODE_0": "0x0080",
@@ -1403,7 +1403,7 @@
         "@return_6": "0x3ED6",
         "@return_7": "0x43F8",
         "@return_8": "0x4891",
-        "@return_9": "0x5FCE",
+        "@return_9": "0x5FD6",
         "@right": "0x2EB5",
         "@room_draw": "0x5243",
         "@room_load_draw": "0x5236",
@@ -2878,6 +2878,7 @@
         "load_level1": "0x2955",
         "load_menu": "0x2776",
         "load_permanent": "0x26D2",
+        "loading_palette": "0x5FE4",
         "lv0_data_init": "0x2514",
         "lv0_data_init_tbl": "0x250A",
         "lv0_data_rooms_ptrs": "0x24E0",
@@ -2940,7 +2941,7 @@
         "memusage_cursor": "0x4FF3",
         "memusage_dialogs": "0x581B",
         "memusage_dotty": "0x44F6",
-        "memusage_end": "0x5FDC",
+        "memusage_end": "0x5FF4",
         "memusage_fart": "0x4ED4",
         "memusage_firepool": "0x43D9",
         "memusage_friends_mom": "0x445F",
@@ -3431,9 +3432,15 @@
     "scripts": [
         {
             "active": false,
-            "code": "local sp = GetSP()\nif sp > 0x7FBE and sp < 0x7FFE then return end\nlocal opcode = GetOpcode()\nif opcode > 0x4F then return end\nif opcode > 0x0E and opcode < 0x40 then return end\n\nlocal opcodesToSkip = {\n    [0x00] = true,\n    [0x02] = true,\n    [0x07] = true,\n    [0x08] = true,\n    [0x09] = true,\n    [0x0A] = true,\n}\nif opcodesToSkip[opcode] then return end\nif not GetINTE() then return end\nif GetByteGlobal(0x38) ~= 0xC3 or GetByteGlobal(0x39) ~= 0x78 or GetByteGlobal(0x3A) ~= 0x05 then return end\n\nprint(\"Warning! Overrideing BC in a stack critical section\")\nprint(string.format(\"PC = %04X\", GetPC()))\nprint(string.format(\"Opcode = %02X\", GetOpcode()))\nBreak()",
-            "comment": "BC updated in the stack critical section",
-            "id": 0
+            "code": "local pc = GetPC()\nif pc ~= 0x2B9F then return end\n\nlocal x = GetByteGlobal(0x75f0 + 18)\nlocal y = GetByteGlobal(0x75f0 + 20)\n\nlocal cx = GetD()\nlocal cy = GetE()\n\nlocal cw = GetB()\nlocal ch = GetC()\n\nDrawRect(1, x, y, 15, 16, 0xFFFFFFA0)\nDrawRect(2, cx, cy, cw, ch, 0x00FF00F0)\n",
+            "comment": "Draw Tile Collision",
+            "id": 3
+        },
+        {
+            "active": false,
+            "code": "local pc = GetPC()\nif pc ~= 0x3f2a then return end\n\nlocal cx = GetH()\nlocal cy = GetL()\n\nlocal cw = GetA()\nlocal ch = GetC()\n\nDrawRect(3, cx, cy, cw, ch, 0xFF0000F0)",
+            "comment": "Draw Monster Collision",
+            "id": 2
         },
         {
             "active": true,
@@ -3443,15 +3450,9 @@
         },
         {
             "active": false,
-            "code": "local pc = GetPC()\nif pc ~= 0x3f2a then return end\n\nlocal cx = GetH()\nlocal cy = GetL()\n\nlocal cw = GetA()\nlocal ch = GetC()\n\nDrawRect(3, cx, cy, cw, ch, 0xFF0000F0)",
-            "comment": "Draw Monster Collision",
-            "id": 2
-        },
-        {
-            "active": false,
-            "code": "local pc = GetPC()\nif pc ~= 0x2B9F then return end\n\nlocal x = GetByteGlobal(0x75f0 + 18)\nlocal y = GetByteGlobal(0x75f0 + 20)\n\nlocal cx = GetD()\nlocal cy = GetE()\n\nlocal cw = GetB()\nlocal ch = GetC()\n\nDrawRect(1, x, y, 15, 16, 0xFFFFFFA0)\nDrawRect(2, cx, cy, cw, ch, 0x00FF00F0)\n",
-            "comment": "Draw Tile Collision",
-            "id": 3
+            "code": "local sp = GetSP()\nif sp > 0x7FBE and sp < 0x7FFE then return end\nlocal opcode = GetOpcode()\nif opcode > 0x4F then return end\nif opcode > 0x0E and opcode < 0x40 then return end\n\nlocal opcodesToSkip = {\n    [0x00] = true,\n    [0x02] = true,\n    [0x07] = true,\n    [0x08] = true,\n    [0x09] = true,\n    [0x0A] = true,\n}\nif opcodesToSkip[opcode] then return end\nif not GetINTE() then return end\nif GetByteGlobal(0x38) ~= 0xC3 or GetByteGlobal(0x39) ~= 0x78 or GetByteGlobal(0x3A) ~= 0x05 then return end\n\nprint(\"Warning! Overrideing BC in a stack critical section\")\nprint(string.format(\"PC = %04X\", GetPC()))\nprint(string.format(\"Opcode = %02X\", GetOpcode()))\nBreak()",
+            "comment": "BC updated in the stack critical section",
+            "id": 0
         }
     ],
     "watchpoints": null
