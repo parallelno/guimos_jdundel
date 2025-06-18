@@ -49,7 +49,7 @@ screen_simple_init:
 screen_palette_and_frame:
 			lxi h, TIM_GFX_ADDR + WORD_LEN ; WORD_LEN because it's the palette local offset
 			mvi a, RAM_DISK_S_TIM_GFX
-			call copy_palette_request_update_rd
+			call copy_palette_request_update
 
 			; back1
 			lxi d, _tim_main_menu_back1

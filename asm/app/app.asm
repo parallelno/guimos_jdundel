@@ -2,14 +2,14 @@ memusage_app:
 ;=======================================================
 
 app_start:
-			di
-			MEM_ERASE_SP(SCR_ADDR, SCR_BUFFS_LEN)
-			call v6_sound_init
+			lxi h, load_permanent
+			ora a ; reset CY flag, to not init/start music
+			call global_load
 
-			call load_permanent
-			call load_menu
-			ei
-			CALL_RAM_DISK_FUNC_NO_RESTORE(v6_gc_start, RAM_DISK_M_SONG01 | RAM_DISK_M_8F)
+			lxi h, load_menu
+			stc ; set CY flag, to init/start music
+			call global_load
+
 @loop:
 			; prepare to return back from the screen
 			lxi h, @loop
@@ -40,31 +40,44 @@ global_funcs:
 
 global_start_game:
 			lxi h, load_level0
+			stc ; set CY flag, to init/start music
 			call global_load
 			jmp game
 
 global_load_lv0:
 			lxi h, load_level0
+			stc ; set CY flag, to init/start music
 			call global_load
 			;jmp game_continue
 
 global_load_lv1:
 			lxi h, load_level1
+			stc ; set CY flag, to init/start music
 			call global_load
 			;jmp game_continue
 
 ; in: 
 ; hl - load func addr, ex. load_level0
+; If CY flag is set, init the sound and start the music
 global_load:
-			push h			
-			di
+			push psw
+			push h
+			push psw
+			ei
+			
+			call palleted_fade_out
+			MEM_ERASE_SP(SCR_ADDR, SCR_BUFFS_LEN)
 
-			call v6_sound_init
+			di
+			pop psw
+			cc v6_sound_init
 
 			lxi h, @return
 			xthl
 			pchl
 @return:
 			ei
+			pop psw
+			rnc ; if the flag c is not set, don't start music
 			CALL_RAM_DISK_FUNC_NO_RESTORE(v6_gc_start, RAM_DISK_M_SONG01 | RAM_DISK_M_8F)
 			ret

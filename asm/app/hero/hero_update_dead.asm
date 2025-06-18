@@ -24,10 +24,9 @@ hero_dead_fade_init_gb:
 
 HERO_STATUS_DEATH_FADE_UPDATE_RATE = %00010001
 HERO_STATUS_DEATH_FADE_GB_TIMER = 7
-hero_dead_fade_gb:
-			; fade out a pallete
-			; do a palette animation only every Nth frame
-@anim_rate:
+; fade out the current pallete
+hero_dead_fade_gb:			
+@anim_rate: ; do a palette animation only every Nth frame
 			mvi a, HERO_STATUS_DEATH_FADE_UPDATE_RATE
 			rrc
 			sta @anim_rate + 1

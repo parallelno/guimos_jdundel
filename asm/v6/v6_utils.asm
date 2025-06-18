@@ -12,7 +12,7 @@ restore_sp:
 ; erase a memory buffer (ram)
 ; 	hl - source
 ;	bc - source + len
-; out: 
+; out:
 ;	hl - source + len
 ;	bc - source + len
 ; prep: 8cc
@@ -105,14 +105,14 @@ mem_copy_len:
 			BC_TO_BC_PLUS_HL()
 ; in:
 ; 	hl - source
-; 	de - destination			
+; 	de - destination
 ;	bc - source + len
 ; prep: 0cc
 ; loop: 56-76cc
 mem_copy:
 			; hl - source
 			; de - destination
-			; bc - source + len			
+			; bc - source + len
 @loop:
 			; copy a byte
 			mov a, m
@@ -175,9 +175,9 @@ mem_copy_to_ram_disk:
 			mov l, c
 			dad d
 @mapping:
-			mvi a, TEMP_BYTE			
+			mvi a, TEMP_BYTE
 			RAM_DISK_ON_BANK()
-			
+
 			; TODO: think of how to optimize these two movs
 			mov b, d
 			mov c, e
@@ -244,7 +244,7 @@ jmp_tbl:
 
 ; prep: 152cc
 ; loop: 60-92cc
-; TODO: optimization: unroll the loop 4 or more times, 
+; TODO: optimization: unroll the loop 4 or more times,
 ; then start it depending on the remined:
 
 .function mem_copy_from_ram_disk()
@@ -263,7 +263,7 @@ jmp_tbl:
 			xchg
 
 			; hl - destination
-			; de - destination + len			
+			; de - destination + len
 @loop2:
 			mov a, e
 @loop:
@@ -361,7 +361,7 @@ update_labels_eod:
 			inx h
 			jmp @loop
 
-; Converts local labels to absolute by adding the absolute address 
+; Converts local labels to absolute by adding the absolute address
 ; in:
 ; hl - points to the array of ptrs to the data
 ; de - the abslute data addr
@@ -412,7 +412,7 @@ set_palette_int:			; call it from an interruption routine
 			ret
 
 
-; Copy the pallete, 
+; Copy the pallete,
 ; then request for using it
 ; in:
 ; hl - ram-disk palette addr
@@ -426,23 +426,98 @@ copy_palette_request_update:
 			lxi h, palette_update_request
 			mvi m, PALETTE_UPD_REQ_YES
 			ret
+			
 
-; TODO: think of storing all palettes in one place, ram or ram-disk
-; that will unify copy_palette_request_update and copy_palette_request_update_rd
-; Copy the pallete from the ram-disk,
-; then request for using it
+PALETTE_UPDATE_EVERY_NTH_COLOR = 2 ; update every Nth color
+PALETTE_FADE_TIMER = (3 + 2) * PALETTE_UPDATE_EVERY_NTH_COLOR ; rg = 3, b = 2, update every 4th color
+
+; Inits and performes the palette fade out
+; Interrupts must be enabled
 ; in:
-; a - ram-disk activation command
-; hl - palette addr
-; uses: bc, de, hl, a
-copy_palette_request_update_rd:
-			lxi d, palette
-			lxi b, PALETTE_LEN
-			call mem_copy_from_ram_disk
-			lxi h, palette_update_request
-			mvi m, PALETTE_UPD_REQ_YES
+; a - anim speed
+palleted_fade_out:
+			call palleted_fade_init
+@loop:
+			call palleted_fade_out_update
+			CPI_ZERO()
+			hlt
+			jnz @loop
 			ret
 
+; reset the fade timer
+palleted_fade_init:
+			lxi h, palleted_fade_out_update + 1
+			mvi m, PALETTE_FADE_TIMER
+			A_TO_ZERO()
+			sta palette_first_color_id
+			ret
+
+; Fades out the current pallete
+; Interrupts must be enabled
+; out:
+; a - 0 if the fade out is complete, otherwise non-zero
+palleted_fade_out_update:
+			mvi a, PALETTE_FADE_TIMER
+			CPI_ZERO()
+			rz
+			dcr a
+			sta palleted_fade_out_update + 1
+
+			; get the first color id to fade
+			lxi h, palette_first_color_id
+			inr m
+			mov a, m
+			ani PALETTE_UPDATE_EVERY_NTH_COLOR - 1 ; %0000_0001
+			; adjust the palette pointer
+			mov e, a
+			mvi d, 0
+			lxi h, palette
+			dad d
+			; hl - points to the first color addr to update
+
+			mvi c, PALETTE_LEN / PALETTE_UPDATE_EVERY_NTH_COLOR
+
+@loop:		; color format: bb_ggg_rrr
+			; fade out the red and green components first,
+			; then blue.
+			; iterate every Nth color per update
+
+			mov a, m
+			; next if a color is black
+			CPI_ZERO()
+			jz @next_color
+
+			; check if red or green are already faded out
+			ani %00_111_111 ; get red and green
+			CPI_ZERO()
+			jnz @fade_redgreen
+@fade_blue:			
+			rrc
+			jmp @store_color
+
+@fade_redgreen:
+			mov a, m
+			rrc
+			ani %00_011_011 ; fade red and green
+			mov b, a
+			mov a, m
+			ani %11_000_000 ; add original blue
+			ora b
+@store_color:
+			mov m, a
+@next_color:
+			lxi d, PALETTE_UPDATE_EVERY_NTH_COLOR
+			dad d ; next color
+			dcr c
+			jnz @loop
+
+@update_palette:
+			lxi h, palette_update_request
+			mvi m, PALETTE_UPD_REQ_YES
+			mvi a, 1 ; not complete indicator
+			ret
+palette_first_color_id:
+			.byte 0
 
 ; empty func
 ; used as a placeholder for empty callbacks
