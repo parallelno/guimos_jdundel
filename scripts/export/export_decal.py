@@ -36,7 +36,7 @@ def export_asm(asset_j_path, asm_meta_path, asm_data_path, bin_path):
 	asset_dir = str(Path(asset_j_path).parent) + "/"
 	path_png = asset_dir + asset_j["path_png"]
 	image = Image.open(path_png)
-	_, colors, _, _ = common_gfx.palette_to_asm(image, asset_j)
+	_, colors, _, _ = common_gfx.palette_to_asm(asset_j["palette_path"], asset_j_path)
 	image = common_gfx.remap_colors(image, colors)
 
 	asm_ram_disk_data, data_relative_ptrs = gfx_to_asm("_", asset_name, asset_j, image, asset_j_path)

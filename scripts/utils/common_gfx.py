@@ -1,10 +1,20 @@
+import os
+import json
+from PIL import Image
+
 IMAGE_COLORS_MAX = 16
 
-def palette_to_asm(image, char_j, path = "", label_prefix = ""):
-	# usially there are color tiles in top row in the image.
-	palette_coords = char_j["palette"]
+def palette_to_asm(palette_path, asset_path = "", label_prefix = ""):
+	# Fix the issue by constructing the correct path using the current working directory
+	#palette_full_path = os.path.join(os.getcwd(), palette_path) 
+	with open(palette_path, "rb") as file:
+		palette_j = json.load(file)
+
+	image = Image.open(palette_j['path_png'])
+
+	palette_coords = palette_j["colors_pos"] 
 	colors = {}
-	asm = "; " + path + "\n"
+	asm = "; " + asset_path + "\n"
 	label = label_prefix + "_palette"
 	palette = image.getpalette() 
 

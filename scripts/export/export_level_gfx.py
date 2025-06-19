@@ -58,7 +58,7 @@ def ram_disk_data_to_asm(level_j_path):
 	path_png = level_dir + level_j["path_png"]
 	image = Image.open(path_png)
 
-	palette_asm, colors, palette_label, palette_len = common_gfx.palette_to_asm(image, level_j, path_png, '_' + level_name)
+	palette_asm, colors, palette_label, palette_len = common_gfx.palette_to_asm(level_j['palette_path'], path_png, '_' + level_name)
 	asm += f"			.word 0 ; safety pair of bytes for reading by POP B\n"
 	asm += f"{palette_label}_relative:\n"
 	asm += palette_asm + "\n"
@@ -112,7 +112,7 @@ def ram_data_to_asm(level_j_path, relative_ptrs, remap_idxs):
 	# palette
 	path_png = level_dir + level_j["path_png"]
 	image = Image.open(path_png)
-	_, _, palette_label, _ = common_gfx.palette_to_asm(image, level_j, path_png, '_' + level_name)
+	_, _, palette_label, _ = common_gfx.palette_to_asm(level_j['palette_path'], path_png, '_' + level_name)
 
 	#=====================================================================
 	# list of tiles

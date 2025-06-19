@@ -150,7 +150,7 @@ def export(config_j_path):
 					export_back.export_if_updated(
 							asset_j_path,
 							asm_meta_path, asm_data_path, bin_path,
-							force_export)
+							force_export) 
 			asset = {
 				"load_name": load_name,
 				"asset_j_path" : asset_j_path,
