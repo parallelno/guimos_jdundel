@@ -66,8 +66,9 @@ settings_screen:
 			jmp	@loop
 
 settings_screen_init:
+			call screen_fade_out
 			call screen_simple_init
-			call screen_palette_and_frame
+			call screen_draw_frame
 			; draw a return text a bit offsetted
 			lxi h, (0xFF - 24 + 1)<<8 | 17
 			lxi d, _options_screen_return
@@ -80,7 +81,7 @@ settings_screen_init:
 			call settings_screen_cursor_init
 
 			call reset_game_updates_required_counter
-			ret
+			jmp screen_fade_in
 
 settings_screen_text_draw:
 			lxi b, (<SETTINGS_PARAG_SPACING)<<8 | <SETTINGS_LINE_SPACING

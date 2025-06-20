@@ -45,7 +45,7 @@ main_menu:
 			jmp	 @loop
 			
 main_menu_backgound_draw:
-			call screen_palette_and_frame
+			call screen_draw_frame
 			; title1
 			lxi d, _tim_title1
 			call tiled_img_draw
@@ -245,6 +245,7 @@ main_menu_cursor_init:
 			jmp cursor_init
 
 main_menu_init:
+			call screen_fade_out
 			call screen_simple_init
 			call main_menu_backgound_draw
 			call main_menu_cursor_init
@@ -258,4 +259,4 @@ main_menu_init:
 			call backs_spawn
 
 			call reset_game_updates_required_counter
-			ret
+			jmp screen_fade_in

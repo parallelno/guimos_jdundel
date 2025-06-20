@@ -109,13 +109,8 @@ def ram_data_to_asm(level_j_path, relative_ptrs, remap_idxs):
 	asm = ""
 
 	#=====================================================================
-	# palette
-	path_png = level_dir + level_j["path_png"]
-	_, _, palette_label, _ = \
-		common_gfx.palette_file_to_asm(level_dir + level_j['palette_path'], path_png, '_' + level_name)
-
-	#=====================================================================
 	# list of tiles
+	path_png = level_dir + level_j["path_png"]
 	png_name = common.path_to_basename(path_png)
 	data_asm, list_of_tiles_label = get_list_of_tiles(remap_idxs, level_name, png_name)
 	asm += data_asm
@@ -124,13 +119,9 @@ def ram_data_to_asm(level_j_path, relative_ptrs, remap_idxs):
 	# level data init tbl
 	data_init_tbl_label = f"{level_name}_gfx_init_tbl"
 	asm += f"{data_init_tbl_label}:\n"
-	# asm += f"			.byte RAM_DISK_S_{level_name.upper()}_DATA\n"
-	# asm += f"			.byte RAM_DISK_M_{level_name.upper()}_DATA\n"	
-	asm += f"			.byte TEMP_BYTE ; defined in loads.asm and inited by _gfx_init\n"
-	asm += f"			.byte TEMP_BYTE ; defined in loads.asm and inited by _gfx_init\n"
+	asm += f"			.byte TEMP_BYTE ; RAM_DISK_S_{level_name.upper()}_DATA ; defined in loads.asm and inited by _gfx_init\n"
+	asm += f"			.byte TEMP_BYTE ; RAM_DISK_M_{level_name.upper()}_DATA ; defined in loads.asm and inited by _gfx_init\n"
 	asm += f"			.word {list_of_tiles_label}\n"
-	asm += f"{palette_label[1:]}_ptr:\n"
-	asm += f"			.word {palette_label}_relative\n"
 	asm += f"@data_end:\n"
 	asm += f"{data_init_tbl_label.upper()}_LEN = @data_end - {data_init_tbl_label}\n"	
 	asm += "\n"	
@@ -155,11 +146,6 @@ def ram_data_to_asm(level_j_path, relative_ptrs, remap_idxs):
 
 	asm += f"			pop d\n"
 	asm += f"			; d = {level_name.upper()}_DATA_ADDR\n"
-	asm += f"\n"
-
-	asm += f"			lxi h, {palette_label[1:]}_ptr\n"
-	asm += f"			mvi c, 1\n"
-	asm += f"			call update_labels_len\n"
 	asm += f"\n"
 
 	asm += f"			; copy a level init data\n"

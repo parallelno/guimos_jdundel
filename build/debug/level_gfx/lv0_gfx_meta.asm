@@ -15,11 +15,9 @@ lv0_gfx_tiles_ptrs:
 			.word EOD
 
 lv0_gfx_init_tbl:
-			.byte TEMP_BYTE ; defined in loads.asm and inited by _gfx_init
-			.byte TEMP_BYTE ; defined in loads.asm and inited by _gfx_init
+			.byte TEMP_BYTE ; RAM_DISK_S_LV0_DATA ; defined in loads.asm and inited by _gfx_init
+			.byte TEMP_BYTE ; RAM_DISK_M_LV0_DATA ; defined in loads.asm and inited by _gfx_init
 			.word lv0_gfx_tiles_ptrs
-lv0_palette_ptr:
-			.word _lv0_palette_relative
 @data_end:
 LV0_GFX_INIT_TBL_LEN = @data_end - lv0_gfx_init_tbl
 
@@ -38,10 +36,6 @@ lv0_gfx_init:
 
 			pop d
 			; d = LV0_DATA_ADDR
-
-			lxi h, lv0_palette_ptr
-			mvi c, 1
-			call update_labels_len
 
 			; copy a level init data
 			lxi h, lv0_gfx_init_tbl

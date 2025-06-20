@@ -91,11 +91,12 @@ stats_screen_text_draw:
 			jmp text_mono_draw
 
 stats_screen_init:
+			call screen_fade_out
 			call screen_simple_init
-			call screen_palette_and_frame
+			call screen_draw_frame
 			call screen_draw_return_text_button
 
 			call stats_screen_text_draw
 
 			call reset_game_updates_required_counter
-			ret
+			jmp screen_fade_in

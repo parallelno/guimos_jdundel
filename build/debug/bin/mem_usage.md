@@ -1,16 +1,16 @@
 ## Main Ram memory usage:
-> Free Space: `4534`
+> Free Space: `4501`
 
 |Assembly| Usage|
 |-|-|
-|memusage_v6_build_uncludes:|3188|
+|memusage_v6_build_uncludes:|3178|
 |memusage_hero_update:|1337|
 |memusage_v6_sprite_copy_to_backbuf:|1219|
 |memusage_v6_sprite_copy_to_scr:|1203|
 |memusage_levels_data:|1002|
 |memusage_v6_sound:|810|
 |memusage_loads_loads:|732|
-|memusage_v6_utils:|627|
+|memusage_v6_utils:|657|
 |memusage_knight:|609|
 |memusage_monsters:|574|
 |memusage_burner:|540|
@@ -22,8 +22,8 @@
 |memusage_v6_os:|440|
 |memusage_sword:|431|
 |memusage_ui:|392|
-|memusage_settings:|376|
-|memusage_main_menu:|344|
+|memusage_settings:|381|
+|memusage_main_menu:|349|
 |memusage_v6_sprite_draw:|340|
 |memusage_hero_tile_funcs:|339|
 |memusage_scythe:|303|
@@ -45,17 +45,17 @@
 |memusage_bullets:|178|
 |memusage_hero_render:|174|
 |memusage_v6_decal_draw:|173|
+|memusage_screen_utils:|169|
 |memusage_v6_sprite_erase:|168|
 |memusage_sparker:|168|
 |memusage_v6_controls:|166|
 |memusage_breakables:|163|
-|memusage_screen_utils:|161|
 |memusage_score_data:|144|
 |memusage_game:|140|
-|memusage_app:|139|
-|memusage_stats:|133|
+|memusage_stats:|138|
 |memusage_firepool:|124|
 |memusage_friends_mom:|124|
+|memusage_app:|119|
 |memusage_v6_interruption:|118|
 |memusage_v6_gc_runtime_data:|109|
 |memusage_burner_quest:|108|
@@ -65,11 +65,11 @@
 |memusage_monsters_data:|88|
 |memusage_hero:|79|
 |memusage_cursor:|78|
-|memusage_scores:|73|
+|memusage_scores:|78|
 |memusage_hero_triggers:|69|
 |memusage_score:|66|
 |memusage_app_utils:|63|
-|memusage_credits_screen:|53|
+|memusage_credits_screen:|58|
 |memusage_friends_sis:|27|
 |memusage_dotty:|27|
 |memusage_bob:|27|
@@ -115,25 +115,25 @@
 ---
 ### `menu` ram-disk usage:
 
-> Used: `7654`, Free Space: `178824`
+> Used: `7788`, Free Space: `178690`
 
 - bank1 addr8000
 	* TXT_MENU.BIN: addr: 38490, len: `1138`
 	* TIM_DATA.BIN: addr: 39628, len: `666`
-	* PAL_MENU.BIN: addr: 40294, len: `18`
+	* PAL_MENU.BIN: addr: 40294, len: `170`
 
-  `Used: 1822, Free: 648`
+  `Used: 1974, Free: 496`
 
 - bank2 addr8000
-	* TIM_GFX.BIN: addr: 45124, len: `5832`
+	* TIM_GFX.BIN: addr: 45124, len: `5814`
 
-  `Used: 5832, Free: 14580`
+  `Used: 5814, Free: 14598`
 
 
 ---
 ### `level0` ram-disk usage:
 
-> Used: `123234`, Free Space: `63244`
+> Used: `123216`, Free Space: `63262`
 
 - bank0 addr0
 	* NPC4.BIN: addr: 0, len: `11004`
@@ -161,9 +161,9 @@
 
 - bank2 addr0
 	* NPC.BIN: addr: 0, len: `3702`
-	* TI0_GFX.BIN: addr: 3702, len: `3180`
+	* TI0_GFX.BIN: addr: 3702, len: `3162`
 
-  `Used: 6882, Free: 25822`
+  `Used: 6864, Free: 25840`
 
 - bank2 addr8000
 	* KNIGHT.BIN: addr: 45124, len: `15780`
@@ -182,13 +182,13 @@
 ---
 ### `level1` ram-disk usage:
 
-> Used: `8514`, Free Space: `177964`
+> Used: `8644`, Free Space: `177834`
 
 - bank1 addr8000
 	* TNT.BIN: addr: 38490, len: `1056`
-	* PAL_LV1.BIN: addr: 39546, len: `18`
+	* PAL_LV1.BIN: addr: 39546, len: `148`
 
-  `Used: 1074, Free: 1396`
+  `Used: 1204, Free: 1266`
 
 - bank2 addr8000
 	* VAMPIRE.BIN: addr: 45124, len: `7440`

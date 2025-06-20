@@ -43,14 +43,22 @@ screen_simple_init:
 			; reset key data
 			mvi a, CONTROL_CODE_NO
 			sta action_code
-
 			ret
 
-screen_palette_and_frame:
-			lxi h, PAL_MENU_ADDR + _pal_menu_palette_relative
-			mvi a, RAM_DISK_S_PAL_MENU
-			call copy_palette_request_update
+screen_fade_out:
+			lxi d, PAL_MENU_ADDR + _pal_menu_palette_fade_to_menu_relative
+			mvi a, RAM_DISK_S_PAL_MENU 
+			jmp pallete_fade_out
 
+screen_fade_in:
+			// lxi h, PAL_MENU_ADDR + _pal_menu_palette_relative
+			// mvi a, RAM_DISK_S_PAL_MENU
+			// jmp copy_palette_request_update
+			lxi d, PAL_MENU_ADDR + _pal_menu_palette_fade_to_menu_relative
+			mvi a, RAM_DISK_S_PAL_MENU 
+			jmp pallete_fade_in
+
+screen_draw_frame:
 			; back1
 			lxi d, _tim_main_menu_back1
 			call tiled_img_draw

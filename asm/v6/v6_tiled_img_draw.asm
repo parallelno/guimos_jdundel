@@ -23,9 +23,8 @@ tiled_img_init_idxs:
 tiled_img_init_gfx:
 			sta tiled_img_draw_ramdisk_access_gfx + 1
 			; -TILE_IMG_TILE_LEN because there is no tile_gfx associated with idx = 0
-			; + PALETTE_LEN because the pallete is palette stored before gfx data
-			; + 4 because there are 4 reserved bytes stored before gfx data
-			LXI_B(-TILE_IMG_TILE_LEN + PALETTE_LEN + 4)
+			; + 2 because there are 2 reserved bytes stored before gfx data
+			LXI_B(-TILE_IMG_TILE_LEN + 2)
 			dad b
 			shld tiled_img_draw_gfx_addr + 1
 			ret

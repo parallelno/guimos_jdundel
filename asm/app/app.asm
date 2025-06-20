@@ -39,9 +39,22 @@ global_funcs:
 			.word global_load_lv1	; GLOBAL_REQ_LOAD_LEVEL1 = 8
 
 global_start_game:
+			; fade out
+			lxi d, PAL_MENU_ADDR + _pal_menu_palette_fade_to_game_relative
+			mvi a, RAM_DISK_S_PAL_MENU 
+			call pallete_fade_out
+			MEM_ERASE_SP(SCR_ADDR, SCR_BUFFS_LEN)
+
+
 			lxi h, load_level0
 			stc ; set CY flag, to init/start music
 			call global_load
+
+			; fade in
+			;lxi d, PAL_MENU_ADDR + _pal_lv0_palette_fade_to_game_relative
+			;mvi a, RAM_DISK_S_PAL_MENU
+			;call pallete_fade_out
+
 			jmp game
 
 global_load_lv0:
@@ -63,18 +76,6 @@ global_load:
 			push psw
 			push h
 			push psw
-			ei
-			
-			call palleted_fade_out
-			MEM_ERASE_SP(SCR_ADDR, SCR_BUFFS_LEN)
-
-			; set loading palette
-			lxi h, loading_palette
-			A_TO_ZERO()
-			; hl - ram-disk palette addr
-			; a - ram-disk activation command
-			call copy_palette_request_update
-			hlt
 
 			di
 			pop psw
@@ -89,9 +90,3 @@ global_load:
 			rnc ; if the flag c is not set, don't start music
 			CALL_RAM_DISK_FUNC_NO_RESTORE(v6_gc_start, RAM_DISK_M_SONG01 | RAM_DISK_M_8F)
 			ret
-
-loading_palette:
-			.byte 0, 0, 0, 0,
-			.byte 0, 0, 0, 0,
-			.byte 0, 0, 0, 0,
-			.byte 0, 0, 0, %11111111,

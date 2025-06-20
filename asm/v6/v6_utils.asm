@@ -286,7 +286,7 @@ jmp_tbl:
 
 ; Read a word from the ram-disk w/o blocking interruptions
 ; It requires two reserved bytes prior the read data
-; input:
+; in:
 ; de - data addr in the ram-disk
 ; a - ram-disk activation command
 ; use:
@@ -429,95 +429,124 @@ copy_palette_request_update:
 			
 
 PALETTE_UPDATE_EVERY_NTH_COLOR = 2 ; update every Nth color
-PALETTE_FADE_TIMER = (3 + 2) * PALETTE_UPDATE_EVERY_NTH_COLOR ; rg = 3, b = 2, update every 4th color
 
 ; Inits and performes the palette fade out
 ; Interrupts must be enabled
 ; in:
-; a - anim speed
-palleted_fade_out:
-			call palleted_fade_init
-@loop:
-			call palleted_fade_out_update
-			CPI_ZERO()
+; de - palette fade addr; ex. PAL_MENU_ADDR + _pal_menu_palette_fade_to_black_relative
+; a - ram-disk activation command
+pallete_fade_out:
+			mvi c, 0
+			call pallete_fade_init
+			jmp pallete_fade_loop
+
+pallete_fade_in:
+			mvi c, 1
+			call pallete_fade_init
+			jmp pallete_fade_loop
+
+pallete_fade_loop:
+			call pallete_fade_update
 			hlt
-			jnz @loop
+			; CY=1 if the fade is complete			
+			jnc pallete_fade_loop
 			ret
 
-; reset the fade timer
-palleted_fade_init:
-			lxi h, palleted_fade_out_update + 1
-			mvi m, PALETTE_FADE_TIMER
-			A_TO_ZERO()
-			sta palette_first_color_id
+; Resets the fade timer
+; in:
+; de - palette fade addr; ex. PAL_MENU_ADDR + _pal_menu_palette_fade_to_black_relative
+; a - ram-disk activation command
+; c - 0 - forward fade, 1 - reverse
+pallete_fade_init:
+			sta pallete_fade_update_rd_cmd + 1
+
+			; store fade direction
+			lxi h, @direction + 1
+			mov m, c
+
+			; de - data addr in the ram-disk
+			; a - ram-disk activation command
+			get_word_from_ram_disk()
+			; c - speed
+			; b - fade_iterations - 2
+			; de - data addr in the ram-disk
+
+			lxi h, pallete_fade_update_speed + 1
+			mov m, c
+			lxi h, pallete_fade_update_iterations + 1
+			mov m, b
+				
+			INX_D(2) ; advance over speed, fade_iterations
+			INX_D(SAFE_WORD_LEN) ; advance to the first fade palette
+
+			; init the fade direction (offset to the next palette in the fade)
+@direction:
+			mvi a, TEMP_BYTE ; 0 - forward fade, 1 - reverse
+			CPI_ZERO(NULL)
+			jz @forward_fade
+@reverse_fade:
+			; adjust the first palette pointer
+			; to the last palette in the fade
+			; b - fade_iterations - 2
+			xchg
+			lxi d, PALETTE_LEN + SAFE_WORD_LEN
+@loop:
+			dad d
+			dcr b
+			jnz @loop
+			xchg
+			
+			LXI_H_TO_DIFF(PALETTE_LEN + SAFE_WORD_LEN, 0)
+			jmp @store_palette_pointer
+@forward_fade:
+			; adjust the first palette pointer
+			; to the last palette in the fade
+			xchg
+			lxi d, PALETTE_LEN + SAFE_WORD_LEN
+			dad d
+			xchg
+
+@store_palette_pointer:
+			shld pallete_update_next_pal_advance + 1
+
+			xchg
+			shld pallete_update_current_pal + 1
+			
+			A_TO_ZERO(NULL)
+			sta pallete_fade_update + 1
 			ret
 
 ; Fades out the current pallete
 ; Interrupts must be enabled
 ; out:
-; a - 0 if the fade out is complete, otherwise non-zero
-palleted_fade_out_update:
-			mvi a, PALETTE_FADE_TIMER
-			CPI_ZERO()
-			rz
-			dcr a
-			sta palleted_fade_out_update + 1
+; CY=1 if the fade out is complete
+pallete_fade_update:
+			mvi a, TEMP_BYTE ; timer
+pallete_fade_update_speed:			
+			adi TEMP_BYTE ; speed
+			sta pallete_fade_update + 1
+			rnc
 
-			; get the first color id to fade
-			lxi h, palette_first_color_id
-			inr m
-			mov a, m
-			ani PALETTE_UPDATE_EVERY_NTH_COLOR - 1 ; %0000_0001
-			; adjust the palette pointer
-			mov e, a
-			mvi d, 0
-			lxi h, palette
+			; apply fade palette
+pallete_update_current_pal:
+			lxi d, TEMP_ADDR
+pallete_update_next_pal_advance:
+			lxi h, PALETTE_LEN + SAFE_WORD_LEN
 			dad d
-			; hl - points to the first color addr to update
+			shld pallete_update_current_pal + 1
+			; de - pointer to the current palette
+			; hl - pointer to the next palette
+			xchg
+			; hl - pointer to the current palette
+pallete_fade_update_rd_cmd:
+			mvi a, TEMP_BYTE
+			call copy_palette_request_update
 
-			mvi c, PALETTE_LEN / PALETTE_UPDATE_EVERY_NTH_COLOR
-
-@loop:		; color format: bb_ggg_rrr
-			; fade out the red and green components first,
-			; then blue.
-			; iterate every Nth color per update
-
-			mov a, m
-			; next if a color is black
-			CPI_ZERO()
-			jz @next_color
-
-			; check if red or green are already faded out
-			ani %00_111_111 ; get red and green
-			CPI_ZERO()
-			jnz @fade_redgreen
-@fade_blue:			
-			rrc
-			jmp @store_color
-
-@fade_redgreen:
-			mov a, m
-			rrc
-			ani %00_011_011 ; fade red and green
-			mov b, a
-			mov a, m
-			ani %11_000_000 ; add original blue
-			ora b
-@store_color:
-			mov m, a
-@next_color:
-			lxi d, PALETTE_UPDATE_EVERY_NTH_COLOR
-			dad d ; next color
-			dcr c
-			jnz @loop
-
-@update_palette:
-			lxi h, palette_update_request
-			mvi m, PALETTE_UPD_REQ_YES
-			mvi a, 1 ; not complete indicator
+pallete_fade_update_iterations:
+			mvi a, TEMP_BYTE
+			sui 1
+			sta pallete_fade_update_iterations + 1
 			ret
-palette_first_color_id:
-			.byte 0
 
 ; empty func
 ; used as a placeholder for empty callbacks

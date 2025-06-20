@@ -247,7 +247,7 @@ rooms_spawn_rates_end:			= rooms_spawn_rate_monsters + ROOMS_MAX ; $7b80
 
 ;=============================================================================
 ;
-;	free space [$7b80]
+;	free space [$7b80 - $7b83]
 ;
 ;=============================================================================
 ;
@@ -255,19 +255,19 @@ rooms_spawn_rates_end:			= rooms_spawn_rate_monsters + ROOMS_MAX ; $7b80
 ;
 
 ; a current command that is handled by the level update func
-;global_request:	= $7b81			; .byte
+;global_request:	= $			; .byte
 
 ; the current room idx of the current level
-room_id:		= $7b82			; .byte ; in the range [0, ROOMS_MAX-1]
+room_id:		= $7b84			; .byte ; in the range [0, ROOMS_MAX-1]
 ; the current level index. it must have the addr next to the room_id
 level_id:   	= room_id + 1	; .byte
 
-game_ui_item_visible_addr:	= $7b84		; .byte TEMP_BYTE ; currently shown item on the panel. range [0, ITEMS_MAX-1]
+game_ui_item_visible_addr:	= $7b86		; .byte TEMP_BYTE ; currently shown item on the panel. range [0, ITEMS_MAX-1]
 
 ;=============================================================================
 ; back runtime data
 ; must fit inside one $100 block
-backs_runtime_data:		= $7b85
+backs_runtime_data:		= $7b87
 back_anim_ptr:			= backs_runtime_data + 0	;.word TEMP_ADDR ; also (back_anim_ptr+1) stores a marker of end of the data like ACTOR_RUNTIME_DATA_LAST
 back_scr_addr:			= backs_runtime_data + 2	;.word TEMP_WORD
 back_anim_timer:		= backs_runtime_data + 4	;.byte TEMP_BYTE
@@ -283,7 +283,7 @@ BACKS_RUNTIME_DATA_LEN = backs_runtime_data_end - backs_runtime_data
 
 ;=============================================================================
 ; level init data ptr and ram-disk access commands
-lv_data_init_tbl:				= $7bc3
+lv_data_init_tbl:				= $7bc5
 lv_ram_disk_s_data:				= lv_data_init_tbl		; .byte
 lv_ram_disk_m_data:				= lv_data_init_tbl + 1	; .byte
 lv_rooms_pptr:					= lv_data_init_tbl + 2	; .word
@@ -291,13 +291,12 @@ lv_resources_inst_data_pptr:	= lv_data_init_tbl + 4	; .word
 lv_containers_inst_data_pptr:	= lv_data_init_tbl + 6	; .word
 lv_start_pos:					= lv_data_init_tbl + 8	; .word (y,x)
 
-lv_gfx_init_tbl:				= $7bcd
+lv_gfx_init_tbl:				= $7bcf
 lv_ram_disk_s_gfx:				= lv_gfx_init_tbl		; .byte
 lv_ram_disk_m_gfx:				= lv_gfx_init_tbl + 1	; .byte
 lv_tiles_pptr:					= lv_gfx_init_tbl + 2	; .word
-lv_palette_ptr:					= lv_gfx_init_tbl + 4	; .word
-;@data_end:						= lv_gfx_init_tbl + 6
-;LEVEL_INIT_TBL_LEN = @data_end - lv_data_init_tbl
+@data_end:						= lv_gfx_init_tbl + 4
+LEVEL_INIT_TBL_LEN = @data_end - lv_data_init_tbl
 
 ;=============================================================================
 ;
