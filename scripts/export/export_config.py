@@ -15,6 +15,7 @@ from export import export_tiled_img_gfx
 from export import export_text
 from export import export_decal
 from export import export_back
+from export import export_palette
 
 import fddutil_python.src.fddimage as fddimage
 
@@ -151,6 +152,11 @@ def export(config_j_path):
 							asset_j_path,
 							asm_meta_path, asm_data_path, bin_path,
 							force_export) 
+				case build.ASSET_TYPE_PALETTE:
+					export_palette.export_if_updated(
+							asset_j_path,
+							asm_meta_path, asm_data_path, bin_path,
+							force_export)
 			asset = {
 				"load_name": load_name,
 				"asset_j_path" : asset_j_path,

@@ -9,7 +9,6 @@ import utils.build as build
 
 def export_if_updated(asset_j_path, asm_meta_path, asm_data_path, bin_path,
 		force_export):
-	source_name = common.path_to_basename(asset_j_path)
 
 	if (force_export or
 		export_tiled_img_utils.is_source_updated(asset_j_path, build.ASSET_TYPE_TILED_IMG_DATA)):

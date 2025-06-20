@@ -1,18 +1,19 @@
 import os
 import json
 from PIL import Image
+from pathlib import Path
 
 IMAGE_COLORS_MAX = 16
 
-def palette_to_asm(palette_path, asset_path = "", label_prefix = ""):
-	# Fix the issue by constructing the correct path using the current working directory
-	#palette_full_path = os.path.join(os.getcwd(), palette_path) 
+def palette_file_to_asm(palette_path, asset_path = "", label_prefix = ""):
 	with open(palette_path, "rb") as file:
 		palette_j = json.load(file)
 
-	image = Image.open(palette_j['path_png'])
+	palette_dir = str(Path(palette_path).parent) + "/"
 
-	palette_coords = palette_j["colors_pos"] 
+	image = Image.open(palette_dir + palette_j['path_png'])
+
+	palette_coords = palette_j["colors_pos"]
 	colors = {}
 	asm = "; " + asset_path + "\n"
 	label = label_prefix + "_palette"
@@ -41,22 +42,6 @@ def pack_color(r,g,b):
 	b = b >> 6
 	b = b << 6
 	return b | g | r
-
-def image_palette_to_asm(colors, label_prefix):
-	asm = ""
-	#asm += "			.word 0 ; safety pair of bytes for reading by POP B\n"
-	asm += label_prefix + "_palette:\n"	
-
-	for color_idx in range(IMAGE_COLORS_MAX):
-		r = colors[color_idx*3 + 0]
-		g = colors[color_idx*3 + 1]
-		b = colors[color_idx*3 + 2]
-		color_packed = pack_color(r, g, b)
-
-		if color_idx % 4 == 0 : asm += "			.byte "
-		asm += "%" + format(color_packed, '08b') + ", "
-		if color_idx % 4 == 3 : asm += "\n"
-	return asm	
 
 def remap_colors(image, colors):
 	palette = image.getpalette()

@@ -47,8 +47,8 @@ screen_simple_init:
 			ret
 
 screen_palette_and_frame:
-			lxi h, TIM_GFX_ADDR + WORD_LEN ; WORD_LEN because it's the palette local offset
-			mvi a, RAM_DISK_S_TIM_GFX
+			lxi h, PAL_MENU_ADDR + _pal_menu_palette_relative
+			mvi a, RAM_DISK_S_PAL_MENU
 			call copy_palette_request_update
 
 			; back1

@@ -1,15 +1,15 @@
 ## Main Ram memory usage:
-> Free Space: `4620`
+> Free Space: `4534`
 
 |Assembly| Usage|
 |-|-|
-|memusage_v6_build_uncludes:|3155|
+|memusage_v6_build_uncludes:|3188|
 |memusage_hero_update:|1337|
 |memusage_v6_sprite_copy_to_backbuf:|1219|
 |memusage_v6_sprite_copy_to_scr:|1203|
 |memusage_levels_data:|1002|
 |memusage_v6_sound:|810|
-|memusage_loads_loads:|690|
+|memusage_loads_loads:|732|
 |memusage_v6_utils:|627|
 |memusage_knight:|609|
 |memusage_monsters:|574|
@@ -36,7 +36,7 @@
 |memusage_hero_data:|244|
 |memusage_v6_text_mono_draw:|229|
 |memusage_knight_heavy:|225|
-|memusage_levels:|208|
+|memusage_levels:|219|
 |memusage_backs:|199|
 |memusage_dialogs:|198|
 |memusage_room:|191|
@@ -85,7 +85,7 @@
 |memusage_runtime_data:|0|
 
 ## FDD Usage:
-> Used: `280576`, Free Space: `559104`
+> Used: `286720`, Free Space: `552960`
 
 ## Ram disk usage:
 ### `permanent` ram-disk usage:
@@ -115,13 +115,14 @@
 ---
 ### `menu` ram-disk usage:
 
-> Used: `7636`, Free Space: `178842`
+> Used: `7654`, Free Space: `178824`
 
 - bank1 addr8000
 	* TXT_MENU.BIN: addr: 38490, len: `1138`
 	* TIM_DATA.BIN: addr: 39628, len: `666`
+	* PAL_MENU.BIN: addr: 40294, len: `18`
 
-  `Used: 1804, Free: 666`
+  `Used: 1822, Free: 648`
 
 - bank2 addr8000
 	* TIM_GFX.BIN: addr: 45124, len: `5832`
@@ -132,7 +133,7 @@
 ---
 ### `level0` ram-disk usage:
 
-> Used: `123216`, Free Space: `63262`
+> Used: `123234`, Free Space: `63244`
 
 - bank0 addr0
 	* NPC4.BIN: addr: 0, len: `11004`
@@ -154,8 +155,9 @@
 	* SNOWFLAK.BIN: addr: 38490, len: `1212`
 	* FIREPOOL.BIN: addr: 39702, len: `822`
 	* TI0_DATA.BIN: addr: 40524, len: `342`
+	* PAL_LV0.BIN: addr: 40866, len: `18`
 
-  `Used: 2376, Free: 94`
+  `Used: 2394, Free: 76`
 
 - bank2 addr0
 	* NPC.BIN: addr: 0, len: `3702`
@@ -180,12 +182,13 @@
 ---
 ### `level1` ram-disk usage:
 
-> Used: `8496`, Free Space: `177982`
+> Used: `8514`, Free Space: `177964`
 
 - bank1 addr8000
 	* TNT.BIN: addr: 38490, len: `1056`
+	* PAL_LV1.BIN: addr: 39546, len: `18`
 
-  `Used: 1056, Free: 1414`
+  `Used: 1074, Free: 1396`
 
 - bank2 addr8000
 	* VAMPIRE.BIN: addr: 45124, len: `7440`

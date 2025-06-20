@@ -46,7 +46,8 @@
 			"tiled_img_data" : "scripts/export/export_tiled_img_data.py",
 			"tiled_img_gfx" : "scripts/export/export_tiled_img_gfx.py",
 			"text_eng" : "scripts/export/export_text.py",
-			"text_rus" : "scripts/export/export_text.py"
+			"text_rus" : "scripts/export/export_text.py",
+			"palette" : "scripts/export/export_palette.py"
 		},
 		"scripts" : [
 			"assets/config.json",
@@ -118,7 +119,8 @@
 		[
 			"assets/tiled_imgs/tim_data.json",
 			"assets/tiled_imgs/tim_gfx.json",
-			"assets/text/txt_menu.json"
+			"assets/text/txt_menu.json",
+			"assets/palettes/pal_menu.json"
 		],
 		"level0" :
 		[
@@ -144,12 +146,14 @@
 			"assets/tiled_imgs/ti0_data.json",
 			"assets/tiled_imgs/ti0_gfx.json",
 
-			"assets/text/txt_lv0.json"
+			"assets/text/txt_lv0.json",
+			"assets/palettes/pal_lv0.json"
 		],
 		"level1" :
 		[
 			"assets/sprites/vampire.json",
-			"assets/sprites/tnt.json"
+			"assets/sprites/tnt.json",
+			"assets/palettes/pal_lv1.json"
 		]
 	}
 }

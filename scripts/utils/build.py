@@ -24,6 +24,7 @@ ASSET_TYPE_IMAGE		= "image"
 ASSET_TYPE_MUSIC		= "music"
 ASSET_TYPE_CODE			= "code"
 ASSET_TYPE_CONFIG 		= "config"
+ASSET_TYPE_PALETTE		= "palette"
 
 LABEL_POSTFIX_ASSET_START	= "_rd_data_start"
 LABEL_POSTFIX_ASSET_END		= "_rd_data_end"

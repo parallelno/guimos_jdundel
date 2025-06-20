@@ -1,6 +1,6 @@
 {
 	"path_png" : "tiled/art/lv1.png",
-	"palette_path" : "assets/palettes/pal_lv1.json",
+	"palette_path" : "../palettes/pal_lv1.json",
 	"asset_type" : "level",
 	"hero_start_pos" : {
 		"x" : 48,

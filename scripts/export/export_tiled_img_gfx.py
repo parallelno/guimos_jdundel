@@ -11,7 +11,6 @@ import utils.build as build
 
 def export_if_updated(asset_j_path, asm_meta_path, asm_data_path, bin_path,
 		force_export):
-	source_name = common.path_to_basename(asset_j_path)
 
 	if (force_export or
 		export_tiled_img_utils.is_source_updated(asset_j_path, build.ASSET_TYPE_TILED_IMG_DATA)):
@@ -58,7 +57,8 @@ def data_to_asm(tiled_img_j_path):
 	asm = ""
 	asm += "			.word 0 ; safety pair of bytes for reading by POP B\n"
 	
-	palette_asm, colors, label, _ = common_gfx.palette_to_asm(source_j["palette_path"], path_png, "_" + source_name)
+	palette_asm, colors, label, _ = \
+		common_gfx.palette_file_to_asm(source_dir + source_j["palette_path"], path_png, "_" + source_name)
 	asm += f"{label}:\n"
 	asm += palette_asm + "\n"
 

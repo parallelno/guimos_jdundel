@@ -10,13 +10,12 @@ import utils.build as build
 
 def export_if_updated(asset_j_path, asm_meta_path, asm_data_path, bin_path,
 		force_export):
-	source_name = common.path_to_basename(asset_j_path)
 
 	if (force_export or 
 		export_level_utils.is_source_updated(asset_j_path, build.ASSET_TYPE_LEVEL_DATA)):
 		
 		export_asm(asset_j_path, asm_meta_path, asm_data_path, bin_path)
-		print(f"export_tiled_img_gfx: {asset_j_path} got exported.")
+		print(f"export_level_gfx: {asset_j_path} got exported.")
 
 def export_asm(asset_j_path, asm_meta_path, asm_data_path, bin_path):
 
@@ -56,9 +55,10 @@ def ram_disk_data_to_asm(level_j_path):
 	#=====================================================================
 	# palette
 	path_png = level_dir + level_j["path_png"]
-	image = Image.open(path_png)
+	image = Image.open(path_png) 
 
-	palette_asm, colors, palette_label, palette_len = common_gfx.palette_to_asm(level_j['palette_path'], path_png, '_' + level_name)
+	palette_asm, colors, palette_label, palette_len = \
+		common_gfx.palette_file_to_asm(level_dir + level_j['palette_path'], path_png, '_' + level_name)
 	asm += f"			.word 0 ; safety pair of bytes for reading by POP B\n"
 	asm += f"{palette_label}_relative:\n"
 	asm += palette_asm + "\n"
@@ -111,8 +111,8 @@ def ram_data_to_asm(level_j_path, relative_ptrs, remap_idxs):
 	#=====================================================================
 	# palette
 	path_png = level_dir + level_j["path_png"]
-	image = Image.open(path_png)
-	_, _, palette_label, _ = common_gfx.palette_to_asm(level_j['palette_path'], path_png, '_' + level_name)
+	_, _, palette_label, _ = \
+		common_gfx.palette_file_to_asm(level_dir + level_j['palette_path'], path_png, '_' + level_name)
 
 	#=====================================================================
 	# list of tiles

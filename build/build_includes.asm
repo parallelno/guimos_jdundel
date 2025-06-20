@@ -8,6 +8,7 @@
 .include "build/debug/tiled_img_data/tim_data_meta.asm"
 .include "build/debug/tiled_img_gfx/tim_gfx_meta.asm"
 .include "build/debug/text_eng/txt_menu_meta.asm"
+.include "build/debug/palette/pal_menu_meta.asm"
 .include "build/debug/sprite/hero_l_meta.asm"
 .include "build/debug/sprite/hero_r_meta.asm"
 .include "build/debug/sprite/burner_meta.asm"
@@ -26,8 +27,10 @@
 .include "build/debug/tiled_img_data/ti0_data_meta.asm"
 .include "build/debug/tiled_img_gfx/ti0_gfx_meta.asm"
 .include "build/debug/text_eng/txt_lv0_meta.asm"
+.include "build/debug/palette/pal_lv0_meta.asm"
 .include "build/debug/sprite/vampire_meta.asm"
 .include "build/debug/sprite/tnt_meta.asm"
+.include "build/debug/palette/pal_lv1_meta.asm"
 
 .include "build/debug/code/loads.asm"
 

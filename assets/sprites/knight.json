@@ -1,5 +1,5 @@
 {
-	"palette_path" : "assets/palettes/pal_lv1.json",
+	"palette_path" : "../palettes/pal_lv1.json",
 	"asset_type" : "sprite",	
 	"path_png" : "art/sprites_knight.png",
 	"preshifted_sprites" : 4,

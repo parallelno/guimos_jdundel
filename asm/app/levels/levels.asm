@@ -76,8 +76,16 @@ level_init:
 
 ; copy a palette from the ram-disk, then request for using it
 level_init_palette:
-			lda lv_ram_disk_s_gfx
-			lhld lv_palette_ptr
+			lda level_id
+			CPI_ZERO(LEVEL_FIRST)
+@lv0_palette:
+			lxi h, PAL_LV0_ADDR + _pal_lv0_palette_relative
+			mvi a, RAM_DISK_S_PAL_LV0
+			jz @set_palette
+@lv1_palette:
+			lxi h, PAL_LV1_ADDR + _pal_lv1_palette_relative
+			mvi a, RAM_DISK_S_PAL_LV1
+@set_palette:
 			jmp copy_palette_request_update
 
 level_update:

@@ -1,5 +1,5 @@
 {
-	"path_png" : "assets/palettes/art/pal_lv0.png",
+	"path_png" : "art/pal_lv0.png",
 	"colors_pos" :
 	[ 
 		{"x": 0,	"y" : 0},
