@@ -85,6 +85,37 @@ sprite_get_scr_addr1:
 			; de - sprite screen addr
 			ret
 
+; in:
+; hl - points to the list of .word {sprite_gfx_addr}, {preshifted_sprites_ptrs}
+; de - the number of pairs (sprite_gfx_addr, preshifted_sprites_ptrs) in the list
+sprite_update_labels_list:
+@loop:
+			push d
+
+			mov e, m
+			inx h
+			mov d, m
+			inx h
+			
+			push d
+
+			mov e, m
+			inx h
+			mov d, m
+			inx h
+
+			xthl
+			
+			; hl - sprite gfx addr (_hero_l_sprites)
+			; de - preshifted_sprites ptrs i.e. _hero_l_preshifted_sprites
+			call sprite_update_labels
+			pop h
+			pop d
+			dcx d
+			mov a, d
+			ora e
+			jnz @loop
+			ret
 
 ; updates sprite label addrs
 ; in:

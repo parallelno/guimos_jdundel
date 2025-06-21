@@ -17,7 +17,6 @@ def export_loads(config_j, assets, build_code_dir, build_bin_dir):
 
 	asm = ""
 	asm += f"memusage_{file_basename}:\n"
-	asm += f"; TODO: think of convoluting the loading function into an array and the loop\n"
 
 	report_asm = ""
 
@@ -211,11 +210,15 @@ def get_load_asm(load_name, allocation, segments):
 	asm += f";===============================================\n"
 	asm += f"; {load_name}\n"
 	asm += f";===============================================\n"
-	asm += f"load_{load_name}:\n"
+	
+	load_params = []
+	asm_load_consts = ""
+	asm_load_init = ""
+	sprite_label_init_params = []
 	
 	# load the data
-	asm += "			; ram-disk:\n"
-	for seg_name, seg in allocation.items():
+	for seg_name, seg in allocation.items():	
+		
 		for asset in seg:
 			bank_idx = segments[seg_name]["bank_idx"]
 			NAME = common.path_to_basename(asset["bin_path"]).upper()
@@ -226,56 +229,86 @@ def get_load_asm(load_name, allocation, segments):
 			const_addr = f"{NAME}_ADDR"
 			asset_addrS = f"0x{asset['addr']:04X}" 
 			
-			asm += f"			{const_ram_disk_m} = RAM_DISK_M{bank_idx}\n"
-			asm += f"			{const_ram_disk_s} = RAM_DISK_S{bank_idx}\n"
-			asm += f"			{const_addr} = {asset_addrS}\n"
-			asm += f"			LOAD_FILE({NAME}_FILENAME_PTR, {const_ram_disk_s}, {const_addr}, {NAME}_FILE_LEN)\n"
+			asm_load_consts += f"			{const_ram_disk_m} = RAM_DISK_M{bank_idx}\n"
+			asm_load_consts += f"			{const_ram_disk_s} = RAM_DISK_S{bank_idx}\n"
+			asm_load_consts += f"			{const_addr} = {asset_addrS}\n\n"
+			
+			#asm_load_init += f"			LOAD_FILE({NAME}_FILENAME_PTR, {const_ram_disk_s}, {const_addr}, {NAME}_FILE_LEN)\n"
+			
+			load_params.append([f"{NAME}_FILENAME_PTR", const_ram_disk_s, const_addr, f"{NAME}_FILE_LEN"])
 
 			asset_type = asset["type"]
 			match asset_type:
 				case build.ASSET_TYPE_FONT:
-					asm += f"			mvi a, {const_ram_disk_s}\n"
-					asm += f"			lxi h, {name_low}_gfx_ptrs\n"
-					asm += f"			lxi b, {const_addr}\n"
-					asm += f"			call text_ex_init_font\n"
+					asm_load_init += f"			mvi a, {const_ram_disk_s}\n"
+					asm_load_init += f"			lxi h, {name_low}_gfx_ptrs\n"
+					asm_load_init += f"			lxi b, {const_addr}\n"
+					asm_load_init += f"			call text_ex_init_font\n\n"
 
 				case build.ASSET_TYPE_TEXT_ENG | build.ASSET_TYPE_TEXT_RUS:
-					asm += f"			mvi a, {const_ram_disk_s}\n"
-					asm += f"			lxi h, {const_addr}\n"
-					asm += f"			call text_ex_init_text\n"
+					asm_load_init += f"			mvi a, {const_ram_disk_s}\n"
+					asm_load_init += f"			lxi h, {const_addr}\n"
+					asm_load_init += f"			call text_ex_init_text\n\n"
 				
 				case build.ASSET_TYPE_MUSIC:
-					asm += f"			lxi d, {const_addr}\n"
-					asm += f"			lxi h, {name_low}_ay_reg_data_ptrs\n"
-					asm += f"			call v6_gc_init_song\n"
+					asm_load_init += f"			lxi d, {const_addr}\n"
+					asm_load_init += f"			lxi h, {name_low}_ay_reg_data_ptrs\n"
+					asm_load_init += f"			call v6_gc_init_song\n\n"
 
 				case build.ASSET_TYPE_LEVEL_DATA | build.ASSET_TYPE_LEVEL_GFX:
-					asm += f"			lxi h, {const_ram_disk_m}<<8 | {const_ram_disk_s}\n"
-					asm += f"			lxi b, {const_addr}\n"
-					asm += f"			call {name_low}_init\n"
+					asm_load_init += f"			lxi h, {const_ram_disk_m}<<8 | {const_ram_disk_s}\n"
+					asm_load_init += f"			lxi b, {const_addr}\n"
+					asm_load_init += f"			call {name_low}_init\n\n"
 
 				case build.ASSET_TYPE_SPRITE | build.ASSET_TYPE_BACK:
-					asm += f"			lxi d, {name_low}_preshifted_sprites\n"
-					asm += f"			lxi h, {const_addr}\n"
-					asm += f"			call sprite_update_labels\n"
+					#asm_load_init += f"			lxi d, {name_low}_preshifted_sprites\n"
+					#asm_load_init += f"			lxi h, {const_addr}\n"
+					#asm_load_init += f"			call sprite_update_labels\n"
+					sprite_label_init_params.append([const_addr, f'{name_low}_preshifted_sprites'])
 
 				case build.ASSET_TYPE_TILED_IMG_DATA:
-					asm += f"			mvi a, {const_ram_disk_s}\n"
-					asm += f"			lxi h, {const_addr}\n"
-					asm += f"			call tiled_img_init_idxs\n"
+					asm_load_init += f"			mvi a, {const_ram_disk_s}\n"
+					asm_load_init += f"			lxi h, {const_addr}\n"
+					asm_load_init += f"			call tiled_img_init_idxs\n\n"
 
 				case build.ASSET_TYPE_TILED_IMG_GFX:
-					asm += f"			mvi a, {const_ram_disk_s}\n"
-					asm += f"			lxi h, {const_addr}\n"
-					asm += f"			call tiled_img_init_gfx\n"
+					asm_load_init += f"			mvi a, {const_ram_disk_s}\n"
+					asm_load_init += f"			lxi h, {const_addr}\n"
+					asm_load_init += f"			call tiled_img_init_gfx\n\n"
 
 				case build.ASSET_TYPE_DECAL:
-					asm += f"			lxi h, {name_low}_gfx_ptrs\n"
-					asm += f"			lxi b, {const_addr}\n"
-					asm += f"			call update_labels_eod\n"
+					asm_load_init += f"			lxi h, {name_low}_gfx_ptrs\n"
+					asm_load_init += f"			lxi b, {const_addr}\n"
+					asm_load_init += f"			call update_labels_eod\n\n"
 
-			
-			asm += f"\n"
+		
+	asm += asm_load_consts + "\n"
+
+	param_label = f"load_{load_name}_load_params"
+	asm += f"{param_label}:\n"
+	for params in load_params:
+		filename_ptr, command, dest, file_len = params
+		asm += f"			FILE_LOAD_PARAMS({filename_ptr}, {command}, {dest}, {file_len})\n"
+	asm += "\n"
+
+	sprite_label_init_label = f"load_{load_name}_sprite_init_data"
+	asm += f"{sprite_label_init_label}:\n"
+	for params in sprite_label_init_params: 
+		sprite_gfx_addr, preshifted_sprites_ptrs = params
+		asm += f"			.word {sprite_gfx_addr}, {preshifted_sprites_ptrs}\n"
+	asm += "\n"
+
+	asm += f"load_{load_name}:\n"
+	asm += f"			lxi h, {param_label}\n"
+	asm += f"			lxi d, {len(load_params)}\n"
+	asm += f"			call load_files_from_params\n\n"
+
+	if (len(sprite_label_init_params) > 0):
+		asm += f"			lxi h, {sprite_label_init_label}\n"
+		asm += f"			lxi d, {len(sprite_label_init_params)}\n"
+		asm += f"			call sprite_update_labels_list\n\n"
+
+	asm += asm_load_init
 
 	asm += f"			ret\n"
 

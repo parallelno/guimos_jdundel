@@ -54,6 +54,8 @@ LOCAL_SYMBOL_NAME = "LOCALIZATION"
 LOCAL_ENG	= '0'
 LOCAL_RUS	= '1'
 
+CMP_DMA_BUFFER_LEN	= 128
+
 # global consts
 BUILD_PATH = "build/"
 

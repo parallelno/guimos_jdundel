@@ -85,7 +85,7 @@ v6_os_init:
 ;=======================================================
 
 .macro LOAD_FILE(filename_ptr, command, dest, file_len)
-	odd_len = file_len & 1
+		odd_len = file_len & 1
 		.if odd_len
 			.error "file length must be even. filename_ptr = ", filename_ptr
 		.endif
@@ -102,6 +102,71 @@ v6_os_init:
 			mvi a, command
 			call load_file
 .endmacro
+
+.macro FILE_LOAD_PARAMS(filename_ptr, command, dest, file_len)
+		odd_len = file_len & 1
+		.if odd_len
+			.error "file length must be even. filename_ptr = ", filename_ptr
+		.endif
+
+		recs .var file_len>>7
+		last_rec = file_len & (CMP_DMA_BUFFER_LEN - 1)
+	.if last_rec > 0
+		recs = recs + 1
+	.endif
+
+			.word dest, filename_ptr
+			.byte last_rec, recs, command
+.endmacro
+
+; in:
+; hl - pointer to list of FILE_LOAD_PARAMS
+; de - the number of FILE_LOAD_PARAMS
+load_files_from_params:
+@loop:
+			push d
+
+			mov e, m
+			inx h
+			mov d, m
+			inx h
+			xchg
+			shld @dest+1
+			xchg
+
+			mov e, m
+			inx h
+			mov d, m
+			inx h
+
+			mov c, m
+			inx h
+			mov b, m
+			inx h
+
+			mov a, m
+			inx h
+
+			push h
+@dest:
+			lxi h, TEMP_ADDR
+
+			; hl - loading destination addr
+			; de - filename ptr
+			; b - the num of full records (128 byte long)
+			; c - the len of the last record (<128)
+			; a - ram-disk activation command			
+
+			call load_file
+			pop h
+			pop d
+			dcx d
+			mov a, d
+			ora e
+			jnz @loop
+			ret
+
+
 ; in:
 ; hl - loading destination addr
 ; de - filename ptr
@@ -275,7 +340,7 @@ set_file_name:
 
 			; Store the filename as a CPM string
 			lxi d, os_filename
-			lxi b, BASENAME_LEN
+			mvi c, BASENAME_LEN
 			call copy_filebase
 			; print the '.' symbol
 			mvi a, '.'
@@ -352,11 +417,13 @@ v6_os_exit_prep:
 			lxi h, TEMP_ADDR
 			pchl
 
-; copy a memory buffer that ends with a whitespace (' ') or takes the full length stored in bc
+; Copies a string.
+; Stops when it meets the first whitespace (' ') or
+; when it copies C characters.
 ; in:
 ; 	hl - source
 ; 	de - destination
-; 	bc - length
+; 	c - max length
 ; out:
 ; 	hl - points to the next byte after copied source buffer
 ;	de - points to the next byte after copied destination buffer
@@ -371,9 +438,6 @@ copy_filebase:
 			stax d
 			inx h
 			inx d
-			dcx b
-
-			mov a, c
-			ora b
+			dcr c
 			jnz @loop
 			ret
