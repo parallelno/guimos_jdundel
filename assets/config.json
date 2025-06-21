@@ -22,7 +22,7 @@
 		},
 		{
 			"active": true,
-			"code": "local pc = GetPC()\nif pc ~= 0x5DE then return end\n\nlocal fpsL = GetByteGlobal(0x5DF)\nlocal fpsH = GetByteGlobal(0x5E0)\n\nlocal fps = fpsH * 256 + fpsL\n\nDrawText(0, string.format(\"FPS %d\", fps), 10, 10, 0xFFFFFFFF, false)\n",
+			"code": "local pc = GetPC()\nif pc ~= 0x643 then return end\n\nlocal fpsL = GetByteGlobal(0x644)\nlocal fpsH = GetByteGlobal(0x645)\n\nlocal fps = fpsH * 256 + fpsL\n\nDrawText(0, string.format(\"FPS %d\", fps), 10, 10, 0xFFFFFFFF, false)\n",
 			"comment": "FPS",
 			"id": 1
 		},

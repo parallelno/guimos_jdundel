@@ -36,12 +36,10 @@ interruption:
 			push b
 			push d
 
-			CALL_RAM_DISK_FUNC_NO_RESTORE(v6_sound_update, RAM_DISK_M_SONG01 | RAM_DISK_M_8F)
 
-;======================================================================================================================			
-;
-;			interruption main logic start
-;
+			;================================================================
+			; interruption main logic start
+			;================================================================
 			call controls_check
 
 			;check for a palette update
@@ -93,9 +91,11 @@ interruption_fps:
 			lxi h, ints_per_sec_counter
 			mvi m, INTS_PER_SEC
 interruption_no_fps_update:				
-;===========================================================================
-;
-;			; interruption main logic end
+
+			;================================================================
+			; music update
+			;================================================================
+			CALL_RAM_DISK_FUNC_NO_RESTORE(v6_sound_update, RAM_DISK_M_SONG01 | RAM_DISK_M_8F)
 
 			pop d
 			pop b
