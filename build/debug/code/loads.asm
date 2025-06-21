@@ -1,4 +1,4 @@
-memusage_loads_loads:
+memusage_loads:
 ; TODO: think of convoluting the loading function into an array and the loop
 ;===============================================
 ; permanent
@@ -280,4 +280,4 @@ load_level1:
 			call sprite_update_labels
 
 			ret
-memusage_loads_loads_end:
+memusage_loads_end:

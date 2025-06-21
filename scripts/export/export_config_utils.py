@@ -16,7 +16,7 @@ def export_loads(config_j, assets, build_code_dir, build_bin_dir):
 	segments = get_ram_disk_layout(config_j)
 
 	asm = ""
-	asm += f"memusage_loads_{file_basename}:\n"
+	asm += f"memusage_{file_basename}:\n"
 	asm += f"; TODO: think of convoluting the loading function into an array and the loop\n"
 
 	report_asm = ""
@@ -48,7 +48,7 @@ def export_loads(config_j, assets, build_code_dir, build_bin_dir):
 		for seg_name, seg in segments.items():
 			seg["load_addr"] = seg["non_permanent_load_addr"]
 
-	asm += f"memusage_loads_{file_basename}_end:\n"
+	asm += f"memusage_{file_basename}_end:\n"
 
 	# save the file
 	with open(load_path, 'w') as f:

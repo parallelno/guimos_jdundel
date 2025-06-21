@@ -10,6 +10,6 @@ PAL_MENU_FILENAME_PTR:
 			.byte "BIN" ; extension
 
 _pal_menu_palette_relative = 0x0002
-_pal_menu_palette_fade_to_game_relative = 0x0014
+_pal_menu_palette_fade_to_load_relative = 0x0014
 _pal_menu_palette_fade_to_menu_relative = 0x0060
 
