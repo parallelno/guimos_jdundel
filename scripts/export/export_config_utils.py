@@ -300,12 +300,12 @@ def get_load_asm(load_name, allocation, segments):
 
 	asm += f"load_{load_name}:\n"
 	asm += f"			lxi h, {param_label}\n"
-	asm += f"			lxi d, {len(load_params)}\n"
+	asm += f"			mvi e, {len(load_params)}\n"
 	asm += f"			call load_files_from_params\n\n"
 
 	if (len(sprite_label_init_params) > 0):
 		asm += f"			lxi h, {sprite_label_init_label}\n"
-		asm += f"			lxi d, {len(sprite_label_init_params)}\n"
+		asm += f"			mvi e, {len(sprite_label_init_params)}\n"
 		asm += f"			call sprite_update_labels_list\n\n"
 
 	asm += asm_load_init

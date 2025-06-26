@@ -39,21 +39,25 @@ global_funcs:
 			.word global_load_lv1	; GLOBAL_REQ_LOAD_LEVEL1 = 8
 
 global_start_game:
-			; fade out
 			lxi d, PAL_MENU_ADDR + _pal_menu_palette_fade_to_load_relative
 			mvi a, RAM_DISK_S_PAL_MENU 
 			call pallete_fade_out
-			MEM_ERASE_SP(SCR_ADDR, SCR_BUFFS_LEN)
 
+			MEM_ERASE_SP(SCR_ADDR, SCR_BUFFS_LEN)
+			
+			lxi d, PAL_MENU_ADDR + _pal_menu_palette_fade_to_load_relative
+			mvi a, RAM_DISK_S_PAL_MENU
+			call pallete_fade_in
 
 			lxi h, load_level0
 			stc ; set CY flag, to init/start music
 			call global_load
 
-			; fade in
-			;lxi d, PAL_MENU_ADDR + _pal_lv0_palette_fade_to_game_relative
-			;mvi a, RAM_DISK_S_PAL_MENU
-			;call pallete_fade_out
+			lxi d, PAL_MENU_ADDR + _pal_menu_palette_fade_to_load_relative
+			mvi a, RAM_DISK_S_PAL_MENU 
+			call pallete_fade_out
+			
+			MEM_ERASE_SP(SCR_ADDR, SCR_BUFFS_LEN)
 
 			jmp game
 

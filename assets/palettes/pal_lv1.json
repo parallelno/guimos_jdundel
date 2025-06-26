@@ -23,8 +23,8 @@
 	"fades" : [
 		{
 			"name": "to_black",
-			"speed": 100,
 			"color" : {"r": 0, "g": 0, "b": 0},
+			"iterations" : 7,
 			"comment" : "r and g: 3 bit values, B: 2 bits"
 		}
 	]

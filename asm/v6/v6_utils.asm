@@ -438,19 +438,19 @@ PALETTE_UPDATE_EVERY_NTH_COLOR = 2 ; update every Nth color
 pallete_fade_out:
 			mvi c, 0
 			call pallete_fade_init
-			jmp pallete_fade_loop
-
-pallete_fade_in:
+			jmp @loop
+@pallete_fade_in:
 			mvi c, 1
 			call pallete_fade_init
-			jmp pallete_fade_loop
-
-pallete_fade_loop:
+@loop:
 			call pallete_fade_update
 			hlt
+			hlt
+			dcx h
 			; CY=1 if the fade is complete			
-			jnc pallete_fade_loop
+			jnc @loop
 			ret
+pallete_fade_in: = @pallete_fade_in
 
 ; Resets the fade timer
 ; in:
@@ -467,16 +467,13 @@ pallete_fade_init:
 			; de - data addr in the ram-disk
 			; a - ram-disk activation command
 			get_word_from_ram_disk()
-			; c - speed
-			; b - fade_iterations - 2
+			; c - fade_iterations - 2
 			; de - data addr in the ram-disk
 
-			lxi h, pallete_fade_update_speed + 1
-			mov m, c
 			lxi h, pallete_fade_update_iterations + 1
-			mov m, b
+			mov m, c
 				
-			INX_D(2) ; advance over speed, fade_iterations
+			inx d ; advance over fade_iterations
 			INX_D(SAFE_WORD_LEN) ; advance to the first fade palette
 
 			; init the fade direction (offset to the next palette in the fade)
@@ -487,16 +484,16 @@ pallete_fade_init:
 @reverse_fade:
 			; adjust the first palette pointer
 			; to the last palette in the fade
-			; b - fade_iterations - 2
+			; c - fade_iterations - 2
 			xchg
 			lxi d, PALETTE_LEN + SAFE_WORD_LEN
 @loop:
 			dad d
-			dcr b
+			dcr c
 			jnz @loop
 			xchg
 			
-			LXI_H_TO_DIFF(PALETTE_LEN + SAFE_WORD_LEN, 0)
+			LXI_H_NEG(PALETTE_LEN + SAFE_WORD_LEN)
 			jmp @store_palette_pointer
 @forward_fade:
 			; adjust the first palette pointer
@@ -508,12 +505,8 @@ pallete_fade_init:
 
 @store_palette_pointer:
 			shld pallete_update_next_pal_advance + 1
-
 			xchg
 			shld pallete_update_current_pal + 1
-			
-			A_TO_ZERO(NULL)
-			sta pallete_fade_update + 1
 			ret
 
 ; Fades out the current pallete
@@ -521,17 +514,11 @@ pallete_fade_init:
 ; out:
 ; CY=1 if the fade out is complete
 pallete_fade_update:
-			mvi a, TEMP_BYTE ; timer
-pallete_fade_update_speed:			
-			adi TEMP_BYTE ; speed
-			sta pallete_fade_update + 1
-			rnc
-
-			; apply fade palette
 pallete_update_current_pal:
 			lxi d, TEMP_ADDR
 pallete_update_next_pal_advance:
 			lxi h, PALETTE_LEN + SAFE_WORD_LEN
+			; hl - addr offset to the next palette (PALETTE_LEN + SAFE_WORD_LEN)			
 			dad d
 			shld pallete_update_current_pal + 1
 			; de - pointer to the current palette

@@ -436,14 +436,15 @@ os_disk:				= os_io_data
 
 ; the last filename IO handled
 os_filename:			= os_disk + BYTE_LEN
+			; format:
 			;.storage BASENAME_LEN
-			;.storage BYTE_LEN ; "."
-os_filename_ext:		= os_filename + BASENAME_LEN + BYTE_LEN
+			;.byte "."
 			;.storage EXT_LEN
-			;.storage 2 ; "\n$"
+			;.byte "\n$"
+OS_FILENAME_LEN_MAX = BASENAME_LEN + BYTE_LEN + EXT_LEN + WORD_LEN
 
 ; points to next byte after loaded file
-os_file_data_ptr:		= os_filename_ext + EXT_LEN + WORD_LEN
+os_file_data_ptr:		= os_filename + OS_FILENAME_LEN_MAX
 			;.word
 os_io_data_end:			= os_file_data_ptr + WORD_LEN
 OS_IO_DATA_LEN = os_io_data_end - os_io_data

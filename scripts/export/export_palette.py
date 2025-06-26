@@ -77,7 +77,6 @@ def ram_disk_data_to_asm(j_path):
 	if "fades" in palette_j:
 		for fade_j in palette_j["fades"]:
 			name = fade_j["name"]
-			speed = fade_j.get("speed", 0xFF) & 0xFF
 
 			fade_to_color = fade_j["color"]
 			# convert Vector06c color cmponents to RGB 
@@ -90,7 +89,6 @@ def ram_disk_data_to_asm(j_path):
 			asm += f"			.word 0 ; safety pair of bytes for reading by POP B\n"
 			fade_label = f"{palette_label}_fade_{name}_relative"
 			asm += f"{fade_label}:\n"
-			asm += f"			.byte {speed} ; speed\n"
 			asm += f"			.byte {fade_iterations - 2} ; fade_iterations - 2\n"
 
 			iteration_max = fade_iterations - 1 
@@ -114,7 +112,7 @@ def ram_disk_data_to_asm(j_path):
 			local_addrs += build.SAFE_WORD_LEN
 			relative_ptrs[fade_label] = local_addrs
 
-			local_addrs += build.WORD_LEN # speed, fade_iterations - 1
+			local_addrs += build.BYTE_LEN # fade_iterations - 1
 			local_addrs += (build.SAFE_WORD_LEN + common_gfx.IMAGE_COLORS_MAX) * fade_iterations
 
 	#=====================================================================

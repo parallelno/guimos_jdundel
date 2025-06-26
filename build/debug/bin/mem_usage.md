@@ -1,5 +1,5 @@
 ## Main Ram memory usage:
-> Free Space: `4708`
+> Free Space: `4598`
 
 |Assembly| Usage|
 |-|-|
@@ -9,16 +9,16 @@
 |memusage_v6_sprite_copy_to_scr:|1203|
 |memusage_levels_data:|1002|
 |memusage_v6_sound:|810|
-|memusage_v6_utils:|657|
+|memusage_v6_utils:|639|
 |memusage_knight:|609|
+|memusage_v6_os:|583|
 |memusage_monsters:|574|
 |memusage_burner:|540|
 |memusage_goose:|540|
 |memusage_cat:|540|
 |memusage_caterpillar:|530|
 |memusage_skeleton:|482|
-|memusage_v6_os:|473|
-|memusage_loads:|469|
+|memusage_loads:|462|
 |memusage_vampire:|449|
 |memusage_sword:|431|
 |memusage_ui:|392|
@@ -50,13 +50,13 @@
 |memusage_sparker:|168|
 |memusage_v6_controls:|166|
 |memusage_breakables:|163|
+|memusage_app:|146|
 |memusage_score_data:|144|
 |memusage_game:|140|
 |memusage_stats:|138|
-|memusage_v6_sprite:|128|
+|memusage_v6_sprite:|126|
 |memusage_firepool:|124|
 |memusage_friends_mom:|124|
-|memusage_app:|119|
 |memusage_v6_interruption:|118|
 |memusage_v6_gc_runtime_data:|109|
 |memusage_burner_quest:|108|
@@ -90,7 +90,7 @@
 ## Ram disk usage:
 ### `permanent` ram-disk usage:
 
-> Used: `26258`, Free Space: `186478`
+> Used: `26426`, Free Space: `186310`
 
 - bank0 addr8000
 	* DECALS0.BIN: addr: 32768, len: `4660`
@@ -103,8 +103,9 @@
 	* VFX4.BIN: addr: 32768, len: `3888`
 	* BOMB.BIN: addr: 36656, len: `960`
 	* BACKS0.BIN: addr: 37616, len: `874`
+	* PAL_MENU.BIN: addr: 38490, len: `168`
 
-  `Used: 5722, Free: 2470`
+  `Used: 5890, Free: 2302`
 
 - bank2 addr8000
 	* SONG01.BIN: addr: 32768, len: `12356`
@@ -115,14 +116,13 @@
 ---
 ### `menu` ram-disk usage:
 
-> Used: `7788`, Free Space: `178690`
+> Used: `7618`, Free Space: `178692`
 
 - bank1 addr8000
-	* TXT_MENU.BIN: addr: 38490, len: `1138`
-	* TIM_DATA.BIN: addr: 39628, len: `666`
-	* PAL_MENU.BIN: addr: 40294, len: `170`
+	* TXT_MENU.BIN: addr: 38658, len: `1138`
+	* TIM_DATA.BIN: addr: 39796, len: `666`
 
-  `Used: 1974, Free: 496`
+  `Used: 1804, Free: 498`
 
 - bank2 addr8000
 	* TIM_GFX.BIN: addr: 45124, len: `5814`
@@ -133,15 +133,16 @@
 ---
 ### `level0` ram-disk usage:
 
-> Used: `123216`, Free Space: `63262`
+> Used: `123346`, Free Space: `62964`
 
 - bank0 addr0
 	* NPC4.BIN: addr: 0, len: `11004`
 	* SKELETON.BIN: addr: 11004, len: `9870`
 	* CAT.BIN: addr: 20874, len: `9810`
 	* SCYTHE.BIN: addr: 30684, len: `1554`
+	* TI0_DATA.BIN: addr: 32238, len: `342`
 
-  `Used: 32238, Free: 466`
+  `Used: 32580, Free: 124`
 
 - bank1 addr0
 	* BURNER.BIN: addr: 0, len: `9030`
@@ -152,12 +153,11 @@
   `Used: 29612, Free: 3092`
 
 - bank1 addr8000
-	* SNOWFLAK.BIN: addr: 38490, len: `1212`
-	* FIREPOOL.BIN: addr: 39702, len: `822`
-	* TI0_DATA.BIN: addr: 40524, len: `342`
-	* PAL_LV0.BIN: addr: 40866, len: `18`
+	* SNOWFLAK.BIN: addr: 38658, len: `1212`
+	* FIREPOOL.BIN: addr: 39870, len: `822`
+	* PAL_LV0.BIN: addr: 40692, len: `148`
 
-  `Used: 2394, Free: 76`
+  `Used: 2182, Free: 120`
 
 - bank2 addr0
 	* NPC.BIN: addr: 0, len: `3702`
@@ -182,13 +182,13 @@
 ---
 ### `level1` ram-disk usage:
 
-> Used: `8644`, Free Space: `177834`
+> Used: `8644`, Free Space: `177666`
 
 - bank1 addr8000
-	* TNT.BIN: addr: 38490, len: `1056`
-	* PAL_LV1.BIN: addr: 39546, len: `148`
+	* TNT.BIN: addr: 38658, len: `1056`
+	* PAL_LV1.BIN: addr: 39714, len: `148`
 
-  `Used: 1204, Free: 1266`
+  `Used: 1204, Free: 1098`
 
 - bank2 addr8000
 	* VAMPIRE.BIN: addr: 45124, len: `7440`

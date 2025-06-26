@@ -8,7 +8,6 @@ _pal_menu_palette_relative:
 
 			.word 0 ; safety pair of bytes for reading by POP B
 _pal_menu_palette_fade_to_load_relative:
-			.byte 255 ; speed
 			.byte 2 ; fade_iterations - 2
 			.word 0 ; safety pair of bytes for reading by POP B
 			.byte 0x4a, 0x01, 0x5c, 0x1a, 0xe4, 0xfd, 0x77, 0x5f, 0x42, 0xeb, 0x4c, 0x4b, 0xff, 0x49, 0x52, 0x5b, 
@@ -21,7 +20,6 @@ _pal_menu_palette_fade_to_load_relative:
 
 			.word 0 ; safety pair of bytes for reading by POP B
 _pal_menu_palette_fade_to_menu_relative:
-			.byte 255 ; speed
 			.byte 2 ; fade_iterations - 2
 			.word 0 ; safety pair of bytes for reading by POP B
 			.byte 0x4a, 0x01, 0x5c, 0x1a, 0xe4, 0xfd, 0x77, 0x5f, 0x42, 0xeb, 0x4c, 0x4b, 0xff, 0x49, 0x52, 0x5b, 

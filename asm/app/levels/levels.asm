@@ -24,7 +24,6 @@ levels_init:
 ;
 level_init:
 			; init the screen
-			call level_init_palette
 			mvi a, 1
 			sta border_color_idx
 			mvi a, SCR_VERTICAL_OFFSET_DEFAULT
@@ -69,24 +68,10 @@ level_init:
 			mvi l, ROOM_ID_0
 			A_TO_ZERO(GLOBAL_REQ_NONE)
 			call room_teleport
-			
 			call room_init
+			call level_palette_fade_in
 			call hero_respawn
 			jmp hero_room_init
-
-; copy a palette from the ram-disk, then request for using it
-level_init_palette:
-			lda level_id
-			CPI_ZERO(LEVEL_FIRST)
-@lv0_palette:
-			lxi h, PAL_LV0_ADDR + _pal_lv0_palette_relative
-			mvi a, RAM_DISK_S_PAL_LV0
-			jz @set_palette
-@lv1_palette:
-			lxi h, PAL_LV1_ADDR + _pal_lv1_palette_relative
-			mvi a, RAM_DISK_S_PAL_LV1
-@set_palette:
-			jmp copy_palette_request_update
 
 level_update:
 			lda global_request
@@ -127,3 +112,17 @@ level_update:
 			call hero_respawn
 			jmp @room_load_draw
 
+
+; the palette fade-in
+level_palette_fade_in:
+			lda level_id
+			CPI_ZERO(LEVEL_FIRST)
+@lv0_palette:
+			lxi d, PAL_LV0_ADDR + _pal_lv0_palette_fade_to_black_relative
+			mvi a, RAM_DISK_S_PAL_LV0
+			jz @set_palette
+@lv1_palette:
+			lxi d, PAL_LV1_ADDR + _pal_lv1_palette_fade_to_black_relative
+			mvi a, RAM_DISK_S_PAL_LV1
+@set_palette:
+			jmp pallete_fade_in

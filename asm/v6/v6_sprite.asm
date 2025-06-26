@@ -87,7 +87,7 @@ sprite_get_scr_addr1:
 
 ; in:
 ; hl - points to the list of .word {sprite_gfx_addr}, {preshifted_sprites_ptrs}
-; de - the number of pairs (sprite_gfx_addr, preshifted_sprites_ptrs) in the list
+; e - the number of pairs (sprite_gfx_addr, preshifted_sprites_ptrs) in the list
 sprite_update_labels_list:
 @loop:
 			push d
@@ -111,9 +111,7 @@ sprite_update_labels_list:
 			call sprite_update_labels
 			pop h
 			pop d
-			dcx d
-			mov a, d
-			ora e
+			dcr e
 			jnz @loop
 			ret
 

@@ -1,7 +1,6 @@
 release/
 rom/
 generated/
-temp/
 __pycache__/
 
 # v06c

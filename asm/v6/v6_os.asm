@@ -34,6 +34,8 @@ msg_file_saved:		.byte "File saved\n$"
 
 donemsg:			.byte "Done\n$"
 */
+LOADING_TEXT_SCR_BUFF = 0xB000
+
 ;=======================================================
 ; OS init. Should be called first in the application
 ; in:
@@ -83,7 +85,7 @@ v6_os_init:
 ;=======================================================
 ; Read file
 ;=======================================================
-
+/*
 .macro LOAD_FILE(filename_ptr, command, dest, file_len)
 		odd_len = file_len & 1
 		.if odd_len
@@ -102,7 +104,7 @@ v6_os_init:
 			mvi a, command
 			call load_file
 .endmacro
-
+*/
 .macro FILE_LOAD_PARAMS(filename_ptr, command, dest, file_len)
 		odd_len = file_len & 1
 		.if odd_len
@@ -121,51 +123,58 @@ v6_os_init:
 
 ; in:
 ; hl - pointer to list of FILE_LOAD_PARAMS
-; de - the number of FILE_LOAD_PARAMS
+; e - the number of FILE_LOAD_PARAMS
 load_files_from_params:
+			push h
+			push d
+			call loading_text_draw
+			pop d
+			pop h
 @loop:
 			push d
+			push h
+			xchg
+			; hl - reversed file counter
+			lxi b, 0x0930 + LOADING_TEXT_SCR_BUFF
+			; bc - scr addr
+			; l - int8
+			call text_mono_draw_int8
+			pop h
 
+			; get the loading destination addr
 			mov e, m
 			inx h
 			mov d, m
 			inx h
-			xchg
-			shld @dest+1
-			xchg
-
+			push d
+			; get filename_ptr
 			mov e, m
 			inx h
 			mov d, m
 			inx h
-
+			; get last_rec
 			mov c, m
 			inx h
+			; get recs
 			mov b, m
 			inx h
-
+			; get ram-disk activation command
 			mov a, m
 			inx h
 
-			push h
-@dest:
-			lxi h, TEMP_ADDR
-
+			xthl
 			; hl - loading destination addr
 			; de - filename ptr
 			; b - the num of full records (128 byte long)
 			; c - the len of the last record (<128)
-			; a - ram-disk activation command			
+			; a - ram-disk activation command
 
 			call load_file
 			pop h
 			pop d
-			dcx d
-			mov a, d
-			ora e
+			dcr e
 			jnz @loop
 			ret
-
 
 ; in:
 ; hl - loading destination addr
@@ -186,6 +195,7 @@ load_file_next:
 			sta @restore_last_rec_len+1
 
 			xchg
+			; hl - ptr to a filename (8 bytes name, 3 bytes extention)
 			call set_file_name
 
 			; Open the file
@@ -332,7 +342,7 @@ set_file_name:
 			; copy a filename string
 			push h
 			lxi d, CPM_FCB+1 ; file name addr
-			lxi b, FILENAME_LEN		
+			lxi b, FILENAME_LEN
 			call mem_copy_len
 			pop h
 
@@ -441,3 +451,103 @@ copy_filebase:
 			dcr c
 			jnz @loop
 			ret
+
+; draws an image 8 pxls tall.
+loading_text_draw:
+			lxi d, @loading
+			lxi h, 0x0430 + LOADING_TEXT_SCR_BUFF
+			mvi b, 5 ; width in bytes
+			call @new_char
+			lxi d, @left
+			lxi h, 0x0B30 + LOADING_TEXT_SCR_BUFF
+			mvi b, 3 ; width in bytes
+@new_char:
+			mvi c, 8
+@loop:
+			ldax d
+			mov m, a
+			inx d
+			dcr l
+			dcr c
+			jnz @loop
+			; advance HL to the next char position
+			mvi a, 8
+			add l
+			mov l, a
+			inr h
+			dcr b
+			jnz @new_char
+			ret
+; text "LOADING:" atored as an row 40x8 image
+@loading:
+			.byte %10000011
+			.byte %10000100
+			.byte %10000100
+			.byte %10000100
+			.byte %10000100
+			.byte %10000100
+			.byte %11110011
+			.byte 0
+
+			.byte %10001110
+			.byte %01010001
+			.byte %01010001
+			.byte %01011111
+			.byte %01010001
+			.byte %01010001
+			.byte %10010001
+			.byte 0
+
+			.byte %01111011
+			.byte %01000101
+			.byte %01000101
+			.byte %01000101
+			.byte %01000101
+			.byte %01000101
+			.byte %01111011
+			.byte 0
+
+			.byte %10100010
+			.byte %00110010
+			.byte %00101010
+			.byte %00101010
+			.byte %00100110
+			.byte %00100110
+			.byte %10100010
+			.byte 0
+
+			.byte %01110000
+			.byte %10001010
+			.byte %10000000
+			.byte %10111000
+			.byte %10001000
+			.byte %10001010
+			.byte %01111000
+			.byte 0
+@left:
+			.byte %10000111
+			.byte %10000100
+			.byte %10000100
+			.byte %10000111
+			.byte %10000100
+			.byte %10000100
+			.byte %11110111
+			.byte 0
+
+			.byte %10111101
+			.byte %00100000
+			.byte %00100000
+			.byte %10111000
+			.byte %00100000
+			.byte %00100000
+			.byte %10100000
+			.byte 0
+
+			.byte %11110000
+			.byte %01000000
+			.byte %01000000
+			.byte %01000000
+			.byte %01000000
+			.byte %01000000
+			.byte %01000000
+			.byte 0

@@ -19,5 +19,13 @@
 		{"x": 234,	"y" : 0},
 		{"x": 240,	"y" : 0}
 	],
-	"asset_type" : "palette"
+	"asset_type" : "palette",
+	"fades" : [
+		{
+			"name": "to_black",
+			"color" : {"r": 0, "g": 0, "b": 0},
+			"iterations" : 7,
+			"comment" : "r and g: 3 bit values, B: 2 bits"
+		}		
+	]
 }

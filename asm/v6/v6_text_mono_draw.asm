@@ -112,7 +112,7 @@ int8_to_ascii_dec_decr:
 ; draw int8 as an acii text
 ; in:
 ; bc - scr addr
-; hl - int8 ptr
+; hl - points to int8
 text_mono_draw_int8_ptr:
 			mov l, m
 ; in:
@@ -162,7 +162,12 @@ text_mono_draw:
 			dad h
 			dad h
 			dad h
+.if TEXT_MONOSPACED_CHARS == 1
+			lxi d, font_mono - 0 ; 0 - ???
+.endif
+.if TEXT_MONOSPACED_CHARS == 0
 			lxi d, font_mono - 384 ; 384 - to exclude alhabet and leave only numbers
+.endif
 			dad d
 			xchg
 

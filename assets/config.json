@@ -113,14 +113,14 @@
 
 			"assets/sprites/bomb.json",
 			
-			"assets/music/song01.json"
+			"assets/music/song01.json",
+			"assets/palettes/pal_menu.json"
 		],
 		"menu" :
 		[
 			"assets/tiled_imgs/tim_data.json",
 			"assets/tiled_imgs/tim_gfx.json",
-			"assets/text/txt_menu.json",
-			"assets/palettes/pal_menu.json"
+			"assets/text/txt_menu.json"
 		],
 		"level0" :
 		[

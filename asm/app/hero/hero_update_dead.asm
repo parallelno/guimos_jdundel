@@ -138,7 +138,7 @@ hero_dead_fade_r:
 			call room_fill_tiledata
 
 			; copy a palette from the ram-disk, then request for using it
-			call level_init_palette
+			call level_palette_fade_in
 
 			; create an actor to move it to the right which spawns sparkle effects
 			lxi h, hero_pos_x + 1

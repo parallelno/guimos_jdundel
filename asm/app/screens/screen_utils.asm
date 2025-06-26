@@ -46,12 +46,12 @@ screen_simple_init:
 			ret
 
 screen_fade_out:
-			lxi d, PAL_MENU_ADDR + _pal_menu_palette_fade_to_menu_relative
-			mvi a, RAM_DISK_S_PAL_MENU 
+			lxi d, PAL_MENU_ADDR + _pal_menu_palette_fade_to_load_relative
+			mvi a, RAM_DISK_S_PAL_MENU
 			jmp pallete_fade_out
 
 screen_fade_in:
-			lxi d, PAL_MENU_ADDR + _pal_menu_palette_fade_to_menu_relative
+			lxi d, PAL_MENU_ADDR + _pal_menu_palette_fade_to_load_relative
 			mvi a, RAM_DISK_S_PAL_MENU 
 			jmp pallete_fade_in
 
