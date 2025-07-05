@@ -100,7 +100,7 @@ Examples:
 
 If you add "codePerfStart_<label_name>" and "codePerfEnd_<label_name>" markers
 to your code, the build system adds a code perf block enity with those addresses
-to our debug data.
+to our debug data. You can use @ or any other prefixes.
 
 ;===========================================================================
 ; How to add a script to the debug data?

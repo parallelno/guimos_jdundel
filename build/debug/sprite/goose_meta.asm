@@ -36,8 +36,10 @@ _goose_run_l1_1_relative = 4580
 _goose_run_l1_2_relative = 4838
 _goose_run_l1_3_relative = 5096
 
-sprite_get_scr_addr_goose = sprite_get_scr_addr4
-
+goose_get_scr_addr:
+			.word sprite_get_scr_addr4
+goose_ram_disk_s_cmd:
+			.byte TEMP_BYTE ; inited by sprite_init_meta_data
 goose_preshifted_sprites:
 			.byte 4
 goose_anims:

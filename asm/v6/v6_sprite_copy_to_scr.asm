@@ -139,12 +139,13 @@ sprite_copy_to_scr_v:
 			mov b, m
 			dcr l
 			mov c, m
-			/* TODO: optimization: instead executing extra code to prevent data 
-			corruption by the interruption break, we can do next:
-			when a draw func starts, send the interruption return addr that 
-			leads to a start the this draw func. if the interraption ends, 
-			it returns back to the start of the the draw func and it executes 
-			code again with a guaranty that the data is not corrupted this time.*/
+			/* TODO: Optimization: Instead of executing extra code to prevent data 
+			corruption by the interruption break, we can do the following: When a 
+			draw function starts, we set the interruption function return address 
+			to the start of the draw function. If an interruption break occurs 
+			during a draw function call, the interruption restarts the draw 
+			function, guaranteeing that the data will not be corrupted. In short, 
+			we call the draw function again if the interruption occurs.*/
 			RAM_DISK_ON(RAM_DISK_S_BACKBUFF)
 
 			mov m, c

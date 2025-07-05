@@ -198,15 +198,17 @@ sprite_get_scr_addr1_vfx:
 			inx h 
 			mov e, m
 			ret
+sprite_get_scr_addr1_vfx_ptr:
+			.word sprite_get_scr_addr1_vfx
 
 ; draw a non-preshifted sprite into a backbuffer
 ; in:
 ; de - ptr to bullet_draw_ptr 
 vfx_draw:
-			ACTOR_DRAW(sprite_get_scr_addr1_vfx, RAM_DISK_S_VFX, false)
+			ACTOR_DRAW(sprite_get_scr_addr1_vfx_ptr, vfx_ram_disk_s_cmd, false)
 
 ; draw a sprite into a backbuffer
 ; in:
 ; de - ptr to bullet_draw_ptr 
 vfx_draw4:
-			ACTOR_DRAW(sprite_get_scr_addr_vfx4, RAM_DISK_S_VFX4, false)
+			ACTOR_DRAW(vfx4_get_scr_addr, vfx4_ram_disk_s_cmd, false)

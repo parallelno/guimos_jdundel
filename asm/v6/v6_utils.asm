@@ -133,7 +133,7 @@ mem_copy:
 ; copy a memory buffer (ram to ram-disk)
 ; !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 ; !!! IT CORRUPTS TWO BYTES BEFORE THE BUFFER !!!
-; !!!        IF INTERRUPTIONS ARE ENABLED     !!!
+; !!!      IF INTERRUPTIONS ARE ENABLED       !!!
 ; !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 MEM_COPY_WORD_LEN = 5
 ; in:
@@ -178,7 +178,7 @@ mem_copy_to_ram_disk:
 			mvi a, TEMP_BYTE
 			RAM_DISK_ON_BANK()
 
-			; TODO: think of how to optimize these two movs
+			; TODO: think of how to optimize these two MOVs
 			mov b, d
 			mov c, e
 
@@ -433,7 +433,7 @@ PALETTE_UPDATE_EVERY_NTH_COLOR = 2 ; update every Nth color
 ; Inits and performes the palette fade out
 ; Interrupts must be enabled
 ; in:
-; de - palette fade addr; ex. PAL_MENU_ADDR + _pal_menu_palette_fade_to_black_relative
+; de - palette fade addr; ex. PERMANENT_PAL_MENU_ADDR + _pal_menu_palette_fade_to_black_relative
 ; a - ram-disk activation command
 pallete_fade_out:
 			mvi c, 0
@@ -454,7 +454,7 @@ pallete_fade_in: = @pallete_fade_in
 
 ; Resets the fade timer
 ; in:
-; de - palette fade addr; ex. PAL_MENU_ADDR + _pal_menu_palette_fade_to_black_relative
+; de - palette fade addr; ex. PERMANENT_PAL_MENU_ADDR + _pal_menu_palette_fade_to_black_relative
 ; a - ram-disk activation command
 ; c - 0 - forward fade, 1 - reverse
 pallete_fade_init:

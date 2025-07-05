@@ -16,8 +16,10 @@ _firepool_idle2_0_relative = 302
 _firepool_idle3_0_relative = 488
 _firepool_idle4_0_relative = 662
 
-sprite_get_scr_addr_firepool = sprite_get_scr_addr1
-
+firepool_get_scr_addr:
+			.word sprite_get_scr_addr1
+firepool_ram_disk_s_cmd:
+			.byte TEMP_BYTE ; inited by sprite_init_meta_data
 firepool_preshifted_sprites:
 			.byte 1
 firepool_anims:

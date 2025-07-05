@@ -323,7 +323,7 @@ settings_screen_cursor_update:
 			cpi SETTINGS_ID_RETURN
 			jnz @check_music
 			; set the global req to return to the main nemu
-			mvi a, GLOBAL_REQ_MAIN_MENU
+			mvi a, GLOBAL_REQ_MENU_MAIN
 			sta global_request
 			ret
 @check_music:

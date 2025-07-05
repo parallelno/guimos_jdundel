@@ -59,7 +59,7 @@ erase_sprite_end:
 
 .macro ERASE_SPRITE_SP_COL(next_column = true)
 
-	; TODO: issue. there is an problem with this macro
+	; TODO: issue. there is a problem with this macro
 	; when it erases the last two bytes with PUSH B
 	; an interruption call erases two more bytes below it.
 	; there is one solution below, but it costly

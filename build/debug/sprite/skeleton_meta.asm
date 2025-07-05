@@ -51,8 +51,10 @@ _skeleton_run_l3_1_relative = 9134
 _skeleton_run_l3_2_relative = 9320
 _skeleton_run_l3_3_relative = 9596
 
-sprite_get_scr_addr_skeleton = sprite_get_scr_addr4
-
+skeleton_get_scr_addr:
+			.word sprite_get_scr_addr4
+skeleton_ram_disk_s_cmd:
+			.byte TEMP_BYTE ; inited by sprite_init_meta_data
 skeleton_preshifted_sprites:
 			.byte 4
 skeleton_anims:

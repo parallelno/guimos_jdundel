@@ -105,6 +105,7 @@ TILEDATA_COLLIDABLE		= 8 * TILEDATA_ARG_MAX ; all tiledatas with values bigger t
 ; ffff == 10, triggers. activated when a hero hits it. trigger_id = d
 		TRIGGER_ID_HOME_DOOR = 0 ; when he hits his house door.
 		TRIGGER_ID_HOME_DUNGEON_ENTRANCE = 1 ; when he hits the dungeon door.
+		TRIGGER_ID_TEMP_LV1 = 7 ; enter the second level
 
 ; ffff == 11, collidable containers that leave rewards on the floor 
 ;		when a hero hits it. container_id = d.

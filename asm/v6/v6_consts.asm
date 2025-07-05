@@ -174,7 +174,10 @@ OPCODE_MOV_M_A	= 0x77
 OPCODE_POP_B	= 0xC1
 OPCODE_STC		= 0x37
 OPCODE_INX_D	= 0x13
+OPCODE_LXI_B	= 0x01
+OPCODE_LXI_D	= 0x11
 OPCODE_LXI_H	= 0x21
+OPCODE_LXI_SP	= 0x31
 
 ;=======================================================
 ; AY-3-8910 sound chip consts

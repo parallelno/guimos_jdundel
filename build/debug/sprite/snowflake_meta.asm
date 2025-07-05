@@ -23,8 +23,10 @@ _snowflake_run2_1_relative = 956
 _snowflake_run2_2_relative = 1022
 _snowflake_run2_3_relative = 1148
 
-sprite_get_scr_addr_snowflake = sprite_get_scr_addr4
-
+snowflake_get_scr_addr:
+			.word sprite_get_scr_addr4
+snowflake_ram_disk_s_cmd:
+			.byte TEMP_BYTE ; inited by sprite_init_meta_data
 snowflake_preshifted_sprites:
 			.byte 4
 snowflake_anims:

@@ -56,6 +56,16 @@ trigger_hero_knocks_dungeon_entrance:
 			sta global_request
 			ret
 
+; TODO: Load level 1 for tests
+trigger_test_load_lv1:
+			mvi a, GAME_REQ_PAUSE
+			lxi h, @callback
+			lxi d, _dialogs_knocked_dungeon_entrance
+			jmp dialog_init
 
+@callback:
+			mvi a, GAME_REQ_LV1
+			sta global_request
+			ret
 
 

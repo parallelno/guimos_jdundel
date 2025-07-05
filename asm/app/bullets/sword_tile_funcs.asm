@@ -154,4 +154,6 @@ sword_func_triggers:
 			jz trigger_hero_knocks_his_home_door
 			cpi TRIGGER_ID_HOME_DUNGEON_ENTRANCE
 			jz trigger_hero_knocks_dungeon_entrance
+			cpi TRIGGER_ID_TEMP_LV1
+			jz trigger_test_load_lv1
 			ret

@@ -28,8 +28,10 @@ _bomb_dmg1_1_relative = 764
 _bomb_dmg1_2_relative = 806
 _bomb_dmg1_3_relative = 884
 
-sprite_get_scr_addr_bomb = sprite_get_scr_addr4
-
+bomb_get_scr_addr:
+			.word sprite_get_scr_addr4
+bomb_ram_disk_s_cmd:
+			.byte TEMP_BYTE ; inited by sprite_init_meta_data
 bomb_preshifted_sprites:
 			.byte 4
 bomb_anims:

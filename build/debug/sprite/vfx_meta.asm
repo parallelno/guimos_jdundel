@@ -25,8 +25,10 @@ _vfx_firepool0_0_relative = 1592
 _vfx_firepool1_0_relative = 1694
 _vfx_firepool2_0_relative = 1796
 
-sprite_get_scr_addr_vfx = sprite_get_scr_addr1
-
+vfx_get_scr_addr:
+			.word sprite_get_scr_addr1
+vfx_ram_disk_s_cmd:
+			.byte TEMP_BYTE ; inited by sprite_init_meta_data
 vfx_preshifted_sprites:
 			.byte 1
 vfx_anims:

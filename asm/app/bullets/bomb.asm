@@ -136,4 +136,4 @@ bomb_update:
 ; in:
 bomb_draw:
 ; de - ptr to bullet_draw_ptr 
-			ACTOR_DRAW(sprite_get_scr_addr_bomb, RAM_DISK_S_BOMB, false)
+			ACTOR_DRAW(bomb_get_scr_addr, bomb_ram_disk_s_cmd, false)

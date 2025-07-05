@@ -224,16 +224,14 @@ def get_load_asm(load_name, allocation, segments):
 			NAME = common.path_to_basename(asset["bin_path"]).upper()
 			name_low = common.path_to_basename(asset["asset_j_path"])
 
-			const_ram_disk_m = f"RAM_DISK_M_{NAME}"
-			const_ram_disk_s = f"RAM_DISK_S_{NAME}"
-			const_addr = f"{NAME}_ADDR"
+			const_ram_disk_m = f"{load_name.upper()}_{NAME}_RAM_DISK_M"
+			const_ram_disk_s = f"{load_name.upper()}_{NAME}_RAM_DISK_S"
+			const_addr = f"{load_name.upper()}_{NAME}_ADDR"
 			asset_addrS = f"0x{asset['addr']:04X}" 
 			
 			asm_load_consts += f"			{const_ram_disk_m} = RAM_DISK_M{bank_idx}\n"
 			asm_load_consts += f"			{const_ram_disk_s} = RAM_DISK_S{bank_idx}\n"
 			asm_load_consts += f"			{const_addr} = {asset_addrS}\n\n"
-			
-			#asm_load_init += f"			LOAD_FILE({NAME}_FILENAME_PTR, {const_ram_disk_s}, {const_addr}, {NAME}_FILE_LEN)\n"
 			
 			load_params.append([f"{NAME}_FILENAME_PTR", const_ram_disk_s, const_addr, f"{NAME}_FILE_LEN"])
 
@@ -261,10 +259,8 @@ def get_load_asm(load_name, allocation, segments):
 					asm_load_init += f"			call {name_low}_init\n\n"
 
 				case build.ASSET_TYPE_SPRITE | build.ASSET_TYPE_BACK:
-					#asm_load_init += f"			lxi d, {name_low}_preshifted_sprites\n"
-					#asm_load_init += f"			lxi h, {const_addr}\n"
-					#asm_load_init += f"			call sprite_update_labels\n"
-					sprite_label_init_params.append([const_addr, f'{name_low}_preshifted_sprites'])
+					sprite_label_init_params.append(
+						[f'{name_low}_ram_disk_s_cmd', const_ram_disk_s, const_addr])
 
 				case build.ASSET_TYPE_TILED_IMG_DATA:
 					asm_load_init += f"			mvi a, {const_ram_disk_s}\n"
@@ -294,9 +290,15 @@ def get_load_asm(load_name, allocation, segments):
 	sprite_label_init_label = f"load_{load_name}_sprite_init_data"
 	asm += f"{sprite_label_init_label}:\n"
 	for params in sprite_label_init_params: 
-		sprite_gfx_addr, preshifted_sprites_ptrs = params
-		asm += f"			.word {sprite_gfx_addr}, {preshifted_sprites_ptrs}\n"
+		ram_disk_cmd_ptr, ram_disk_s_cmd, sprite_gfx_addr  = params
+		asm += f"			.word {ram_disk_cmd_ptr}\n"
+		asm += f"			.byte {ram_disk_s_cmd} | RAM_DISK_M_BACKBUFF | RAM_DISK_M_8F\n"
+		asm += f"			.word {sprite_gfx_addr}\n"
 	asm += "\n"
+
+	'''
+	Load + Init labels / add a global load addr to the local labels
+	'''
 
 	asm += f"load_{load_name}:\n"
 	asm += f"			lxi h, {param_label}\n"
@@ -306,10 +308,22 @@ def get_load_asm(load_name, allocation, segments):
 	if (len(sprite_label_init_params) > 0):
 		asm += f"			lxi h, {sprite_label_init_label}\n"
 		asm += f"			mvi e, {len(sprite_label_init_params)}\n"
-		asm += f"			call sprite_update_labels_list\n\n"
+		asm += f"			call sprite_init_meta_data\n\n"
 
 	asm += asm_load_init
 
-	asm += f"			ret\n"
+	asm += f"			ret\n\n"
 
+	'''
+	Uninit labels / make them back to local  
+	'''
+	asm += f"uninit_{load_name}:\n" 
+
+	if (len(sprite_label_init_params) > 0):
+		asm += f"			lxi h, {sprite_label_init_label}\n"
+		asm += f"			mvi e, {len(sprite_label_init_params)}\n"
+		asm += f"			call sprite_uninit_meta_data\n\n"
+
+	asm += f"			ret\n"
+	
 	return asm

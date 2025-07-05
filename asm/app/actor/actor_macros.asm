@@ -288,9 +288,9 @@
 ; requires (bullet_erase_scr_addr+1 - bullet_erase_wh) == (monster_erase_scr_addr+1 - monster_erase_wh)
 ; in:
 ; de - ptr to actor_draw_ptr 
-.macro ACTOR_DRAW(sprite_get_scr_addr_actor, RAM_DISK_S, check_invis = true, jump_to_func = true)
-			lxi h, sprite_get_scr_addr_actor
-			mvi a, RAM_DISK_S | RAM_DISK_M_BACKBUFF | RAM_DISK_M_8F
+.macro ACTOR_DRAW(sprite_get_scr_addr_actor_ptr, ram_disk_s_ptr, check_invis = true, jump_to_func = true)
+			lhld sprite_get_scr_addr_actor_ptr
+			lda ram_disk_s_ptr
 		.if check_invis
 			mvi c, 1
 		.endif
@@ -329,7 +329,7 @@
 ; a - ram_disk_access_cmd | RAM_DISK_M_BACKBUFF | RAM_DISK_M_8F
 ; c - check invisibility, 0 - no check, 1 - check
 actor_draw:
-			shld actor_draw_get_scr_addr_actor + 1
+			shld @get_scr_addr_actor + 1
 			sta @ramdisk_cmd + 1
 
 			A_TO_ZERO(NULL)
@@ -391,5 +391,3 @@ actor_draw:
 			inx h
 			mov m, d
 			ret
-
-actor_draw_get_scr_addr_actor: = @get_scr_addr_actor

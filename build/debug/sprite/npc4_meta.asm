@@ -76,8 +76,10 @@ _npc4_crow_run_l2_1_relative = 10502
 _npc4_crow_run_l2_2_relative = 10670
 _npc4_crow_run_l2_3_relative = 10838
 
-sprite_get_scr_addr_npc4 = sprite_get_scr_addr4
-
+npc4_get_scr_addr:
+			.word sprite_get_scr_addr4
+npc4_ram_disk_s_cmd:
+			.byte TEMP_BYTE ; inited by sprite_init_meta_data
 npc4_preshifted_sprites:
 			.byte 4
 npc4_anims:

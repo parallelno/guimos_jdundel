@@ -137,7 +137,10 @@ def anims_to_asm(label_prefix, asset_name, asset_j, data_relative_ptrs, asset_j_
 		preshifted_sprites != 4 and preshifted_sprites != 8):
 		build.exit_error(f'export_sprite ERROR: preshifted_sprites can be only equal 1, 4, 8", path: {asset_j_path}')
 
-	asm += f"sprite_get_scr_addr_{asset_name} = sprite_get_scr_addr{preshifted_sprites}\n\n"
+	asm += f"{asset_name}_get_scr_addr:\n"
+	asm += f"			.word sprite_get_scr_addr{preshifted_sprites}\n"
+	asm += f"{asset_name}_ram_disk_s_cmd:\n"
+	asm += f"			.byte TEMP_BYTE ; inited by sprite_init_meta_data\n"
 	asm += f"{asset_name}_preshifted_sprites:\n"
 	asm += f"			.byte {str(preshifted_sprites)}\n"
 
@@ -254,7 +257,8 @@ def img_to_preshifted_sprite(
 
 
 	# combine bits into byte lists
-	#bytes0 = common.combine_bits_to_bytes(bits0) # 8000-9FFF # from left to right, from bottom to top
+	# bits go from left to right, from bottom to top
+	#bytes0 = common.combine_bits_to_bytes(bits0) # 8000-9FFF
 	bytes1 = common.combine_bits_to_bytes(bits1) # A000-BFFF
 	bytes2 = common.combine_bits_to_bytes(bits2) # C000-DFFF
 	bytes3 = common.combine_bits_to_bytes(bits3) # E000-FFFF
@@ -262,7 +266,20 @@ def img_to_preshifted_sprite(
 	mask_bytes = common.combine_bits_to_bytes(mask_bits) if mask_bits else None
 
 	# packing bytes to the sprite data
-	data = sprite_data(bytes1, bytes2, bytes3, new_w, h, mask_bytes) 
+	data = sprite_data(bytes1, bytes2, bytes3, new_w, h, mask_bytes)
+
+	# TODO: Perf comparison between the old line by line draw func, and the new one
+	# that draws row by row only visible bytes.
+	# data_row_by_row, row_heights = sprite_data2(bytes1, bytes2, bytes3, mask_bytes, new_w, h)
+	# orig_cc, old_len, row1_cc, row1_len, line2_cc, line2_len = \
+	# 	calc_cpu_cycles(row_heights, new_w, h)
+	# with open(f"sprite_draw_compare.txt", "a") as f:
+	# 	f.write(
+	# 		f"{frame_label[:-8]}, "
+	# 		f"orig_cc: {orig_cc}, old_len: {old_len}, "
+	# 		f"row1_cc: {row1_cc}, new_len: {row1_len}, "
+	# 		f"line2_cc: {line2_cc}, line2_len: {line2_len}\n"
+	# 		)
 
 	offset_x_packed = (offset_x + local_offset_x) // 8
 	new_w_packed = new_w // 8 - 1 
@@ -372,11 +389,155 @@ def get_anim_labels(path, main_ram_labels_addrs):
 
 	return 	anim_labels
 
+def sprite_data2(bytes1, bytes2, bytes3, mask_bytes, width, h):
+	# sprite data structure description is in draw_sprite.asm
+	# sprite uses only 3 out of 4 screen buffers.
+	# bytes order: mask, bytes1, bytes2, bytes3
+	# row by row from bottom to top, from left to right
+	w = width // 8
+	data = []
+	row_heights = []
+	for x in range(w):
+		row_data = []
+		for y in range(h):
+			i = y*w+x
+			row_data.append([mask_bytes[i], bytes1[i], bytes2[i], bytes3[i]])
+
+		# find first not 0xFF byte
+		mask_starts_at = 0
+		for i in range(len(row_data)):
+			if row_data[i] != 0xFF:
+				mask_starts_at = i
+				break
+		# find last not 0xFF byte
+		mask_ends_at = len(row_data) - 1
+		for i in reversed(range(len(row_data))):
+			if row_data[i] != 0xFF:
+				mask_ends_at = i
+				break
+		# add row, and reverse every second row
+		# details in draw_sprite.asm
+		row_h = mask_ends_at + 1 - mask_starts_at
+		for i in range(mask_starts_at, mask_ends_at + 1, 1):
+			a, scr1, scr2, scr3 = row_data[i]
+			even_line = y % 2 == 0
+			if even_line:
+				data.append(a)
+				data.append(scr1)
+				data.append(scr2)
+				data.append(scr3)
+			else:
+				data.append(a)				
+				data.append(scr3)
+				data.append(scr2)
+				data.append(scr1)
+
+		# add scr addr offset to the next row
+		TEMP_OFFSET_L = 0x00
+		TEMP_OFFSET_H = 0x00
+		data.append(TEMP_OFFSET_L)
+		data.append(TEMP_OFFSET_H)
+		# add height & placeholder byte
+		data.append(row_h)
+		data.append(0)
+		row_heights.append(row_h)
+
+	return data, row_heights
+
+def calc_cpu_cycles(row_heights, w, h):
+	w_in_bytes = w // 8
+
+	# orig sprite draw cost:
+	# prep 16: 49*4 = 196 cc
+	# prep 24: 49*4 + 4*4 = 212 cc
+	# prep 8: 49*4 + 4*4 + 3*4 = 224 cc
+	
+	# w16 prep: 16*4 = 64 cc
+	# line w16 loop: (11*6 + 5) * 4 = 284 cc per line
+	# w24 prep: 18*4 = 72 cc
+	# line w24 loop: (11*9 + 5) * 4 = 416 cc per line
+	# w8 prep: 16*4 = 64 cc
+	# line w8 loop: (11*3 + 5) * 4 = 152 cc per line
+	
+	# ret: 48 cc
+
+	line1_prep16 = 196
+	line1_prep24 = line1_prep16 + 16
+	line1_prep8 = line1_prep24 + 12
+	line1_w8_prep = 64
+	line1_w8_loop = 152	
+	line1_w16_prep = 64
+	line1_w16_loop = 284
+	line1_w24_prep = 72
+	line1_w24_loop = 416
+	line1_ret = 48
+
+	if w == 8:
+		line1_cc = line1_prep8 + line1_w8_prep + line1_w8_loop*h + line1_ret
+	elif w == 16:
+		line1_cc = line1_prep16 + line1_w16_prep + line1_w16_loop*h + line1_ret
+	elif w == 24:
+		line1_cc = line1_prep24 + line1_w24_prep + line1_w24_loop*h + line1_ret
+
+	line1_len = 2 + 2 + 2 + w_in_bytes * h * 6
+
+	# draw_spite_rvm, draw by row cost:
+	# prep: 18*4= 72 cc
+	# row prep: 36*4 = 144 cc
+	# row loop: 37*4 = 148 cc per byte
+	# post row: 3*4 = 12 cc
+	# ret: (14+17) * 4 = 124 cc
+	
+	row1_prep = 72
+	row1_row_prep = 144
+	#row1_row_loop = 148 # row end test every line	
+	#row1_row_loop = 138 # row end test every second line
+	row1_row_loop = 128 # no row end test
+	row1_post_row = 12
+	row1_ret = 124
+
+	row1_total_bytes = sum(row_heights)
+	
+	row1_cc = row1_prep + \
+				(row1_row_prep + row1_post_row) * w_in_bytes + \
+				row1_row_loop * row1_total_bytes + row1_ret
+	
+	row1_len = 2 + (2 + 2) * w_in_bytes + row1_total_bytes * 4
+
+
+	# new approach, draw by line cost:
+	# prep 16: 49*4 = 196 cc
+	# prep 24: 49*4 + 4*4 = 212 cc
+	# prep 8: 49*4 + 4*4 + 3*4 = 224 cc
+
+	# prep: (w_in_bytes * 6 + 1)*4
+	# loop: (32*w_in_bytes + 5) * 4 = cc per line
+	# ret: 48 cc
+
+	line2_prep16 = 196
+	line2_prep24 = line2_prep16 + 16
+	line2_prep8 = line2_prep24 + 12
+	line2_line_prep = (w_in_bytes * 6 + 1) * 4
+	line2_loop = (32*w_in_bytes + 5) * 4
+	line2_ret = 48
+
+	if w == 8:
+		line2_cc = line2_prep8 + line2_line_prep + line2_loop*h + line2_ret
+	elif w == 16:
+		line2_cc = line2_prep16 + line2_line_prep + line2_loop*h + line2_ret
+	elif w == 24:
+		line2_cc = line2_prep24 + line2_line_prep + line2_loop*h + line2_ret
+
+	line2_len = 2 + 2 + 2 + w_in_bytes * h * 4
+
+	return line1_cc, line1_len, row1_cc, row1_len, line2_cc, line2_len
+
+	
 
 def sprite_data(bytes1, bytes2, bytes3, width, h, mask_bytes = None): 
 	# sprite data structure description is in draw_sprite.asm
 	# sprite uses only 3 out of 4 screen buffers.
-	# the w is devided by 8 because there is 8 pixels per a byte
+	# the w is devided by 8 (8 pxls per byte)
 	w = width // 8
 	data = []
 	for y in range(h):

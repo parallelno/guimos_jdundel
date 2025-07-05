@@ -65,7 +65,7 @@ memusage_burner:
 ; statuses.
 ; personal actor statuses must be in a range of 0 to ACTOR_STATUS_CUSTOM including.
 ACTOR_STATUS_BURNER_DETECT_HERO_INIT	= ACTOR_STATUS_INIT
-ACTOR_STATUS_BURNER_DETECT_HERO			= 1 * JMP_4_LEN ; TODO: why * JMP_4_LEN???
+ACTOR_STATUS_BURNER_DETECT_HERO			= 1 * JMP_4_LEN ; TODO: remove JMP_4_LEN. it was used for tests (case insttead bunch of if else. P.S. if else won!)
 ACTOR_STATUS_BURNER_DASH_PREP			= 2 * JMP_4_LEN
 ACTOR_STATUS_BURNER_DASH				= 3 * JMP_4_LEN
 ACTOR_STATUS_BURNER_RELAX				= 4 * JMP_4_LEN
@@ -397,4 +397,4 @@ burner_update_anim_check_collision_hero:
 ; in:
 ; de - ptr to monster_draw_ptr 
 burner_draw:
-			ACTOR_DRAW(sprite_get_scr_addr_burner, RAM_DISK_S_BURNER, false)
+			ACTOR_DRAW(burner_get_scr_addr, burner_ram_disk_s_cmd, false)

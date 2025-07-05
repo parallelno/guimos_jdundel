@@ -4,7 +4,7 @@ memusage_caterpillar:
 ; statuses.
 ; personal actor statuses must be in a range of 0 to ACTOR_STATUS_CUSTOM including.
 ACTOR_STATUS_CATERPILLAR_DETECT_HERO_INIT	= ACTOR_STATUS_INIT
-ACTOR_STATUS_CATERPILLAR_DETECT_HERO			= 1 * JMP_4_LEN ; TODO: why * JMP_4_LEN???
+ACTOR_STATUS_CATERPILLAR_DETECT_HERO			= 1 * JMP_4_LEN ; TODO: remove JMP_4_LEN. it was used for tests (case insttead bunch of if else. P.S. if else won!)
 ACTOR_STATUS_CATERPILLAR_DASH_PREP			= 2 * JMP_4_LEN
 ACTOR_STATUS_CATERPILLAR_DASH				= 3 * JMP_4_LEN
 ACTOR_STATUS_CATERPILLAR_RELAX				= 4 * JMP_4_LEN

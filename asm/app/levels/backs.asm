@@ -193,6 +193,6 @@ backs_draw:
 			mov e, m
 			inx h
 			mov d, m
-			CALL_RAM_DISK_FUNC(draw_back_v, RAM_DISK_S_BACKS0)
+			CALL_RAM_DISK_FUNC(draw_back_v, PERMANENT_BACKS0_RAM_DISK_S)
 			ret
 back_runtime_data_ptr_draw: = backs_draw + 1

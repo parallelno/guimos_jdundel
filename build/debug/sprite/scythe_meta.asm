@@ -28,8 +28,10 @@ _scythe_run3_1_relative = 1250
 _scythe_run3_2_relative = 1400
 _scythe_run3_3_relative = 1478
 
-sprite_get_scr_addr_scythe = sprite_get_scr_addr4
-
+scythe_get_scr_addr:
+			.word sprite_get_scr_addr4
+scythe_ram_disk_s_cmd:
+			.byte TEMP_BYTE ; inited by sprite_init_meta_data
 scythe_preshifted_sprites:
 			.byte 4
 scythe_anims:

@@ -52,8 +52,10 @@ _sword_sword_l1_5_relative = 8048
 _sword_sword_l1_6_relative = 8342
 _sword_sword_l1_7_relative = 8636
 
-sprite_get_scr_addr_sword = sprite_get_scr_addr8
-
+sword_get_scr_addr:
+			.word sprite_get_scr_addr8
+sword_ram_disk_s_cmd:
+			.byte TEMP_BYTE ; inited by sprite_init_meta_data
 sword_preshifted_sprites:
 			.byte 8
 sword_anims:

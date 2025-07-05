@@ -36,8 +36,10 @@ _vfx4_hero_death2_1_relative = 3488
 _vfx4_hero_death2_2_relative = 3590
 _vfx4_hero_death2_3_relative = 3740
 
-sprite_get_scr_addr_vfx4 = sprite_get_scr_addr4
-
+vfx4_get_scr_addr:
+			.word sprite_get_scr_addr4
+vfx4_ram_disk_s_cmd:
+			.byte TEMP_BYTE ; inited by sprite_init_meta_data
 vfx4_preshifted_sprites:
 			.byte 4
 vfx4_anims:

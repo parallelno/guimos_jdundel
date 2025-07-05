@@ -39,7 +39,7 @@ draw_sprite_width_height:
 ; use: a, hl, sp
 
 ; data format:
-; .word - two safety bytes to prevent a data corruption by the interruption  func
+; .word - two safety bytes prevent data corruption caused by interruptions
 ; .byte - offset_y
 ; .byte - offset_x
 ; .byte - height
@@ -144,6 +144,12 @@ sprite_draw_vm:	; VM stands for: V - variable height, M - mask support
 			jmp draw_sprite_ret
 ;-------------------------------------------------
 @width24:
+; sprite 24x15:
+; prep: 18*4=72cc
+; loop: (11*9 + 5)*15 * 4 = 6240cc
+; total: 6312 cc
+; total + init: 6312 + 53*4 = 6524 cc
+
 			; save the high screen byte to restore X
 			mvi a, 2
 			add h
@@ -238,6 +244,7 @@ sprite_draw_vm:	; VM stands for: V - variable height, M - mask support
 			jmp draw_sprite_ret
 sprite_draw_vm_end:
 
+; 9*4=36cc
 .macro DRAW_SPRITE_V_M()
 			pop b
 			mov a, m
@@ -245,3 +252,291 @@ sprite_draw_vm_end:
 			ora b
 			mov m, a
 .endmacro
+
+
+/*
+; draws a sprite by rows. each row is variable pxls height and have an offset
+; in:
+; bc - sprite data
+; de - screen addr
+
+; data format:
+; .word - two safety bytes prevent data corruption caused by interruptions
+; new row:
+; .word - row_scr_addr_offset_xy - row offset relative to
+; 														the previous row or the
+; 														sprite bottom-left corner 
+; 														if it's the first row
+; .byte - height, row_id+1
+; first byte:
+; .byte mask, color_scr1, color_scr2, color_scr3
+; next byte above:
+; .byte mask, color_scr3, color_scr2, color_scr1
+; ...
+; new row:
+; ...
+; last bytes:
+; .word scr_offset - offset to the bootom-left corner of the sprite visible area.
+;						Used for sprite_copy_to_scr and sprite_erase funcs
+; .byte - NULL, row_id+1
+; .byte - height, width
+
+draw_spite_rvm: ; r - draw by rows, v - variable pxls height, m - mask support
+			; store SP
+			lxi h, 0
+			dad sp
+			shld draw_sprite_restore_sp + 1
+			; sp = BC
+			mov	h, b
+			mov	l, c
+			sphl
+
+			xchg
+			hl - scr addr
+
+@next_row:
+			pop b ; bc - row_scr_addr_offset_xy
+			dad b
+			pop b ; c - height, b - row_id+1
+			dcr b
+			jz @end
+
+			mov a, h
+			sta @init_x + 1
+			adi $20
+			sta @init_x_plus_20_01 + 1
+			sta @init_x_plus_20_02 + 1
+			adi $20
+			sta @init_x_plus_40 + 1			
+
+@loop:	
+// odd byte from Scr1 to Scr3
+    		// Scr1
+			pop b ; b - color_scr1, c - mask
+			mov a, m
+			ana c
+			ora b
+			mov m, a
+
+@init_x_plus_20_01:
+			mvi h, TEMP_BYTE ; init_x + 0x20
+			mov d, c
+
+			// Scr2
+			mov a, m
+			ana c
+			pop b ; c - color_scr2, b - color_scr3
+			ora c
+			mov m, a
+
+@init_x_plus_40:
+			mvi h, TEMP_BYTE ; init_x + 0x40
+
+			// Scr3
+			mov a, m
+			ana d
+			ora b
+			mov m, a
+			
+			inr l ; X + 1
+
+			dcr e
+			jz @check_end
+			
+// even byte. from Scr3 to Scr1
+			
+			// Scr3
+			pop b ; b - color_scr3, c - mask
+			mov a, m
+			ana c
+			ora b
+			mov m, a
+
+@init_x_plus_20_02:
+			mvi h, TEMP_BYTE ; init_x + 0x20
+			mov d, c
+
+			// Scr2
+			mov a, m
+			ana c
+			pop b ; c - color_scr2, b - color_scr1
+			ora c
+			mov m, a
+@init_x:
+			mvi h, TEMP_BYTE ; init_x + 0x00
+
+			// Scr1
+			mov a, m
+			ana d
+			ora b
+			mov m, a
+			
+			inr l ; X + 1
+
+			dcr e
+			jnz @loop
+			
+			jmp @next_row
+
+@end:
+			; read scr offset to 
+			pop b ; b - width, c - height
+			mov d, b
+			mov e, c
+draw_sprite_restore_sp:
+			lxi sp, TEMP_ADDR
+			mov b, h
+			mov c, l
+			ret
+*/
+
+
+/*
+; draws a sprite 24xN pxls, line by line
+; in:
+; SP - sprite addr
+; HL - scr addr
+; D - width in bytes
+; E - height
+
+; sprite format:
+; mask, color_scr1, color_scr2, color_scr3
+; mask, color_scr3, color_scr2, color_scr1
+; mask, color_scr1, color_scr2, color_scr3
+; next line data
+; mask, color_scr3, color_scr2, color_scr1
+; mask, color_scr1, color_scr2, color_scr3
+; mask, color_scr3, color_scr2, color_scr1
+; next line data
+; ...
+
+draw_spite_w24:
+; prep
+			mvi $dx
+			add h
+			sta @init_x_plus_dx
+			adi $dx
+			sta @init_x_plus_dx
+			adi $dx
+			sta @init_x_plus_dx
+			adi $dx
+			sta @init_x_plus_dx
+			adi $dx
+			sta @init_x_plus_dx
+			adi $dx
+			sta @init_x_plus_dx
+			adi $dx
+			sta @init_x_plus_dx
+			adi $dx
+			sta @init_x_plus_dx
+			adi $dx
+			sta @init_x_plus_dx
+			adi $dx
+			sta @init_x_plus_dx
+			adi $dx
+			sta @init_x_plus_dx
+			adi $dx
+			sta @init_x_plus_dx
+
+loop:
+// first byte from Scr1 to Scr3
+    		// Scr1
+			pop b ; b - color_scr1, c - mask
+			mov a, m
+			ana c
+			ora b
+			mov m, a
+
+			mvi h, TEMP_BYTE ; init_x + 0x20
+			mov d, c
+
+			// Scr2
+			mov a, m
+			ana c
+			pop b ; c - color_scr2, b - color_scr3
+			ora c
+			mov m, a
+
+			mvi h, TEMP_BYTE ; init_x + 0x40
+
+			// Scr3
+			mov a, m
+			ana d
+			ora b
+			mov m, a
+			
+			inr h ; X + 1
+			; 32*4=
+			
+// second byte from Scr3 to Scr1
+			
+			// Scr3
+			pop b ; b - color_scr3, c - mask
+			mov a, m
+			ana c
+			ora b
+			mov m, a
+
+			mvi h, TEMP_BYTE ; init_x + 0x21
+			mov d, c
+
+			// Scr2
+			mov a, m
+			ana c
+			pop b ; c - color_scr2, b - color_scr1
+			ora c
+			mov m, a
+
+			mvi h, TEMP_BYTE ; init_x + 0x01
+
+			// Scr1
+			mov a, m
+			ana d
+			ora b
+			mov m, a
+			
+			inr h ; X + 1
+
+// last byte from Scr1 to Scr3
+			
+			// Scr1
+			pop b ; b - color_scr1, c - mask
+			mov a, m
+			ana c
+			ora b
+			mov m, a
+
+			mvi h, TEMP_BYTE ; init_x + 0x22
+			mov d, c
+
+			// Scr2
+			mov a, m
+			ana c
+			pop b ; c - color_scr2, b - color_scr3
+			ora c
+			mov m, a
+
+			mvi h, TEMP_BYTE ; init_x + 0x42
+
+			// Scr3
+			mov a, m
+			ana d
+			ora b
+			mov m, a
+			
+			inr l ; Y + 1
+
+			dcr e
+			jz @end
+            
+// repeat the loop code above in reverse
+            dcr e
+            jnz @loop
+
+			; sprite 24 x 15 perf:
+            ; prep: (6*12 + 1)*4=292 cc
+			; loop: (96 + 5) * 15 * 4 = 6060 cc
+			; total: 6352 cc
+            ; 47.05 cc per byte
+            ; 44.83 cc per byte w/o a loop counter
+*/

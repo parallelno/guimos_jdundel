@@ -48,8 +48,10 @@ _vampire_cast_0_1_relative = 6656
 _vampire_cast_0_2_relative = 6854
 _vampire_cast_0_3_relative = 7148
 
-sprite_get_scr_addr_vampire = sprite_get_scr_addr4
-
+vampire_get_scr_addr:
+			.word sprite_get_scr_addr4
+vampire_ram_disk_s_cmd:
+			.byte TEMP_BYTE ; inited by sprite_init_meta_data
 vampire_preshifted_sprites:
 			.byte 4
 vampire_anims:

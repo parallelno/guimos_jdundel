@@ -56,8 +56,10 @@ _cat_run_l3_1_relative = 9092
 _cat_run_l3_2_relative = 9332
 _cat_run_l3_3_relative = 9572
 
-sprite_get_scr_addr_cat = sprite_get_scr_addr4
-
+cat_get_scr_addr:
+			.word sprite_get_scr_addr4
+cat_ram_disk_s_cmd:
+			.byte TEMP_BYTE ; inited by sprite_init_meta_data
 cat_preshifted_sprites:
 			.byte 4
 cat_anims:

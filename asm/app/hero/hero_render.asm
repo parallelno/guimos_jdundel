@@ -1,19 +1,23 @@
 memusage_hero_render:
 
 hero_draw:
+			lhld hero_r_get_scr_addr
+			shld @get_scr_addr+1
 			lxi h, hero_pos_x+1
-			call sprite_get_scr_addr_hero_r
+@get_scr_addr:
+			call TEMP_ADDR ; sprite_get_scr_addr8
 
 			lhld hero_anim_addr
 			call sprite_get_addr
 
 			lda hero_dir
 			rrc
-			mvi l, <(RAM_DISK_S_HERO_R | RAM_DISK_M_BACKBUFF | RAM_DISK_M_8F)
+			lda hero_r_ram_disk_s_cmd
 			jc @spriteR
 @spriteL:
-			mvi l, <(RAM_DISK_S_HERO_L | RAM_DISK_M_BACKBUFF | RAM_DISK_M_8F)
+			lda hero_l_ram_disk_s_cmd
 @spriteR:
+			mov l, a
 
 			lda hero_status
 			ani ACTOR_STATUS_BIT_INVIS

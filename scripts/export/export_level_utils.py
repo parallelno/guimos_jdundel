@@ -10,9 +10,9 @@ import utils.build as build
 TILEDATA_TELEPORT	= 2*16
 TILEDATA_RESOURCE	= 7*16
 RESOURCES_UNIQUE_MAX = 16
-RESOURCES_LEN	= 0x100		
+RESOURCES_LEN	= 0x100
 # collect container data
-TILEDATA_CONTAINER	= 11*16 
+TILEDATA_CONTAINER	= 11*16
 CONTAINERS_UNIQUE_MAX = 16
 CONTAINERS_LEN	= 0x100
 TILEDATA_BREAKABLESS	= 13*16
@@ -21,7 +21,7 @@ BREAKABLES_MAX = 1016
 
 
 def is_source_updated(asset_j_path, type):
-	
+
 	with open(asset_j_path, "rb") as file:
 		asset_j = json.load(file)
 
@@ -31,17 +31,17 @@ def is_source_updated(asset_j_path, type):
 
 	with open(level_j_path, "rb") as file:
 		level_j = json.load(file)
-	
+
 	level_dir = str(Path(level_j_path).parent) + "/"
 	path_png = level_dir + level_j["path_png"]
 
 	room_paths = level_j["rooms"]
-	
+
 	if build.is_file_updated(asset_j_path):
 		return True
 	if build.is_file_updated(level_j_path):
 		return True
-	
+
 	if type == build.ASSET_TYPE_LEVEL_DATA:
 		for room_path_p in room_paths:
 			room_path = room_path_p['path']
@@ -64,7 +64,7 @@ def remap_index(rooms_j):
 	remap_idxs = {} # old idx : new idx
 	for i, idx in enumerate(unique_idxs):
 		remap_idxs[idx] = i
-	
+
 	return remap_idxs
 
 def get_list_of_rooms(room_paths, label_prefix):
@@ -114,7 +114,7 @@ def room_tiles_data_to_asm(data, width, height):
 
 def room_teleport_data(layer_j, level_j_path):
 
-	teleport_tiles = {} 
+	teleport_tiles = {}
 	teleport_ids = {}
 	teleport_id = 0
 
@@ -136,17 +136,17 @@ def room_teleport_data(layer_j, level_j_path):
 
 		teleport_tiles[room_id].append((tile_idx, teleport_ids[room_id]))
 
-	
+
 	asm_teleport_data = "			.byte "
 	for room_id, teleport_id in teleport_ids.items():
 		asm_teleport_data += f"{room_id}, "
-		
+
 	asm_teleport_data += "\n"
-			
+
 	return teleport_tiles, asm_teleport_data
 
 def merge_teleport_data(teleport_tiles, room_tiledata):
-	
+
 	for _, tile_idxs_teleport_ids in teleport_tiles.items():
 		for [tile_idx, teleport_id] in tile_idxs_teleport_ids:
 			room_tiledata[tile_idx] = TILEDATA_TELEPORT + teleport_id
@@ -171,7 +171,7 @@ def get_tiledata(bytes0, bytes1, bytes2, bytes3):
 	data = []
 	for bytes in all_bytes:
 		mask >>=  1
-		if common.is_bytes_zeros(bytes) : 
+		if common.is_bytes_zeros(bytes) :
 			continue
 		mask += 8
 

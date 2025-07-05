@@ -122,8 +122,12 @@ def anims_to_asm(label_prefix, asset_name, asset_j, data_relative_ptrs, asset_j_
 	asm = ""
 
 	preshifted_sprites = 1 # means no preshifted sprites
+	asm += f"{asset_name}_get_scr_addr:\n"
+	asm += f"			.word sprite_get_scr_addr{preshifted_sprites}\n"
+	asm += f"{asset_name}_ram_disk_s_cmd:\n"
+	asm += f"			.byte TEMP_BYTE ; inited by sprite_init_meta_data\n"
 	asm += f"{asset_name}_preshifted_sprites:\n"
-	asm += f"			.byte {str(preshifted_sprites)}\n"
+	asm += f"			.byte {preshifted_sprites}\n"
 
 	# make a list of anim_names
 	asm += f"{asset_name}_anims:\n"

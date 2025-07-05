@@ -60,8 +60,10 @@ _burner_run_l3_1_relative = 8546
 _burner_run_l3_2_relative = 8708
 _burner_run_l3_3_relative = 8870
 
-sprite_get_scr_addr_burner = sprite_get_scr_addr4
-
+burner_get_scr_addr:
+			.word sprite_get_scr_addr4
+burner_ram_disk_s_cmd:
+			.byte TEMP_BYTE ; inited by sprite_init_meta_data
 burner_preshifted_sprites:
 			.byte 4
 burner_anims:

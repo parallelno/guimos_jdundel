@@ -27,6 +27,10 @@ _backs0_cow_back0_relative = 666
 _backs0_cow_back1_relative = 736
 _backs0_cow_back2_relative = 806
 
+backs0_get_scr_addr:
+			.word sprite_get_scr_addr1
+backs0_ram_disk_s_cmd:
+			.byte TEMP_BYTE ; inited by sprite_init_meta_data
 backs0_preshifted_sprites:
 			.byte 1
 backs0_anims:

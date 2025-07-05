@@ -85,26 +85,66 @@ sprite_get_scr_addr1:
 			; de - sprite screen addr
 			ret
 
+; initializes the sprite meta data including the ram-disk access,
+; a propriate sprite_get_scr_addr func addr, animation (frame ptrs)
 ; in:
-; hl - points to the list of .word {sprite_gfx_addr}, {preshifted_sprites_ptrs}
-; e - the number of pairs (sprite_gfx_addr, preshifted_sprites_ptrs) in the list
-sprite_update_labels_list:
+; hl - points to the list where each element contains: 
+; .word {{asset_name}_ram_disk_cmd}
+; .byte RAM_DISK_S_{asset_name}
+; .word {sprite_gfx_addr}
+; e - the number of elements in the list
+sprite_uninit_meta_data:
+			mvi a, OPCODE_JMP
+			jmp @store_opcode
+@sprite_init_meta_data:
+			mvi a, OPCODE_LXI_B
+@store_opcode:
+			sta @check_if_uninit
 @loop:
 			push d
-
-			mov e, m
-			inx h
-			mov d, m
-			inx h
 			
-			push d
-
+			; get the meta_data addr
 			mov e, m
 			inx h
 			mov d, m
+			inx h
+
+			; get the ram disk S cmd
+			mov a, m
+			inx h
+
+			; store the ram disk S cmd in the meta data
+			xchg
+			mov m, a
+			; advance hl to the preshifted_sprites addr
+			inx h
+			push h ; temporally store the pointer to the preshifted_sprites addr
+			xchg
+			
+			; get the sprite gfx addr
+@check_if_uninit:
+			jmp @uninit
+@init:		; read sprite gfx addr as it is
+			mov e, m
+			inx h
+			mov d, m
+			jmp @cont
+@uninit:	
+			; read sprite gfx addr make it negative
+			; to set the anim ptrs back to local
+			mov a, m
+			cma
+			mov e, a
+			inx h
+			mov a, m
+			cma
+			mov d, a
+			inx d
+@cont:
 			inx h
 
 			xthl
+			xchg
 			
 			; hl - sprite gfx addr (_hero_l_sprites)
 			; de - preshifted_sprites ptrs i.e. _hero_l_preshifted_sprites
@@ -114,6 +154,7 @@ sprite_update_labels_list:
 			dcr e
 			jnz @loop
 			ret
+sprite_init_meta_data: = @sprite_init_meta_data
 
 ; updates sprite label addrs
 ; in:

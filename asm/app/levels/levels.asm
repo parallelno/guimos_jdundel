@@ -14,10 +14,7 @@ levels_init:
 			lxi h, game_status
 			lxi b, game_status_end
 			call mem_erase
-
-			call breakables_init
-
-			jmp level_init
+			jmp breakables_init
 
 ;================================================================
 ;	level data initialization every level start
@@ -79,8 +76,6 @@ level_update:
 			rz
 			cpi GAME_REQ_ROOM_INIT
 			jz @room_load_draw
-			cpi GAME_REQ_LEVEL_INIT
-			jz @level_load
 			cpi GAME_REQ_ROOM_DRAW
 			jz @room_draw
 			cpi GAME_REQ_RESPAWN
@@ -97,10 +92,7 @@ level_update:
 			call room_redraw
 			A_TO_ZERO(GLOBAL_REQ_NONE)
 			sta global_request
-			jmp reset_game_updates_required_counter
-@level_load:
-			call level_init
-			jmp game_ui_draw
+ 			jmp reset_game_updates_required_counter
 @respawn:
 			; teleport the hero to the home room
 			lxi h, LEVEL_FIRST<<8 | ROOM_ID_0
@@ -118,11 +110,11 @@ level_palette_fade_in:
 			lda level_id
 			CPI_ZERO(LEVEL_FIRST)
 @lv0_palette:
-			lxi d, PAL_LV0_ADDR + _pal_lv0_palette_fade_to_black_relative
-			mvi a, RAM_DISK_S_PAL_LV0
+			lxi d, LEVEL0_PAL_LV0_ADDR + _pal_lv0_palette_fade_to_black_relative
+			mvi a, LEVEL0_PAL_LV0_RAM_DISK_S
 			jz @set_palette
 @lv1_palette:
-			lxi d, PAL_LV1_ADDR + _pal_lv1_palette_fade_to_black_relative
-			mvi a, RAM_DISK_S_PAL_LV1
+			lxi d, PERMANENT_PAL_LV1_ADDR + _pal_lv1_palette_fade_to_black_relative
+			mvi a, PERMANENT_PAL_LV1_RAM_DISK_S
 @set_palette:
 			jmp pallete_fade_in

@@ -31,8 +31,10 @@ _npc_scarecrow_idle0_0_relative = 3110
 _npc_scarecrow_idle1_0_relative = 3308
 _npc_scarecrow_idle2_0_relative = 3506
 
-sprite_get_scr_addr_npc = sprite_get_scr_addr1
-
+npc_get_scr_addr:
+			.word sprite_get_scr_addr1
+npc_ram_disk_s_cmd:
+			.byte TEMP_BYTE ; inited by sprite_init_meta_data
 npc_preshifted_sprites:
 			.byte 1
 npc_anims:

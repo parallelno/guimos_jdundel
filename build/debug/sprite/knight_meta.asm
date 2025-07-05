@@ -84,8 +84,10 @@ _knight_defence_l3_1_relative = 15092
 _knight_defence_l3_2_relative = 15266
 _knight_defence_l3_3_relative = 15524
 
-sprite_get_scr_addr_knight = sprite_get_scr_addr4
-
+knight_get_scr_addr:
+			.word sprite_get_scr_addr4
+knight_ram_disk_s_cmd:
+			.byte TEMP_BYTE ; inited by sprite_init_meta_data
 knight_preshifted_sprites:
 			.byte 4
 knight_anims:

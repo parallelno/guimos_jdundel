@@ -349,4 +349,4 @@ skeleton_update_anim_check_collision_hero:
 ; in:
 ; de - ptr to monster_draw_ptr 
 skeleton_draw:
-			ACTOR_DRAW(sprite_get_scr_addr_skeleton, RAM_DISK_S_SKELETON, false)
+			ACTOR_DRAW(skeleton_get_scr_addr, skeleton_ram_disk_s_cmd, false)

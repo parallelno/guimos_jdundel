@@ -18,7 +18,7 @@ tiled_img_init_idxs:
 
 ; init the tiled image gfx
 ; in:
-; a - gfx data ram-disk activation command
+; a - gfx data ram-disk s activation command (LEVEL0_TI0_GFX_RAM_DISK_S)
 ; hl - gfx data addr (points to the addr where it was loaded)
 tiled_img_init_gfx:
 			sta tiled_img_draw_ramdisk_access_gfx + 1
@@ -31,7 +31,7 @@ tiled_img_init_gfx:
 
 ;----------------------------------------------------------------
 ; draw a tiled image (8x8 tiles)
-; input:
+; in:
 ; de - local idx_data addr
 
 ; if called tiled_img_draw_pos_offset

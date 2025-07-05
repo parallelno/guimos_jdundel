@@ -98,7 +98,7 @@ room_decal_draw_ptr_offset:
 			; de - scr addr
 			push b
 			push d
-			CALL_RAM_DISK_FUNC(draw_decal_v, <RAM_DISK_S_DECALS0)
+			CALL_RAM_DISK_FUNC(draw_decal_v, <PERMANENT_DECALS0_RAM_DISK_S)
 			pop d
 			pop b
 room_decal_draw_backbuffers:
@@ -106,10 +106,10 @@ room_decal_draw_backbuffers:
 
 			push b
 			push d
-			CALL_RAM_DISK_FUNC(draw_decal_v, <RAM_DISK_S_DECALS0 | RAM_DISK_M_BACKBUFF | RAM_DISK_M_AF)
+			CALL_RAM_DISK_FUNC(draw_decal_v, <PERMANENT_DECALS0_RAM_DISK_S | RAM_DISK_M_BACKBUFF | RAM_DISK_M_AF)
 			pop d
 			pop b
-			CALL_RAM_DISK_FUNC(draw_decal_v, <RAM_DISK_S_DECALS0 | RAM_DISK_M_BACKBUFF2 | RAM_DISK_M_AF)
+			CALL_RAM_DISK_FUNC(draw_decal_v, <PERMANENT_DECALS0_RAM_DISK_S | RAM_DISK_M_BACKBUFF2 | RAM_DISK_M_AF)
 			ret
 
 ;=========================================================

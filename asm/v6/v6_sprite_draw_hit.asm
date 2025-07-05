@@ -13,7 +13,7 @@
 ; use: a, hl, sp
 
 ; data format:
-; .word - two safety bytes to prevent a data corruption by the interruption  func
+; .word - two safety bytes prevent data corruption caused by interruptions
 ; .byte - offset_y
 ; .byte - offset_x
 ; .byte - height

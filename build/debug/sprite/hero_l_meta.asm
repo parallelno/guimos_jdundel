@@ -68,8 +68,10 @@ _hero_l_attk1_5_relative = 12440
 _hero_l_attk1_6_relative = 12716
 _hero_l_attk1_7_relative = 12992
 
-sprite_get_scr_addr_hero_l = sprite_get_scr_addr8
-
+hero_l_get_scr_addr:
+			.word sprite_get_scr_addr8
+hero_l_ram_disk_s_cmd:
+			.byte TEMP_BYTE ; inited by sprite_init_meta_data
 hero_l_preshifted_sprites:
 			.byte 8
 hero_l_anims:

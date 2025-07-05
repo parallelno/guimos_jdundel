@@ -243,7 +243,7 @@ game_ui_draw_res:
 			; hl - scr adr offset
 @draw_icon:
 			; de - ptr to an img
-			mvi a, <RAM_DISK_S_TI0_DATA
+			mvi a, <LEVEL0_TI0_DATA_RAM_DISK_S
 			jmp tiled_img_draw_pos_offset_set
 
 @draw_selection:
@@ -263,7 +263,8 @@ game_ui_draw_res:
 			inx h
 			mov b, m
 			; render it to the main scr buff
-			CALL_RAM_DISK_FUNC(sprite_draw_vm, RAM_DISK_S_VFX)
+			lda vfx_ram_disk_s_cmd
+			CALL_RAM_DISK_FUNC_BANK(sprite_draw_vm)
 			ret
 
 @tiled_img_ptrs:
@@ -326,7 +327,15 @@ game_ui_draw_items:
 			mov d, m
 @draw_icon:
 			; de - ptr to an img
-			mvi a, <RAM_DISK_S_TI0_DATA
+			; TODO: replace the const below with
+			; using a pointer from the meta
+			; lda ti0_data_ram_disk_s
+			; also update the tiled_img_draw func
+			; to take ti0_data_ram_disk_s ptr
+			; ti0_gfx_ram_disk_s, and gfx ptr, indexes ptr
+			; as a parameters
+			; also it will require the TileImg exporter update
+			mvi a, LEVEL0_TI0_DATA_RAM_DISK_S
 			jmp tiled_img_draw
 
 @delay:		.byte TEMP_WORD

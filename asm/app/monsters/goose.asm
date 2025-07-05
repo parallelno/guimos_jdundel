@@ -4,7 +4,7 @@ memusage_goose:
 ; statuses.
 ; personal actor statuses must be in a range of 0 to ACTOR_STATUS_CUSTOM including.
 ACTOR_STATUS_GOOSE_DETECT_HERO_INIT	= ACTOR_STATUS_INIT
-ACTOR_STATUS_GOOSE_DETECT_HERO			= 1 * JMP_4_LEN ; TODO: why * JMP_4_LEN???
+ACTOR_STATUS_GOOSE_DETECT_HERO			= 1 * JMP_4_LEN ; TODO: remove JMP_4_LEN. it was used for tests (case insttead bunch of if else. P.S. if else won!)
 ACTOR_STATUS_GOOSE_DASH_PREP			= 2 * JMP_4_LEN
 ACTOR_STATUS_GOOSE_DASH				= 3 * JMP_4_LEN
 ACTOR_STATUS_GOOSE_RELAX				= 4 * JMP_4_LEN
@@ -337,4 +337,4 @@ goose_update_anim_check_collision_hero:
 ; in:
 ; de - ptr to monster_draw_ptr 
 goose_draw:
-			ACTOR_DRAW(sprite_get_scr_addr_goose, RAM_DISK_S_GOOSE, false)
+			ACTOR_DRAW(goose_get_scr_addr, goose_ram_disk_s_cmd, false)

@@ -29,6 +29,7 @@ room_teleport:
 			push h
 			call breakables_room_status_store
 			pop h
+			; store it after call breakables_room_status_store
 			shld room_id
 			ret
 

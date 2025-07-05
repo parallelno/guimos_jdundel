@@ -4,4 +4,4 @@ memusage_npc4:
 ; in:
 ; de - ptr to monster_draw_ptr 
 npc4_draw:
-			ACTOR_DRAW(sprite_get_scr_addr_npc4, RAM_DISK_S_NPC4, false)
+			ACTOR_DRAW(npc4_get_scr_addr, npc4_ram_disk_s_cmd, false)

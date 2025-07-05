@@ -20,8 +20,10 @@ _tnt_idle1_1_relative = 572
 _tnt_idle1_2_relative = 734
 _tnt_idle1_3_relative = 896
 
-sprite_get_scr_addr_tnt = sprite_get_scr_addr4
-
+tnt_get_scr_addr:
+			.word sprite_get_scr_addr4
+tnt_ram_disk_s_cmd:
+			.byte TEMP_BYTE ; inited by sprite_init_meta_data
 tnt_preshifted_sprites:
 			.byte 4
 tnt_anims:

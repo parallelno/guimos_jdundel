@@ -4,7 +4,7 @@ memusage_cat:
 ; statuses.
 ; personal actor statuses must be in a range of 0 to ACTOR_STATUS_CUSTOM including.
 ACTOR_STATUS_CAT_DETECT_HERO_INIT	= ACTOR_STATUS_INIT
-ACTOR_STATUS_CAT_DETECT_HERO			= 1 * JMP_4_LEN ; TODO: why * JMP_4_LEN???
+ACTOR_STATUS_CAT_DETECT_HERO			= 1 * JMP_4_LEN ; TODO: remove JMP_4_LEN. it was used for tests (case insttead bunch of if else. P.S. if else won!)
 ACTOR_STATUS_CAT_DASH_PREP			= 2 * JMP_4_LEN
 ACTOR_STATUS_CAT_DASH				= 3 * JMP_4_LEN
 ACTOR_STATUS_CAT_RELAX				= 4 * JMP_4_LEN
@@ -337,4 +337,4 @@ cat_update_anim_check_collision_hero:
 ; in:
 ; de - ptr to monster_draw_ptr 
 cat_draw:
-			ACTOR_DRAW(sprite_get_scr_addr_cat, RAM_DISK_S_CAT, false)
+			ACTOR_DRAW(cat_get_scr_addr, cat_ram_disk_s_cmd, false)

@@ -7,7 +7,7 @@ screen_space_checking:
 			ani CONTROL_CODE_KEY_SPACE | CONTROL_CODE_FIRE1
 			rz
 			; set the global req to return to the main nemu
-			mvi a, GLOBAL_REQ_MAIN_MENU
+			mvi a, GLOBAL_REQ_MENU_MAIN
 			sta global_request
 			ret
 
@@ -46,13 +46,13 @@ screen_simple_init:
 			ret
 
 screen_fade_out:
-			lxi d, PAL_MENU_ADDR + _pal_menu_palette_fade_to_load_relative
-			mvi a, RAM_DISK_S_PAL_MENU
+			lxi d, PERMANENT_PAL_MENU_ADDR + _pal_menu_palette_fade_to_load_relative
+			mvi a, PERMANENT_PAL_MENU_RAM_DISK_S
 			jmp pallete_fade_out
 
 screen_fade_in:
-			lxi d, PAL_MENU_ADDR + _pal_menu_palette_fade_to_load_relative
-			mvi a, RAM_DISK_S_PAL_MENU 
+			lxi d, PERMANENT_PAL_MENU_ADDR + _pal_menu_palette_fade_to_load_relative
+			mvi a, PERMANENT_PAL_MENU_RAM_DISK_S 
 			jmp pallete_fade_in
 
 screen_draw_frame:

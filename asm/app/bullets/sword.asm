@@ -172,4 +172,4 @@ sword_check_monsters:
 ; in:
 ; de - ptr to bullet_draw_ptr 
 sword_draw:
-			ACTOR_DRAW(sprite_get_scr_addr_sword, RAM_DISK_S_SWORD)
+			ACTOR_DRAW(sword_get_scr_addr, sword_ram_disk_s_cmd)

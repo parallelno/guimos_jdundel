@@ -293,8 +293,13 @@ def export_build_includes(assets, extra_includes):
 	build_include = ""
 
 	# include all meta files
+	already_included = set()
 	for asset in assets:
-		build_include += f'.include "{asset["asm_meta_path"]}"\n'
+		asm_path = asset["asm_meta_path"]
+		if asm_path not in already_included:
+			build_include += f'.include "{asm_path}"\n'
+			already_included.add(asm_path)
+
 	build_include += "\n"
 
 	# include all includes
