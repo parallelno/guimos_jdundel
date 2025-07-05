@@ -1,7 +1,7 @@
 memusage_hero_render:
-
+; TODO: use actor_draw instead of hero_draw
 hero_draw:
-			lhld hero_r_get_scr_addr
+			lhld hero_get_scr_addr
 			shld @get_scr_addr+1
 			lxi h, hero_pos_x+1
 @get_scr_addr:
@@ -10,13 +10,7 @@ hero_draw:
 			lhld hero_anim_addr
 			call sprite_get_addr
 
-			lda hero_dir
-			rrc
-			lda hero_r_ram_disk_s_cmd
-			jc @spriteR
-@spriteL:
-			lda hero_l_ram_disk_s_cmd
-@spriteR:
+			lda hero_ram_disk_s_cmd
 			mov l, a
 
 			lda hero_status

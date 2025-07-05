@@ -1,15 +1,15 @@
 ## Main Ram memory usage:
-> Free Space: `3875`
+> Free Space: `3926`
 
 |Assembly| Usage|
 |-|-|
-|memusage_v6_build_uncludes:|3491|
+|memusage_v6_build_uncludes:|3474|
 |memusage_hero_update:|1337|
 |memusage_v6_sprite_copy_to_backbuf:|1219|
 |memusage_v6_sprite_copy_to_scr:|1203|
 |memusage_levels_data:|1002|
 |memusage_v6_sound:|810|
-|memusage_loads:|679|
+|memusage_loads:|655|
 |memusage_v6_utils:|639|
 |memusage_knight:|610|
 |memusage_v6_os:|583|
@@ -42,10 +42,10 @@
 |memusage_vfx:|193|
 |memusage_room:|191|
 |memusage_app:|189|
-|memusage_hero_render:|183|
 |memusage_bomb:|181|
 |memusage_bullets:|178|
 |memusage_v6_decal_draw:|173|
+|memusage_hero_render:|173|
 |memusage_screen_utils:|169|
 |memusage_v6_sprite_erase:|168|
 |memusage_sparker:|168|
@@ -85,7 +85,7 @@
 |memusage_runtime_data:|0|
 
 ## FDD Usage:
-> Used: `331776`, Free Space: `507904`
+> Used: `327680`, Free Space: `512000`
 
 ## Ram disk usage:
 ### `permanent` ram-disk usage:
@@ -185,37 +185,35 @@
 	* LV0_GFX.BIN: addr: 6628, len: `6302`
 	* BURNER.BIN: addr: 12930, len: `6116`
 	* SWORD.BIN: addr: 19046, len: `6032`
-	* TI0_GFX.BIN: addr: 25078, len: `3162`
-	* NPC.BIN: addr: 28240, len: `2506`
-	* SCYTHE.BIN: addr: 30746, len: `1068`
-	* FIREPOOL.BIN: addr: 31814, len: `558`
+	* GOOSE.BIN: addr: 25078, len: `3616`
+	* TI0_GFX.BIN: addr: 28694, len: `3162`
+	* SNOWFLAK.BIN: addr: 31856, len: `832`
 
-  `Used: 32372, Free: 332`
+  `Used: 32688, Free: 16`
 
 - bank0 addr8000
 
   `Used: 0, Free: 18`
 
 - bank1 addr0
-	* TI0_DATA.BIN: addr: 0, len: `342`
 
-  `Used: 342, Free: 32362`
+  `Used: 0, Free: 32704`
 
 - bank1 addr8000
 	* TXT_LV0.BIN: addr: 36670, len: `4052`
+	* PAL_LV0.BIN: addr: 40722, len: `148`
 
-  `Used: 4052, Free: 238`
+  `Used: 4200, Free: 90`
 
 - bank2 addr0
 
   `Used: 0, Free: 32704`
 
 - bank2 addr8000
-	* KNIGHT.BIN: addr: 45124, len: `10664`
-	* HERO_L.BIN: addr: 55788, len: `8896`
-	* SNOWFLAK.BIN: addr: 64684, len: `832`
+	* HERO.BIN: addr: 45124, len: `17792`
+	* NPC.BIN: addr: 62916, len: `2506`
 
-  `Used: 20392, Free: 20`
+  `Used: 20298, Free: 114`
 
 - bank3 addr0
 
@@ -223,13 +221,14 @@
 
 - bank3 addr8000
 	* LV0_DATA.BIN: addr: 32768, len: `5934`
-	* HERO_R.BIN: addr: 38702, len: `8896`
-	* NPC4.BIN: addr: 47598, len: `7464`
-	* SKELETON.BIN: addr: 55062, len: `6660`
-	* GOOSE.BIN: addr: 61722, len: `3616`
-	* PAL_LV0.BIN: addr: 65338, len: `148`
+	* KNIGHT.BIN: addr: 38702, len: `10664`
+	* NPC4.BIN: addr: 49366, len: `7464`
+	* SKELETON.BIN: addr: 56830, len: `6660`
+	* SCYTHE.BIN: addr: 63490, len: `1068`
+	* FIREPOOL.BIN: addr: 64558, len: `558`
+	* TI0_DATA.BIN: addr: 65116, len: `342`
 
-  `Used: 32718, Free: 50`
+  `Used: 32690, Free: 78`
 
 
 ---
@@ -252,22 +251,20 @@
   `Used: 0, Free: 32704`
 
 - bank1 addr8000
-	* SCYTHE.BIN: addr: 36670, len: `1068`
-	* TNT.BIN: addr: 37738, len: `720`
-	* TI0_DATA.BIN: addr: 38458, len: `342`
+	* TI0_GFX.BIN: addr: 36670, len: `3162`
+	* SCYTHE.BIN: addr: 39832, len: `1068`
 
-  `Used: 2130, Free: 2160`
+  `Used: 4230, Free: 60`
 
 - bank2 addr0
 
   `Used: 0, Free: 32704`
 
 - bank2 addr8000
-	* KNIGHT.BIN: addr: 45124, len: `10664`
-	* HERO_L.BIN: addr: 55788, len: `8896`
-	* SNOWFLAK.BIN: addr: 64684, len: `832`
+	* HERO.BIN: addr: 45124, len: `17792`
+	* FIREPOOL.BIN: addr: 62916, len: `558`
 
-  `Used: 20392, Free: 20`
+  `Used: 18350, Free: 2062`
 
 - bank3 addr0
 
@@ -275,14 +272,15 @@
 
 - bank3 addr8000
 	* LV1_DATA.BIN: addr: 32768, len: `838`
-	* HERO_R.BIN: addr: 33606, len: `8896`
-	* SKELETON.BIN: addr: 42502, len: `6660`
-	* LV1_GFX.BIN: addr: 49162, len: `6534`
-	* BURNER.BIN: addr: 55696, len: `6116`
-	* TI0_GFX.BIN: addr: 61812, len: `3162`
-	* FIREPOOL.BIN: addr: 64974, len: `558`
+	* KNIGHT.BIN: addr: 33606, len: `10664`
+	* SKELETON.BIN: addr: 44270, len: `6660`
+	* LV1_GFX.BIN: addr: 50930, len: `6534`
+	* BURNER.BIN: addr: 57464, len: `6116`
+	* SNOWFLAK.BIN: addr: 63580, len: `832`
+	* TNT.BIN: addr: 64412, len: `720`
+	* TI0_DATA.BIN: addr: 65132, len: `342`
 
-  `Used: 32764, Free: 4`
+  `Used: 32706, Free: 62`
 
 
 ---

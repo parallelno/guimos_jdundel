@@ -172,11 +172,11 @@ hero_attack_anim_init:
 			rrc
 			jnc @set_anim_attk_l
 
-			lxi h, hero_r_attk_anim
+			lxi h, hero_attk_r_anim
 			shld hero_anim_addr
 			ret
 @set_anim_attk_l:
-			lxi h, hero_l_attk_anim
+			lxi h, hero_attk_l_anim
 			shld hero_anim_addr
 			ret
 

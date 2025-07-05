@@ -129,8 +129,7 @@
 		[
 			"assets/tiled_imgs/ti0_data.json",
 			"assets/tiled_imgs/ti0_gfx.json",
-			"assets/sprites/hero_l.json",
-			"assets/sprites/hero_r.json",
+			"assets/sprites/hero.json",
 			"assets/sprites/burner.json",
 			"assets/sprites/skeleton.json",
 			"assets/sprites/knight.json",
@@ -154,8 +153,7 @@
 		[
 			"assets/tiled_imgs/ti0_data.json",
 			"assets/tiled_imgs/ti0_gfx.json",
-			"assets/sprites/hero_l.json",
-			"assets/sprites/hero_r.json",
+			"assets/sprites/hero.json",
 			"assets/sprites/burner.json",
 			"assets/sprites/skeleton.json",
 			"assets/sprites/knight.json",

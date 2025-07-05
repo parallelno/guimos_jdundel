@@ -99,7 +99,7 @@ hero_check_keys:
 			ori HERO_DIR_RIGHT
 			mov m, a
 
-			lxi h, hero_r_run_anim
+			lxi h, hero_run_r_anim
 			shld hero_anim_addr
 			jmp hero_update_temp_pos
 
@@ -113,7 +113,7 @@ hero_check_keys:
 
 			mvi a, HERO_DIR_RIGHT | HERO_DIR_UP
 			sta hero_dir
-			lxi h, hero_r_run_anim
+			lxi h, hero_run_r_anim
 			shld hero_anim_addr
 			jmp hero_update_temp_pos
 
@@ -128,7 +128,7 @@ hero_check_keys:
 
 			mvi a, HERO_DIR_RIGHT | HERO_DIR_DOWN
 			sta hero_dir
-			lxi h, hero_r_run_anim
+			lxi h, hero_run_r_anim
 			shld hero_anim_addr
 			jmp hero_update_temp_pos
 
@@ -147,7 +147,7 @@ hero_check_keys:
 			ori HERO_DIR_LEFT
 			mov m, a
 
-			lxi h, hero_l_run_anim
+			lxi h, hero_run_l_anim
 			shld hero_anim_addr
 			jmp hero_update_temp_pos
 
@@ -162,7 +162,7 @@ hero_check_keys:
 
 			mvi a, HERO_DIR_LEFT | HERO_DIR_UP
 			sta hero_dir
-			lxi h, hero_l_run_anim
+			lxi h, hero_run_l_anim
 			shld hero_anim_addr
 			jmp hero_update_temp_pos
 
@@ -176,7 +176,7 @@ hero_check_keys:
 
 			mvi a, HERO_DIR_LEFT | HERO_DIR_DOWN
 			sta hero_dir
-			lxi h, hero_l_run_anim
+			lxi h, hero_run_l_anim
 			shld hero_anim_addr
 			jmp hero_update_temp_pos
 
@@ -197,11 +197,11 @@ hero_check_keys:
 			rrc
 			jnc @setAnimRunUfaceL
 
-			lxi h, hero_r_run_anim
+			lxi h, hero_run_r_anim
 			shld hero_anim_addr
 			jmp hero_update_temp_pos
 @setAnimRunUfaceL:
-			lxi h, hero_l_run_anim
+			lxi h, hero_run_l_anim
 			shld hero_anim_addr
 			jmp hero_update_temp_pos
 @setAnimRunD:
@@ -221,11 +221,11 @@ hero_check_keys:
 			rrc
 			jnc @setAnimRunDfaceL
 
-			lxi h, hero_r_run_anim
+			lxi h, hero_run_r_anim
 			shld hero_anim_addr
 			jmp hero_update_temp_pos
 @setAnimRunDfaceL:
-			lxi h, hero_l_run_anim
+			lxi h, hero_run_l_anim
 			shld hero_anim_addr
 
 hero_update_temp_pos:
@@ -326,11 +326,11 @@ hero_idle_anim_start:
 			rrc
 			jnc @setAnimIdleL
 
-			lxi h, hero_r_idle_anim
+			lxi h, hero_idle_r_anim
 			shld hero_anim_addr
 			ret
 @setAnimIdleL:
-			lxi h, hero_l_idle_anim
+			lxi h, hero_idle_l_anim
 			shld hero_anim_addr
 			ret
 
