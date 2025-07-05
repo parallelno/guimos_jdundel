@@ -2,8 +2,8 @@
 ; asm data file: build/debug/sprite/burner_data.asm
 ; bin file: build/debug/bin/BURNER.BIN
 
-BURNER_FILE_LEN = 9030
-BURNER_LAST_RECORD_LEN = 70
+BURNER_FILE_LEN = 6116
+BURNER_LAST_RECORD_LEN = 100
 
 BURNER_FILENAME_PTR:
 			.byte "BURNER" ; filename
@@ -12,53 +12,53 @@ BURNER_FILENAME_PTR:
 
 ; relative frame labels
 _burner_dash_0_0_relative = 2
-_burner_dash_0_1_relative = 176
-_burner_dash_0_2_relative = 350
-_burner_dash_0_3_relative = 608
-_burner_dash_1_0_relative = 866
-_burner_dash_1_1_relative = 1040
-_burner_dash_1_2_relative = 1214
-_burner_dash_1_3_relative = 1472
-_burner_dash_2_0_relative = 1730
-_burner_dash_2_1_relative = 1904
-_burner_dash_2_2_relative = 2078
-_burner_dash_2_3_relative = 2336
-_burner_dash_3_0_relative = 2594
-_burner_dash_3_1_relative = 2768
-_burner_dash_3_2_relative = 2942
-_burner_dash_3_3_relative = 3200
-_burner_run_r0_0_relative = 3458
-_burner_run_r0_1_relative = 3620
-_burner_run_r0_2_relative = 3782
-_burner_run_r0_3_relative = 4022
-_burner_run_r1_0_relative = 4184
-_burner_run_r1_1_relative = 4346
-_burner_run_r1_2_relative = 4508
-_burner_run_r1_3_relative = 4748
-_burner_run_r2_0_relative = 4910
-_burner_run_r2_1_relative = 5072
-_burner_run_r2_2_relative = 5234
-_burner_run_r2_3_relative = 5474
-_burner_run_r3_0_relative = 5636
-_burner_run_r3_1_relative = 5798
-_burner_run_r3_2_relative = 5960
-_burner_run_r3_3_relative = 6200
-_burner_run_l0_0_relative = 6362
-_burner_run_l0_1_relative = 6524
-_burner_run_l0_2_relative = 6686
-_burner_run_l0_3_relative = 6848
-_burner_run_l1_0_relative = 7010
-_burner_run_l1_1_relative = 7172
-_burner_run_l1_2_relative = 7334
-_burner_run_l1_3_relative = 7496
-_burner_run_l2_0_relative = 7658
-_burner_run_l2_1_relative = 7820
-_burner_run_l2_2_relative = 7982
-_burner_run_l2_3_relative = 8222
-_burner_run_l3_0_relative = 8384
-_burner_run_l3_1_relative = 8546
-_burner_run_l3_2_relative = 8708
-_burner_run_l3_3_relative = 8870
+_burner_dash_0_1_relative = 120
+_burner_dash_0_2_relative = 238
+_burner_dash_0_3_relative = 412
+_burner_dash_1_0_relative = 586
+_burner_dash_1_1_relative = 704
+_burner_dash_1_2_relative = 822
+_burner_dash_1_3_relative = 996
+_burner_dash_2_0_relative = 1170
+_burner_dash_2_1_relative = 1288
+_burner_dash_2_2_relative = 1406
+_burner_dash_2_3_relative = 1580
+_burner_dash_3_0_relative = 1754
+_burner_dash_3_1_relative = 1872
+_burner_dash_3_2_relative = 1990
+_burner_dash_3_3_relative = 2164
+_burner_run_r0_0_relative = 2338
+_burner_run_r0_1_relative = 2448
+_burner_run_r0_2_relative = 2558
+_burner_run_r0_3_relative = 2720
+_burner_run_r1_0_relative = 2830
+_burner_run_r1_1_relative = 2940
+_burner_run_r1_2_relative = 3050
+_burner_run_r1_3_relative = 3212
+_burner_run_r2_0_relative = 3322
+_burner_run_r2_1_relative = 3432
+_burner_run_r2_2_relative = 3542
+_burner_run_r2_3_relative = 3704
+_burner_run_r3_0_relative = 3814
+_burner_run_r3_1_relative = 3924
+_burner_run_r3_2_relative = 4034
+_burner_run_r3_3_relative = 4196
+_burner_run_l0_0_relative = 4306
+_burner_run_l0_1_relative = 4416
+_burner_run_l0_2_relative = 4526
+_burner_run_l0_3_relative = 4636
+_burner_run_l1_0_relative = 4746
+_burner_run_l1_1_relative = 4856
+_burner_run_l1_2_relative = 4966
+_burner_run_l1_3_relative = 5076
+_burner_run_l2_0_relative = 5186
+_burner_run_l2_1_relative = 5296
+_burner_run_l2_2_relative = 5406
+_burner_run_l2_3_relative = 5568
+_burner_run_l3_0_relative = 5678
+_burner_run_l3_1_relative = 5788
+_burner_run_l3_2_relative = 5898
+_burner_run_l3_3_relative = 6008
 
 burner_get_scr_addr:
 			.word sprite_get_scr_addr4

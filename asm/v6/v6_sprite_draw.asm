@@ -18,8 +18,8 @@ draw_sprite_width_height:
 
 ; =============================================
 ; Draw a sprite with a mask in three consiquence screen buffs with offset_x and offset_y
-; it can draw a sprite from the ram-disk if it's properly activated
-; width is 1-3 bytes
+; it can draw a sprite from the ram-disk if it's activated
+; width is 1-3 bytes (24 pixels max)
 ; height is 0-255
 ; offset_x in bytes
 ; offset_y in pixels
@@ -32,11 +32,10 @@ draw_sprite_width_height:
 ; d - width
 ;		00 - 8pxs,
 ;		01 - 16pxs,
-;		10 - 24pxs,
-;		11 - 32pxs,
+;		10 - 24pxs
 ; e - height
 ; bc - sprite screen addr + offset
-; use: a, hl, sp
+; use: all
 
 ; data format:
 ; .word - two safety bytes prevent data corruption caused by interruptions
@@ -47,17 +46,32 @@ draw_sprite_width_height:
 ; 		0 - one byte width,
 ;		1 - two bytes width,
 ;		2 - three bytes width
+; pixels data:
 
-; pixel format:
-; 1st screen buff : 1 -> 2
-; 2nd screen buff : 4 <- 3
-; 3rd screen buff : 6 <- 5
-; y++
-; 3rd screen buff : 7 -> 8
-; 2nd screen buff : 10 <- 9
-; 1st screen buff : 12 <- 11
-; y++
-; repeat for the next lines of the art data
+; 8 width:
+; odd line from left to right
+; mask, color_scr1, color_scr2, color_scr3
+; even line from right to left
+; mask, color_scr3, color_scr2, color_scr1
+
+; 16 width:
+; odd line from left to right
+; mask, color_scr1, color_scr2, color_scr3
+; mask, color_scr3, color_scr2, color_scr1
+; even line from right to left
+; mask, color_scr1, color_scr2, color_scr3
+; mask, color_scr3, color_scr2, color_scr1
+
+; 24 width:
+; odd line from left to right
+; mask, color_scr1, color_scr2, color_scr3
+; mask, color_scr3, color_scr2, color_scr1
+; mask, color_scr1, color_scr2, color_scr3
+; even line from right to left
+; mask, color_scr3, color_scr2, color_scr1
+; mask, color_scr1, color_scr2, color_scr3
+; mask, color_scr3, color_scr2, color_scr1
+
 
 sprite_draw_vm:	; VM stands for: V - variable height, M - mask support
 			; store SP
@@ -75,6 +89,7 @@ sprite_draw_vm:	; VM stands for: V - variable height, M - mask support
 			dad b
 			; store a sprite screen addr to return it from this func
 			shld draw_sprite_scr_addr+1
+			; hl - sprite screen addr + offset
 
 			; store sprite width and height
 			pop b
@@ -94,449 +109,335 @@ sprite_draw_vm:	; VM stands for: V - variable height, M - mask support
 			jc @width24
 			jmp @width8
 
-
-;------------------------------------------------
-@width16:
-			; save the high screen byte to restore X
-			rlc
-			add h
-			sta @w16oddScr1+1
-			adi $20
-			mov d, a
-			adi $20
-			sta @w16evenScr3+1
-
-@w16evenScr1:
-			DRAW_SPRITE_V_M()
-			inr h
-			DRAW_SPRITE_V_M()
-@w16evenScr2:
-			mov h, d
-			DRAW_SPRITE_V_M()
-			dcr h
-			DRAW_SPRITE_V_M()
-@w16evenScr3:
-			mvi h, TEMP_BYTE
-			DRAW_SPRITE_V_M()
-			dcr h
-			DRAW_SPRITE_V_M()
-			inr l
-			dcr e
-			jz draw_sprite_ret
-
-@w16oddScr3:
-			DRAW_SPRITE_V_M()
-			inr h
-			DRAW_SPRITE_V_M()
-@w16oddScr2:
-			mov h, d
-			DRAW_SPRITE_V_M()
-			dcr h
-			DRAW_SPRITE_V_M()
-@w16oddScr1:
-			mvi h, TEMP_BYTE
-			DRAW_SPRITE_V_M()
-			dcr h
-			DRAW_SPRITE_V_M()
-			inr l
-			dcr e
-			jnz @w16evenScr1
-			jmp draw_sprite_ret
-;-------------------------------------------------
-@width24:
-; sprite 24x15:
-; prep: 18*4=72cc
-; loop: (11*9 + 5)*15 * 4 = 6240cc
-; total: 6312 cc
-; total + init: 6312 + 53*4 = 6524 cc
-
-			; save the high screen byte to restore X
-			mvi a, 2
-			add h
-			sta @w24oddScr1+1
-			adi $20
-			mov d, a
-			adi $20
-			sta @w24evenScr3+1
-
-@w24evenScr1:
-			DRAW_SPRITE_V_M()
-			inr h
-			DRAW_SPRITE_V_M()
-			inr h
-			DRAW_SPRITE_V_M()
-
-@w24evenScr2:
-			mov h, d
-			DRAW_SPRITE_V_M()
-			dcr h
-			DRAW_SPRITE_V_M()
-			dcr h
-			DRAW_SPRITE_V_M()
-
-@w24evenScr3:
-			mvi h, TEMP_BYTE
-			DRAW_SPRITE_V_M()
-			dcr h
-			DRAW_SPRITE_V_M()
-			dcr h
-			DRAW_SPRITE_V_M()
-			inr l
-			dcr e
-			jz draw_sprite_ret
-
-@w24oddScr3:
-			DRAW_SPRITE_V_M()
-			inr h
-			DRAW_SPRITE_V_M()
-			inr h
-			DRAW_SPRITE_V_M()
-@w24oddScr2:
-			mov h, d
-			DRAW_SPRITE_V_M()
-			dcr h
-			DRAW_SPRITE_V_M()
-			dcr h
-			DRAW_SPRITE_V_M()
-@w24oddScr1:
-			mvi h, TEMP_BYTE
-			DRAW_SPRITE_V_M()
-			dcr h
-			DRAW_SPRITE_V_M()
-			dcr h
-			DRAW_SPRITE_V_M()
-			inr l
-			dcr e
-			jnz @w24evenScr1
-			jmp draw_sprite_ret
-;------------------------------------------------------
 @width8:
-			; save the high screen byte to restore X
 			mov a, h
-			sta @w8oddScr1+1
-			adi $20
-			mov d, a
-			adi $20
-			sta @w8evenScr3+1
+			sta @width8_offset00 + 1
+			adi 0x20
+			sta @width8_offset20 + 1
+			sta @width8_offset20_2 + 1
+			adi 0x20
+			sta @width8_offset40 + 1
 
-@w8evenScr1:
-			DRAW_SPRITE_V_M()
-@w8evenScr2:
-			mov h, d
-			DRAW_SPRITE_V_M()
-@w8evenScr3:
-			mvi h, TEMP_BYTE
-			DRAW_SPRITE_V_M()
-			inr l
-			dcr e
-			jz draw_sprite_ret
-@w8oddScr3:
-			DRAW_SPRITE_V_M()
-@w8oddScr2:
-			mov h, d
-			DRAW_SPRITE_V_M()
-@w8oddScr1:
-			mvi h, TEMP_BYTE
-			DRAW_SPRITE_V_M()
-			inr l
-			dcr e
-			jnz @w8evenScr1
-			jmp draw_sprite_ret
-sprite_draw_vm_end:
-
-; 9*4=36cc
-.macro DRAW_SPRITE_V_M()
-			pop b
-			mov a, m
-			ana c
-			ora b
-			mov m, a
-.endmacro
-
-
-/*
-; draws a sprite by rows. each row is variable pxls height and have an offset
-; in:
-; bc - sprite data
-; de - screen addr
-
-; data format:
-; .word - two safety bytes prevent data corruption caused by interruptions
-; new row:
-; .word - row_scr_addr_offset_xy - row offset relative to
-; 														the previous row or the
-; 														sprite bottom-left corner 
-; 														if it's the first row
-; .byte - height, row_id+1
-; first byte:
-; .byte mask, color_scr1, color_scr2, color_scr3
-; next byte above:
-; .byte mask, color_scr3, color_scr2, color_scr1
-; ...
-; new row:
-; ...
-; last bytes:
-; .word scr_offset - offset to the bootom-left corner of the sprite visible area.
-;						Used for sprite_copy_to_scr and sprite_erase funcs
-; .byte - NULL, row_id+1
-; .byte - height, width
-
-draw_spite_rvm: ; r - draw by rows, v - variable pxls height, m - mask support
-			; store SP
-			lxi h, 0
-			dad sp
-			shld draw_sprite_restore_sp + 1
-			; sp = BC
-			mov	h, b
-			mov	l, c
-			sphl
-
-			xchg
-			hl - scr addr
-
-@next_row:
-			pop b ; bc - row_scr_addr_offset_xy
-			dad b
-			pop b ; c - height, b - row_id+1
-			dcr b
-			jz @end
-
-			mov a, h
-			sta @init_x + 1
-			adi $20
-			sta @init_x_plus_20_01 + 1
-			sta @init_x_plus_20_02 + 1
-			adi $20
-			sta @init_x_plus_40 + 1			
-
-@loop:	
-// odd byte from Scr1 to Scr3
+@width8_loop:
+// odd line from left to right
+// first byte
     		// Scr1
-			pop b ; b - color_scr1, c - mask
-			mov a, m
-			ana c
-			ora b
-			mov m, a
+			DRAW_SPRITE_VM1()
 
-@init_x_plus_20_01:
+@width8_offset20:
 			mvi h, TEMP_BYTE ; init_x + 0x20
-			mov d, c
 
 			// Scr2
-			mov a, m
-			ana c
-			pop b ; c - color_scr2, b - color_scr3
-			ora c
-			mov m, a
+			DRAW_SPRITE_VM2()
 
-@init_x_plus_40:
+@width8_offset40:
 			mvi h, TEMP_BYTE ; init_x + 0x40
 
 			// Scr3
-			mov a, m
-			ana d
-			ora b
-			mov m, a
-			
-			inr l ; X + 1
+			DRAW_SPRITE_VM3()
 
+			inr l ; Y + 1
 			dcr e
-			jz @check_end
-			
-// even byte. from Scr3 to Scr1
-			
-			// Scr3
-			pop b ; b - color_scr3, c - mask
-			mov a, m
-			ana c
-			ora b
-			mov m, a
+			jz draw_sprite_ret
 
-@init_x_plus_20_02:
+// even line from right to left
+// first byte
+    		// Scr3
+			DRAW_SPRITE_VM1()
+
+@width8_offset20_2:
 			mvi h, TEMP_BYTE ; init_x + 0x20
-			mov d, c
 
 			// Scr2
-			mov a, m
-			ana c
-			pop b ; c - color_scr2, b - color_scr1
-			ora c
-			mov m, a
-@init_x:
+			DRAW_SPRITE_VM2()
+
+@width8_offset00:
 			mvi h, TEMP_BYTE ; init_x + 0x00
 
 			// Scr1
-			mov a, m
-			ana d
-			ora b
-			mov m, a
-			
-			inr l ; X + 1
+			DRAW_SPRITE_VM3()
 
-			dcr e
-			jnz @loop
-			
-			jmp @next_row
-
-@end:
-			; read scr offset to 
-			pop b ; b - width, c - height
-			mov d, b
-			mov e, c
-draw_sprite_restore_sp:
-			lxi sp, TEMP_ADDR
-			mov b, h
-			mov c, l
-			ret
-*/
+			inr l ; Y + 1
+            dcr e
+            jnz @width8_loop
+			jmp draw_sprite_ret
 
 
-/*
-; draws a sprite 24xN pxls, line by line
-; in:
-; SP - sprite addr
-; HL - scr addr
-; D - width in bytes
-; E - height
+@width16:
+			mov a, h
+			sta @width16_offset00 + 1
+			inr a
+			sta @width16_offset01 + 1
+			adi 0x20 - 1
+			sta @width16_offset20 + 1
+			sta @width16_offset20_2 + 1
+			inr a
+			sta @width16_offset21 + 1
+			sta @width16_offset21_2 + 1
+			adi 0x40 - 0x21
+			sta @width16_offset40 + 1
+			inr a
+			sta @width16_offset41 + 1
 
-; sprite format:
-; mask, color_scr1, color_scr2, color_scr3
-; mask, color_scr3, color_scr2, color_scr1
-; mask, color_scr1, color_scr2, color_scr3
-; next line data
-; mask, color_scr3, color_scr2, color_scr1
-; mask, color_scr1, color_scr2, color_scr3
-; mask, color_scr3, color_scr2, color_scr1
-; next line data
-; ...
-
-draw_spite_w24:
-; prep
-			mvi $dx
-			add h
-			sta @init_x_plus_dx
-			adi $dx
-			sta @init_x_plus_dx
-			adi $dx
-			sta @init_x_plus_dx
-			adi $dx
-			sta @init_x_plus_dx
-			adi $dx
-			sta @init_x_plus_dx
-			adi $dx
-			sta @init_x_plus_dx
-			adi $dx
-			sta @init_x_plus_dx
-			adi $dx
-			sta @init_x_plus_dx
-			adi $dx
-			sta @init_x_plus_dx
-			adi $dx
-			sta @init_x_plus_dx
-			adi $dx
-			sta @init_x_plus_dx
-			adi $dx
-			sta @init_x_plus_dx
-
-loop:
-// first byte from Scr1 to Scr3
+@width16_loop:
+// odd line from left to right
+// first byte
     		// Scr1
-			pop b ; b - color_scr1, c - mask
-			mov a, m
-			ana c
-			ora b
-			mov m, a
+			DRAW_SPRITE_VM1()
 
+@width16_offset20:
 			mvi h, TEMP_BYTE ; init_x + 0x20
-			mov d, c
 
 			// Scr2
-			mov a, m
-			ana c
-			pop b ; c - color_scr2, b - color_scr3
-			ora c
-			mov m, a
+			DRAW_SPRITE_VM2()
 
+@width16_offset40:
 			mvi h, TEMP_BYTE ; init_x + 0x40
 
 			// Scr3
-			mov a, m
-			ana d
-			ora b
-			mov m, a
-			
-			inr h ; X + 1
-			; 32*4=
-			
-// second byte from Scr3 to Scr1
-			
-			// Scr3
-			pop b ; b - color_scr3, c - mask
-			mov a, m
-			ana c
-			ora b
-			mov m, a
+			DRAW_SPRITE_VM3()
 
+			inr h ; X + 1
+
+// last byte
+
+			// Scr3
+			DRAW_SPRITE_VM1()
+
+@width16_offset21:
 			mvi h, TEMP_BYTE ; init_x + 0x21
-			mov d, c
 
 			// Scr2
-			mov a, m
-			ana c
-			pop b ; c - color_scr2, b - color_scr1
-			ora c
-			mov m, a
+			DRAW_SPRITE_VM2()
 
+@width16_offset01:
 			mvi h, TEMP_BYTE ; init_x + 0x01
 
 			// Scr1
-			mov a, m
-			ana d
-			ora b
-			mov m, a
-			
-			inr h ; X + 1
+			DRAW_SPRITE_VM3()
 
-// last byte from Scr1 to Scr3
-			
-			// Scr1
-			pop b ; b - color_scr1, c - mask
-			mov a, m
-			ana c
-			ora b
-			mov m, a
-
-			mvi h, TEMP_BYTE ; init_x + 0x22
-			mov d, c
-
-			// Scr2
-			mov a, m
-			ana c
-			pop b ; c - color_scr2, b - color_scr3
-			ora c
-			mov m, a
-
-			mvi h, TEMP_BYTE ; init_x + 0x42
-
-			// Scr3
-			mov a, m
-			ana d
-			ora b
-			mov m, a
-			
 			inr l ; Y + 1
 
 			dcr e
-			jz @end
-            
-// repeat the loop code above in reverse
-            dcr e
-            jnz @loop
+			jz draw_sprite_ret
 
-			; sprite 24 x 15 perf:
-            ; prep: (6*12 + 1)*4=292 cc
-			; loop: (96 + 5) * 15 * 4 = 6060 cc
-			; total: 6352 cc
-            ; 47.05 cc per byte
-            ; 44.83 cc per byte w/o a loop counter
-*/
+// even line from right to left
+// last byte
+    		// Scr1
+			DRAW_SPRITE_VM1()
+
+@width16_offset21_2:
+			mvi h, TEMP_BYTE ; init_x + 0x21
+
+			// Scr2
+			DRAW_SPRITE_VM2()
+
+@width16_offset41:
+			mvi h, TEMP_BYTE ; init_x + 0x41
+
+			// Scr3
+			DRAW_SPRITE_VM3()
+
+			dcr h ; X - 1
+
+// first byte
+
+			// Scr3
+			DRAW_SPRITE_VM1()
+
+@width16_offset20_2:
+			mvi h, TEMP_BYTE ; init_x + 0x20
+
+			// Scr2
+			DRAW_SPRITE_VM2()
+
+@width16_offset00:
+			mvi h, TEMP_BYTE ; init_x + 0x00
+
+			// Scr1
+			DRAW_SPRITE_VM3()
+
+			inr l ; Y + 1
+
+            dcr e
+            jnz @width16_loop
+			jmp draw_sprite_ret
+
+@width24:
+			mov a, h
+			sta @width24_offset00 + 1
+			inr a
+			sta @width24_offset01 + 1
+			inr a
+			sta @width24_offset02 + 1
+			adi 0x20 - 2
+			sta @width24_offset20 + 1
+			sta @width24_offset20_2 + 1
+			inr a
+			sta @width24_offset21 + 1
+			sta @width24_offset21_2 + 1
+			inr a
+			sta @width24_offset22 + 1
+			sta @width24_offset22_2 + 1
+			adi 0x40 - 0x22
+			sta @width24_offset40 + 1
+			inr a
+			sta @width24_offset41 + 1
+			inr a
+			sta @width24_offset42 + 1
+
+@width24_loop:
+// odd line from left to right
+// first byte
+    		// Scr1
+			DRAW_SPRITE_VM1()
+
+@width24_offset20:
+			mvi h, TEMP_BYTE ; init_x + 0x20
+
+			// Scr2
+			DRAW_SPRITE_VM2()
+
+@width24_offset40:
+			mvi h, TEMP_BYTE ; init_x + 0x40
+
+			// Scr3
+			DRAW_SPRITE_VM3()
+
+			inr h ; X + 1
+			; 32*4=
+
+// second byte
+
+			// Scr3
+			DRAW_SPRITE_VM1()
+
+@width24_offset21:
+			mvi h, TEMP_BYTE ; init_x + 0x21
+
+			// Scr2
+			DRAW_SPRITE_VM2()
+
+@width24_offset01:
+			mvi h, TEMP_BYTE ; init_x + 0x01
+
+			// Scr1
+			DRAW_SPRITE_VM3()
+
+			inr h ; X + 1
+
+// last byte
+
+			// Scr1
+			DRAW_SPRITE_VM1()
+
+@width24_offset22:
+			mvi h, TEMP_BYTE ; init_x + 0x22
+
+			// Scr2
+			DRAW_SPRITE_VM2()
+
+@width24_offset42:
+			mvi h, TEMP_BYTE ; init_x + 0x42
+
+			// Scr3
+			DRAW_SPRITE_VM3()
+
+			inr l ; Y + 1
+
+			dcr e
+			jz draw_sprite_ret
+
+// even line from right to left
+// last byte
+    		// Scr3
+			DRAW_SPRITE_VM1()
+
+@width24_offset22_2:
+			mvi h, TEMP_BYTE ; init_x + 0x22
+
+			// Scr2
+			DRAW_SPRITE_VM2()
+
+@width24_offset02:
+			mvi h, TEMP_BYTE ; init_x + 0x02
+
+			// Scr1
+			DRAW_SPRITE_VM3()
+
+			dcr h ; X - 1
+
+// second byte
+
+			// Scr1
+			DRAW_SPRITE_VM1()
+
+@width24_offset21_2:
+			mvi h, TEMP_BYTE ; init_x + 0x21
+
+			// Scr2
+			DRAW_SPRITE_VM2()
+
+@width24_offset41:
+			mvi h, TEMP_BYTE ; init_x + 0x41
+
+			// Scr3
+			DRAW_SPRITE_VM3()
+
+			dcr h ; X - 1
+
+// last byte
+
+			// Scr3
+			DRAW_SPRITE_VM1()
+
+@width24_offset20_2:
+			mvi h, TEMP_BYTE ; init_x + 0x20
+
+			// Scr2
+			DRAW_SPRITE_VM2()
+
+@width24_offset00:
+			mvi h, TEMP_BYTE ; init_x + 0x00
+
+			// Scr1
+			DRAW_SPRITE_VM3()
+
+			inr l ; Y + 1
+
+            dcr e
+            jnz @width24_loop
+			jmp draw_sprite_ret
+
+
+
+; 9*4=36cc
+.macro DRAW_SPRITE_VM1()
+			pop b ; b - color, c - mask
+			mov a, m
+			ana c
+			ora b
+			mov m, a
+			mov d, c
+.endmacro
+
+; 9*4=36cc
+; in:
+; d - mask
+.macro DRAW_SPRITE_VM2()
+			mov a, m
+			ana d
+			pop b ; c - color, b - color
+			ora c
+			mov m, a
+.endmacro
+
+; 6*4=24cc
+; in:
+; d - mask
+.macro DRAW_SPRITE_VM3()
+			mov a, m
+			ana d
+			ora b
+			mov m, a
+.endmacro

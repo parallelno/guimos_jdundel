@@ -2,8 +2,8 @@
 ; asm data file: build/debug/sprite/vfx4_data.asm
 ; bin file: build/debug/bin/VFX4.BIN
 
-VFX4_FILE_LEN = 3888
-VFX4_LAST_RECORD_LEN = 48
+VFX4_FILE_LEN = 2640
+VFX4_LAST_RECORD_LEN = 80
 
 VFX4_FILENAME_PTR:
 			.byte "VFX4" ; filename
@@ -12,29 +12,29 @@ VFX4_FILENAME_PTR:
 
 ; relative frame labels
 _vfx4_hit0_0_relative = 2
-_vfx4_hit0_1_relative = 140
-_vfx4_hit0_2_relative = 278
-_vfx4_hit0_3_relative = 416
-_vfx4_hit1_0_relative = 554
-_vfx4_hit1_1_relative = 704
-_vfx4_hit1_2_relative = 854
-_vfx4_hit1_3_relative = 1004
-_vfx4_hit2_0_relative = 1154
-_vfx4_hit2_1_relative = 1328
-_vfx4_hit2_2_relative = 1502
-_vfx4_hit2_3_relative = 1676
-_vfx4_hit3_0_relative = 1850
-_vfx4_hit3_1_relative = 2048
-_vfx4_hit3_2_relative = 2246
-_vfx4_hit3_3_relative = 2444
-_vfx4_hero_death1_0_relative = 2642
-_vfx4_hero_death1_1_relative = 2792
-_vfx4_hero_death1_2_relative = 2942
-_vfx4_hero_death1_3_relative = 3164
-_vfx4_hero_death2_0_relative = 3386
-_vfx4_hero_death2_1_relative = 3488
-_vfx4_hero_death2_2_relative = 3590
-_vfx4_hero_death2_3_relative = 3740
+_vfx4_hit0_1_relative = 96
+_vfx4_hit0_2_relative = 190
+_vfx4_hit0_3_relative = 284
+_vfx4_hit1_0_relative = 378
+_vfx4_hit1_1_relative = 480
+_vfx4_hit1_2_relative = 582
+_vfx4_hit1_3_relative = 684
+_vfx4_hit2_0_relative = 786
+_vfx4_hit2_1_relative = 904
+_vfx4_hit2_2_relative = 1022
+_vfx4_hit2_3_relative = 1140
+_vfx4_hit3_0_relative = 1258
+_vfx4_hit3_1_relative = 1392
+_vfx4_hit3_2_relative = 1526
+_vfx4_hit3_3_relative = 1660
+_vfx4_hero_death1_0_relative = 1794
+_vfx4_hero_death1_1_relative = 1896
+_vfx4_hero_death1_2_relative = 1998
+_vfx4_hero_death1_3_relative = 2148
+_vfx4_hero_death2_0_relative = 2298
+_vfx4_hero_death2_1_relative = 2368
+_vfx4_hero_death2_2_relative = 2438
+_vfx4_hero_death2_3_relative = 2540
 
 vfx4_get_scr_addr:
 			.word sprite_get_scr_addr4

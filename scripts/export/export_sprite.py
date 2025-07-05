@@ -7,7 +7,7 @@ import utils.common_gfx as common_gfx
 import utils.build as build
 
 
-def export_if_updated( 
+def export_if_updated(
 		asset_j_path, asm_meta_path, asm_data_path, bin_path,
 		force_export):
 
@@ -44,7 +44,7 @@ def export_asm(asset_j_path, asm_meta_path, asm_data_path, bin_path):
 	asm_ram_disk_data, data_relative_ptrs = gfx_to_asm("_", asset_name, asset_j, image, asset_j_path)
 	asm_ram_data = anims_to_asm("_", asset_name, asset_j, data_relative_ptrs, asset_j_path)
 
-	# save the asm gfx 
+	# save the asm gfx
 	asm_gfx_dir = str(Path(asm_data_path).parent) + "/"
 	if not os.path.exists(asm_gfx_dir):
 		os.mkdir(asm_gfx_dir)
@@ -65,7 +65,7 @@ def gfx_to_asm(label_prefix, asset_name, asset_j, image, asset_j_path):
 	data_relative_ptrs = {}
 	sprite_data_relative_addr = 2 # safety pair of bytes for reading by POP B
 	asm = f"{label_prefix}{asset_name}_sprites:"
-	
+
 	if (preshifted_sprites_num != 1 and
 		preshifted_sprites_num != 4 and preshifted_sprites_num != 8):
 		build.exit_error(f'export_sprite ERROR: preshifted_sprites can be only equal 1, 4, 8. Path: {asset_j_path}')
@@ -81,9 +81,9 @@ def gfx_to_asm(label_prefix, asset_name, asset_j, image, asset_j_path):
 		offset_x = sprite["offset_x"] if sprite.get("offset_x") is not None else 0
 		offset_y = sprite["offset_y"] if sprite.get("offset_y") is not None else 0
 		mask_x = sprite.get("mask_x", x)
-		mask_y = sprite.get("mask_y", y)		
+		mask_y = sprite.get("mask_y", y)
 		mask_alpha = sprite.get("mask_alpha", 0)
-		mask_color = sprite.get("mask_color", 1)		
+		mask_color = sprite.get("mask_color", 1)
 
 		# 2d pixel array RGB
 		sprite_img = []
@@ -206,7 +206,7 @@ def img_to_preshifted_sprite(
 
 	# convert indexes into bit lists.
 	bits0, bits1, bits2, bits3 = common_gfx.indexes_to_bit_lists(sprite_img)
- 
+
 	# preshift image
 	if (shift > 0):
 		#bits0 = shift_bits(bits0, w, h, shift)
@@ -232,7 +232,7 @@ def img_to_preshifted_sprite(
 		l = find_leftest_bit(bits, w, h, enabled)
 		if l > vis_bit_l:
 			vis_bit_l = l
-		
+
 		r = find_rightest_bit(bits, w, h, enabled)
 		if r < vis_bit_r:
 			vis_bit_r = r
@@ -240,7 +240,7 @@ def img_to_preshifted_sprite(
 	# crop a sprite to rounded by 8 pixels (bytes)
 	local_offset_x = vis_bit_l // 8 * 8
 	new_w_unrounded = vis_bit_r - local_offset_x
-	new_w = (new_w_unrounded // 8) * 8 
+	new_w = (new_w_unrounded // 8) * 8
 	if (new_w_unrounded % 8) > 0:
 		new_w += 8
 
@@ -248,7 +248,7 @@ def img_to_preshifted_sprite(
 	if new_w <= 0:
 		new_w = 8
 		local_offset_x = 0
-	else:	
+	else:
 		bits1 = crop_bits(bits1, w, h, new_w, local_offset_x)
 		bits2 = crop_bits(bits2, w, h, new_w, local_offset_x)
 		bits3 = crop_bits(bits3, w, h, new_w, local_offset_x)
@@ -282,7 +282,7 @@ def img_to_preshifted_sprite(
 	# 		)
 
 	offset_x_packed = (offset_x + local_offset_x) // 8
-	new_w_packed = new_w // 8 - 1 
+	new_w_packed = new_w // 8 - 1
 
 	asm = ""
 	asm += "\n"
@@ -308,7 +308,7 @@ def crop_bits(bits, w, h, new_w, offset_x):
 				continue
 			b = bits[y*w + x]
 			cropped.append(b)
-			
+
 	return cropped
 
 
@@ -340,14 +340,14 @@ def shift_bits(bits, w, h, shift, filler = 0):
 	for y in range(h):
 		for x in range(shift):
 			shifted_bits.append(filler)
-		
+
 		for x in range(w):
 			b = bits[w*y + x]
 			shifted_bits.append(b)
 
 		for x in range(8 - shift):
 			shifted_bits.append(filler)
-			
+
 	return shifted_bits
 
 
@@ -427,7 +427,7 @@ def sprite_data2(bytes1, bytes2, bytes3, mask_bytes, width, h):
 				data.append(scr2)
 				data.append(scr3)
 			else:
-				data.append(a)				
+				data.append(a)
 				data.append(scr3)
 				data.append(scr2)
 				data.append(scr1)
@@ -451,21 +451,21 @@ def calc_cpu_cycles(row_heights, w, h):
 	# prep 16: 49*4 = 196 cc
 	# prep 24: 49*4 + 4*4 = 212 cc
 	# prep 8: 49*4 + 4*4 + 3*4 = 224 cc
-	
+
 	# w16 prep: 16*4 = 64 cc
 	# line w16 loop: (11*6 + 5) * 4 = 284 cc per line
 	# w24 prep: 18*4 = 72 cc
 	# line w24 loop: (11*9 + 5) * 4 = 416 cc per line
 	# w8 prep: 16*4 = 64 cc
 	# line w8 loop: (11*3 + 5) * 4 = 152 cc per line
-	
+
 	# ret: 48 cc
 
 	line1_prep16 = 196
 	line1_prep24 = line1_prep16 + 16
 	line1_prep8 = line1_prep24 + 12
 	line1_w8_prep = 64
-	line1_w8_loop = 152	
+	line1_w8_loop = 152
 	line1_w16_prep = 64
 	line1_w16_loop = 284
 	line1_w24_prep = 72
@@ -487,21 +487,21 @@ def calc_cpu_cycles(row_heights, w, h):
 	# row loop: 37*4 = 148 cc per byte
 	# post row: 3*4 = 12 cc
 	# ret: (14+17) * 4 = 124 cc
-	
+
 	row1_prep = 72
 	row1_row_prep = 144
-	#row1_row_loop = 148 # row end test every line	
+	#row1_row_loop = 148 # row end test every line
 	#row1_row_loop = 138 # row end test every second line
 	row1_row_loop = 128 # no row end test
 	row1_post_row = 12
 	row1_ret = 124
 
 	row1_total_bytes = sum(row_heights)
-	
+
 	row1_cc = row1_prep + \
 				(row1_row_prep + row1_post_row) * w_in_bytes + \
 				row1_row_loop * row1_total_bytes + row1_ret
-	
+
 	row1_len = 2 + (2 + 2) * w_in_bytes + row1_total_bytes * 4
 
 
@@ -532,47 +532,107 @@ def calc_cpu_cycles(row_heights, w, h):
 
 	return line1_cc, line1_len, row1_cc, row1_len, line2_cc, line2_len
 
-	
 
-def sprite_data(bytes1, bytes2, bytes3, width, h, mask_bytes = None): 
+def sprite_data(bytes1, bytes2, bytes3, width, h, mask_bytes = None):
 	# sprite data structure description is in draw_sprite.asm
 	# sprite uses only 3 out of 4 screen buffers.
-	# the w is devided by 8 (8 pxls per byte)
-	w = width // 8
+	w_in_bytes = width // 8 # 8 pxls per byte
 	data = []
+
 	for y in range(h):
 		even_line = y % 2 == 0
-		if even_line:
-			for x in range(w): 
-				i = y*w+x
+		if width == 8:
+			if even_line:
+				x = 0
+				i = y * w_in_bytes + x
 				if mask_bytes:
 					data.append(mask_bytes[i])
-				data.append(bytes1[i]) 
-			for x in range(w):
-				i = y*w+w-x-1
-				if mask_bytes:
-					data.append(mask_bytes[i])
+				data.append(bytes1[i])
 				data.append(bytes2[i])
-			for x in range(w):
-				i = y*w+w-x-1
+				data.append(bytes3[i])
+			else:
+				x = 0
+				i = y * w_in_bytes + x
 				if mask_bytes:
 					data.append(mask_bytes[i])
 				data.append(bytes3[i])
-		else:
-			for x in range(w):
-				i = y*w+x
+				data.append(bytes2[i])
+				data.append(bytes1[i])
+		elif width == 16:
+			if even_line:
+				x = 0
+				i = y * w_in_bytes + x
+				if mask_bytes:
+					data.append(mask_bytes[i])
+				data.append(bytes1[i])
+				data.append(bytes2[i])
+				data.append(bytes3[i])
+				x = 1
+				i = y * w_in_bytes + x
 				if mask_bytes:
 					data.append(mask_bytes[i])
 				data.append(bytes3[i])
-			for x in range(w):
-				i = y*w+w-x-1
-				if mask_bytes:
-					data.append(mask_bytes[i])
 				data.append(bytes2[i])
-			for x in range(w):
-				i = y*w+w-x-1
+				data.append(bytes1[i])
+			else:
+				x = 1
+				i = y * w_in_bytes + x
 				if mask_bytes:
 					data.append(mask_bytes[i])
+				data.append(bytes1[i])
+				data.append(bytes2[i])
+				data.append(bytes3[i])
+				x = 0
+				i = y * w_in_bytes + x
+				if mask_bytes:
+					data.append(mask_bytes[i])
+				data.append(bytes3[i])
+				data.append(bytes2[i])
+				data.append(bytes1[i])
+		elif width == 24:
+			if even_line:
+				x = 0
+				i = y * w_in_bytes + x
+				if mask_bytes:
+					data.append(mask_bytes[i])
+				data.append(bytes1[i])
+				data.append(bytes2[i])
+				data.append(bytes3[i])
+				x = 1
+				i = y * w_in_bytes + x
+				if mask_bytes:
+					data.append(mask_bytes[i])
+				data.append(bytes3[i])
+				data.append(bytes2[i])
+				data.append(bytes1[i])
+				x = 2
+				i = y * w_in_bytes + x
+				if mask_bytes:
+					data.append(mask_bytes[i])
+				data.append(bytes1[i])
+				data.append(bytes2[i])
+				data.append(bytes3[i])
+			else:
+				x = 2
+				i = y * w_in_bytes + x
+				if mask_bytes:
+					data.append(mask_bytes[i])
+				data.append(bytes3[i])
+				data.append(bytes2[i])
+				data.append(bytes1[i])
+				x = 1
+				i = y * w_in_bytes + x
+				if mask_bytes:
+					data.append(mask_bytes[i])
+				data.append(bytes1[i])
+				data.append(bytes2[i])
+				data.append(bytes3[i])
+				x = 0
+				i = y * w_in_bytes + x
+				if mask_bytes:
+					data.append(mask_bytes[i])
+				data.append(bytes3[i])
+				data.append(bytes2[i])
 				data.append(bytes1[i])
 
 	return data

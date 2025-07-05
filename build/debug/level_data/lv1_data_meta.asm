@@ -20,8 +20,8 @@ lv1_data_init_tbl:
 lv1_resources_inst_data_ptrs:
 			.word _lv1_resources_inst_data_ptrs
 			.word _lv1_containers_inst_data_ptrs
-			.byte 100			; hero start pos_y
-			.byte 60			; hero start pos_x
+			.byte 110			; hero start pos_y
+			.byte 100			; hero start pos_x
 @data_end:
 LV1_DATA_INIT_TBL_LEN = @data_end - lv1_data_init_tbl
 

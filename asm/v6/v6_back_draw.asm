@@ -1,5 +1,5 @@
 ;----------------------------------------------------------------
-; draw a background sprite without an alpha channel (8xN, 16xN pixels)
+; draw a background sprite without an alpha channel (16xN pixels)
 ; input:
 ; bc - back sprite data addr
 ; de - screen addr, d=[$80, $9f]

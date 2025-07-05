@@ -2,8 +2,8 @@
 ; asm data file: build/debug/sprite/hero_r_data.asm
 ; bin file: build/debug/bin/HERO_R.BIN
 
-HERO_R_FILE_LEN = 13176
-HERO_R_LAST_RECORD_LEN = 120
+HERO_R_FILE_LEN = 8896
+HERO_R_LAST_RECORD_LEN = 64
 
 HERO_R_FILENAME_PTR:
 			.byte "HERO_R" ; filename
@@ -12,61 +12,61 @@ HERO_R_FILENAME_PTR:
 
 ; relative frame labels
 _hero_r_idle0_0_relative = 2
-_hero_r_idle0_1_relative = 188
-_hero_r_idle0_2_relative = 374
-_hero_r_idle0_3_relative = 560
-_hero_r_idle0_4_relative = 836
-_hero_r_idle0_5_relative = 1112
-_hero_r_idle0_6_relative = 1388
-_hero_r_idle0_7_relative = 1664
-_hero_r_run0_0_relative = 1850
-_hero_r_run0_1_relative = 2048
-_hero_r_run0_2_relative = 2246
-_hero_r_run0_3_relative = 2444
-_hero_r_run0_4_relative = 2738
-_hero_r_run0_5_relative = 3032
-_hero_r_run0_6_relative = 3326
-_hero_r_run0_7_relative = 3620
-_hero_r_run1_0_relative = 3818
-_hero_r_run1_1_relative = 4016
-_hero_r_run1_2_relative = 4214
-_hero_r_run1_3_relative = 4412
-_hero_r_run1_4_relative = 4706
-_hero_r_run1_5_relative = 5000
-_hero_r_run1_6_relative = 5294
-_hero_r_run1_7_relative = 5588
-_hero_r_run2_0_relative = 5786
-_hero_r_run2_1_relative = 5972
-_hero_r_run2_2_relative = 6158
-_hero_r_run2_3_relative = 6344
-_hero_r_run2_4_relative = 6620
-_hero_r_run2_5_relative = 6896
-_hero_r_run2_6_relative = 7172
-_hero_r_run2_7_relative = 7448
-_hero_r_run3_0_relative = 7634
-_hero_r_run3_1_relative = 7820
-_hero_r_run3_2_relative = 8006
-_hero_r_run3_3_relative = 8192
-_hero_r_run3_4_relative = 8468
-_hero_r_run3_5_relative = 8744
-_hero_r_run3_6_relative = 9020
-_hero_r_run3_7_relative = 9296
-_hero_r_attk0_0_relative = 9482
-_hero_r_attk0_1_relative = 9668
-_hero_r_attk0_2_relative = 9854
-_hero_r_attk0_3_relative = 10040
-_hero_r_attk0_4_relative = 10226
-_hero_r_attk0_5_relative = 10502
-_hero_r_attk0_6_relative = 10778
-_hero_r_attk0_7_relative = 11054
-_hero_r_attk1_0_relative = 11330
-_hero_r_attk1_1_relative = 11516
-_hero_r_attk1_2_relative = 11702
-_hero_r_attk1_3_relative = 11888
-_hero_r_attk1_4_relative = 12164
-_hero_r_attk1_5_relative = 12440
-_hero_r_attk1_6_relative = 12716
-_hero_r_attk1_7_relative = 12992
+_hero_r_idle0_1_relative = 128
+_hero_r_idle0_2_relative = 254
+_hero_r_idle0_3_relative = 380
+_hero_r_idle0_4_relative = 566
+_hero_r_idle0_5_relative = 752
+_hero_r_idle0_6_relative = 938
+_hero_r_idle0_7_relative = 1124
+_hero_r_run0_0_relative = 1250
+_hero_r_run0_1_relative = 1384
+_hero_r_run0_2_relative = 1518
+_hero_r_run0_3_relative = 1652
+_hero_r_run0_4_relative = 1850
+_hero_r_run0_5_relative = 2048
+_hero_r_run0_6_relative = 2246
+_hero_r_run0_7_relative = 2444
+_hero_r_run1_0_relative = 2578
+_hero_r_run1_1_relative = 2712
+_hero_r_run1_2_relative = 2846
+_hero_r_run1_3_relative = 2980
+_hero_r_run1_4_relative = 3178
+_hero_r_run1_5_relative = 3376
+_hero_r_run1_6_relative = 3574
+_hero_r_run1_7_relative = 3772
+_hero_r_run2_0_relative = 3906
+_hero_r_run2_1_relative = 4032
+_hero_r_run2_2_relative = 4158
+_hero_r_run2_3_relative = 4284
+_hero_r_run2_4_relative = 4470
+_hero_r_run2_5_relative = 4656
+_hero_r_run2_6_relative = 4842
+_hero_r_run2_7_relative = 5028
+_hero_r_run3_0_relative = 5154
+_hero_r_run3_1_relative = 5280
+_hero_r_run3_2_relative = 5406
+_hero_r_run3_3_relative = 5532
+_hero_r_run3_4_relative = 5718
+_hero_r_run3_5_relative = 5904
+_hero_r_run3_6_relative = 6090
+_hero_r_run3_7_relative = 6276
+_hero_r_attk0_0_relative = 6402
+_hero_r_attk0_1_relative = 6528
+_hero_r_attk0_2_relative = 6654
+_hero_r_attk0_3_relative = 6780
+_hero_r_attk0_4_relative = 6906
+_hero_r_attk0_5_relative = 7092
+_hero_r_attk0_6_relative = 7278
+_hero_r_attk0_7_relative = 7464
+_hero_r_attk1_0_relative = 7650
+_hero_r_attk1_1_relative = 7776
+_hero_r_attk1_2_relative = 7902
+_hero_r_attk1_3_relative = 8028
+_hero_r_attk1_4_relative = 8214
+_hero_r_attk1_5_relative = 8400
+_hero_r_attk1_6_relative = 8586
+_hero_r_attk1_7_relative = 8772
 
 hero_r_get_scr_addr:
 			.word sprite_get_scr_addr8

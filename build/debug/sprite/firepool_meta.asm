@@ -2,8 +2,8 @@
 ; asm data file: build/debug/sprite/firepool_data.asm
 ; bin file: build/debug/bin/FIREPOOL.BIN
 
-FIREPOOL_FILE_LEN = 822
-FIREPOOL_LAST_RECORD_LEN = 54
+FIREPOOL_FILE_LEN = 558
+FIREPOOL_LAST_RECORD_LEN = 46
 
 FIREPOOL_FILENAME_PTR:
 			.byte "FIREPOOL" ; filename
@@ -11,10 +11,10 @@ FIREPOOL_FILENAME_PTR:
 
 ; relative frame labels
 _firepool_idle0_0_relative = 2
-_firepool_idle1_0_relative = 152
-_firepool_idle2_0_relative = 302
-_firepool_idle3_0_relative = 488
-_firepool_idle4_0_relative = 662
+_firepool_idle1_0_relative = 104
+_firepool_idle2_0_relative = 206
+_firepool_idle3_0_relative = 332
+_firepool_idle4_0_relative = 450
 
 firepool_get_scr_addr:
 			.word sprite_get_scr_addr1

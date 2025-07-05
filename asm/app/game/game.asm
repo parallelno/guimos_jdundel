@@ -17,12 +17,8 @@ game_init:
 
 game_loop:
 @loop:
-@codePerfStart_draw:
 			call game_update
-@codePerfEnd_draw:
-@codePerfStart_update:
-			call game_draw
-@codePerfEnd_update:			
+			call game_draw		
 			jmp	@loop
 
 game_update:

@@ -1,4 +1,8 @@
 ; =============================================
+;
+; OLD! the sprite format got changed
+;
+; =============================================
 ; Draw a monochrome sprite with a mask in three consiquence screen buffs with offset_x and offset_y
 ; it is used for hit indication
 ; width is 1-3 bytes

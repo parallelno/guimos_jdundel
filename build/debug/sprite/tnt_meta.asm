@@ -2,8 +2,8 @@
 ; asm data file: build/debug/sprite/tnt_data.asm
 ; bin file: build/debug/bin/TNT.BIN
 
-TNT_FILE_LEN = 1056
-TNT_LAST_RECORD_LEN = 32
+TNT_FILE_LEN = 720
+TNT_LAST_RECORD_LEN = 80
 
 TNT_FILENAME_PTR:
 			.byte "TNT" ; filename
@@ -12,13 +12,13 @@ TNT_FILENAME_PTR:
 
 ; relative frame labels
 _tnt_idle0_0_relative = 2
-_tnt_idle0_1_relative = 74
-_tnt_idle0_2_relative = 212
-_tnt_idle0_3_relative = 350
-_tnt_idle1_0_relative = 488
-_tnt_idle1_1_relative = 572
-_tnt_idle1_2_relative = 734
-_tnt_idle1_3_relative = 896
+_tnt_idle0_1_relative = 52
+_tnt_idle0_2_relative = 146
+_tnt_idle0_3_relative = 240
+_tnt_idle1_0_relative = 334
+_tnt_idle1_1_relative = 392
+_tnt_idle1_2_relative = 502
+_tnt_idle1_3_relative = 612
 
 tnt_get_scr_addr:
 			.word sprite_get_scr_addr4

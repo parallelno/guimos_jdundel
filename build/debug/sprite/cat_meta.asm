@@ -2,8 +2,8 @@
 ; asm data file: build/debug/sprite/cat_data.asm
 ; bin file: build/debug/bin/CAT.BIN
 
-CAT_FILE_LEN = 9810
-CAT_LAST_RECORD_LEN = 82
+CAT_FILE_LEN = 6628
+CAT_LAST_RECORD_LEN = 100
 
 CAT_FILENAME_PTR:
 			.byte "CAT" ; filename
@@ -12,49 +12,49 @@ CAT_FILENAME_PTR:
 
 ; relative frame labels
 _cat_idle0_0_relative = 2
-_cat_idle0_1_relative = 164
-_cat_idle0_2_relative = 326
-_cat_idle0_3_relative = 566
-_cat_idle1_0_relative = 806
-_cat_idle1_1_relative = 968
-_cat_idle1_2_relative = 1130
-_cat_idle1_3_relative = 1370
-_cat_idle2_0_relative = 1610
-_cat_idle2_1_relative = 1772
-_cat_idle2_2_relative = 2012
-_cat_idle2_3_relative = 2252
-_cat_run_r0_0_relative = 2492
-_cat_run_r0_1_relative = 2666
-_cat_run_r0_2_relative = 2924
-_cat_run_r0_3_relative = 3182
-_cat_run_r1_0_relative = 3440
-_cat_run_r1_1_relative = 3602
-_cat_run_r1_2_relative = 3842
-_cat_run_r1_3_relative = 4082
-_cat_run_r2_0_relative = 4322
-_cat_run_r2_1_relative = 4496
-_cat_run_r2_2_relative = 4754
-_cat_run_r2_3_relative = 5012
-_cat_run_r3_0_relative = 5270
-_cat_run_r3_1_relative = 5432
-_cat_run_r3_2_relative = 5672
-_cat_run_r3_3_relative = 5912
-_cat_run_l0_0_relative = 6152
-_cat_run_l0_1_relative = 6326
-_cat_run_l0_2_relative = 6584
-_cat_run_l0_3_relative = 6842
-_cat_run_l1_0_relative = 7100
-_cat_run_l1_1_relative = 7262
-_cat_run_l1_2_relative = 7502
-_cat_run_l1_3_relative = 7742
-_cat_run_l2_0_relative = 7982
-_cat_run_l2_1_relative = 8156
-_cat_run_l2_2_relative = 8414
-_cat_run_l2_3_relative = 8672
-_cat_run_l3_0_relative = 8930
-_cat_run_l3_1_relative = 9092
-_cat_run_l3_2_relative = 9332
-_cat_run_l3_3_relative = 9572
+_cat_idle0_1_relative = 112
+_cat_idle0_2_relative = 222
+_cat_idle0_3_relative = 384
+_cat_idle1_0_relative = 546
+_cat_idle1_1_relative = 656
+_cat_idle1_2_relative = 766
+_cat_idle1_3_relative = 928
+_cat_idle2_0_relative = 1090
+_cat_idle2_1_relative = 1200
+_cat_idle2_2_relative = 1362
+_cat_idle2_3_relative = 1524
+_cat_run_r0_0_relative = 1686
+_cat_run_r0_1_relative = 1804
+_cat_run_r0_2_relative = 1978
+_cat_run_r0_3_relative = 2152
+_cat_run_r1_0_relative = 2326
+_cat_run_r1_1_relative = 2436
+_cat_run_r1_2_relative = 2598
+_cat_run_r1_3_relative = 2760
+_cat_run_r2_0_relative = 2922
+_cat_run_r2_1_relative = 3040
+_cat_run_r2_2_relative = 3214
+_cat_run_r2_3_relative = 3388
+_cat_run_r3_0_relative = 3562
+_cat_run_r3_1_relative = 3672
+_cat_run_r3_2_relative = 3834
+_cat_run_r3_3_relative = 3996
+_cat_run_l0_0_relative = 4158
+_cat_run_l0_1_relative = 4276
+_cat_run_l0_2_relative = 4450
+_cat_run_l0_3_relative = 4624
+_cat_run_l1_0_relative = 4798
+_cat_run_l1_1_relative = 4908
+_cat_run_l1_2_relative = 5070
+_cat_run_l1_3_relative = 5232
+_cat_run_l2_0_relative = 5394
+_cat_run_l2_1_relative = 5512
+_cat_run_l2_2_relative = 5686
+_cat_run_l2_3_relative = 5860
+_cat_run_l3_0_relative = 6034
+_cat_run_l3_1_relative = 6144
+_cat_run_l3_2_relative = 6306
+_cat_run_l3_3_relative = 6468
 
 cat_get_scr_addr:
 			.word sprite_get_scr_addr4

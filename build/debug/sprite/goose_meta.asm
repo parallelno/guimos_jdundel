@@ -2,8 +2,8 @@
 ; asm data file: build/debug/sprite/goose_data.asm
 ; bin file: build/debug/bin/GOOSE.BIN
 
-GOOSE_FILE_LEN = 5352
-GOOSE_LAST_RECORD_LEN = 104
+GOOSE_FILE_LEN = 3616
+GOOSE_LAST_RECORD_LEN = 32
 
 GOOSE_FILENAME_PTR:
 			.byte "GOOSE" ; filename
@@ -12,29 +12,29 @@ GOOSE_FILENAME_PTR:
 
 ; relative frame labels
 _goose_idle0_0_relative = 2
-_goose_idle0_1_relative = 176
-_goose_idle0_2_relative = 350
-_goose_idle0_3_relative = 524
-_goose_idle1_0_relative = 782
-_goose_idle1_1_relative = 956
-_goose_idle1_2_relative = 1130
-_goose_idle1_3_relative = 1304
-_goose_run_r0_0_relative = 1562
-_goose_run_r0_1_relative = 1736
-_goose_run_r0_2_relative = 1994
-_goose_run_r0_3_relative = 2252
-_goose_run_r1_0_relative = 2510
-_goose_run_r1_1_relative = 2684
-_goose_run_r1_2_relative = 2942
-_goose_run_r1_3_relative = 3200
-_goose_run_l0_0_relative = 3458
-_goose_run_l0_1_relative = 3632
-_goose_run_l0_2_relative = 3890
-_goose_run_l0_3_relative = 4148
-_goose_run_l1_0_relative = 4406
-_goose_run_l1_1_relative = 4580
-_goose_run_l1_2_relative = 4838
-_goose_run_l1_3_relative = 5096
+_goose_idle0_1_relative = 120
+_goose_idle0_2_relative = 238
+_goose_idle0_3_relative = 356
+_goose_idle1_0_relative = 530
+_goose_idle1_1_relative = 648
+_goose_idle1_2_relative = 766
+_goose_idle1_3_relative = 884
+_goose_run_r0_0_relative = 1058
+_goose_run_r0_1_relative = 1176
+_goose_run_r0_2_relative = 1350
+_goose_run_r0_3_relative = 1524
+_goose_run_r1_0_relative = 1698
+_goose_run_r1_1_relative = 1816
+_goose_run_r1_2_relative = 1990
+_goose_run_r1_3_relative = 2164
+_goose_run_l0_0_relative = 2338
+_goose_run_l0_1_relative = 2456
+_goose_run_l0_2_relative = 2630
+_goose_run_l0_3_relative = 2804
+_goose_run_l1_0_relative = 2978
+_goose_run_l1_1_relative = 3096
+_goose_run_l1_2_relative = 3270
+_goose_run_l1_3_relative = 3444
 
 goose_get_scr_addr:
 			.word sprite_get_scr_addr4
