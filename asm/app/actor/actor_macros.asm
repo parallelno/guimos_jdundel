@@ -3,6 +3,7 @@
 ; hl - ptr to actor_pos_x+1
 ; rev 1 268cc
 ; rev 2 212cc (26.4% faster!)
+; 27 bytes
 .macro ACTOR_UPDATE_MOVEMENT()
 			HL_ADVANCE(monster_status_timer, monster_speed_y + 1, BY_BC)
 			mov d, m
@@ -96,8 +97,8 @@
 ; TODO: it is 93 bytes used 7 times = 651 bytes total
 ; rev 1 380cc
 ; rev 2 324cc (17.3% faster!)
-.macro ACTOR_UPDATE_MOVEMENT_CHECK_TILE_COLLISION(actor_status_timer, actor_pos_x, ACTOR_COLLISION_WIDTH, ACTOR_COLLISION_HEIGHT, _collision_handler)
-			HL_ADVANCE(monster_status_timer, monster_speed_y+1, BY_BC)
+.macro ACTOR_UPDATE_MOVEMENT_CHECK_TILE_COLLISION(actor_pos_x, ACTOR_COLLISION_WIDTH, ACTOR_COLLISION_HEIGHT, _collision_handler)
+			HL_ADVANCE(monster_status_timer, monster_speed_y + 1, BY_BC)
 			mov d, m
 			dcx h
 			mov e, m
@@ -114,20 +115,20 @@
 			dcx h
 			; hl - ptr to pos_y
 			mov a, m
-			sta @old_pos_y_l+1
+			sta @old_pos_y_l + 1
 			add e
 			mov m, a
 			inx h
 			; hl = ptr to pos_y+1
 			mov a, m
-			sta @old_pos_y_h+1
+			sta @old_pos_y_h + 1
 			adc d
 			mov m, a
 			mov e, a
 
 			HL_ADVANCE(monster_pos_y+1, monster_pos_x)
 			mov a, m
-			sta @old_pos_x_l+1
+			sta @old_pos_x_l + 1
 			add c
 			mov m, a
 			inx h

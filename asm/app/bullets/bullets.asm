@@ -1,4 +1,4 @@
-.include "app/bullets/bullets_macro.asm"
+.include "app/bullets/bullets_macros.asm"
 .include "app/bullets/vfx_consts.asm"
 .include "app/bullets/sword.asm"
 .include "app/bullets/snowflake.asm"

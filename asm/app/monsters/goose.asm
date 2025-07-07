@@ -176,7 +176,7 @@ goose_update_move:
 			dcr m
 			jz @set_detect_hero_init
 @update_movement:
-			ACTOR_UPDATE_MOVEMENT_CHECK_TILE_COLLISION(monster_status_timer, monster_pos_x, GOOSE_COLLISION_WIDTH, GOOSE_COLLISION_HEIGHT, @set_move_init) 
+			ACTOR_UPDATE_MOVEMENT_CHECK_TILE_COLLISION(monster_pos_x, GOOSE_COLLISION_WIDTH, GOOSE_COLLISION_HEIGHT, @set_move_init) 
 			
 			; hl points to monster_pos_y+1
 			; advance hl to monster_anim_timer

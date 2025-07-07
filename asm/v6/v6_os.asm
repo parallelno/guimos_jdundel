@@ -1,5 +1,5 @@
 .include "asm/v6/v6_os_consts.asm"
-.include "asm/v6/v6_os_macro.asm"
+.include "asm/v6/v6_os_macros.asm"
 ;=======================================================
 ; RDS (based on CP/M 2.2 and MicroDos 3) library
 ; Refs:

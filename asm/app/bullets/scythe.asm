@@ -130,7 +130,7 @@ scythe_update:
 			dcr m
 			jz @die
 @update_movement:
-			ACTOR_UPDATE_MOVEMENT_CHECK_TILE_COLLISION(bullet_status_timer, bullet_pos_x, SCYTHE_COLLISION_WIDTH, SCYTHE_COLLISION_HEIGHT, @set_bounce_after_tile_collision) 
+			ACTOR_UPDATE_MOVEMENT_CHECK_TILE_COLLISION(bullet_pos_x, SCYTHE_COLLISION_WIDTH, SCYTHE_COLLISION_HEIGHT, @set_bounce_after_tile_collision) 
 			
 			; hl points to bullet_pos_y+1
 			; advance hl to bullet_anim_timer
