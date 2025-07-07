@@ -180,9 +180,9 @@
 .endmacro
 
 ; it advances HL by the diff equals to (addr_to - addr_from)
-; if reg_pair is not provided, it uses: INX_H(N)/DCX_H(N). 8-24cc
-; if reg_pair = BY_BC/BY_DE/BY_HL_FROM_BC/BY_HL_FROM_DE, it uses: lxi reg_pair; dad reg_pair. 24cc
-; if reg_pair = BY_A, 40 cc
+; 8-24 cc if reg_pair is not provided, it uses: INX_H(N)/DCX_H(N).
+; 24 cc if reg_pair = BY_BC/BY_DE/BY_HL_FROM_BC/BY_HL_FROM_DE, it uses: lxi reg_pair; dad reg_pair.
+; 40 cc if reg_pair = BY_A
 ; it validates the diff suggesting improvements
 ; use:
 ; hl, reg_pair
@@ -226,15 +226,30 @@ BY_A			= 5
 				dad d
 		.endif
 		.if reg_pair == BY_A
-				mvi a, <int16_const
-				add l
-				mov l, a
-				aci >int16_const
-				sub l
-				mov h, a
+			mvi a, <diff_addr
+			add l
+			mov l, a
+			mvi a, >diff_addr
+			adc h
+			mov h, a
 		.endif
 		.if (reg_pair == BY_BC || reg_pair == BY_DE )  && diff_addr >= -3 && diff_addr <= 3
 			.error "HL_ADVANCE(" addr_from ", " addr_to", BY_BC/BY_DE) with diff (" diff_addr ") is in too short range [-3, 3]. Keep the third argument undefined."
+		.endif
+.endmacro
+
+.macro DE_ADVANCE(addr_from, addr_to)
+		diff_addr = addr_to - addr_from
+
+		.if diff_addr > 0
+			INX_D(diff_addr)
+		.endif
+		.if diff_addr < 0
+			DCX_D(-diff_addr)
+		.endif
+		; validation
+		.if diff_addr < -3 || diff_addr > 3
+			.error "DE_ADVANCE(" addr_from ", " addr_to") with diff (" diff_addr ") is outside of the required range of [-3, 3]."
 		.endif
 .endmacro
 

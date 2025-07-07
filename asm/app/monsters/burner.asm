@@ -397,4 +397,6 @@ burner_update_anim_check_collision_hero:
 ; in:
 ; de - ptr to monster_draw_ptr 
 burner_draw:
-			ACTOR_DRAW(burner_get_scr_addr, burner_ram_disk_s_cmd, false)
+			lhld burner_get_scr_addr
+			lda burner_ram_disk_s_cmd
+			jmp actor_draw

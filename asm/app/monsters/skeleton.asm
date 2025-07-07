@@ -349,4 +349,6 @@ skeleton_update_anim_check_collision_hero:
 ; in:
 ; de - ptr to monster_draw_ptr 
 skeleton_draw:
-			ACTOR_DRAW(skeleton_get_scr_addr, skeleton_ram_disk_s_cmd, false)
+			lhld skeleton_get_scr_addr
+			lda skeleton_ram_disk_s_cmd
+			jmp actor_draw

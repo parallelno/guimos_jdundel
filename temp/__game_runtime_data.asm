@@ -163,7 +163,7 @@ hero_type:					.storage BYTE_LEN ; .byte MONSTER_TYPE_ALLY
 hero_status:				.storage BYTE_LEN ; .byte ACTOR_STATUS_HERO_IDLE ; a status describes what set of animations and behavior is active
 hero_status_timer:			.storage BYTE_LEN ; .byte 0	; a duration of the status. ticks every update
 hero_anim_timer:			.storage BYTE_LEN ; .byte TEMP_BYTE ; it triggers an anim frame switching when it overflows
-hero_anim_addr:				.storage ADDR_LEN ; .word TEMP_ADDR ; holds the current frame ptr
+hero_anim_ptr:				.storage ADDR_LEN ; .word TEMP_ADDR ; holds the current frame ptr
 hero_dir:					.storage BYTE_LEN ; .byte 1			; VDHD, V: vertical dir, H: horiz dir, D: 0 - neg dir, 1 - positive dir
 hero_erase_scr_addr:		.storage ADDR_LEN ; .word TEMP_ADDR	; screen addr for erasing
 hero_erase_scr_addr_old:	.storage ADDR_LEN ; .word TEMP_ADDR	; screen addr for erasing last frame 

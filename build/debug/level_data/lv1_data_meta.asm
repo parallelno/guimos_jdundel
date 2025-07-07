@@ -2,8 +2,8 @@
 ; asm data file: build/debug/level_data/lv1_data_data.asm
 ; bin file: build/debug/bin/LV1_DATA.BIN
 
-LV1_DATA_FILE_LEN = 838
-LV1_DATA_LAST_RECORD_LEN = 70
+LV1_DATA_FILE_LEN = 836
+LV1_DATA_LAST_RECORD_LEN = 68
 
 LV1_DATA_FILENAME_PTR:
 			.byte "LV1_DATA" ; filename
@@ -58,6 +58,6 @@ lv1_data_init:
 _lv1_resources_inst_data_ptrs = 0x0002
 _lv1_containers_inst_data_ptrs = 0x0027
 _lv1_room00 = 0x002e
-_lv1_room01 = 0x013d
-_lv1_room02 = 0x0258
+_lv1_room01 = 0x013b
+_lv1_room02 = 0x0256
 

@@ -2,46 +2,9 @@ memusage_hero_render:
 ; TODO: use actor_draw instead of hero_draw
 hero_draw:
 			lhld hero_get_scr_addr
-			shld @get_scr_addr+1
-			lxi h, hero_pos_x+1
-@get_scr_addr:
-			call TEMP_ADDR ; sprite_get_scr_addr8
-
-			lhld hero_anim_addr
-			call sprite_get_addr
-
 			lda hero_ram_disk_s_cmd
-			mov l, a
+			jmp actor_draw
 
-			lda hero_status
-			ani ACTOR_STATUS_BIT_INVIS
-			jnz @invis
-
-@draw:
-			mov a, l
-			CALL_RAM_DISK_FUNC_BANK(sprite_draw_vm)
-			; d - width
-			;		00 - 8pxs,
-			;		01 - 16pxs,
-			;		10 - 24pxs,
-			;		11 - 32pxs,
-			; e - height
-			; bc - sprite screen addr + offset			
-
-@save_params:
-			; store an old scr addr, width, and height
-			lxi h, hero_erase_scr_addr
-			mov m, c
-			HL_ADVANCE(hero_erase_scr_addr, hero_erase_scr_addr + 1)
-			mov m, b
-			xchg
-			shld hero_erase_wh
-			ret
-
-@invis:
-			mov a, l
-			CALL_RAM_DISK_FUNC_BANK(sprite_draw_invis_vm)
-			jmp @save_params
 
 hero_copy_to_scr:
 			; get min(h, d), min(e,l)

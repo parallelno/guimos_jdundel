@@ -87,4 +87,6 @@ firepool_impacted:
 ; in:
 ; de - ptr to monster_draw_ptr 
 firepool_draw:
-			ACTOR_DRAW(firepool_get_scr_addr, firepool_ram_disk_s_cmd, false)
+			lhld firepool_get_scr_addr
+			lda firepool_ram_disk_s_cmd
+			jmp actor_draw

@@ -205,10 +205,14 @@ sprite_get_scr_addr1_vfx_ptr:
 ; in:
 ; de - ptr to bullet_draw_ptr 
 vfx_draw:
-			ACTOR_DRAW(sprite_get_scr_addr1_vfx_ptr, vfx_ram_disk_s_cmd, false)
+			lhld sprite_get_scr_addr1_vfx_ptr
+			lda vfx_ram_disk_s_cmd
+			jmp actor_draw
 
 ; draw a sprite into a backbuffer
 ; in:
 ; de - ptr to bullet_draw_ptr 
 vfx_draw4:
-			ACTOR_DRAW(vfx4_get_scr_addr, vfx4_ram_disk_s_cmd, false)
+			lhld vfx4_get_scr_addr
+			lda vfx4_ram_disk_s_cmd
+			jmp actor_draw

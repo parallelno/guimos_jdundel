@@ -34,6 +34,7 @@
 .include "app/score_data.asm"
 
 .include "app/actor/actor.asm"
+.include "app/actor/actor_draw.asm"
 .include "app/hero/hero.asm"
 .include "app/monsters/monsters.asm"
 .include "app/bullets/bullets.asm"

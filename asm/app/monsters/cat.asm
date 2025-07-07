@@ -337,4 +337,6 @@ cat_update_anim_check_collision_hero:
 ; in:
 ; de - ptr to monster_draw_ptr 
 cat_draw:
-			ACTOR_DRAW(cat_get_scr_addr, cat_ram_disk_s_cmd, false)
+			lhld cat_get_scr_addr
+			lda cat_ram_disk_s_cmd
+			jmp actor_draw

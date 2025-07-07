@@ -9,12 +9,12 @@ memusage_hero_update:
 			adi anim_speed
 			mov m, a
 			jnc @skipAnimUpdate
-			lhld hero_anim_addr
+			lhld hero_anim_ptr
 			mov e, m
 			inx h
 			mov d, m
 			dad d
-			shld hero_anim_addr
+			shld hero_anim_ptr
 @skipAnimUpdate:
 .endmacro
 
@@ -100,7 +100,7 @@ hero_check_keys:
 			mov m, a
 
 			lxi h, hero_run_r_anim
-			shld hero_anim_addr
+			shld hero_anim_ptr
 			jmp hero_update_temp_pos
 
 @setAnimRunRU:
@@ -114,7 +114,7 @@ hero_check_keys:
 			mvi a, HERO_DIR_RIGHT | HERO_DIR_UP
 			sta hero_dir
 			lxi h, hero_run_r_anim
-			shld hero_anim_addr
+			shld hero_anim_ptr
 			jmp hero_update_temp_pos
 
 @setAnimRunRD:
@@ -129,7 +129,7 @@ hero_check_keys:
 			mvi a, HERO_DIR_RIGHT | HERO_DIR_DOWN
 			sta hero_dir
 			lxi h, hero_run_r_anim
-			shld hero_anim_addr
+			shld hero_anim_ptr
 			jmp hero_update_temp_pos
 
 @set_anim_run_l:
@@ -148,7 +148,7 @@ hero_check_keys:
 			mov m, a
 
 			lxi h, hero_run_l_anim
-			shld hero_anim_addr
+			shld hero_anim_ptr
 			jmp hero_update_temp_pos
 
 @setAnimRunLU:
@@ -163,7 +163,7 @@ hero_check_keys:
 			mvi a, HERO_DIR_LEFT | HERO_DIR_UP
 			sta hero_dir
 			lxi h, hero_run_l_anim
-			shld hero_anim_addr
+			shld hero_anim_ptr
 			jmp hero_update_temp_pos
 
 @setAnimRunLD:
@@ -177,7 +177,7 @@ hero_check_keys:
 			mvi a, HERO_DIR_LEFT | HERO_DIR_DOWN
 			sta hero_dir
 			lxi h, hero_run_l_anim
-			shld hero_anim_addr
+			shld hero_anim_ptr
 			jmp hero_update_temp_pos
 
 @setAnimRunU:
@@ -198,11 +198,11 @@ hero_check_keys:
 			jnc @setAnimRunUfaceL
 
 			lxi h, hero_run_r_anim
-			shld hero_anim_addr
+			shld hero_anim_ptr
 			jmp hero_update_temp_pos
 @setAnimRunUfaceL:
 			lxi h, hero_run_l_anim
-			shld hero_anim_addr
+			shld hero_anim_ptr
 			jmp hero_update_temp_pos
 @setAnimRunD:
 			cpi CONTROL_CODE_DOWN
@@ -222,11 +222,11 @@ hero_check_keys:
 			jnc @setAnimRunDfaceL
 
 			lxi h, hero_run_r_anim
-			shld hero_anim_addr
+			shld hero_anim_ptr
 			jmp hero_update_temp_pos
 @setAnimRunDfaceL:
 			lxi h, hero_run_l_anim
-			shld hero_anim_addr
+			shld hero_anim_ptr
 
 hero_update_temp_pos:
 			; apply the hero speed
@@ -327,11 +327,11 @@ hero_idle_anim_start:
 			jnc @setAnimIdleL
 
 			lxi h, hero_idle_r_anim
-			shld hero_anim_addr
+			shld hero_anim_ptr
 			ret
 @setAnimIdleL:
 			lxi h, hero_idle_l_anim
-			shld hero_anim_addr
+			shld hero_anim_ptr
 			ret
 
 ; in:

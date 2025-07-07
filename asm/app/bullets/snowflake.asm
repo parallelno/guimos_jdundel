@@ -164,4 +164,6 @@ snowflake_update:
 ; in:
 ; de - ptr to bullet_draw_ptr 
 snowflake_draw:
-			ACTOR_DRAW(snowflake_get_scr_addr, snowflake_ram_disk_s_cmd)
+			lhld snowflake_get_scr_addr
+			lda snowflake_ram_disk_s_cmd
+			jmp actor_draw

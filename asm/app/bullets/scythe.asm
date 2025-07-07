@@ -195,4 +195,6 @@ scythe_update:
 ; in:
 ; de - ptr to bullet_draw_ptr 
 scythe_draw:
-			ACTOR_DRAW(scythe_get_scr_addr, scythe_ram_disk_s_cmd, false)
+			lhld scythe_get_scr_addr
+			lda scythe_ram_disk_s_cmd
+			jmp actor_draw

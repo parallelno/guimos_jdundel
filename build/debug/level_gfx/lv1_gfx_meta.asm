@@ -2,8 +2,8 @@
 ; asm data file: build/debug/level_gfx/lv1_gfx_data.asm
 ; bin file: build/debug/bin/LV1_GFX.BIN
 
-LV1_GFX_FILE_LEN = 6534
-LV1_GFX_LAST_RECORD_LEN = 6
+LV1_GFX_FILE_LEN = 6466
+LV1_GFX_LAST_RECORD_LEN = 66
 
 LV1_GFX_FILENAME_PTR:
 			.byte "LV1_GFX" ; filename
@@ -11,7 +11,7 @@ LV1_GFX_FILENAME_PTR:
 			.byte "BIN" ; extension
 
 lv1_gfx_tiles_ptrs:
-			.word _lv1_tile00_relative, _lv1_tile01_relative, _lv1_tile02_relative, _lv1_tile03_relative, _lv1_tile04_relative, _lv1_tile05_relative, _lv1_tile06_relative, _lv1_tile07_relative, _lv1_tile08_relative, _lv1_tile09_relative, _lv1_tile0a_relative, _lv1_tile0b_relative, _lv1_tile0c_relative, _lv1_tile0d_relative, _lv1_tile0e_relative, _lv1_tile0f_relative, _lv1_tile10_relative, _lv1_tile11_relative, _lv1_tile12_relative, _lv1_tile13_relative, _lv1_tile14_relative, _lv1_tile15_relative, _lv1_tile16_relative, _lv1_tile17_relative, _lv1_tile18_relative, _lv1_tile19_relative, _lv1_tile1a_relative, _lv1_tile1b_relative, _lv1_tile1c_relative, _lv1_tile1d_relative, _lv1_tile1e_relative, _lv1_tile1f_relative, _lv1_tile20_relative, _lv1_tile21_relative, _lv1_tile22_relative, _lv1_tile23_relative, _lv1_tile24_relative, _lv1_tile25_relative, _lv1_tile26_relative, _lv1_tile27_relative, _lv1_tile28_relative, _lv1_tile29_relative, _lv1_tile2a_relative, _lv1_tile2b_relative, _lv1_tile2c_relative, _lv1_tile2d_relative, _lv1_tile2e_relative, _lv1_tile2f_relative, _lv1_tile30_relative, _lv1_tile31_relative, _lv1_tile32_relative, _lv1_tile33_relative, _lv1_tile34_relative, _lv1_tile35_relative, _lv1_tile36_relative, _lv1_tile37_relative, _lv1_tile38_relative, _lv1_tile39_relative, _lv1_tile3a_relative, _lv1_tile3b_relative, _lv1_tile3c_relative, _lv1_tile3d_relative, _lv1_tile3e_relative, _lv1_tile3f_relative, _lv1_tile40_relative, _lv1_tile41_relative, _lv1_tile42_relative, _lv1_tile43_relative, _lv1_tile44_relative, _lv1_tile45_relative, _lv1_tile46_relative, _lv1_tile47_relative, _lv1_tile48_relative, _lv1_tile49_relative, _lv1_tile4a_relative, _lv1_tile4b_relative, _lv1_tile4c_relative, 
+			.word _lv1_tile00_relative, _lv1_tile01_relative, _lv1_tile02_relative, _lv1_tile03_relative, _lv1_tile04_relative, _lv1_tile05_relative, _lv1_tile06_relative, _lv1_tile07_relative, _lv1_tile08_relative, _lv1_tile09_relative, _lv1_tile0a_relative, _lv1_tile0b_relative, _lv1_tile0c_relative, _lv1_tile0d_relative, _lv1_tile0e_relative, _lv1_tile0f_relative, _lv1_tile10_relative, _lv1_tile11_relative, _lv1_tile12_relative, _lv1_tile13_relative, _lv1_tile14_relative, _lv1_tile15_relative, _lv1_tile16_relative, _lv1_tile17_relative, _lv1_tile18_relative, _lv1_tile19_relative, _lv1_tile1a_relative, _lv1_tile1b_relative, _lv1_tile1c_relative, _lv1_tile1d_relative, _lv1_tile1e_relative, _lv1_tile1f_relative, _lv1_tile20_relative, _lv1_tile21_relative, _lv1_tile22_relative, _lv1_tile23_relative, _lv1_tile24_relative, _lv1_tile25_relative, _lv1_tile26_relative, _lv1_tile27_relative, _lv1_tile28_relative, _lv1_tile29_relative, _lv1_tile2a_relative, _lv1_tile2b_relative, _lv1_tile2c_relative, _lv1_tile2d_relative, _lv1_tile2e_relative, _lv1_tile2f_relative, _lv1_tile30_relative, _lv1_tile31_relative, _lv1_tile32_relative, _lv1_tile33_relative, _lv1_tile34_relative, _lv1_tile35_relative, _lv1_tile36_relative, _lv1_tile37_relative, _lv1_tile38_relative, _lv1_tile39_relative, _lv1_tile3a_relative, _lv1_tile3b_relative, _lv1_tile3c_relative, _lv1_tile3d_relative, _lv1_tile3e_relative, _lv1_tile3f_relative, _lv1_tile40_relative, _lv1_tile41_relative, _lv1_tile42_relative, _lv1_tile43_relative, _lv1_tile44_relative, _lv1_tile45_relative, _lv1_tile46_relative, _lv1_tile47_relative, _lv1_tile48_relative, _lv1_tile49_relative, _lv1_tile4a_relative, _lv1_tile4b_relative, 
 			.word EOD
 
 lv1_gfx_init_tbl:
@@ -86,40 +86,39 @@ _lv1_tile25_relative = 0x0e48
 _lv1_tile26_relative = 0x0ecc
 _lv1_tile27_relative = 0x0f30
 _lv1_tile28_relative = 0x0f94
-_lv1_tile29_relative = 0x0fb8
-_lv1_tile2a_relative = 0x0fdc
-_lv1_tile2b_relative = 0x1040
-_lv1_tile2c_relative = 0x1084
-_lv1_tile2d_relative = 0x10a8
-_lv1_tile2e_relative = 0x110c
-_lv1_tile2f_relative = 0x1170
-_lv1_tile30_relative = 0x1194
-_lv1_tile31_relative = 0x11b8
-_lv1_tile32_relative = 0x11dc
-_lv1_tile33_relative = 0x1200
-_lv1_tile34_relative = 0x1264
-_lv1_tile35_relative = 0x12a8
-_lv1_tile36_relative = 0x130c
-_lv1_tile37_relative = 0x1390
-_lv1_tile38_relative = 0x1394
-_lv1_tile39_relative = 0x13b8
-_lv1_tile3a_relative = 0x13dc
-_lv1_tile3b_relative = 0x1440
-_lv1_tile3c_relative = 0x1464
-_lv1_tile3d_relative = 0x14a8
-_lv1_tile3e_relative = 0x150c
-_lv1_tile3f_relative = 0x1590
-_lv1_tile40_relative = 0x1614
-_lv1_tile41_relative = 0x1678
-_lv1_tile42_relative = 0x169c
-_lv1_tile43_relative = 0x1700
-_lv1_tile44_relative = 0x1744
-_lv1_tile45_relative = 0x1788
-_lv1_tile46_relative = 0x17ec
-_lv1_tile47_relative = 0x1870
-_lv1_tile48_relative = 0x1894
-_lv1_tile49_relative = 0x1898
-_lv1_tile4a_relative = 0x18fc
-_lv1_tile4b_relative = 0x1900
-_lv1_tile4c_relative = 0x1924
+_lv1_tile29_relative = 0x0f98
+_lv1_tile2a_relative = 0x0fbc
+_lv1_tile2b_relative = 0x1020
+_lv1_tile2c_relative = 0x1064
+_lv1_tile2d_relative = 0x1088
+_lv1_tile2e_relative = 0x10ec
+_lv1_tile2f_relative = 0x1150
+_lv1_tile30_relative = 0x1174
+_lv1_tile31_relative = 0x1198
+_lv1_tile32_relative = 0x11bc
+_lv1_tile33_relative = 0x11e0
+_lv1_tile34_relative = 0x1244
+_lv1_tile35_relative = 0x1288
+_lv1_tile36_relative = 0x12ec
+_lv1_tile37_relative = 0x1370
+_lv1_tile38_relative = 0x1374
+_lv1_tile39_relative = 0x1398
+_lv1_tile3a_relative = 0x13bc
+_lv1_tile3b_relative = 0x1420
+_lv1_tile3c_relative = 0x1444
+_lv1_tile3d_relative = 0x1488
+_lv1_tile3e_relative = 0x14ec
+_lv1_tile3f_relative = 0x1570
+_lv1_tile40_relative = 0x15f4
+_lv1_tile41_relative = 0x1658
+_lv1_tile42_relative = 0x167c
+_lv1_tile43_relative = 0x16e0
+_lv1_tile44_relative = 0x1724
+_lv1_tile45_relative = 0x1768
+_lv1_tile46_relative = 0x17cc
+_lv1_tile47_relative = 0x1850
+_lv1_tile48_relative = 0x1874
+_lv1_tile49_relative = 0x1878
+_lv1_tile4a_relative = 0x18dc
+_lv1_tile4b_relative = 0x18e0
 

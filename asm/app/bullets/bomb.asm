@@ -136,4 +136,6 @@ bomb_update:
 ; in:
 bomb_draw:
 ; de - ptr to bullet_draw_ptr 
-			ACTOR_DRAW(bomb_get_scr_addr, bomb_ram_disk_s_cmd, false)
+			lhld bomb_get_scr_addr
+			lda bomb_ram_disk_s_cmd
+			jmp actor_draw

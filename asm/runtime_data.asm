@@ -64,7 +64,7 @@ hero_draw_ptr:				= hero_runtime_data + 2  ; .word
 hero_status:				= hero_runtime_data + 4  ; .byte ACTOR_STATUS_HERO_IDLE ; a status describes what set of animations and behavior is active
 hero_status_timer:			= hero_runtime_data + 5  ; .byte ; a duration of the status. ticks every update
 hero_anim_timer:			= hero_runtime_data + 6  ; .byte ; it triggers an anim frame switching when it overflows
-hero_anim_addr:				= hero_runtime_data + 7  ; .word ; holds the current frame ptr
+hero_anim_ptr:				= hero_runtime_data + 7  ; .word ; holds the current frame ptr
 hero_erase_scr_addr:		= hero_runtime_data + 9  ; .word ; screen addr for erasing
 hero_erase_scr_addr_old:	= hero_runtime_data + 11 ; .word ; screen addr for erasing last frame 
 hero_erase_wh:				= hero_runtime_data + 13 ; .word ; width, height
@@ -467,3 +467,19 @@ room_teleports_data_end:	= room_teleports_data + TELEPORT_IDS_MAX
 ;
 ; STACK_MIN_ADDR = $7FBE
 
+; validation
+.if ~((bullet_draw_ptr - bullet_status) == (monster_draw_ptr - monster_status))
+	.error "actor_erase func fails because !((bullet_draw_ptr - bullet_status) == (monster_draw_ptr - monster_status))"
+.endif
+.if ~((bullet_status - bullet_pos_x+1) == (monster_status - monster_pos_x+1))
+	.error "actor_erase func fails because !((bullet_status - bullet_pos_x+1) == (monster_status - monster_pos_x+1))"
+.endif
+.if ~((bullet_draw_ptr - bullet_pos_x+1) == (monster_draw_ptr - monster_pos_x+1))
+	.error "actor_erase func fails because !((bullet_draw_ptr - bullet_pos_x+1) == (monster_draw_ptr - monster_pos_x+1))"
+.endif
+.if ~((bullet_pos_y+1 - bullet_anim_ptr) == (monster_pos_y+1 - monster_anim_ptr))
+	.error "actor_erase func fails because !((bullet_pos_y+1 - bullet_anim_ptr) == (monster_pos_y+1 - monster_anim_ptr))"
+.endif
+.if ~((bullet_erase_scr_addr+1 - bullet_erase_wh) == (monster_erase_scr_addr+1 - monster_erase_wh))
+	.error "actor_erase func fails because !((bullet_erase_scr_addr+1 - bullet_erase_wh) == (monster_erase_scr_addr+1 - monster_erase_wh))"
+.endif

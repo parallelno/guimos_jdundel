@@ -5,4 +5,6 @@ memusage_npc:
 ; in:
 ; de - ptr to monster_draw_ptr 
 npc_draw:
-			ACTOR_DRAW(npc_get_scr_addr, npc_ram_disk_s_cmd, false)
+			lhld npc_get_scr_addr
+			lda npc_ram_disk_s_cmd
+			jmp actor_draw

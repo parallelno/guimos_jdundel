@@ -337,4 +337,6 @@ goose_update_anim_check_collision_hero:
 ; in:
 ; de - ptr to monster_draw_ptr 
 goose_draw:
-			ACTOR_DRAW(goose_get_scr_addr, goose_ram_disk_s_cmd, false)
+			lhld goose_get_scr_addr
+			lda goose_ram_disk_s_cmd
+			jmp actor_draw

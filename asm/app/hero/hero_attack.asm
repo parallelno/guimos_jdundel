@@ -173,11 +173,11 @@ hero_attack_anim_init:
 			jnc @set_anim_attk_l
 
 			lxi h, hero_attk_r_anim
-			shld hero_anim_addr
+			shld hero_anim_ptr
 			ret
 @set_anim_attk_l:
 			lxi h, hero_attk_l_anim
-			shld hero_anim_addr
+			shld hero_anim_ptr
 			ret
 
 hero_attack_use_sword:

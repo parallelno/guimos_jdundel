@@ -369,4 +369,6 @@ knight_update_anim_check_collision_hero:
 ; in:
 ; de - ptr to monster_draw_ptr 
 knight_draw:
-			ACTOR_DRAW(knight_get_scr_addr, knight_ram_disk_s_cmd, false)
+			lhld knight_get_scr_addr
+			lda knight_ram_disk_s_cmd
+			jmp actor_draw

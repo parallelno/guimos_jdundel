@@ -309,4 +309,6 @@ vampire_update_anim_check_collision_hero:
 ; in:
 ; de - ptr to monster_draw_ptr 
 vampire_draw:
-			ACTOR_DRAW(vampire_get_scr_addr, vampire_ram_disk_s_cmd, false)
+			lhld vampire_get_scr_addr
+			lda vampire_ram_disk_s_cmd
+			jmp actor_draw
