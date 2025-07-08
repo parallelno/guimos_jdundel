@@ -525,7 +525,7 @@ BY_A			= 5
 			mov m, a
 .endmacro
 
- ; ints_per_update = 2 means the update happens every second interruption
+ ; ints_per_update = 2 means the update happens every second interruption (25 updates per second)
 .macro CHECK_GAME_UPDATE_COUNTER(@game_updates_required, ints_per_update = 2)
 			; check if an interruption happened
 			lxi h, @game_updates_required

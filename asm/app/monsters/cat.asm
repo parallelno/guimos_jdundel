@@ -175,7 +175,7 @@ cat_update_move:
 			dcr m
 			jz @set_detect_hero_init
 @update_movement:
-			ACTOR_UPDATE_MOVEMENT_CHECK_TILE_COLLISION(monster_pos_x, CAT_COLLISION_WIDTH, CAT_COLLISION_HEIGHT, @set_move_init) 
+			ACTOR_UPDATE_MOVEMENT_CHECK_TILE_COLLISION(CAT_COLLISION_WIDTH, CAT_COLLISION_HEIGHT, @set_move_init) 
 			
 			; hl points to monster_pos_y+1
 			; advance hl to monster_anim_timer
@@ -310,7 +310,7 @@ cat_update_dash:
 			dcr m
 			jm @set_move_init
 @apply_movement:
-			ACTOR_UPDATE_MOVEMENT()
+			call actor_move
 			; hl - ptr to monster_pos_x+1
 			; advance hl to monster_anim_timer
 			HL_ADVANCE(monster_pos_x+1, monster_anim_timer, BY_BC)

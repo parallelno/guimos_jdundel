@@ -1,11 +1,11 @@
 
 ;----------------------------------------------------------------
-; The interruption sub which supports stack manipulations in 
+; The interruption sub which supports stack manipulations in
 ; the main program without di/ei.
 
-; If the main program is doing "pop RP" operation to read some data, 
-; and an interruption happens, then i8080 performs "push PC" 
-; corrupting the data where sp was pointing to. The interruption sub 
+; If the main program is doing "pop RP" operation to read some data,
+; and an interruption happens, then i8080 performs "push PC"
+; corrupting the data where sp was pointing to. The interruption sub
 ; below restores the corrupted data using BC register pair. To make
 ; it works the main program has to use only pop B when it needs to
 ; use the stack to manipulate the data, also the data read by stack
@@ -22,7 +22,7 @@ interruption:
 			push psw
 			pop h
 			shld STACK_INTERRUPTION_ADDR-2
-			
+
 			lxi h, 0
 			dad sp
 			shld interruption_restoreSP + 1
@@ -64,7 +64,7 @@ palette_update_request_:
 			lda scr_offset_y
 			out 3
 
-			; it's used in the main program to 
+			; it's used in the main program to
 			; keep the update synced with interruption
 			lxi h, game_updates_required
 			inr m
@@ -75,10 +75,10 @@ palette_update_request_:
 
 			jnz interruption_no_fps_update
 			; a second is over
-interruption_fps:
+interruption_fps: ; output this value to the screen via Devector scripts
 			lxi h, TEMP_WORD
 			/*
-			; commented out because FPS indication is drawn by 
+			; commented out because FPS indication is drawn by
 			; the Devector emulator script
 			; hl - fps
 			mov a, l
@@ -90,7 +90,7 @@ interruption_fps:
 			shld interruption_fps + 1
 			lxi h, ints_per_sec_counter
 			mvi m, INTS_PER_SEC
-interruption_no_fps_update:				
+interruption_no_fps_update:
 
 			;================================================================
 			; music update
@@ -106,12 +106,12 @@ interruption_no_fps_update:
 			; restore A
 			mov a, l
 
-interruption_restoreHL:	
+interruption_restoreHL:
 			lxi		h, TEMP_WORD
-interruption_restoreSP:	
+interruption_restoreSP:
 			lxi		sp, TEMP_ADDR
 			ei
-interruption_return:	
+interruption_return:
 			jmp TEMP_ADDR
 
 ints_per_sec_counter:

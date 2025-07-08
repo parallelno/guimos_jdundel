@@ -121,7 +121,7 @@ sparker_update:
 			dcr m
 			jz @die
 @update_movement:
-			ACTOR_UPDATE_MOVEMENT()
+			call actor_move
 			; hl - ptr to bullet_pos_x+1
 			
 			shld @sparker_pos_ptr+1

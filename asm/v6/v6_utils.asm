@@ -109,6 +109,7 @@ mem_copy_len:
 ;	bc - source + len
 ; prep: 0cc
 ; loop: 56-76cc
+; copy 32 bytes: 56 * 32 = 1792 cc
 mem_copy:
 			; hl - source
 			; de - destination
@@ -146,10 +147,11 @@ MEM_COPY_WORD_LEN = 5
 ; hl - source
 
 ; prep: (53+10+7)*4=280cc
-; loop 32 bytes: 784cc - 784+32= 816cc
-; copy 128 bytes: 280 + 784*4 + 32 = 3448cc
-; copy 256 bytes: 280 + 784*8 + 32 = 6584cc
-; copy 1024*24 bytes: 280 + 784*768 + 32*96 = 608,536cc
+; loop 32 bytes: 784 + 32= 816 cc
+; copy 32 bytes: 280 + 784*1 + 32 = 1096 cc
+; copy 128 bytes: 280 + 784*4 + 32 = 3448 cc
+; copy 256 bytes: 280 + 784*8 + 32 = 6584 cc
+; copy 1024*24 bytes: 280 + 784*768 + 32*96 = 608,536 cc
 mem_copy_to_ram_disk:
 			shld @dest + 1
 			sta @mapping + 1

@@ -1,4 +1,6 @@
 memusage_actor:
+.include "app/actor/actor_move.asm"
+.include "app/actor/actor_move_check_tile_collision.asm"
 
 ; mark all actors killed to let
 ; them wipe out from the screen

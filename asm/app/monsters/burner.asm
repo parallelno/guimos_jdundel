@@ -113,6 +113,52 @@ burner_init:
 ; in:
 ; de - ptr to monster_update_ptr 
 burner_update:
+
+/*
+; TODO: test. is it faster to copy the actor run-time data
+; to the temp buffer, when access it via lhld/shld instead
+; of 
+;			HL_ADVANCE(monster_status_timer, monster_anim_ptr),
+;			mvi m, <burner_idle_anim
+;			inx h
+; the tests showed that the average burner Update takes 903 cc.
+; If we copy the current actor run-time data to the temp buffer,
+; it will take 588 cc. Copying back can be same or slower, so
+; it is not worth it.
+
+
+; in:
+; de - source
+; 588 cc to copy 32 bytes
+.macro TEST_ACTOR_RUNTIME_DATA_COPY2(monsters_runtime_tmp_data)
+			di
+			; store sp
+			lxi h, 0x0000
+			dad sp
+			xchg
+			sphl
+			; de - stack addr
+
+		@tmp_ram_data_addr .var monsters_runtime_tmp_data
+		.loop MONSTER_RUNTIME_DATA_LEN / 2
+			pop h
+			shld @tmp_ram_data_addr
+			@tmp_ram_data_addr += 2
+			; 11*4=44cc
+		.endloop
+
+@restore_sp:
+			xchg
+			sphl
+			ei
+			ret
+.endmacro
+*/
+@codePerfStart_burner_update:
+			call @test
+@codePerfEnd_burner_update:
+			ret
+@test:
 			; advance hl to monster_status
 			HL_ADVANCE(monster_update_ptr, monster_status, BY_HL_FROM_DE)
 			mov a, m
@@ -131,7 +177,7 @@ burner_update:
 			cpi ACTOR_STATUS_BURNER_DETECT_HERO_INIT
 			jz burner_update_detect_hero_init
 			cpi ACTOR_STATUS_FREEZE
-			jz burner_update_freeze
+			jz burner_update_freeze		
 			ret
 
 ; burner is immune to freeze
@@ -236,7 +282,7 @@ burner_update_move:
 			dcr m
 			jz @set_detect_hero_init
 @update_movement:
-			ACTOR_UPDATE_MOVEMENT_CHECK_TILE_COLLISION(monster_pos_x, BURNER_COLLISION_WIDTH, BURNER_COLLISION_HEIGHT, @set_move_init) 
+			ACTOR_UPDATE_MOVEMENT_CHECK_TILE_COLLISION(BURNER_COLLISION_WIDTH, BURNER_COLLISION_HEIGHT, @set_move_init) 
 			
 			; hl points to monster_pos_y+1
 			; advance hl to monster_anim_timer
@@ -371,7 +417,7 @@ burner_update_dash:
 			dcr m
 			jm @set_move_init
 @apply_movement:
-			ACTOR_UPDATE_MOVEMENT()
+			call actor_move
 			; hl - ptr to monster_pos_x+1
 			; advance hl to monster_anim_timer
 			HL_ADVANCE(monster_pos_x+1, monster_anim_timer, BY_BC)

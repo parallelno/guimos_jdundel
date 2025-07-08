@@ -113,8 +113,8 @@ bomb_update:
 			HL_ADVANCE(bullet_update_ptr, bullet_status_timer, BY_HL_FROM_DE)
 			dcr m
 			jz @die
-			; @update_movement:
-			ACTOR_UPDATE_MOVEMENT()
+@update_movement:
+			call actor_move
 			; hl - ptr to bullet_pos_x+1
 			; advance hl to bullet_anim_timer
 			L_ADVANCE(bullet_pos_x+1, bullet_anim_timer, BY_A)

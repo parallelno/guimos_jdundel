@@ -17,8 +17,12 @@ game_init:
 
 game_loop:
 @loop:
+@codePerfStart_game_update:
 			call game_update
-			call game_draw		
+@codePerfEnd_game_update:
+@codePerfStart_game_draw:
+			call game_draw
+@codePerfEnd_game_draw:
 			jmp	@loop
 
 game_update:
@@ -62,7 +66,7 @@ game_update:
 			POP_H(1)
 			; return stright to main_start loop
 			ret
-			
+
 game_draw:
 			; update counter to calc fps
 			lhld game_draw_counter

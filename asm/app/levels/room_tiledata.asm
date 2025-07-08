@@ -143,6 +143,7 @@ room_check_tiledata_restorable:
 ; hl - (top-left), (top-right)
 ; de - (bottom-left), (bottom-right)
 ; a - "OR" operation on tiledata of all tiles that intersect with a sprite
+; ~253 cc
 room_get_collision_tiledata:
 			; calc y in tiles
 			mvi a, %11110000

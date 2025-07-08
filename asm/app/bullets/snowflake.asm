@@ -84,7 +84,7 @@ snowflake_update:
 			dcr m
 			jz @die_over_time
 @update_movement:
-			ACTOR_UPDATE_MOVEMENT_CHECK_TILE_COLLISION(bullet_pos_x, SNOWFLAKE_COLLISION_WIDTH, SNOWFLAKE_COLLISION_HEIGHT, @die) 
+			ACTOR_UPDATE_MOVEMENT_CHECK_TILE_COLLISION(SNOWFLAKE_COLLISION_WIDTH, SNOWFLAKE_COLLISION_HEIGHT, @die) 
 
 			; hl points to bullet_pos_y+1
 			; advance hl to bullet_anim_timer
