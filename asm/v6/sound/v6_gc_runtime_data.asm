@@ -1,4 +1,4 @@
-	; this line for VSCode proper formating
+	; This line is for proper formatting in VSCode
 memusage_v6_gc_runtime_data:
 
 V6_GC_BUFFER_LEN = GC_BUFFER_SIZE * GC_TASKS

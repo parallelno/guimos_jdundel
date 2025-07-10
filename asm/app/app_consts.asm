@@ -1,4 +1,4 @@
-	; this line for VSCode proper formating
+	; This line is for proper formatting in VSCode
 
 GAME_REQ				= %1000_0000
 ; reqs below must be aligned with the options

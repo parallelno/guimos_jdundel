@@ -1,4 +1,4 @@
-	; this line for VSCode proper formating
+	; This line is for proper formatting in VSCode
 BULLETS_MAX = 9 ; max bullets in the room
 
 BULLET_DIR_R = 0

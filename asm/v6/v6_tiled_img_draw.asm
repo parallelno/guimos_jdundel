@@ -1,5 +1,3 @@
-v6_draw_tiled_img:
-
 TILED_IMG_SCR_BUFFS = 4
 TILED_IMG_TILE_H = 8
 TILE_IMG_TILE_LEN = TILED_IMG_TILE_H * TILED_IMG_SCR_BUFFS + 2 ; 8*4 bytes + a couple of safety bytes
@@ -29,8 +27,29 @@ tiled_img_init_gfx:
 			shld tiled_img_draw_gfx_addr + 1
 			ret
 
-;----------------------------------------------------------------
-; draw a tiled image (8x8 tiles)
+;=============================================================================
+; Draws a tiled image.
+;=============================================================================
+; NOTE:
+; - The tiled image consists of one-byte tile idxs corresponding to the gfx tiles.
+; - Each gfx tile is 8x8 pixels rendered in 4 scr buffers.
+; - The tile idx = 0 is a transparent tile, meaning skip drawing it.
+; - The tile idx = $FF is a repeater code, meaning the next two bytes represent
+;     the tile idx and the repeating counter.
+; - The tile idxs are stored in the ram-disk, and copied to a temp before drawing.
+; - The tile gfxs are stored in the ram-disk, and rendered directly from there.
+; - The max tiled image data excluding the gfx tiles is TEMP_BUFF_LEN.
+; - The maximum number of gfx tiles is 254, because 0 and $FF idxs are reserved.
+; - Multiple tiled images can use the same gfx tiles.
+
+;-----------------------------------------------------------------------------
+; Data format:
+; 2 bytes - idxs data len to copy from the ram-disk to a temp buffer
+; 2 bytes - scr addr (left-bottom corner)
+; 2 bytes - scr addr end (right-top corner)
+; n bytes - tile idxs data
+;-----------------------------------------------------------------------------
+
 ; in:
 ; de - local idx_data addr
 
@@ -276,5 +295,3 @@ TILED_IMG_DRAW_DOWN = false
 
 			lxi sp, STACK_TEMP_ADDR
 .endmacro
-
-v6_tiled_img_draw_end:

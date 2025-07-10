@@ -5,7 +5,7 @@
 ; de - screen addr, d=[$80, $9f]
 ; use: a, hl, sp
 
-; data format:
+; Data Layout:
 ; .word - two safety bytes prevent data corruption caused by interruptions
 ; .byte - height
 ; .byte - width

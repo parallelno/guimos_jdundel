@@ -5,7 +5,7 @@ setting_sfx:	.byte SETTING_ON
 
 ; TODO: use all 3 channels to simulate a volume change
 
-; sfx data format:
+; SFX Data Layout:
 ; .word - frequency divider for channel0, freq = 1500000 / freq_div
 ; .word - frequency divider for channel1, 
 ; .word - frequency divider for channel0,  

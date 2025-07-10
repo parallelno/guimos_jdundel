@@ -37,7 +37,7 @@ draw_sprite_width_height:
 ; bc - sprite screen addr + offset
 ; use: all
 
-; data format:
+; Data Layout:
 ; .word - two safety bytes prevent data corruption caused by interruptions
 ; .byte - offset_y
 ; .byte - offset_x

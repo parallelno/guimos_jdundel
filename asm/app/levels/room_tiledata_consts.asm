@@ -69,7 +69,7 @@ TILEDATA_FUNC_ID_COLLISION	= 15
 ; ffff == 6, global items. a hero interacts with it when he steps on 
 ;		it. Item_id = d. See runtime_data.asm->global_items for details.
 		ITEM_ID_STORYTELLING = 0 ; storytelling - an invisible tiledata to open a dialog window
-		ITEM_ID_KEY_0	= 1	; 	key 0
+		ITEM_ID_KEY_0	= 1	; key 0
 ;		item_id 		= 2 ; key 1
 ;		item_id 		= 3 ; key 2
 ;		item_id 		= 4 ; key 3
@@ -79,7 +79,7 @@ TILEDATA_FUNC_ID_COLLISION	= 15
 
 ; ffff == 7, resources. a hero interacts with it when he steps on it. 
 ;		Max instances in all rooms = RESOURCES_LEN/2-RESOURCES_UNIQUE_MAX. 
-;		res_id = d. see runtime_data.asm->resources_inst_data for 
+;		res_id = d. see runtime_data.asm->resources_inst_data for details.
 ;		details.
 ;		res_id 				= 0 ; a coin (increases the game score when picked up) ; (tiledata = 7*16+0 = 160)
 ;		res_id 				= 1 ; a health crystal (increases health immedietly when picked up)
@@ -130,9 +130,9 @@ TILEDATA_COLLIDABLE		= 8 * TILEDATA_ARG_MAX ; all tiledatas with values bigger t
 
 TILEDATA_BREAKABLES = TILEDATA_FUNC_ID_BREAKABLES * TILEDATA_ARG_MAX
 ; 		breakable items, a hero can only break it with a hit and
-; 		get a random reward. A room tracks how many it was broken to 
-;		manage a reward and a spawn rate. breakable_id = d.
-;		breakable_id == 0 - a barrel (tiledata = 13 * TILEDATA_ARG_MAX + 0 = 208, $d0)
+; 		get a random reward. A room tracks how many of them were broken
+;		to calc a reward and a spawn rate. breakable_id = d.
+;		breakable_id == 0 - a barrel (tiledata = 208, $d0)
 ;		breakable_id == 1 - a crate
 		BREAKABLE_ID_CABBAGE = 2 ;cabbage (tiledata = $d2)
 

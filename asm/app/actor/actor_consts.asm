@@ -1,4 +1,4 @@
-	; this line for VSCode proper formating
+	; This line is for proper formatting in VSCode
 ; actor states
 ; they denote the handle prodedures like actors_call_if_alive 
 ; what to do with the actor runtime data.

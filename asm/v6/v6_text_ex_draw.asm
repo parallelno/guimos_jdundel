@@ -74,7 +74,7 @@ text_ex_init_text:
 ; hl - scr_pos offset
 
 ; blend func - OR
-; chat gfx data format:
+; chat gfx Data Layout:
 ;	.byte offset_y
 ;	.byte offset_x
 ;	.word 16 pxls data. the first 8 pixels are empty to support shifting
@@ -84,7 +84,7 @@ text_ex_init_text:
 ;	condition of the end of the char data is a non zero byte which is pos_x_offset
 ; chat gfx data always follows safety pair of bytes for reading by POP B
 
-; text data format:
+; text Data Layout:
 ;	.word data len to copy to ram
 ; 	.byte scr pos_x
 ;	.byte scr pos_y
