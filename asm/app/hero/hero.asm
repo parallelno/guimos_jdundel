@@ -7,22 +7,23 @@
 memusage_hero:
 
 hero_game_init:
+			; erase hero resources buffs
+			lxi h, hero_resources
+			lxi b, hero_resources_end
+			jmp mem_erase
+
+hero_level_init:
 			; erase hero runtime data
 			lxi h, hero_runtime_data
 			lxi b, hero_runtime_data_end
 			call mem_erase
-			
 			lxi h, hero_update
 			shld hero_update_ptr
 			lxi h, hero_draw
 			shld hero_draw_ptr
 			lxi h, hero_impacted
 			shld hero_impacted_ptr
-						
-			; erase hero resources buffs
-			lxi h, hero_resources
-			lxi b, hero_resources_end
-			jmp mem_erase
+			ret
 
 hero_respawn:
 			mvi a, RES_HEALTH_INIT
@@ -45,7 +46,7 @@ hero_room_init:
 			A_TO_ZERO(CONTROL_CODE_NO)
 			sta action_code
 
-			lxi h, hero_pos_x+1
+			lxi h, hero_pos_x + 1
 			call sprite_get_scr_addr8
 			xchg
 			shld hero_erase_scr_addr_old

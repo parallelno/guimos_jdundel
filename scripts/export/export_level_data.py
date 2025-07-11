@@ -120,9 +120,9 @@ def ram_disk_data_to_asm(level_j_path):
 		room_addr_offset += len(teleport_tiles)
 		room_addr_offset += build.SAFE_WORD_LEN
 
-		# collect resource data
-
 		for i, tiledata in enumerate(room_tiledata):
+
+			# collect resource data
 			dy, dx = divmod(i, width)
 			tile_idx = (height - 1 - dy) * width + dx
 			if export_level_utils.TILEDATA_RESOURCE <= tiledata < export_level_utils.TILEDATA_RESOURCE + export_level_utils.RESOURCES_UNIQUE_MAX:
@@ -132,6 +132,7 @@ def ram_disk_data_to_asm(level_j_path):
 				if resource_max_tiledata < tiledata:
 					resource_max_tiledata = tiledata
 
+			# collect container data
 			if export_level_utils.TILEDATA_CONTAINER <= tiledata < export_level_utils.TILEDATA_CONTAINER + export_level_utils.CONTAINERS_UNIQUE_MAX:
 				if tiledata not in containers:
 					containers[tiledata] = []
@@ -139,10 +140,9 @@ def ram_disk_data_to_asm(level_j_path):
 				if container_max_tiledata < tiledata:
 					container_max_tiledata = tiledata
 
+			# count breakables
 			if export_level_utils.TILEDATA_BREAKABLESS <= tiledata < export_level_utils.TILEDATA_BREAKABLESS + export_level_utils.BREAKABLES_UNIQUE_MAX:
 				breakables_count += 1
-				if breakables_count > export_level_utils.BREAKABLES_MAX:
-					build.exit_error(f"ERROR: {level_j_path} has breakables amount > {export_level_utils.BREAKABLES_MAX}")
 	
 	
 	asm = ""
@@ -170,6 +170,9 @@ def ram_disk_data_to_asm(level_j_path):
 	relative_addr += data_len
 	relative_addr += build.SAFE_WORD_LEN
 
+	#=====================================================================
+	# number of breakables to check if it fits into the buffer
+	relative_ptrs[level_name.upper()+"_BREAKABLES"] = breakables_count
 	#=====================================================================
 	# rooms data
 	asm += room_data_asm

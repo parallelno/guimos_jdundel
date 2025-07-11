@@ -56,9 +56,9 @@
 .include "app/app.asm"
 memusage_end:
 
-RAM_FREE_SPACE = BUFFERS_START_ADDR - memusage_end
+RAM_FREE_SPACE = RUNTIME_DATA - memusage_end
 
-.if memusage_end >= BUFFERS_START_ADDR
+.if memusage_end >= RUNTIME_DATA
 	.error "Runtime data buffer overlaps the stack buffer at addr (" runtime_data_end ")." 
 	.error "It must be within the range " BUFFERS_END_ADDR "."
 .endif

@@ -1,60 +1,89 @@
-	; this line for VSCode proper formating
+	; This line is for proper formatting in VSCode
 ; TODO: write a script that generates this file
-memusage_runtime_data:
 
 ;=============================================================================
-;
-; for validation
-; TODO: keep updated
-BUFFERS_START_ADDR	= $7200
+; for ram mem usage check
+;=============================================================================
+RUNTIME_DATA	= $7200
 
 ;=============================================================================
+; Temporary Buffer
+;=============================================================================
 
-; used as:
-; - a temporal buffer to unpack tiled image index data
-; - a temporal buffer to unpack text data
+; usage:
+; - unpacking tiled image index data
+; - unpacking text data
 
 ; TODO: consider increasing this buffer and combine
 ; 		title1, title2, main_menu_back1, and main_menu_back2 into one image
-TEMP_BUFF_LEN = $200
-temp_buff: = $7200
+TEMP_BUFF_LEN	= $200
+temp_buff: 		= $7200
 
 
 ;=============================================================================
-; contains statuses of breakables. should be reseted every game start and after hero respawn
-; this structure can contain statuses for 1016 breakables across all levels
-; each room can contain variable amount of breakables
-; TODO: check if it supports the level 2
-; data format:
-; breakables_status_buffer_ptrs:
-;	 .byte a low byte pointer to a breakables statuses in breakables_status_buffers for a room_id_0 in level_id_0
-;	 .byte a low byte pointer to a breakables statuses in breakables_status_buffers for a room_id_1 in level_id_0
-;	... similar for the rest rooms, ROOMS_MAX total
-;	 .byte a low byte pointer to a breakables statuses in breakables_status_buffers for a room_id_0 in level_id_1
-;	 .byte a low byte pointer to a breakables statuses in breakables_status_buffers for a room_id_1 in level_id_1
-;	... similar for the rest rooms, ROOMS_MAX total
+; Breakables
+;=============================================================================
+; This section manages the statuses of breakable objects (crates, barrels, etc.)
+; NOTE:
+; - Supports up to 1016 breakables, 127 rooms, and two levels max.
+; - Each room may contain a variable number of breakables.
+; - Must be reset at game start.
+; - Breakables buffer is $100-aligned to access statuses with one-byte offsets.
+; - When a player enters a room with breakables the first time, 
+;     breakables_status_buf_free_ptr is used to allocate a buffer for that room.
+;     If the room has been visited before, the existing buffer is reused to store
+;     the updated breakables' statuses.
+
+;-----------------------------------------------------------------------------
+; Data Layout:
+;-----------------------------------------------------------------------------
+; breakables_status_buf_free_ptr: 
+;   - Points to the next available byte in breakables_status_bufs. 
+; breakables_status_buf_ptrs:
+;   - Contains one-byte offsets from breakables_status_bufs for each room/level.
+;   - Order:
+;       .byte ptr to [room_0 in level_0]
+;       ...			 [room_1 in level_0]
+;       ...
+;       ...			 [room_N in level_0]
+;       ...			 [room_0 in level_1]
+;       ...			 [room_1 in level_1]
+;       ...
+;       ...			 [room_N in level_M]
+;   - Total entries: ROOMS_MAX * LEVELS_MAX
 ;
-; breakables_status_buffers:
-;	.loop as many, as many rooms contain breakables and visited by player
-;		Set of bytes where every byte contains statuses of 8 breakables in the room starting from the tile_id=0
-;			Where bit=0 means breakable is not broken, 1 - broken
-;			Example: if the room contains nine breakables with tile_id=A, tile_id=B, tile_id=C, tile_id=J, tile_id=K, tile_id=O, tile_id=P, tile_id=X, tile_id=Z
-;			their statuses will be packed into two bytes:
-;			.byte XPOKJCBA
-;			.byte 0000000Z
-;	.endloop
-BREAKABLES_MAX							= 1016 ; (256-1-128)*8
-breakables_status_buffer_available_ptr:	= $7400 ; contains the pointer
-breakables_status_buffer_ptrs:			= breakables_status_buffer_available_ptr + 1
-breakables_status_buffers:				= breakables_status_buffer_ptrs + ROOMS_MAX * LEVELS_MAX
-breakables_statuses_end:				= breakables_status_buffer_available_ptr + $100
+; breakables_status_bufs:
+;   - Contains status for rooms that have been visited and contain breakables.
+;   - Each byte holds the status of 8 breakables.
+;   - Each bit represents a breakable's status: 0 - not broken, 1 - broken.
+;   - Example: 9 breakables in a room with tile_id=A, B, C, J, K, O, P, X, Z.
+;     Their statuses will be packed into two bytes:
+;       .byte %IGFEDCBA
+;       .byte %0000000J
+
+BREAKABLES_ROOMS_PER_BYTE		= 8
+BREAKABLES_ROOMS				= 128 ; max rooms that can have breakables
+BREAKABLES_LEN 					= 256
+BREAKABLES_MAX					= 1016 
+								; 1016 = (BREAKABLES_LEN - 1 - BREAKABLES_ROOMS) * BREAKABLES_ROOMS_PER_BYTE
+								; -1 because breakables_status_buf_free_ptr takes one byte
+breakables_status_buf_free_ptr:	= $7400
+breakables_status_buf_ptrs:		= breakables_status_buf_free_ptr + 1
+breakables_status_bufs:			= breakables_status_buf_ptrs + BREAKABLES_ROOMS
+breakables_status_buffs_end:	= breakables_status_buf_free_ptr + BREAKABLES_LEN
+
+.if LV0_BREAKABLES + LV1_BREAKABLES > BREAKABLES_MAX
+	.error "ERROR: breakables in all levels: " LV0_BREAKABLES + LV1_BREAKABLES ". It exeeds BREAKABLES_MAX (" BREAKABLES_MAX ")"
+.endif
 
 ;=============================================================================
-;	it's a copy of the room tiledata stored by room_draw
-;	it's used in room_redraw for storing states of breakable objects, and restoring states of doors and containers
-ROOM_TILEDATA_BACKUP_LEN			= ROOM_WIDTH * ROOM_HEIGHT
-room_tiledata_backup:				= $7500
-room_tiledata_backup_end:			= room_tiledata_backup + ROOM_TILEDATA_BACKUP_LEN
+; a copy of the room tiledata stored by room_draw
+; this data is used to restore the room tiledata after a dialog is shown
+; it's used in room_redraw for storing states of breakable objects, and restoring states of doors and containers
+dfl;dfkdlkf
+ROOM_TILEDATA_BACKUP_LEN	= ROOM_WIDTH * ROOM_HEIGHT
+room_tiledata_backup:		= $7500
+room_tiledata_backup_end:	= room_tiledata_backup + ROOM_TILEDATA_BACKUP_LEN
 
 ;=============================================================================
 ; hero runtime data
@@ -80,17 +109,22 @@ hero_type:					= hero_runtime_data + 30 ; .byte MONSTER_TYPE_ALLY
 hero_runtime_data_end:		= hero_runtime_data + 31
 
 ;=============================================================================
-;
-; Switch statuses:
-; All statuses stored in a two byte value. Each bit represents an individual switch status.
-; If a hero enters a room, and a specific switch was activated, the decal assotiated
-; with this switch is rendered.
-switch_statuses:			= $760F ; 0x0000_0NPB, where:
-QUEST_BONGO_CAT	= 0b0000_0001
-QUEST_POP_CAT	= 0b0000_0010
-QUEST_NYAN_CAT	= 0b0000_0100
+; Switch Statuses:
+;=============================================================================
+; All statuses are stored in two bytes. Each bit represents the status of a 
+; specific switch. When the hero enters a room, any active switches trigger 
+; rendering of their associated decals.
+;-----------------------------------------------------------------------------
+; Data format:
+;	.word	0xUUUU_UNPB
+;			where: N - NYAN CAT, P - POP CAT, B - BONGO CAT, U - unused
+;-----------------------------------------------------------------------------
+SWITCH_MASK_BONGO_CAT	= 0b0000_0001
+SWITCH_MASK_POP_CAT		= 0b0000_0010
+SWITCH_MASK_NYAN_CAT	= 0b0000_0100
 
-switch_statuses_end:			= switch_statuses + 2
+switch_statuses:		= $760F
+switch_statuses_end:	= switch_statuses + WORD_LEN
 
 ;=============================================================================
 ;
@@ -232,14 +266,10 @@ resources_inst_data_ptrs:	= $7a00
 ;=============================================================================
 ; rooms spawn rates. each byte represents a spawn rate in a particular room.
 ; this data is aligned to $100, the length is <= $100
-; data format:
+; Data Layout:
 ; .loop ROOMS_MAX
 ;	.byte - a monster spawn rate in the room_id = N
 ; .endloop
-; .loop ROOMS_MAX
-;	.byte - a breakables spawn rate in the room_id = N
-; .endloop
-; ...
 
 rooms_spawn_rates:				= $7b00
 rooms_spawn_rate_monsters:		= rooms_spawn_rates 					; 0 means 100% chance to spawn a monster. 255 means no spawn
@@ -387,7 +417,7 @@ ITEM_STATUS_ACQUIRED		= 1
 ITEM_STATUS_USED			= 2
 ITEMS_MAX					= 15 ; item_id = 0 is reserved for dialog tiledata
 
-; data format:
+; Data Layout:
 ; .loop ITEMS_MAX
 ;	.byte - status of item_id = N
 ; .endloop
@@ -401,7 +431,7 @@ global_items_end:	= global_items + ITEMS_MAX
 ;=============================================================================
 ; tile graphics pointer table.
 
-; data format:
+; Data Layout:
 ; .loop ROOM_HEIGHT
 ;	.loop ROOM_WIDTH
 ;		.word - tile_gfx_addr
@@ -415,7 +445,7 @@ room_tiles_gfx_ptrs_end:	= room_tiles_gfx_ptrs + ROOM_TILES_GFX_PTRS_LEN
 ;=============================================================================
 ; tiledata buffer has to follow room_tiles_gfx_ptrs because they are unpacked altogether. see level_data.asm for tiledata format
 
-; data format:
+; Data Layout:
 ; .loop ROOM_HEIGHT
 ;	.loop ROOM_WIDTH
 ;		.byte - tiledata

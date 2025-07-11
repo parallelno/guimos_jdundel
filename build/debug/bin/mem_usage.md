@@ -1,5 +1,5 @@
 ## Main Ram memory usage:
-> Free Space: `4719`
+> Free Space: `4724`
 
 |Assembly| Usage|
 |-|-|
@@ -35,13 +35,13 @@
 |memusage_v6_text_mono_draw:|229|
 |memusage_knight_heavy:|225|
 |memusage_scythe:|222|
-|memusage_levels:|205|
+|memusage_levels:|202|
 |memusage_backs:|199|
 |memusage_dialogs:|198|
 |memusage_snowflake:|195|
 |memusage_room:|191|
 |memusage_vfx:|189|
-|memusage_app:|189|
+|memusage_app:|180|
 |memusage_bullets:|178|
 |memusage_v6_decal_draw:|173|
 |memusage_screen_utils:|169|
@@ -49,8 +49,8 @@
 |memusage_v6_controls:|166|
 |memusage_breakables:|163|
 |memusage_v6_sprite:|157|
+|memusage_game:|155|
 |memusage_bomb:|153|
-|memusage_game:|149|
 |memusage_score_data:|144|
 |memusage_sparker:|142|
 |memusage_stats:|138|
@@ -63,7 +63,7 @@
 |memusage_v6_back_draw:|97|
 |memusage_monsters_data:|88|
 |memusage_hero_triggers:|86|
-|memusage_hero:|79|
+|memusage_hero:|80|
 |memusage_cursor:|78|
 |memusage_scores:|78|
 |memusage_score:|66|
@@ -82,7 +82,6 @@
 |memusage_v6_consts:|0|
 |memusage_v6_build_consts:|0|
 |memusage_v6_sprite_draw_hit:|0|
-|memusage_runtime_data:|0|
 
 ## FDD Usage:
 > Used: `325632`, Free Space: `514048`

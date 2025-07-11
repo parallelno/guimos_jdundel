@@ -10,7 +10,7 @@ room_init:
 			call bullets_init
 			call backs_init
 			call room_unpack
-			call backup_tiledata
+			call room_backup_tiledata
 			call breakables_room_status_init
 			call room_init_tiles_gfx
 			call room_draw_tiles

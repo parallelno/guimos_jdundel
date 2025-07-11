@@ -66,8 +66,7 @@ global_start_game:
 			MEM_ERASE_SP(SCR_ADDR, SCR_BUFFS_LEN)
 
 			call game_init
-			call level_init
-			jmp game_loop
+			jmp game_level_start
 
 global_load_lv0:
 			lxi h, load_level0
@@ -78,9 +77,7 @@ global_load_lv0:
 
 			A_TO_ZERO (LEVEL_ID_0)
 			sta level_id
-			
-			call level_init
-			jmp game_loop
+			jmp game_level_start
 
 global_load_lv1:
 			call uninit_level0
@@ -93,8 +90,7 @@ global_load_lv1:
 
 			mvi a, LEVEL_ID_1
 			sta level_id
-			call level_init
-			jmp game_loop
+			jmp game_level_start
 
 ; in: 
 ; hl - load func addr, ex. load_level0

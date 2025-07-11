@@ -57,6 +57,7 @@ lv1_data_init:
 
 _lv1_resources_inst_data_ptrs = 0x0002
 _lv1_containers_inst_data_ptrs = 0x0027
+LV1_BREAKABLES = 0x0008
 _lv1_room00 = 0x002e
 _lv1_room01 = 0x013b
 _lv1_room02 = 0x0256

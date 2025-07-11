@@ -99,7 +99,6 @@ level_update:
 			A_TO_ZERO(GLOBAL_REQ_NONE)
 			call room_teleport
 
-			call breakables_init
 			call game_ui_draw
 			call hero_respawn
 			jmp @room_load_draw

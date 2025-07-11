@@ -57,6 +57,7 @@ lv0_data_init:
 
 _lv0_resources_inst_data_ptrs = 0x0002
 _lv0_containers_inst_data_ptrs = 0x008b
+LV0_BREAKABLES = 0x009f
 _lv0_00_home = 0x0094
 _lv0_01_farm_fence = 0x01bf
 _lv0_02_road_to_friends_home = 0x02d3

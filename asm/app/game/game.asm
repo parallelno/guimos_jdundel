@@ -15,15 +15,17 @@ game_init:
 			shld switch_statuses
 			ret
 
-game_loop:
-@loop:
+game_level_start:
+			call hero_level_init
+			call level_init
+@game_loop:
 @codePerfStart_game_update:
 			call game_update
 @codePerfEnd_game_update:
 @codePerfStart_game_draw:
 			call game_draw
 @codePerfEnd_game_draw:
-			jmp	@loop
+			jmp	@game_loop
 
 game_update:
 			lxi h, game_update_counter

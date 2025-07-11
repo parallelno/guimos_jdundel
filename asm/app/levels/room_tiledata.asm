@@ -1,7 +1,7 @@
 
 ; it copies the room tiledata into room_tiledata_backup
 ; for room_redraw and storing states of breakable objects
-backup_tiledata:
+room_backup_tiledata:
 			lxi h, room_tiledata
 			lxi d, room_tiledata_backup
 			lxi b, room_tiledata_end

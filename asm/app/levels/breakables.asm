@@ -2,14 +2,14 @@
 memusage_breakables:
 
 breakables_init:
-			lxi h, breakables_status_buffer_available_ptr
-			mvi m, <breakables_status_buffers ; ptr to the first available buffer
-			inx h ; advance hl to breakables_status_buffer_ptrs
-			lxi b, breakables_statuses_end
+			lxi h, breakables_status_buf_free_ptr
+			mvi m, <breakables_status_bufs ; ptr to the first available buffer
+			inx h ; advance hl to breakables_status_buf_ptrs
+			lxi b, breakables_status_buffs_end
 			jmp mem_erase
 
-; init the bleakables status buffer for the current room
-; it requires room_tiledata_backup executed upfront this func
+; init the breakables status buffer for the current room
+; it requires room_backup_tiledata executed before this func call
 breakables_room_status_init:
 			; get the pptr to the bleakables status buffer for the current room
 			call breakables_get_room_status_buff_pptr
@@ -53,17 +53,17 @@ breakables_room_status_init:
 			mov c, a
 			; c - the amount of bytes need to store breakables statuses in the room
 			; store it
-			lda breakables_status_buffer_available_ptr
+			lda breakables_status_buf_free_ptr
 			; hl - the pptr to the bleakables status buffer for the current room
 			mov m, a ; store the ptr to the current room bleakables status buffer
-			; update breakables_status_buffer_available_ptr
+			; update breakables_status_buf_free_ptr
 			add c
-			sta breakables_status_buffer_available_ptr
+			sta breakables_status_buf_free_ptr
 			ret
 
 ; restore breakables statuses
 ; this func should called before room_handle_room_tiledata,
-; and after room_unpack and backup_tiledata
+; and after room_unpack and room_backup_tiledata
 ; in:
 ; hl - the pptr to the bleakables status buffer for the current room
 breakables_room_status_restore:
@@ -168,7 +168,7 @@ breakables_get_room_status_buff_pptr:
 			mov a, h
 			RRC_(2)
 			add l
-			inr a ; because <breakables_status_buffer_ptrs == 1
+			inr a ; because <breakables_status_buf_ptrs == 1
 			mov l, a
-			mvi h, >breakables_status_buffer_ptrs
+			mvi h, >breakables_status_buf_ptrs
 			ret
