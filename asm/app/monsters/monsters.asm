@@ -9,24 +9,19 @@
 .include "asm/app/monsters/knight_heavy.asm"
 .include "asm/app/monsters/goose.asm"
 .include "asm/app/monsters/cat.asm"
-
 .include "asm/app/monsters/firepool.asm"
-
 .include "asm/app/monsters/npc.asm"
 .include "asm/app/monsters/friends_mom.asm"
 .include "asm/app/monsters/friends_sis.asm"
 .include "asm/app/monsters/dotty.asm"
 .include "asm/app/monsters/bob.asm"
-
 .include "asm/app/monsters/npc4.asm"
-
 .include "asm/app/monsters/caterpillar.asm"
-
 
 memusage_monsters:
 
 monsters_init:
-			; monster_data_head_ptr got inited in level_init with NULL
+			; actor_data_head_ptr got inited in level_init with NULL
 			; set the last marker byte of runtime_data
 			mvi a, ACTOR_RUNTIME_DATA_END
 			sta monsters_runtime_data_end_marker + 1
@@ -34,10 +29,10 @@ monsters_init:
 			ACTOR_ERASE_RUNTIME_DATA(monster_update_ptr)
 			
 			; init runtime_data list
-			lxi h, hero_data_next_pptr
-			shld monster_data_head_ptr
+			lxi h, hero_data_next_ptr
+			shld actor_data_head_ptr
 			lxi h, NULL
-			shld hero_data_next_pptr
+			shld hero_data_next_ptr
 			ret
 
 
@@ -300,7 +295,7 @@ monsters_update:
 ; loop: 37*4+24=172cc
 monsters_draw:
 			; iterate over the list of the monster data
-			lxi h, monster_data_head_ptr
+			lxi h, actor_data_head_ptr
 @loop:
 			; hl - current element
 			; get the next element
@@ -439,7 +434,7 @@ monster_destroy:
 ; executes only one iteration of the bubble sort algorithm
 monsters_sort_pos_y:
 			; get the current element
-			lhld monster_data_head_ptr
+			lhld actor_data_head_ptr
 			; check if the list is empty
 			A_TO_ZERO(NULL)
 			cmp h
@@ -448,7 +443,7 @@ monsters_sort_pos_y:
 			xchg
 			; de - current element
 			
-			lxi h, monster_data_head_ptr
+			lxi h, actor_data_head_ptr
 			push h
 @loop:
 			; stack - prev element, or current element from previous loop iteration

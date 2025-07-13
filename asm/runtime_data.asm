@@ -2,20 +2,17 @@
 ; TODO: write a script that generates this file
 
 ;=============================================================================
-; for ram mem usage check
+; For RAM memory usage check
 ;=============================================================================
 RUNTIME_DATA	= $7200
 
 ;=============================================================================
 ; Temporary Buffer
 ;=============================================================================
-
-; usage:
+; Usage:
 ; - unpacking tiled image index data
 ; - unpacking text data
 
-; TODO: consider increasing this buffer and combine
-; 		title1, title2, main_menu_back1, and main_menu_back2 into one image
 TEMP_BUFF_LEN	= $200
 temp_buff: 		= $7200
 
@@ -28,19 +25,19 @@ temp_buff: 		= $7200
 ; - Supports up to 1016 breakables, 127 rooms, and two levels max.
 ; - Each room may contain a variable number of breakables.
 ; - Must be reset at game start.
-; - Breakables buffer is $100-aligned to access statuses with one-byte offsets.
+; - Data is $100-aligned and must fit inside $100 block.
 ; - When a player enters a room with breakables the first time, 
 ;     breakables_status_buf_free_ptr is used to allocate a buffer for that room.
 ;     If the room has been visited before, the existing buffer is reused to store
 ;     the updated breakables' statuses.
-
+;
 ;-----------------------------------------------------------------------------
 ; Data Layout:
 ;-----------------------------------------------------------------------------
 ; breakables_status_buf_free_ptr: 
 ;   - Points to the next available byte in breakables_status_bufs. 
 ; breakables_status_buf_ptrs:
-;   - Contains one-byte offsets from breakables_status_bufs for each room/level.
+;   - Contains low-byte ptr from breakables_status_bufs for each room/level.
 ;   - Order:
 ;       .byte ptr to [room_0 in level_0]
 ;       ...			 [room_1 in level_0]
@@ -77,35 +74,48 @@ breakables_status_buffs_end:	= breakables_status_buf_free_ptr + BREAKABLES_LEN
 .endif
 
 ;=============================================================================
-; a copy of the room tiledata stored by room_draw
-; this data is used to restore the room tiledata after a dialog is shown
-; it's used in room_redraw for storing states of breakable objects, and restoring states of doors and containers
-dfl;dfkdlkf
+; Room Tiledata Backup
+;=============================================================================
+; A copy of the room tiledata. Used to restore the original tiledata after 
+; dialogs are displayed. Also used to preserve the state of breakable objects
+; and restore the state of doors and containers.
+
 ROOM_TILEDATA_BACKUP_LEN	= ROOM_WIDTH * ROOM_HEIGHT
 room_tiledata_backup:		= $7500
 room_tiledata_backup_end:	= room_tiledata_backup + ROOM_TILEDATA_BACKUP_LEN
 
 ;=============================================================================
-; hero runtime data
+; Hero Runtime Data
+;=============================================================================
+; Contains all runtime state for the hero actor.
+; NOTE:
+; - Accessed by the custom update and actor draw routines.
+; - The structure from hero_update_ptr to hero_data_next_ptr must match the
+;     monster's runtime data structure for compatibility with shared functions.
+; - The hero_update_ptr+1 also serves as an Actor Runtime Status Code 
+;     (see actor_consts.asm).
+
+; Base address for hero runtime data
 hero_runtime_data:			= $75f0
-hero_update_ptr:			= hero_runtime_data + 0  ; .word
-hero_draw_ptr:				= hero_runtime_data + 2  ; .word
-hero_status:				= hero_runtime_data + 4  ; .byte ACTOR_STATUS_HERO_IDLE ; a status describes what set of animations and behavior is active
-hero_status_timer:			= hero_runtime_data + 5  ; .byte ; a duration of the status. ticks every update
-hero_anim_timer:			= hero_runtime_data + 6  ; .byte ; it triggers an anim frame switching when it overflows
-hero_anim_ptr:				= hero_runtime_data + 7  ; .word ; holds the current frame ptr
+; A struct of the hero runtime data.
+hero_update_ptr:			= hero_runtime_data + 0  ; .word ; function pointer for updating hero logic
+hero_draw_ptr:				= hero_runtime_data + 2  ; .word ; function pointer for drawing the hero
+hero_status:				= hero_runtime_data + 4  ; .byte ACTOR_STATUS_HERO_IDLE ; a status prescribes what actor is doing and visually anff game mechanically
+hero_status_timer:			= hero_runtime_data + 5  ; .byte ; a duration of the current status. ticks every update
+hero_anim_timer:			= hero_runtime_data + 6  ; .byte ; animation frame timer (triggers frame change on overflow)
+hero_anim_ptr:				= hero_runtime_data + 7  ; .word ; points to the current frame (hero_idle_l_anim + 2 + *hero_preshifted_sprites)
 hero_erase_scr_addr:		= hero_runtime_data + 9  ; .word ; screen addr for erasing
-hero_erase_scr_addr_old:	= hero_runtime_data + 11 ; .word ; screen addr for erasing last frame 
+hero_erase_scr_addr_old:	= hero_runtime_data + 11 ; .word ; screen addr for erasing last frame
 hero_erase_wh:				= hero_runtime_data + 13 ; .word ; width, height
 hero_erase_wh_old:			= hero_runtime_data + 15 ; .word ; width, height last frame
 hero_pos_x:					= hero_runtime_data + 17 ; .word ; first byte is a sub-pixel coord
 hero_pos_y:					= hero_runtime_data + 19 ; .word ; first byte is a sub-pixel coord
 hero_speed_x:				= hero_runtime_data + 21 ; .word ; first byte is a sub-pixel coord speed
 hero_speed_y:				= hero_runtime_data + 23 ; .word ; first byte is a sub-pixel coord speed
-hero_data_next_pptr:		= hero_runtime_data + 25 ; .word
+hero_data_next_ptr:			= hero_runtime_data + 25 ; .word ; points to the next actor in the actor_data_head_ptr list for sorting
 hero_impacted_ptr:			= hero_runtime_data + 27 ; .word ; called by a monster's bullet, a monster, etc. to affect a hero
-hero_dir:					= hero_runtime_data + 29 ; .byte ; VDHD, V: vertical dir, H: horiz dir, D: 0 - neg dir, 1 - positive dir
-hero_type:					= hero_runtime_data + 30 ; .byte MONSTER_TYPE_ALLY
+hero_dir:					= hero_runtime_data + 29 ; .byte ; direction flag: %0000_00VH, V - vertical, H - horizontal, (0 - negative, 1 - positive)
+hero_type:					= hero_runtime_data + 30 ; .byte ; actor type (e.g. MONSTER_TYPE_ALLY)
 hero_runtime_data_end:		= hero_runtime_data + 31
 
 ;=============================================================================
@@ -116,7 +126,7 @@ hero_runtime_data_end:		= hero_runtime_data + 31
 ; rendering of their associated decals.
 ;-----------------------------------------------------------------------------
 ; Data format:
-;	.word	0xUUUU_UNPB
+;	.word	%UUUU_UNPB
 ;			where: N - NYAN CAT, P - POP CAT, B - BONGO CAT, U - unused
 ;-----------------------------------------------------------------------------
 SWITCH_MASK_BONGO_CAT	= 0b0000_0001
@@ -127,66 +137,102 @@ switch_statuses:		= $760F
 switch_statuses_end:	= switch_statuses + WORD_LEN
 
 ;=============================================================================
-;
-; contains the current RAM-disk mode
-; to restore by the interrupt routine after its execution
-ram_disk_mode:				= $7611 ; BYTE_LEN
-			
+; RAM-Disk Mode
+;=============================================================================
+; Stores the current RAM-disk mode.
+; Used by the interrupt routine to restore the mode after execution.
+ram_disk_mode:              = $7611 ; BYTE_LEN
 
 ;=============================================================================
-; monsters runtime data
-; requirements:
-; * MONSTER_RUNTIME_DATA_LEN < 256
-; * (bullet_status - bullet_erase_scr_addr) == (monster_status - monster_erase_scr_addr)
-; * (bullet_erase_scr_addr+1 - bullet_erase_wh) == (monster_erase_scr_addr+1 - monster_erase_wh)
-;
-MONSTERS_MAX = 15 ; max monsters in the room
-; points to the first monster_data_next_ptr
-; in the monster data singly directional list
-monster_data_head_ptr:	= $7612 ; NULL if the list is empty
+; Actor Runtime Data List
+;=============================================================================
+; - The list links the hero and non-dead monsters runtime data together.
+; - It's a singly-linked list with the head pointer actor_data_head_ptr.
+; - The head points to the first actor runtime data (`hero_data_next_ptr` or
+;     `monster_data_next_ptr`), then the next, etc, ending with NULL.
+; - Used to sort actors by Y position for correct rendering order.
+; - One bubble sorting iteration per update.
+; - The list is updated when monsters are spawned or destroyed.
 
-; a list of monster runtime data structs.
+actor_data_head_ptr:	= $7612 ; .word
+
+;=============================================================================
+; Monsters Runtime Data
+;=============================================================================
+; Defines the per-instance runtime data for monsters.
+; NOTE:
+; - A list of structs, one per monster instance.
+; - Accessed by the custom update and actor draw routines.
+; - The monster_update_ptr+1 also serves as an Actor Runtime Status Code 
+;     (see actor_consts.asm).
+; - MONSTER_RUNTIME_DATA_LEN < 256.
+; - Max active monsters per room including dying but not dead: MONSTERS_MAX
+; - The structure from monster_update_ptr to monster_data_next_ptr must match the
+;     hero's runtime data structure for compatibility with shared functions.
+; - The structure from monster_update_ptr to monster_speed_y must match the
+;     bullets's runtime data structure for compatibility with shared functions.
+
+MONSTERS_MAX = 15
+
+; Base address for all monster runtime data
 monsters_runtime_data:		= $7614
-monster_update_ptr:			= monsters_runtime_data + 0		; .word
-monster_draw_ptr:			= monsters_runtime_data + 2		; .word
-monster_status:				= monsters_runtime_data + 4		; .byte
-monster_status_timer:		= monsters_runtime_data + 5		; .byte
-monster_anim_timer:			= monsters_runtime_data + 6		; .byte
-monster_anim_ptr:			= monsters_runtime_data + 7		; .word
-monster_erase_scr_addr:		= monsters_runtime_data + 9		; .word
-monster_erase_scr_addr_old:	= monsters_runtime_data + 11	; .word
-monster_erase_wh:			= monsters_runtime_data + 13	; .word
-monster_erase_wh_old:		= monsters_runtime_data + 15	; .word
-monster_pos_x:				= monsters_runtime_data + 17	; .word
-monster_pos_y:				= monsters_runtime_data + 19	; .word
-monster_speed_x:			= monsters_runtime_data + 21	; .word
-monster_speed_y:			= monsters_runtime_data + 23	; .word
-monster_data_next_ptr:		= monsters_runtime_data + 25	; .word ; NULL if it's the last monster in the list
-monster_impacted_ptr:		= monsters_runtime_data + 27	; .word ; called by a hero's bullet, another monster, etc. to affect this monster
-monster_id:					= monsters_runtime_data + 29	; .byte
-monster_type:				= monsters_runtime_data + 30	; .byte
-monster_health:				= monsters_runtime_data + 31	; .byte
+; A struct of a monster runtime data.
+monster_update_ptr:			= monsters_runtime_data + 0	 ; .word
+monster_draw_ptr:			= monsters_runtime_data + 2	 ; .word
+monster_status:				= monsters_runtime_data + 4	 ; .byte
+monster_status_timer:		= monsters_runtime_data + 5	 ; .byte
+monster_anim_timer:			= monsters_runtime_data + 6	 ; .byte
+monster_anim_ptr:			= monsters_runtime_data + 7	 ; .word
+monster_erase_scr_addr:		= monsters_runtime_data + 9	 ; .word
+monster_erase_scr_addr_old:	= monsters_runtime_data + 11 ; .word
+monster_erase_wh:			= monsters_runtime_data + 13 ; .word
+monster_erase_wh_old:		= monsters_runtime_data + 15 ; .word
+monster_pos_x:				= monsters_runtime_data + 17 ; .word
+monster_pos_y:				= monsters_runtime_data + 19 ; .word
+monster_speed_x:			= monsters_runtime_data + 21 ; .word
+monster_speed_y:			= monsters_runtime_data + 23 ; .word
+monster_data_next_ptr:		= monsters_runtime_data + 25 ; .word ; NULL if it's the last actor in the list
+monster_impacted_ptr:		= monsters_runtime_data + 27 ; .word ; called by a hero's bullet, another monster, etc. to affect this monster
+monster_id:					= monsters_runtime_data + 29 ; .byte
+monster_type:				= monsters_runtime_data + 30 ; .byte
+monster_health:				= monsters_runtime_data + 31 ; .byte ; Remaining health points
 @data_end:					= monsters_runtime_data + 32
 
 MONSTER_RUNTIME_DATA_LEN = @data_end - monsters_runtime_data
 
-; the same structs for the rest of the monsters
+; Memory layout for remaining monster instances (MONSTERS_MAX - 1)
 monsters_runtime_data_end_marker:	= monsters_runtime_data + MONSTER_RUNTIME_DATA_LEN * MONSTERS_MAX	; .word ACTOR_RUNTIME_DATA_END << 8
 monsters_runtime_data_end:			= monsters_runtime_data_end_marker + ADDR_LEN
-MONSTERS_RUNTIME_DATA_LEN			= monsters_runtime_data_end - monster_data_head_ptr
+MONSTERS_RUNTIME_DATA_LEN			= monsters_runtime_data_end - actor_data_head_ptr
+
+.if MONSTER_RUNTIME_DATA_LEN > 256
+	.error "ERROR: MONSTER_RUNTIME_DATA_LEN (" MONSTER_RUNTIME_DATA_LEN ") > 256"
+.endif
 
 ;=============================================================================
-; free space [$77F6 - $7815]
-;
+; Free space [$77F6 - $7815]
 ;=============================================================================
-; bullets runtime data
-; requirements:
-; * must fit inside $100 block
-; * (bullet_status - bullet_erase_scr_addr) == (monster_status - monster_erase_scr_addr)
-; * (bullet_erase_scr_addr+1 - bullet_erase_wh) == (monster_erase_scr_addr+1 - monster_erase_wh)
 
-; a list of bullet runtime data structs.
+;=============================================================================
+; Bullets Runtime Data
+;=============================================================================
+; Defines the per-instance runtime data for bullets.
+; NOTE:
+; - A list of structs, one per bullet instance.
+; - Accessed by the custom update and actor draw routines.
+; - Data must fit inside $100 block.
+; - Max active monsters per room including dying but not dead: BULLETS_MAX.
+; - The bullet_update_ptr+1 also serves as an Actor Runtime Status Code 
+;     (see actor_consts.asm).
+; - The structure from monster_update_ptr to monster_data_next_ptr must match the
+;     hero's runtime data structure for compatibility with shared functions.
+; - The structure from monster_update_ptr to monster_speed_y must match the
+;     bullets's runtime data structure for compatibility with shared functions.
+
+
+; Base address for all bullet runtime data
 bullets_runtime_data:		= $7815
+; A struct of a bullet runtime data.
 bullet_update_ptr:			= bullets_runtime_data + 0		;.word
 bullet_draw_ptr:			= bullets_runtime_data + 2		;.word
 bullet_status:				= bullets_runtime_data + 4		;.byte
@@ -203,34 +249,76 @@ bullet_speed_x:				= bullets_runtime_data + 21		;.word
 bullet_speed_y:				= bullets_runtime_data + 23		;.word
 @data_end:					= bullets_runtime_data + 25
 
-BULLET_RUNTIME_DATA_LEN = @data_end - bullets_runtime_data ; $1a; bullet_runtime_data_end_addr-bullets_runtime_data
+BULLET_RUNTIME_DATA_LEN = @data_end - bullets_runtime_data
+BULLETS_MAX = 9 ; max active bullets in the room
 
-; the same structs for the rest of the bullets
-bullets_runtime_data_end_marker:	= bullets_runtime_data + BULLET_RUNTIME_DATA_LEN * BULLETS_MAX ; $78ff ; :		.word ACTOR_RUNTIME_DATA_END << 8
+; Memory layout for remaining bullet instances (BULLETS_MAX - 1)
+bullets_runtime_data_end_marker:	= bullets_runtime_data + BULLET_RUNTIME_DATA_LEN * BULLETS_MAX ; $78ff ;.word ACTOR_RUNTIME_DATA_END << 8
 bullets_runtime_data_end:			= bullets_runtime_data_end_marker + ADDR_LEN
 BULLETS_RUNTIME_DATA_LEN			= bullets_runtime_data_end - bullets_runtime_data
-;=============================================================================
-;
-; FREE SPACE $78F8 - $7900
-;
-;=============================================================================
-; Status data for container instances in the level.
-; This data is $100-aligned and its total length is <= $100.
 
+.if BULLETS_RUNTIME_DATA_LEN > $100
+	.error "ERROR: BULLETS_RUNTIME_DATA_LEN (" BULLETS_RUNTIME_DATA_LEN ") > $100"
+.endif
+.if bullets_runtime_data>>8 != bullets_runtime_data_end>>8
+	.error "ERROR: bullets_runtime_data and bullets_runtime_data_end must be in the same $100 block"
+.endif
+
+;=============================================================================
+; Free space $78F8 - $7900
+;=============================================================================
+
+;=============================================================================
+; Container Instance Status Data
+;=============================================================================
+; Stores the status of all container instances in the current level.
+;
+; NOTE:
+; - The data is divided into two sections:
+;
+;   1. Pointer Table:
+;      - A list of low-byte pointers, one for each possible container_id.
+;      - Each pointer points to the instance data for that container_id.
+;      - If a container_id is unused in the level but higher IDs are used,
+;        its pointer is set to NULL.
+;
+;   2. Instance Data Section:
+;      - Contains pairs of tile_idx and room_id for each container instance.
+;      - Each pair specifies the location of a container in the level.
+;      - The room_id also encodes the container’s status:
+;          * room_id ∈ [0, ROOMS_MAX-1] - container is present in that room.
+;          * room_id = CONTAINERS_STATUS_ACQUIRED - container is acquired.
+;
+; - Data is $100-aligned and must fit inside $100 block.
+
+;-----------------------------------------------------------------------------
 ; Data format:
+;-----------------------------------------------------------------------------
 ; containers_inst_data_ptrs:
-;	.loop CONTAINER_UNIQUE_IDS - A number of unique container_id used in the level
-;		.byte - Low byte ptr to container_id_inst_data for that container_id
-;	.endloop
-;	.byte - Low byte ptr to the addr immediately after container_inst_data
+;   .byte [ptr to the instance data for first container_id used in the level]
+;   .byte [... second container_id ...]
+;   ...
+;   .byte [... N-th container_id ...]
+;   .byte [ptr to the addr immediately after the last instance data]
+;   Where N = CONTAINER_UNIQUE_IDS - 1
 ;
 ; containers_inst_data:
-;	.loop CONTAINER_UNIQUE_IDS
-;		container_id_inst_data: - Instance data for a specific container_id
-;			.byte - tile_idx where the container is placed
-;			.byte - room_id where the container is placed.
-;					if room_id == CONTAINERS_STATUS_ACQUIRED, a container is acquired
-; .endloop
+;   - For each container_id listed above:
+;     container_id_inst_data:
+;	  	// instance data for first container_id used in the level
+;       .byte [first tile_idx]
+;       .byte [first room_id]
+;       .byte [second tile_idx]
+;       .byte [second room_id]
+;       ...
+;       .byte [M-th tile_idx]
+;       .byte [M-th room_id]
+;	    // instance data for second container_id used in the level
+;       .byte [first tile_idx]
+;       .byte [first room_id]
+;       ...
+;-----------------------------------------------------------------------------
+
 CONTAINERS_UNIQUE_MAX		= 16
 CONTAINERS_LEN				= $100
 CONTAINERS_STATUS_ACQUIRED	= $ff
@@ -239,23 +327,12 @@ containers_inst_data_ptrs:	= $7900
 ;containers_inst_data:		= containers_inst_data_ptrs + used_unique_containers (can vary) + 1
 
 ;=============================================================================
+; Resource Instance Status Data
+;=============================================================================
 ; Status data for resource instances in the level.
-; This data is $100-aligned and its total length is <= $100.
+; NOTE:
+; - It uses the Container Instance Status Data format.
 
-; Data format:
-; resources_inst_data_ptrs:
-; .loop RESOURCES_UNIQUE_IDS - A number of unique resources used in the level
-;		.byte - Low byte ptr to resource_id_inst_data for that resource_id
-;	.endloop
-;	.byte - Low byte ptr to the addr immediately after resource_inst_data
-;
-; resources_inst_data:
-;	.loop RESOURCE_UNIQUE_IDS
-;		resource_id_inst_data: - Instance data for a specific resource_id
-;			.byte - tile_idx where the resource is placed
-;			.byte - room_id where the resource is placed.
-;					if room_id == RESOURCES_STATUS_ACQUIRED, a resource is acquired
-; .endloop
 RESOURCES_UNIQUE_MAX		= 16
 RESOURCES_LEN				= $100
 RESOURCES_STATUS_ACQUIRED	= $ff
@@ -264,144 +341,197 @@ resources_inst_data_ptrs:	= $7a00
 ;resources_inst_data:		= resources_inst_data_ptrs + used_unique_resources (can vary) + 1
 
 ;=============================================================================
-; rooms spawn rates. each byte represents a spawn rate in a particular room.
-; this data is aligned to $100, the length is <= $100
-; Data Layout:
-; .loop ROOMS_MAX
-;	.byte - a monster spawn rate in the room_id = N
-; .endloop
+; Room Spawn Rates
+;=============================================================================
+; Defines monster spawn rates for each room in the level.
+; NOTE:
+; - Each byte represents the spawn rate for one room (indexed by room_id).
+; - Value meaning:
+;     0   → 100% spawn chance (always spawn)
+;     255 → 0% spawn chance (never spawn)
+;
+; - Data is $100-aligned and must fit inside $100 block.
+;
+;-----------------------------------------------------------------------------
+; Data format:
+;-----------------------------------------------------------------------------
+; rooms_spawn_rates:
+;   .byte [spawn rate room_id = 0]
+;   .byte [... room_id = 1]
+;   ...
+;   .byte [... room_id = ROOMS_MAX-1]
+;-----------------------------------------------------------------------------
 
 rooms_spawn_rates:				= $7b00
 rooms_spawn_rate_monsters:		= rooms_spawn_rates 					; 0 means 100% chance to spawn a monster. 255 means no spawn
 rooms_spawn_rates_end:			= rooms_spawn_rate_monsters + ROOMS_MAX ; $7b80
 
 ;=============================================================================
-;
-;	free space [$7b80 - $7b83]
-;
+; Free space [$7b80 - $7b86]
 ;=============================================================================
-;
-; global states
-;
-
-; a current command that is handled by the level update func
-;global_request:	= $			; .byte
-
-; the current room idx of the current level
-room_id:		= $7b84			; .byte ; in the range [0, ROOMS_MAX-1]
-; the current level index. it must have the addr next to the room_id
-level_id:   	= room_id + 1	; .byte
-
-game_ui_item_visible_addr:	= $7b86		; .byte TEMP_BYTE ; currently shown item on the panel. range [0, ITEMS_MAX-1]
 
 ;=============================================================================
-; back runtime data
-; must fit inside one $100 block
+; Back Runtime Data
+;=============================================================================
+; Stores per-instance runtime data for animated background tiles ("backs").
+; NOTE:
+; - A list of structs, one per back instance.
+; - The back_anim_ptr+1 also serves as an Actor Runtime States (see actor_consts.asm).
+; - Data must fit inside $100 block.
+
+; Base address for all back runtime data
 backs_runtime_data:		= $7b87
-back_anim_ptr:			= backs_runtime_data + 0	;.word TEMP_ADDR ; also (back_anim_ptr+1) stores a marker of end of the data like ACTOR_RUNTIME_DATA_LAST
+; A struct of back runtime data.
+back_anim_ptr:			= backs_runtime_data + 0	;.word TEMP_ADDR
 back_scr_addr:			= backs_runtime_data + 2	;.word TEMP_WORD
 back_anim_timer:		= backs_runtime_data + 4	;.byte TEMP_BYTE
 back_anim_timer_speed:	= backs_runtime_data + 5	;.byte TEMP_BYTE
 @data_end:				= backs_runtime_data + 6
 
 BACK_RUNTIME_DATA_LEN = @data_end - backs_runtime_data
+BACKS_MAX = 10
 
-; the same structs for the rest of the backs
+; Memory layout for remaining back instances (BACKS_MAX - 1)
 backs_runtime_data_end_marker:	= backs_runtime_data + BACK_RUNTIME_DATA_LEN * BACKS_MAX ;.word ACTOR_RUNTIME_DATA_END << 8
 backs_runtime_data_end:			= backs_runtime_data_end_marker + WORD_LEN
 BACKS_RUNTIME_DATA_LEN = backs_runtime_data_end - backs_runtime_data
 
-;=============================================================================
-; level init data ptr and ram-disk access commands
-lv_data_init_tbl:				= $7bc5
-lv_ram_disk_s_data:				= lv_data_init_tbl		; .byte
-lv_ram_disk_m_data:				= lv_data_init_tbl + 1	; .byte
-lv_rooms_pptr:					= lv_data_init_tbl + 2	; .word
-lv_resources_inst_data_pptr:	= lv_data_init_tbl + 4	; .word
-lv_containers_inst_data_pptr:	= lv_data_init_tbl + 6	; .word
-lv_start_pos:					= lv_data_init_tbl + 8	; .word (y,x)
+.if BACKS_RUNTIME_DATA_LEN > $100
+	.error "ERROR: BACKS_RUNTIME_DATA_LEN (" BACKS_RUNTIME_DATA_LEN ") > $100"
+.endif
+.if backs_runtime_data>>8 != backs_runtime_data_end>>8
+	.error "ERROR: backs_runtime_data and backs_runtime_data_end must be in the same $100 block"
+.endif
 
+;=============================================================================
+; Pointers to Current Level Data & Graphics
+;=============================================================================
+; This section holds data pointers to level-specific data such as rooms 
+; tiledata, resources, containers, the hero initial pose in the first room of
+; the level, level, tile gparhics, and RAM-disk commands to access that data.
+; NOTE:
+; - Each level has its own set of level data. When the level is loaded, the
+;     level data pointers and RAM-disk commands init this structire.
+
+;------------------------------
+; Level Data Table
+;------------------------------
+lv_data_init_tbl:				= $7bc5
+lv_ram_disk_s_data:				= lv_data_init_tbl		; .byte RAM-disk command for Stack access
+lv_ram_disk_m_data:				= lv_data_init_tbl + 1	; .byte RAM-disk command for Non-Stack access
+lv_rooms_pptr:					= lv_data_init_tbl + 2	; .word Pointer to packed room data (tiledata + graphics tile idxs)
+lv_resources_inst_data_pptr:	= lv_data_init_tbl + 4	; .word Pointer to resource instance data
+lv_containers_inst_data_pptr:	= lv_data_init_tbl + 6	; .word Pointer to container instance data
+lv_start_pos:					= lv_data_init_tbl + 8	; .word Hero start position (Y, X)
+;------------------------------
+; Graphics Init Table
+;------------------------------
 lv_gfx_init_tbl:				= $7bcf
-lv_ram_disk_s_gfx:				= lv_gfx_init_tbl		; .byte
-lv_ram_disk_m_gfx:				= lv_gfx_init_tbl + 1	; .byte
-lv_tiles_pptr:					= lv_gfx_init_tbl + 2	; .word
+lv_ram_disk_s_gfx:				= lv_gfx_init_tbl		; .byte RAM-disk command for Stack access
+lv_ram_disk_m_gfx:				= lv_gfx_init_tbl + 1	; .byte RAM-disk command for Non-Stack access
+lv_tiles_pptr:					= lv_gfx_init_tbl + 2	; .word Pointer to tile graphics data
 @data_end:						= lv_gfx_init_tbl + 4
 LEVEL_INIT_TBL_LEN = @data_end - lv_data_init_tbl
 
 ;=============================================================================
+; Palette Data
+;=============================================================================
+; Holds the current color palette used by the game.
+; Each color is one byte. Total length: 16 bytes.
 ;
-; palette
-palette: = $7bd3 ; 16 bytes
+palette: = $7BD3 ;
+PALETTE_LEN			    = 16
 
 ;=============================================================================
-;
-; game statuses
+; Game Statuses
+;=============================================================================
+; A collection of game state variables used to track progression, item usage,
+; and trigger one-time events or dialogs.
+
 GAME_STATUS_NOT_ACQUIRED	= 0
 GAME_STATUS_ACQUIRED		= 1
 GAME_STATUS_USED			= 2
 
 game_status:				= $7be3
-game_status_cabbage_eaten:		= game_status		; contains how many cabbage were eaten
-game_status_fire_extinguished:	= game_status + 1	; contains how many fire walls were extinguished
-game_status_cabbage_healing:	= game_status + 2	; show dialog when the hero used cabbage the first time
-game_status_use_pie:			= game_status + 3	; show dialog when the hero used a pie the first time
-game_status_use_clothes:		= game_status + 4	; show dialog when the hero used a clothes the first time
-game_status_use_spoon:			= game_status + 5	; show dialog when the hero used a spoon the first time
-game_status_first_freeze:		= game_status + 6	; show dialog when the hero freeze the monster the first time
-game_status_fart:				= game_status + 7	; a status acquired for eating cabbage
-game_status_burner_quest_room:	= game_status + 8	; a status contains an index for burner_quest_room_ids array
+game_status_cabbage_eaten:		= game_status		; Number of cabbages eaten
+game_status_fire_extinguished:	= game_status + 1	; Number of fire walls extinguished
+; To show "first-time use" dialogs
+game_status_cabbage_healing:	= game_status + 2	; First time healing with cabbage
+game_status_use_pie:			= game_status + 3	; First time using a pie
+game_status_use_clothes:		= game_status + 4	; First time using clothes
+game_status_use_spoon:			= game_status + 5	; First time using a spoon
+game_status_first_freeze:		= game_status + 6	; First time freezing a monster
+; Special states
+game_status_fart:				= game_status + 7	; Fart status from cabbage
+game_status_burner_quest_room:	= game_status + 8	; Index in burner_quest_room_ids array
 game_status_end:				= game_status + 9
 
 ;=============================================================================
-;
-;	free space [$7bec - $7bf6]
+; Free space [$7bec - $7bf5]
 ;=============================================================================
-;
-; global states 2
-;
-global_states_2:		= $7bf7
-border_color_idx:		= global_states_2 + 0 ; .byte
-scr_offset_y:			= global_states_2 + 1 ; .byte
 
-; it is used to check how many updates needs to happened
-; to sync with interruptions
-game_updates_required:= global_states_2 + 2 ; .byte
-			;.storage BYTE_LEN
-
-; a lopped counter increased every game update
-game_update_counter:	= global_states_2 + 3 ; .byte
-
-; used for the movement
-char_temp_x:			= global_states_2 + 4 ; .word ; temporal X
-char_temp_y:			= global_states_2 + 6 ; .word ; temporal Y
-global_states_2_end:	= global_states_2 + 8
 ;=============================================================================
+; Global Runtime States
+;=============================================================================
+
+global_states:			= $7bf6
+; The current room idx within the current level
+room_id:				= global_states ; .byte ; Range: [0, ROOMS_MAX-1]
+
+; The index of the current level (must be located immediately after room_id)
+level_id:				= global_states + 1 ; .byte
+
+; Currently visible item in the game UI panel
+; Value corresponds to item ID, range: [0, ITEMS_MAX-1]
+game_ui_item_visible_addr:  = global_states + 2 ; .byte
+
+border_color_idx:		= global_states + 3 ; .byte Current border color index
+scr_offset_y:			= global_states + 4 ; .byte Vertical screen offset ($255 by default)
+
+; Counts pending game updates to sync the game loop with interrupts.
+; If < 0, no updates are pending.
+; Incremented in the interruption routine.
+; Checked and decremented in the game update.
+game_updates_required:	= global_states + 5 ; .byte
+
+; Temporary coordinates used during character movement logic:
+char_temp_x:			= global_states + 6 ; .word
+char_temp_y:			= global_states + 8 ; .word
+global_states_end:		= global_states + 10
+
+;=============================================================================
+; Hero Resources
+;=============================================================================
+; Defines the runtime values of all hero-owned resources.
+; NOTE:
+; - A maximum of 15 resources is supported.
+; - `hero_res_sword` to `hero_res_spoon` are selectable resources shown in the UI.
+; - Some resources are marked as quest-related.
 ;
-; hero resources
-; 15 resources max
 
 hero_resources:			= $7c00
-hero_res_score:			= hero_resources + 0 ; WORD_LEN
-hero_res_health:		= hero_resources + 2 ; +2 because hero_res_score = WORD_LEN
-hero_res_sword:			= hero_resources + 3 ; the first selectable resource
-hero_res_snowflake:		= hero_resources + 4
-hero_res_tnt:			= hero_resources + 5
-hero_res_potion_health:	= hero_resources + 6
-hero_res_popsicle_pie:	= hero_resources + 7
-hero_res_clothes:		= hero_resources + 8 ; it is a quest resource
-hero_res_cabbage:		= hero_resources + 9 ; it is a quest resource
-hero_res_spoon:			= hero_resources + 10
-hero_res_not_used_01:	= hero_resources + 11 ; it is a quest resource
+hero_res_score:			= hero_resources + 0  ; .word
+hero_res_health:		= hero_resources + 2  ; .byte
+hero_res_sword:			= hero_resources + 3  ; .byte (the first UI-selectable)
+hero_res_snowflake:		= hero_resources + 4  ; .byte
+hero_res_tnt:			= hero_resources + 5  ; .byte
+hero_res_potion_health:	= hero_resources + 6  ; .byte
+hero_res_popsicle_pie:	= hero_resources + 7  ; .byte
+hero_res_clothes:		= hero_resources + 8  ; .byte (Quest resource)
+hero_res_cabbage:		= hero_resources + 9  ; .byte (Quest resource)
+hero_res_spoon:			= hero_resources + 10 ; .byte
+hero_res_not_used_01:	= hero_resources + 11 ; .byte (Reserved)
 hero_res_not_used_02:	= hero_resources + 12
 hero_res_not_used_03:	= hero_resources + 13
 hero_res_not_used_04:	= hero_resources + 14
 hero_res_not_used_06:	= hero_resources + 15
 
-; selected ui resource
-; 0000_RRRR
-;	RRRR - res_id, it is not equal to the tiledata because hero_res_score takes two bytes
-;	0 - no resources
-game_ui_res_selected_id:	= hero_resources + 16	; .byte
+; Currently selected resource ID for use in the game UI.
+; Format (0000_RRRR):
+;	RRRR - Resource ID (0–15), does not match tiledata index directly,
+;          because hero_res_score takes two bytes.
+;	0    - Indicates no resource selected.
+game_ui_res_selected_id:	= hero_resources + 16 ; .byte (0000_RRRR format)
 hero_resources_end:			= hero_resources + 17
 
 RES_SELECTABLE_AVAILABLE_NONE	= 0
@@ -411,27 +541,48 @@ RES_SELECTABLE_LAST		= hero_res_spoon
 RES_SELECTABLE_MAX		= RES_SELECTABLE_LAST - RES_SELECTABLE_FIRST + 1
 
 ;=============================================================================
-; contains global item statuses.
-ITEM_STATUS_NOT_ACQUIRED	= 0
-ITEM_STATUS_ACQUIRED		= 1
-ITEM_STATUS_USED			= 2
-ITEMS_MAX					= 15 ; item_id = 0 is reserved for dialog tiledata
+; Global Item Statuses
+;=============================================================================
+; Tracks the acquisition and usage status of each global items in the game.
+; NOTE:
+; - A maximum of 15 unique items is supported.
+; - Item IDs correspond to tiledata indexes (see tiledata_consts.asm).
+; - Item ID 0 is reserved for dialog-related tiledata. Not an actual item.
+; - Each item can have one of three statuses:
+ITEM_STATUS_NOT_ACQUIRED = 0  ; Item has not been obtained
+ITEM_STATUS_ACQUIRED     = 1  ; Item is acquired but not yet used
+ITEM_STATUS_USED         = 2  ; Item has been used
 
+ITEMS_MAX					= 15
+
+;-----------------------------------------------------------------------------
 ; Data Layout:
-; .loop ITEMS_MAX
-;	.byte - status of item_id = N
-; .endloop
+;-----------------------------------------------------------------------------
+; .byte - status of item_id = 0 (reserved for dialog-related tiledata)
+; .byte - status of item_id = 1
+; .byte - status of item_id = 2
+; ...
+; .byte - status of item_id = ITEMS_MAX-1
 
-global_items:		= $7c11
-; ITEM_ID_KEY_0 status = $7c11
-; ITEM_ID_KEY_1 status = $7c12
-; etc.
+global_items:		= $7c11f
 global_items_end:	= global_items + ITEMS_MAX
 
 ;=============================================================================
-; tile graphics pointer table.
-
+; Room Tile Graphics Pointer Table
+;=============================================================================
+; Stores pointers to tile graphics used in the current room.
+; NOTE:
+; - When a hero enters a room, the room's data including tiledata and tile 
+;     graphics idxs are unpacked from the RAM-disk into this buffer and the 
+;     buffer above (room_tiles_gfx_ptrs & room_tiledata).
+; - Room conststs of ROOM_WIDTH * ROOM_HEIGHT tiles. Each tile has its own 
+;     tiledata elements and tile graphics idx.
+; - Tile graphics idx is used to render the tile.
+; - Data is $100-aligned and must fit inside $100 block.
+;
+;-----------------------------------------------------------------------------
 ; Data Layout:
+;-----------------------------------------------------------------------------
 ; .loop ROOM_HEIGHT
 ;	.loop ROOM_WIDTH
 ;		.word - tile_gfx_addr
@@ -443,7 +594,26 @@ room_tiles_gfx_ptrs:		= $7c20
 room_tiles_gfx_ptrs_end:	= room_tiles_gfx_ptrs + ROOM_TILES_GFX_PTRS_LEN
 
 ;=============================================================================
-; tiledata buffer has to follow room_tiles_gfx_ptrs because they are unpacked altogether. see level_data.asm for tiledata format
+; Room TileData Buffer
+;=============================================================================
+; Stores the tiledata for the current room.
+; NOTE:
+; - When a hero enters a room, the room's data including tiledata and tile 
+;     graphics idxs are unpacked from the RAM-disk into this buffer and the 
+;     buffer above (room_tiles_gfx_ptrs & room_tiledata).
+; - Room conststs of ROOM_WIDTH * ROOM_HEIGHT tiles. Each tile has its own 
+;     tiledata elements and tile graphics idx.
+; - Tiledata is used for collision detection, and game mechanics. Tiledata can 
+;     be a monster spawner, container, door, and other interactive element.
+;     See tiledata_consts.asm for all tiledata values.
+; - Tiledata can be modified during gameplay, e.g. breakable objects, doors,
+;     and containers can change their tiledata when broken/opened.
+; - Tiledata is restored from the room_tiledata_backup buffer when dialogs
+;     are displayed.
+; - Data is $100-aligned and must fit inside $100 block.
+;-----------------------------------------------------------------------------
+; Data Layout:
+;-----------------------------------------------------------------------------
 
 ; Data Layout:
 ; .loop ROOM_HEIGHT
@@ -456,60 +626,167 @@ room_tiledata:		= $7e00
 room_tiledata_end:	= room_tiledata + ROOM_TILEDATA_LEN
 
 ;=============================================================================
-;
-; OS I/O vars
-;
-os_io_data:				= $7ef0
-; the disk number to restore it before returning to the OS
-; check RDS_DISK in os_consts.asm for more info
-os_disk:				= os_io_data
-
-; the last filename IO handled
-os_filename:			= os_disk + BYTE_LEN
-			; format:
-			;.storage BASENAME_LEN
-			;.byte "."
-			;.storage EXT_LEN
-			;.byte "\n$"
-OS_FILENAME_LEN_MAX = BASENAME_LEN + BYTE_LEN + EXT_LEN + WORD_LEN
-
-; points to next byte after loaded file
-os_file_data_ptr:		= os_filename + OS_FILENAME_LEN_MAX
-			;.word
-os_io_data_end:			= os_file_data_ptr + WORD_LEN
-OS_IO_DATA_LEN = os_io_data_end - os_io_data
-
+; OS I/O Data
 ;=============================================================================
 ;
-; teleport room ids
+; These variables are used to manage file operations and I/O interactions 
+; with the OS, including disk tracking and filename storage.
 
-TELEPORT_IDS_MAX = 16 ; unique teleport ids in a room
-; array indexed by teleport_id. Contains room_ids to teleport to
-; from the current room
+os_io_data:			= $7ef0
+; the disk number to restore it before returning to the OS
+; check RDS_DISK in os_consts.asm for more info
+
+; Stores the current disk number used by the OS. Restore it before returning 
+; to the OS. See RDS_DISK in os_consts.asm for more info.
+os_disk:			= os_io_data
+
+; the last filename IO handled
+; Stores the last filename accessed during I/O.
+; Format:
+;	.storage BASENAME_LEN
+;	.byte "."
+;	.storage EXT_LEN
+;	.byte "\n$"
+os_filename:		= os_disk + BYTE_LEN
+
+OS_FILENAME_LEN_MAX = BASENAME_LEN + BYTE_LEN + EXT_LEN + WORD_LEN
+
+; Points to the byte immediately after the loaded file.
+os_file_data_ptr:	= os_filename + OS_FILENAME_LEN_MAX ; .word
+			
+os_io_data_end:		= os_file_data_ptr + WORD_LEN
+OS_IO_DATA_LEN 		= os_io_data_end - os_io_data
+
+;=============================================================================
+; Teleport Room IDs
+;=============================================================================
+; A table to convert teleport IDs to room IDs for the current room.
+; NOTE:
+; - When the hero steps on a teleport tile, the tiledata provides a teleport ID.
+; - The teleport ID is used to look up the destination room ID in this table.
+; - When a hero enters a room, the room's teleport data is copied from
+;     the RAM-disk into this buffer.
+;
+;-----------------------------------------------------------------------------
+; Data Layout:
+;-----------------------------------------------------------------------------
+; .byte - room_id for teleport_id = 0
+; .byte - room_id for teleport_id = 1
+; ...
+; .byte - room_id for teleport_id = N
+; Where N = TELEPORT_IDS_MAX - 1
+
+; Defines the maximum number of unique teleport IDs per room.
+TELEPORT_IDS_MAX = 16
+
 room_teleports_data:		= $7F02
 room_teleports_data_end:	= room_teleports_data + TELEPORT_IDS_MAX
 ;
 ;=============================================================================
-;
-;	free space [$7F12 - $7FBD]
-
+; Free space [$7F12 - $7FBD]
 ;=============================================================================
 ;
 ; STACK_MIN_ADDR = $7FBE
 
 ; validation
-.if ~((bullet_draw_ptr - bullet_status) == (monster_draw_ptr - monster_status))
-	.error "actor_erase func fails because !((bullet_draw_ptr - bullet_status) == (monster_draw_ptr - monster_status))"
+.if (monster_update_ptr - monsters_runtime_data) != (hero_update_ptr - hero_runtime_data)
+	.error "hero & monster runtime data must match from update_ptr to monsters_runtime_data"
 .endif
-.if ~((bullet_status - bullet_pos_x+1) == (monster_status - monster_pos_x+1))
-	.error "actor_erase func fails because !((bullet_status - bullet_pos_x+1) == (monster_status - monster_pos_x+1))"
+.if (monster_update_ptr - monsters_runtime_data) != (bullet_update_ptr - bullets_runtime_data)
+	.error "hero & monster & bullet runtime data must match from update_ptr to speed_y+1"
 .endif
-.if ~((bullet_draw_ptr - bullet_pos_x+1) == (monster_draw_ptr - monster_pos_x+1))
-	.error "actor_erase func fails because !((bullet_draw_ptr - bullet_pos_x+1) == (monster_draw_ptr - monster_pos_x+1))"
+
+.if (monster_draw_ptr - monsters_runtime_data) != (hero_draw_ptr - hero_runtime_data)
+	.error "hero & monster runtime data must match from update_ptr to monsters_runtime_data"
 .endif
-.if ~((bullet_pos_y+1 - bullet_anim_ptr) == (monster_pos_y+1 - monster_anim_ptr))
-	.error "actor_erase func fails because !((bullet_pos_y+1 - bullet_anim_ptr) == (monster_pos_y+1 - monster_anim_ptr))"
+.if (monster_draw_ptr - monsters_runtime_data) != (bullet_draw_ptr - bullets_runtime_data)
+	.error "hero & monster & bullet runtime data must match from update_ptr to speed_y+1"
 .endif
-.if ~((bullet_erase_scr_addr+1 - bullet_erase_wh) == (monster_erase_scr_addr+1 - monster_erase_wh))
-	.error "actor_erase func fails because !((bullet_erase_scr_addr+1 - bullet_erase_wh) == (monster_erase_scr_addr+1 - monster_erase_wh))"
+
+.if (monster_status - monsters_runtime_data) != (hero_status - hero_runtime_data)
+	.error "hero & monster runtime data must match from update_ptr to monsters_runtime_data"
+.endif
+.if (monster_status - monsters_runtime_data) != (bullet_status - bullets_runtime_data)
+	.error "hero & monster & bullet runtime data must match from update_ptr to speed_y+1"
+.endif
+
+.if (monster_status_timer - monsters_runtime_data) != (hero_status_timer - hero_runtime_data)
+	.error "hero & monster runtime data must match from update_ptr to monsters_runtime_data"
+.endif
+.if (monster_status_timer - monsters_runtime_data) != (bullet_status_timer - bullets_runtime_data)
+	.error "hero & monster & bullet runtime data must match from update_ptr to speed_y+1"
+.endif
+
+.if (monster_anim_timer - monsters_runtime_data) != (hero_anim_timer - hero_runtime_data)
+	.error "hero & monster runtime data must match from update_ptr to monsters_runtime_data"
+.endif
+.if (monster_anim_timer - monsters_runtime_data) != (bullet_anim_timer - bullets_runtime_data)
+	.error "hero & monster & bullet runtime data must match from update_ptr to speed_y+1"
+.endif
+
+.if (monster_anim_ptr - monsters_runtime_data) != (hero_anim_ptr - hero_runtime_data)
+	.error "hero & monster runtime data must match from update_ptr to monsters_runtime_data"
+.endif
+.if (monster_anim_ptr - monsters_runtime_data) != (bullet_anim_ptr - bullets_runtime_data)
+	.error "hero & monster & bullet runtime data must match from update_ptr to speed_y+1"
+.endif
+
+.if (monster_erase_scr_addr - monsters_runtime_data) != (hero_erase_scr_addr - hero_runtime_data)
+	.error "hero & monster runtime data must match from update_ptr to monsters_runtime_data"
+.endif
+.if (monster_erase_scr_addr - monsters_runtime_data) != (bullet_erase_scr_addr - bullets_runtime_data)
+	.error "hero & monster & bullet runtime data must match from update_ptr to speed_y+1"
+.endif
+
+.if (monster_erase_scr_addr_old - monsters_runtime_data) != (hero_erase_scr_addr_old - hero_runtime_data)
+	.error "hero & monster runtime data must match from update_ptr to monsters_runtime_data"
+.endif
+.if (monster_erase_scr_addr_old - monsters_runtime_data) != (bullet_erase_scr_addr_old - bullets_runtime_data)
+	.error "hero & monster & bullet runtime data must match from update_ptr to speed_y+1"
+.endif
+
+.if (monster_erase_wh - monsters_runtime_data) != (hero_erase_wh - hero_runtime_data)
+	.error "hero & monster runtime data must match from update_ptr to monsters_runtime_data"
+.endif
+.if (monster_erase_wh - monsters_runtime_data) != (bullet_erase_wh - bullets_runtime_data)
+	.error "hero & monster & bullet runtime data must match from update_ptr to speed_y+1"
+.endif
+
+.if (monster_erase_wh_old - monsters_runtime_data) != (hero_erase_wh_old - hero_runtime_data)
+	.error "hero & monster runtime data must match from update_ptr to monsters_runtime_data"
+.endif
+.if (monster_erase_wh_old - monsters_runtime_data) != (bullet_erase_wh_old - bullets_runtime_data)
+	.error "hero & monster & bullet runtime data must match from update_ptr to speed_y+1"
+.endif
+
+.if (monster_pos_x - monsters_runtime_data) != (hero_pos_x - hero_runtime_data)
+	.error "hero & monster runtime data must match from update_ptr to monsters_runtime_data"
+.endif
+.if (monster_pos_x - monsters_runtime_data) != (bullet_pos_x - bullets_runtime_data)
+	.error "hero & monster & bullet runtime data must match from update_ptr to speed_y+1"
+.endif
+
+.if (monster_pos_y - monsters_runtime_data) != (hero_pos_y - hero_runtime_data)
+	.error "hero & monster runtime data must match from update_ptr to monsters_runtime_data"
+.endif
+.if (monster_pos_y - monsters_runtime_data) != (bullet_pos_y - bullets_runtime_data)
+	.error "hero & monster & bullet runtime data must match from update_ptr to speed_y+1"
+.endif
+
+.if (monster_speed_x - monsters_runtime_data) != (hero_speed_x - hero_runtime_data)
+	.error "hero & monster runtime data must match from update_ptr to monsters_runtime_data"
+.endif
+.if (monster_speed_x - monsters_runtime_data) != (bullet_speed_x - bullets_runtime_data)
+	.error "hero & monster & bullet runtime data must match from update_ptr to speed_y+1"
+.endif
+
+.if (monster_speed_y - monsters_runtime_data) != (hero_speed_y - hero_runtime_data)
+	.error "hero & monster runtime data must match from update_ptr to monsters_runtime_data"
+.endif
+.if (monster_speed_y - monsters_runtime_data) != (bullet_speed_y - bullets_runtime_data)
+	.error "hero & monster & bullet runtime data must match from update_ptr to speed_y+1"
+.endif
+
+.if (monster_data_next_ptr - monsters_runtime_data) != (hero_data_next_ptr - hero_runtime_data)
+	.error "hero & monster runtime data must match from update_ptr to monsters_runtime_data"
 .endif

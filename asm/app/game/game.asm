@@ -28,8 +28,6 @@ game_level_start:
 			jmp	@game_loop
 
 game_update:
-			lxi h, game_update_counter
-			inr m
 @loop:
 			CHECK_GAME_UPDATE_COUNTER(game_updates_required)
 

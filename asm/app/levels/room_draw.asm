@@ -1,4 +1,5 @@
-
+memusage_room_draw:
+;=========================================================
 ; redraw room after dialog shown
 ; it uses data inited in the room_draw
 ROOM_TILEDATA_HANDLING_ALL			= OPCODE_JMP

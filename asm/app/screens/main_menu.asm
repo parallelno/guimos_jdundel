@@ -46,11 +46,8 @@ main_menu:
 			
 main_menu_backgound_draw:
 			call screen_draw_frame
-			; title1
-			lxi d, _tim_title1
-			call tiled_img_draw
-			; settings frame
-			lxi d, _tim_frame_main_menu
+			; settings frame & title
+			lxi d, _tim_main_menu_front
 			call tiled_img_draw
 
 			@line_spacing = <(-SETTING_LINE_SPACING)

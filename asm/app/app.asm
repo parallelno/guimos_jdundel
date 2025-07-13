@@ -12,7 +12,7 @@ app_start:
 			push h
 			; read the global func
 global_request: = * + 1
-			lxi h, GLOBAL_REQ_LOAD_LEVEL0
+			lxi h, GLOBAL_REQ_LOAD_MENU_MAIN
 			lxi b, global_funcs
 			dad h			
 			dad b
@@ -77,6 +77,7 @@ global_load_lv0:
 
 			A_TO_ZERO (LEVEL_ID_0)
 			sta level_id
+
 			jmp game_level_start
 
 global_load_lv1:
@@ -90,6 +91,7 @@ global_load_lv1:
 
 			mvi a, LEVEL_ID_1
 			sta level_id
+
 			jmp game_level_start
 
 ; in: 

@@ -56,21 +56,14 @@ screen_fade_in:
 			jmp pallete_fade_in
 
 screen_draw_frame:
-			; back1
-			lxi d, _tim_main_menu_back1
-			call tiled_img_draw
-			; back2
-			lxi d, _tim_main_menu_back2
-			call tiled_img_draw
-			ret
+			; back
+			lxi d, _tim_main_menu_back
+			jmp tiled_img_draw
 
 ; in:
 ; hl - a specific update func ptr
 screen_simple_update:
 			shld @spec_update_func + 1
-			lxi h, game_update_counter
-			inr m
-
 @loop:
 			CHECK_GAME_UPDATE_COUNTER(game_updates_required)
 

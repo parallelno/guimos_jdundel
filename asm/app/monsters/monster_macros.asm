@@ -101,11 +101,11 @@
 .macro MONSTER_DATA_INSERT_AT_HEAD()
 			HL_ADVANCE(monster_update_ptr + 1, monster_data_next_ptr + 1, BY_DE)
 
-			; read the monster_data_next_ptr from the monster_data_head_ptr
+			; read the monster_data_next_ptr from the actor_data_head_ptr
 			xchg
-			lhld monster_data_head_ptr
+			lhld actor_data_head_ptr
 
-			; store addr from the monster_data_head_ptr
+			; store addr from the actor_data_head_ptr
 			; into monster_data_next_ptr
 			xchg
 			; de - points to the monster_data_next_ptr of the previosly first monster data
@@ -115,8 +115,8 @@
 			; de - points to the monster_data_next_ptr of the previosly first monster data
 			; hl - points to monster_data_next_ptr
 			
-			; store monster_data_next_ptr to the monster_data_head_ptr
-			shld monster_data_head_ptr
+			; store monster_data_next_ptr to the actor_data_head_ptr
+			shld actor_data_head_ptr
 .endmacro
 
 ; Deletes a monster runtime data from the monster runtime data list
@@ -128,7 +128,7 @@
 			HL_ADVANCE(monster_update_ptr + 1, monster_data_next_ptr, BY_BC)
 
 			; current element = head
-			lxi d, monster_data_head_ptr
+			lxi d, actor_data_head_ptr
 			xchg
 
 			; find the element that points to the element we want to delete

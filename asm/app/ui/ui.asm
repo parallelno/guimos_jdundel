@@ -277,12 +277,12 @@ game_ui_draw_res:
 			.word _ti0_res_cabbage
 			.word _ti0_res_spoon
 
-;==================================================================================================
-;
-; draws an available item.
-; it shows the next available item every game_update_time * GAME_UI_ITEM_UPDATE_DELAY time
-;
-;==================================================================================================
+;=============================================================================
+; Game UI – Item Display Renderer & Selector
+;=============================================================================
+; Draws the currently available item in the UI.
+; Automatically cycles to the next available item every
+; GAME_UI_ITEM_UPDATE_DELAY game updates.
 game_ui_draw_items:
 			lxi h, @delay
 			dcr m

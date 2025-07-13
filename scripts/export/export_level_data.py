@@ -219,10 +219,11 @@ def get_resources_inst_data(level_j_path, resources, resource_max_tiledata):
 			inst_len = len(resources_sorted[tiledata]) * build.WORD_LEN
 			if len(resources_sorted[tiledata]) > 0:
 				data_byte = ptr + resources_inst_data_ptrs_len
+				asm += f"0x{data_byte:02X}, "
 			else:
-				data_byte = ptr + inst_len + resources_inst_data_ptrs_len
+				asm += f"NULL, "
 
-			asm += f"0x{data_byte:02X}, "
+
 			ptr += inst_len
 			data_len += build.BYTE_LEN
 

@@ -174,7 +174,7 @@ hero_pos_y:					.storage WORD_LEN ; .word TEMP_WORD ; first byte is a sub-pixel 
 hero_speed_x:				.storage WORD_LEN ; .word TEMP_WORD ; first byte is a sub-pixel coord speed
 hero_speed_y:				.storage WORD_LEN ; .word TEMP_WORD ; first byte is a sub-pixel coord speed
 hero_data_prev_pptr:		.storage ADDR_LEN ; .word TEMP_ADDR
-hero_data_next_pptr:		.storage ADDR_LEN ; .word TEMP_ADDR
+hero_data_next_ptr:		.storage ADDR_LEN ; .word TEMP_ADDR
 hero_runtime_data_end:
 
 ;=============================================================================
@@ -182,7 +182,7 @@ hero_runtime_data_end:
 ;
 MONSTERS_MAX = 15 ; max monsters in the room
 ; ptr to the first monster data in the sorted list
-monster_data_head_ptr:	.storage ADDR_LEN ; .word monster_update_ptr
+actor_data_head_ptr:	.storage ADDR_LEN ; .word monster_update_ptr
 
 ; a list of monster runtime data structs.
 monsters_runtime_data:

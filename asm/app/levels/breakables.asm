@@ -61,7 +61,7 @@ breakables_room_status_init:
 			sta breakables_status_buf_free_ptr
 			ret
 
-; restore breakables statuses
+; Restores breakables statuses.
 ; this func should called before room_handle_room_tiledata,
 ; and after room_unpack and room_backup_tiledata
 ; in:
@@ -104,7 +104,7 @@ breakables_room_status_restore:
 			ret
 
 
-; update the bleakables status buffer for the current room
+; Updates the bleakables status buffer for the current room.
 breakables_room_status_store:
 			; get the pptr to the bleakables status buffer for the current room
 			call breakables_get_room_status_buff_pptr
@@ -158,7 +158,7 @@ breakables_room_status_store:
 
 
 
-; return the pptr to the bleakables status buffer for the current room
+; Returns the pptr to the bleakables status buffer for the current room.
 ; out
 ; hl - the pptr to the bleakables status buffer for the current room
 breakables_get_room_status_buff_pptr:

@@ -526,6 +526,21 @@ BY_A			= 5
 .endmacro
 
  ; ints_per_update = 2 means the update happens every second interruption (25 updates per second)
+
+;=============================================================================
+; Game Update Counter Check
+;=============================================================================
+; Waits for the required number of interrupts before allowing a game update.
+; Note:
+; - Throttls the update loop (e.g. from 50Hz down to 25Hz).
+; - Should be called at the start of the game_update() function.
+; - Uses the game_updates_required counter incremented in the interruption routine.
+; - The default number of interrupts per game update is 2.
+;
+; Parameters:
+; @game_updates_required - pts to pending game updates counter
+; ints_per_update        - Number of interrupts per game update
+;
 .macro CHECK_GAME_UPDATE_COUNTER(@game_updates_required, ints_per_update = 2)
 			; check if an interruption happened
 			lxi h, @game_updates_required

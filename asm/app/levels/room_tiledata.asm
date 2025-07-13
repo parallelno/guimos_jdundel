@@ -1,4 +1,6 @@
 
+memusage_room_tiledata:
+
 ; it copies the room tiledata into room_tiledata_backup
 ; for room_redraw and storing states of breakable objects
 room_backup_tiledata:

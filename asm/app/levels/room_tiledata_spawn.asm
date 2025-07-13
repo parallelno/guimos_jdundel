@@ -1,4 +1,4 @@
-memusage_levels_data:
+memusage_room_tiledata_spawn:
 ;=======================================================
 ; to init each tiledata in a room during a room initialization. 
 ; check room.asm room_handle_room_tiledata func

@@ -65,7 +65,7 @@ palette_update_request_:
 			out 3
 
 			; it's used in the main program to
-			; keep the update synced with interruption
+			; keep the update loop synced with interruption
 			lxi h, game_updates_required
 			inr m
 

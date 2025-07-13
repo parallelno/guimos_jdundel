@@ -1,5 +1,5 @@
 ## Main Ram memory usage:
-> Free Space: `4724`
+> Free Space: `4737`
 
 |Assembly| Usage|
 |-|-|
@@ -7,7 +7,6 @@
 |memusage_hero_update:|1337|
 |memusage_v6_sprite_copy_to_backbuf:|1219|
 |memusage_v6_sprite_copy_to_scr:|1203|
-|memusage_levels_data:|1002|
 |memusage_v6_sound:|810|
 |memusage_loads:|655|
 |memusage_v6_utils:|639|
@@ -19,13 +18,15 @@
 |memusage_sword:|435|
 |memusage_goose:|433|
 |memusage_cat:|433|
+|memusage_room_tiledata_spawn:|432|
 |memusage_caterpillar:|424|
 |memusage_v6_sprite_draw:|415|
 |memusage_skeleton:|401|
 |memusage_ui:|393|
 |memusage_settings:|381|
+|memusage_room_tiledata:|372|
 |memusage_vampire:|368|
-|memusage_main_menu:|349|
+|memusage_main_menu:|343|
 |memusage_hero_tile_funcs:|339|
 |memusage_hero_collision:|288|
 |memusage_v6_tiled_img_draw:|271|
@@ -37,17 +38,18 @@
 |memusage_scythe:|222|
 |memusage_levels:|202|
 |memusage_backs:|199|
+|memusage_room:|198|
 |memusage_dialogs:|198|
 |memusage_snowflake:|195|
-|memusage_room:|191|
+|memusage_room_draw:|191|
 |memusage_vfx:|189|
 |memusage_app:|180|
 |memusage_bullets:|178|
 |memusage_v6_decal_draw:|173|
-|memusage_screen_utils:|169|
 |memusage_v6_sprite_erase:|168|
 |memusage_v6_controls:|166|
 |memusage_breakables:|163|
+|memusage_screen_utils:|162|
 |memusage_v6_sprite:|157|
 |memusage_game:|155|
 |memusage_bomb:|153|
@@ -68,7 +70,7 @@
 |memusage_scores:|78|
 |memusage_score:|66|
 |memusage_app_utils:|63|
-|memusage_credits_screen:|58|
+|memusage_credits:|58|
 |memusage_v6_gc_runtime_data:|34|
 |memusage_friends_sis:|27|
 |memusage_dotty:|27|
@@ -136,7 +138,7 @@
 ---
 ### `menu` ram-disk usage:
 
-> Used: `7618`, Free Space: `180686`
+> Used: `7680`, Free Space: `180624`
 
 - bank0 addr0
 
@@ -152,9 +154,9 @@
 
 - bank1 addr8000
 	* TXT_MENU.BIN: addr: 36670, len: `1138`
-	* TIM_DATA.BIN: addr: 37808, len: `666`
+	* TIM_DATA.BIN: addr: 37808, len: `728`
 
-  `Used: 1804, Free: 2486`
+  `Used: 1866, Free: 2424`
 
 - bank2 addr0
 
