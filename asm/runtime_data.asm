@@ -440,7 +440,6 @@ LEVEL_INIT_TBL_LEN = @data_end - lv_data_init_tbl
 ; Each color is one byte. Total length: 16 bytes.
 ;
 palette: = $7BD3 ;
-PALETTE_LEN			    = 16
 
 ;=============================================================================
 ; Game Statuses
@@ -564,7 +563,7 @@ ITEMS_MAX					= 15
 ; ...
 ; .byte - status of item_id = ITEMS_MAX-1
 
-global_items:		= $7c11f
+global_items:		= $7c11
 global_items_end:	= global_items + ITEMS_MAX
 
 ;=============================================================================
@@ -684,6 +683,7 @@ room_teleports_data_end:	= room_teleports_data + TELEPORT_IDS_MAX
 ;
 ;=============================================================================
 ; Free space [$7F12 - $7FBD]
+; TODO: Update the runtime data layout to use this free space!
 ;=============================================================================
 ;
 ; STACK_MIN_ADDR = $7FBE
