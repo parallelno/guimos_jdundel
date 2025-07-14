@@ -86,11 +86,11 @@ dzx0:
 
 /*
 
-	; unpack to the ram-disk $8000-$FFFF
+	; unpack to the RAM Disk $8000-$FFFF
 	; in:
 	; de - compressed data addr
 	; bc - uncompressed data addr
-	; a - ram-disk activation command
+	; a - RAM Disk activation command
 	;
 	; based on ZX0 i8080 decoder v7 by Ivan Gorodetsky -  OLD FILE FORMAT v1
 	; which based on ZX0 z80 decoder by Einar Saukas
@@ -110,7 +110,7 @@ dzx0_rd:
 @ldir_loop:
 			ldax d
 			sta @storeA+1
-			; turn on the ram-disk
+			; turn on the RAM Disk
 @ramDiskCmd1:
 			mvi a, TEMP_BYTE
 			RAM_DISK_ON_BANK_NO_RESTORE()
@@ -141,7 +141,7 @@ dzx0_rd:
 
 @ldir_unpacked:
 			sta @restoreA2+1
-			; turn on the ram-disk
+			; turn on the RAM Disk
 @ramDiskCmd2:
 			mvi a, TEMP_BYTE
 			RAM_DISK_ON_BANK_NO_RESTORE()

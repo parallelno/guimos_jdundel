@@ -1,7 +1,7 @@
 ;----------------------------------------------------------------
 ; draw a tile (16x16 pixels)
 ; this graphics is used to render level rooms. 
-; This func can read gfx data from the ram-disk if it's properly activated
+; This func can read gfx data from the RAM Disk if it's properly activated
 ; input:
 ; bc - a tile gfx ptr
 ; de - screen addr

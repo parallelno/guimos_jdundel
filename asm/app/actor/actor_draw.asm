@@ -74,6 +74,6 @@ actor_draw:
 			ret
 @invis:
 			; hl - ptr to monster_status
-			; a - ram disk access cmd
+			; a - RAM Disk access cmd
 			CALL_RAM_DISK_FUNC_BANK(sprite_draw_invis_vm)
 			jmp @store_params

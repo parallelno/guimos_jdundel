@@ -7,7 +7,7 @@ REPEATER_CODE = $FF
 
 ; init the tiled image idx data
 ; in:
-; a - idxs data ram-disk activation command
+; a - idxs data RAM Disk activation command
 ; hl - idx data addr (points to the addr where it was loaded)
 tiled_img_init_idxs:
 			sta tiled_img_draw_ramdisk_access_idxs + 1
@@ -16,7 +16,7 @@ tiled_img_init_idxs:
 
 ; init the tiled image gfx
 ; in:
-; a - gfx data ram-disk s activation command (LEVEL0_TI0_GFX_RAM_DISK_S)
+; a - gfx data RAM Disk s activation command (LEVEL0_TI0_GFX_RAM_DISK_S)
 ; hl - gfx data addr (points to the addr where it was loaded)
 tiled_img_init_gfx:
 			sta tiled_img_draw_ramdisk_access_gfx + 1
@@ -36,15 +36,15 @@ tiled_img_init_gfx:
 ; - The tile idx = 0 is a transparent tile, meaning skip drawing it.
 ; - The tile idx = $FF is a repeater code, meaning the next two bytes represent
 ;     the tile idx and the repeating counter.
-; - The tile idxs are stored in the ram-disk, and copied to a temp before drawing.
-; - The tile gfxs are stored in the ram-disk, and rendered directly from there.
+; - The tile idxs are stored in the RAM Disk, and copied to a temp before drawing.
+; - The tile gfxs are stored in the RAM Disk, and rendered directly from there.
 ; - The max tiled image data excluding the gfx tiles is TEMP_BUFF_LEN.
 ; - The maximum number of gfx tiles is 254, because 0 and $FF idxs are reserved.
 ; - Multiple tiled images can use the same gfx tiles.
 
 ;-----------------------------------------------------------------------------
 ; Data format:
-; 2 bytes - idxs data len to copy from the ram-disk to a temp buffer
+; 2 bytes - idxs data len to copy from the RAM Disk to a temp buffer
 ; 2 bytes - scr addr (left-bottom corner)
 ; 2 bytes - scr addr end (right-top corner)
 ; n bytes - tile idxs data
@@ -62,7 +62,7 @@ tiled_img_draw:
 			lxi h, 0
 tiled_img_draw_pos_offset_set:
 			shld tiled_img_draw_pos_offset + 1
-			; de - idx data addr in the ram-disk
+			; de - idx data addr in the RAM Disk
 tiled_img_draw_data_addr:
 			lxi h, TEMP_ADDR
 			dad d
@@ -71,7 +71,7 @@ tiled_img_draw_data_addr:
 tiled_img_draw_ramdisk_access_idxs:
 			mvi a, TEMP_BYTE
 			push psw
-			; a - idx data ram-disk activation command
+			; a - idx data RAM Disk activation command
 			; de - points to the idx data len
 			call get_word_from_ram_disk
 			; bc = idxs_data_len
@@ -84,7 +84,7 @@ tiled_img_draw_ramdisk_access_idxs:
 			; hl - idxs_data addr + 2, because the first two bytes are the length
 			; de - temp_buff addr
 			; bc - length
-			; a - ram-disk activation command
+			; a - RAM Disk activation command
 			; copy an image indices into a temp buffer
 			mem_copy_from_ram_disk()
 

@@ -1,8 +1,8 @@
 ;TODO: the stack can be decreased to 32 bytes.
-; that can get up to 960 bytes (768 ram-disk, 192 ram)
+; that can get up to 960 bytes (768 RAM Disk, 192 ram)
 ; 
 
-; MAIN_MENU ram-disk data layout
+; MAIN_MENU RAM Disk data layout
 ; bank0 addr0    [ 31180 free] description: 
 ;                             snowflake_sprites [1332], font_gfx [1840], 
 ; bank0 addr8000 [ 13838 free] description: 
@@ -21,7 +21,7 @@
 ;                             global_consts_rd [0], sprite_rd [168], draw_sprite_rd [340], draw_sprite_hit_rd [318], draw_sprite_invis_rd [26], utils_rd [10], text_ex_rd [384], game_score_data_rd [210],
 ;[168947 total free]
 
-; Level 0 ram-disk data layout
+; Level 0 RAM Disk data layout
 ; bank0 addr0    [ 2796 free] description: 
 ;                             hero_r_sprites [13818], skeleton_sprites [10140], scythe_sprites [1626], bomb_sprites [960], snowflake_sprites [1332], font_gfx [1840], 
 ; bank0 addr8000 [16818 free] description: 
@@ -40,7 +40,7 @@
 ;                             global_consts_rd [0], sprite_rd [168], draw_sprite_rd [340], draw_sprite_hit_rd [318], draw_sprite_invis_rd [26], utils_rd [10], text_ex_rd [384], game_score_data_rd [210], 
 ;[88003 total free]
 
-; Level 1 ram-disk data layout
+; Level 1 RAM Disk data layout
 ; bank0 addr0    [ 2796 free] description: 
 ;                             hero_r_sprites [13818], skeleton_sprites [10140], scythe_sprites [1626], bomb_sprites [960], snowflake_sprites [1332], font_gfx [1840], 
 ; bank0 addr8000 [ 1886 free] description: 

@@ -40,14 +40,14 @@ def export_asm(asset_j_path, asm_meta_path, asm_data_path, bin_path, clean_tmp =
 	asm_ram_data = meta_data_to_asm(label_prefix, data_relative_ptrs, ay_reg_data_labels)
  
  
-	# save the ram-disk asm
+	# save the RAM Disk asm
 	asm_data_dir = str(Path(asm_data_path).parent) + "/"
 	if not os.path.exists(asm_data_dir): 
 		os.mkdir(asm_data_dir)
 	with open(asm_data_path, "w") as file:
 		file.write(asm_ram_disk_data)
  
-	# compile and save the meta and ram-disk data 
+	# compile and save the meta and RAM Disk data 
 	build.export_fdd_file(asm_meta_path, asm_data_path, bin_path, asm_ram_data)
 
 	return True

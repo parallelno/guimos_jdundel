@@ -24,7 +24,7 @@ def export(config_j_path):
 
 	build.printc(";===========================================================================", build.TextColor.MAGENTA)
 	build.printc(";", build.TextColor.MAGENTA)
-	build.printc(f"; ram-disk data export: {config_j_path}", build.TextColor.MAGENTA)
+	build.printc(f"; RAM Disk data export: {config_j_path}", build.TextColor.MAGENTA)
 	build.printc(";", build.TextColor.MAGENTA)
 	build.printc(";===========================================================================", build.TextColor.MAGENTA)
 	print("\n")
@@ -375,6 +375,6 @@ def export_mem_usage(
 		file.write(f"## FDD Usage:\n")
 		file.write(f"> Used: `{fddimage.FDD_SIZE - fdd_free_space}`, Free Space: `{fdd_free_space}`\n\n")
 
-		# write the ram disk usage report
+		# write the RAM Disk usage report
 		file.write(f"## Ram disk usage:\n")
 		file.write(f"{ram_disk_usage_report}\n")

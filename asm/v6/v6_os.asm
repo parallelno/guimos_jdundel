@@ -67,8 +67,8 @@ v6_os_init:
 			lda RDS_DISK
 			sta os_disk
 
-			RAM_DISK_OFF_NO_RESTORE(true, RAM_DISK0_PORT) ; disable the ram-disk 0 because the OS uses it
-			RAM_DISK_OFF_NO_RESTORE() ; disable ram-disk used by the game
+			RAM_DISK_OFF_NO_RESTORE(true, RAM_DISK0_PORT) ; disable the RAM Disk 0 because the OS uses it
+			RAM_DISK_OFF_NO_RESTORE() ; disable RAM Disk used by the game
 
 			; set the interrupt routine vector
 			mvi a, OPCODE_JMP
@@ -158,7 +158,7 @@ load_files_from_params:
 			; get recs
 			mov b, m
 			inx h
-			; get ram-disk activation command
+			; get RAM Disk activation command
 			mov a, m
 			inx h
 
@@ -167,7 +167,7 @@ load_files_from_params:
 			; de - filename ptr
 			; b - the num of full records (128 byte long)
 			; c - the len of the last record (<128)
-			; a - ram-disk activation command
+			; a - RAM Disk activation command
 
 			call load_file
 			pop h
@@ -181,7 +181,7 @@ load_files_from_params:
 ; de - filename ptr
 ; b - the num of full records (128 byte long)
 ; c - the len of the last record (<128)
-; a - ram-disk activation command
+; a - RAM Disk activation command
 ; out:
 ; os_file_data_ptr - points to next byte after loaded file
 ; the len must be even
@@ -254,7 +254,7 @@ load_file_next:
 			; hl - loading destination addr + len
 			; bc - len
 @ram_disk_activation:
-			mvi a, TEMP_BYTE ; ram-disk activation command
+			mvi a, TEMP_BYTE ; RAM Disk activation command
 			call mem_copy_to_ram_disk
 			ret
 @rec_num:

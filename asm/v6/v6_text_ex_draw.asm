@@ -32,11 +32,11 @@ text_ex_set_scr_addr:
 
 ; init the font gfx data
 ; in:
-; a - font gfx ram-disk stack activation command
+; a - font gfx RAM Disk stack activation command
 ; hl - font_gfx_ptrs
 ; bc - font global gfx addr (points to where gfx was loaded)
 text_ex_init_font:
-			; set font gfx ram-disk stack activation command
+			; set font gfx RAM Disk stack activation command
 			sta text_ex_draw_ramdisk_access_gfx + 1			
 			; hl - font_gfx_ptrs
 			push h
@@ -54,10 +54,10 @@ text_ex_init_font:
 
 ; init the text data
 ; in:
-; a - text data ram-disk activation command
+; a - text data RAM Disk activation command
 ; hl - text data addr (points to the addr where it was loaded)
 text_ex_init_text:
-			; set text data ram-disk activation command
+			; set text data RAM Disk activation command
 			sta text_ex_draw_ramdisk_access_data + 1
 			; set text data addr
 			shld text_ex_draw_data_addr + 1
@@ -97,7 +97,7 @@ text_ex_draw:
 			lxi h, 0
 text_ex_draw_pos_offset_set:
 			shld text_ex_draw_pos_offset + 1
-			; de - text data addr in the ram-disk
+			; de - text data addr in the RAM Disk
 text_ex_draw_data_addr:
 			lxi h, TEMP_ADDR
 			dad d
@@ -106,7 +106,7 @@ text_ex_draw_data_addr:
 text_ex_draw_ramdisk_access_data:
 			mvi a, TEMP_BYTE
 			push psw
-			; a - idx data ram-disk activation command
+			; a - idx data RAM Disk activation command
 			; de - points to the idx data len
 			get_word_from_ram_disk()
 			; bc = idxs_data_len
@@ -119,7 +119,7 @@ text_ex_draw_ramdisk_access_data:
 			; hl - text_data addr + 2, because the first two bytes are the length
 			; de - temp_buff addr
 			; bc - length
-			; a - ram-disk activation command
+			; a - RAM Disk activation command
 			; copy text data into a temp buffer
 			mem_copy_from_ram_disk()
 

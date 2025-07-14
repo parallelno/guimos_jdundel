@@ -89,7 +89,7 @@
 > Used: `325632`, Free Space: `514048`
 
 ## Ram disk usage:
-### `permanent` ram-disk usage:
+### `permanent` RAM Disk usage:
 
 > Used: `24432`, Free Space: `188304`
 
@@ -136,7 +136,7 @@
 
 
 ---
-### `menu` ram-disk usage:
+### `menu` RAM Disk usage:
 
 > Used: `7680`, Free Space: `180624`
 
@@ -177,7 +177,7 @@
 
 
 ---
-### `level0` ram-disk usage:
+### `level0` RAM Disk usage:
 
 > Used: `89874`, Free Space: `98430`
 
@@ -233,7 +233,7 @@
 
 
 ---
-### `level1` ram-disk usage:
+### `level1` RAM Disk usage:
 
 > Used: `66280`, Free Space: `122024`
 

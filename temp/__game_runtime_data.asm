@@ -2,7 +2,7 @@
 ; contains game-related runtime data
 
 ;=============================================================================
-; level init data ptr and ram-disk access commands
+; level init data ptr and RAM Disk access commands
 level_init_tbl:
 lv_ram_disk_s_data:				.storage BYTE_LEN	; .byte RAM_DISK_S_LEVEL00_DATA
 lv_ram_disk_m_data: 				.storage BYTE_LEN		; .byte RAM_DISK_M_LEVEL00_DATA

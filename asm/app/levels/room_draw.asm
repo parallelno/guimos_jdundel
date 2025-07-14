@@ -21,14 +21,14 @@ room_redraw:
 			ret
 			
 room_copy_scr_to_backbuffs:
-			; copy $a000-$ffff scr buffs to the ram-disk back buffer
+			; copy $a000-$ffff scr buffs to the RAM Disk back buffer
 			lxi d, SCR_BUFF1_ADDR
 			lxi h, 0; SCR_BUFF1_ADDR + SCR_BUFF_LEN * 3
 			lxi b, SCR_BUFF_LEN * 3
 			mvi a, RAM_DISK_S_BACKBUFF
 			call mem_copy_to_ram_disk
 
-			; copy $a000-$ffff scr buffs to the ram-disk back buffer2 (to restore the background in the back buffer)
+			; copy $a000-$ffff scr buffs to the RAM Disk back buffer2 (to restore the background in the back buffer)
 			lxi d, SCR_BUFF1_ADDR
 			lxi h, 0; SCR_BUFF1_ADDR + SCR_BUFF_LEN * 3
 			lxi b, SCR_BUFF_LEN * 3

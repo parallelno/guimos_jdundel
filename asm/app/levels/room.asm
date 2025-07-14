@@ -89,7 +89,7 @@ room_unpack:
 			ori RAM_DISK_M_8F
 			CALL_RAM_DISK_FUNC_BANK(dzx0)
 
-			; copy the teleport data from the ram-disk
+			; copy the teleport data from the RAM Disk
 			; restore the room data addr
 			pop d
 
@@ -99,7 +99,7 @@ room_unpack:
 			get_word_from_scr_ram_disk()
 			; hl - ptr to the room data + 1
 			; bc - compressed room data len
-			; get the addr of room_teleports_data in a ram-disk
+			; get the addr of room_teleports_data in a RAM Disk
 			dad b
 			; 2 bytes of compressed room data len + 2 safety bytes minus 1
 			; because get_word_from_scr_ram_disk returns room data + 1

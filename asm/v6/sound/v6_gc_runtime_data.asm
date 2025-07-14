@@ -3,7 +3,7 @@ memusage_v6_gc_runtime_data:
 
 V6_GC_BUFFER_LEN = GC_BUFFER_SIZE * GC_TASKS
 /*
-; v6_gc_buffer was moved over the ram-disk
+; v6_gc_buffer was moved over the RAM Disk
 .align GC_BUFFER_SIZE
 ; these are GC_TASKS buffers GC_BUFFER_SIZE bytes long
 ; MUST BE ALIGNED by 0x100
@@ -13,7 +13,7 @@ v6_gc_buffer_end:
 */
 
 /*
-; v6_gc_task_stack was moved over the ram-disk
+; v6_gc_task_stack was moved over the RAM Disk
 ; task stacks. GC_STACK_SIZE bytes stack long for each tasks
 V6_GC_TASK_STACK_LEN = GC_STACK_SIZE * GC_TASKS
 v6_gc_task_stack:

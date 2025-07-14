@@ -31,7 +31,7 @@ fill_all_black:
 ; it erases SCR_BUFF2, optionally <SCR_BUFF1, SCR_BUFF0>
 ; that represents the darkest possible color in the current palette
 ; in:
-; a - ram-disk activation command
+; a - RAM Disk activation command
 ;		a = 0 if you erase the main memory
 ; de - buff_len/32-1 that have to be erased
 fill_buff_black:

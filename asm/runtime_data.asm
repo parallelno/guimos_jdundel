@@ -137,7 +137,7 @@ switch_statuses:		= $760F
 switch_statuses_end:	= switch_statuses + WORD_LEN
 
 ;=============================================================================
-; RAM-Disk Mode
+; RAM Disk Mode
 ;=============================================================================
 ; Stores the current RAM-disk mode.
 ; Used by the interrupt routine to restore the mode after execution.

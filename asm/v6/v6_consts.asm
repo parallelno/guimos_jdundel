@@ -79,7 +79,7 @@ RAM_DISK5_PORT = 0x41
 RAM_DISK6_PORT = 0x80
 RAM_DISK7_PORT = 0x81
 
-RAM_DISK_PORT = RAM_DISK1_PORT ; working ram-disk used by the game
+RAM_DISK_PORT = RAM_DISK1_PORT ; working RAM Disk used by the game
 
 RAM_DISK_OFF_CMD = 0
 RAM_DISK_S0 = %00010000
@@ -137,7 +137,7 @@ INTS_PER_SEC			= 50 ; Interuptions per sec
 SETTING_OFF	= 0
 SETTING_ON	= 0xff
 
-; the temporal space while before putting the data into the ram-disk
+; the temporal space while before putting the data into the RAM Disk
 LOADING_TEMP_ADDR = SCR_ADDR
 
 ; text

@@ -2,7 +2,7 @@
 .include "asm/v6/v6_dzx0.asm"
 
 ; shared chunk of code to restore SP
-; and dismount the ram-disk
+; and dismount the RAM Disk
 restore_sp:
 			lxi sp, TEMP_ADDR
 			RAM_DISK_OFF()
@@ -40,7 +40,7 @@ mem_fill:
 
 
 ; clears a memory buffer using stack operations
-; can be used to clear the ram-disk as well
+; can be used to clear the RAM Disk as well
 ;		IT CORRUPTS TWO BYTES BEFORE THE BUFFER if disable_int = false!
 .macro MEM_ERASE_SP(buf_start, buff_len, command = RAM_DISK_OFF_CMD, disable_int = false)
 		.if disable_int
@@ -57,7 +57,7 @@ mem_fill:
 ; input:
 ; bc - source + len
 ; de - length // 32 - 1
-; a - ram-disk activation command
+; a - RAM Disk activation command
 ; 		a = 0 to clear the main memory
 ; use:
 ; hl
@@ -81,12 +81,12 @@ mem_erase_sp_filler:
 			jmp restore_sp
 
 ; fill a memory buffer with a word using stack operations
-; can be used to clear ram-disk memory as well
+; can be used to clear RAM Disk memory as well
 ; input:
 ; hl - a filler word
 ; bc - the last addr of a erased buffer + 1
 ; de - length/32 - 1
-; a - ram disk activation command
+; a - RAM Disk activation command
 ; 		a = 0 to clear the main memory
 mem_fill_sp:
 			shld mem_erase_sp_filler + 1
@@ -131,7 +131,7 @@ mem_copy:
 			ret
 
 ;========================================
-; copy a memory buffer (ram to ram-disk)
+; copy a memory buffer (ram to RAM Disk)
 ; !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 ; !!! IT CORRUPTS TWO BYTES BEFORE THE BUFFER !!!
 ; !!!      IF INTERRUPTIONS ARE ENABLED       !!!
@@ -141,7 +141,7 @@ MEM_COPY_WORD_LEN = 5
 ; de - source
 ; hl - destination + len
 ; bc - len. len must be non-zero and divisible by 2
-; a - ram-disk activation command
+; a - RAM Disk activation command
 ; out:
 ; de - source
 ; hl - source
@@ -235,14 +235,14 @@ jmp_tbl:
 .endmacro
 
 ;========================================
-; copy a memory buffer (ram-disk to ram )
+; copy a memory buffer (RAM Disk to ram )
 ; works with enabled interruptions
 ; it corrupts a pair of bytes at source addr-2
 ; in:
 ; hl - source
 ; de - destination
 ; bc - length, must be divisible by 2
-; a - ram-disk activation command
+; a - RAM Disk activation command
 
 ; prep: 152cc
 ; loop: 60-92cc
@@ -286,16 +286,16 @@ jmp_tbl:
 .endf
 
 
-; Read a word from the ram-disk w/o blocking interruptions
+; Read a word from the RAM Disk w/o blocking interruptions
 ; It requires two reserved bytes prior the read data
 ; in:
-; de - data addr in the ram-disk
-; a - ram-disk activation command
+; de - data addr in the RAM Disk
+; a - RAM Disk activation command
 ; use:
 ; de, a
 ; out:
 ; bc - data
-; de - data addr in the ram-disk
+; de - data addr in the RAM Disk
 ; used: hl
 ; 116 cc
 .function get_word_from_ram_disk()
@@ -319,7 +319,7 @@ jmp_tbl:
 ; a special version of a func above for accessing addr $8000 and higher
 ; out:
 ; bc - data
-; hl - data addr + 1 in the ram-disk
+; hl - data addr + 1 in the RAM Disk
 ; 100 cc
 .function get_word_from_scr_ram_disk()
 			RAM_DISK_ON_BANK()
@@ -417,8 +417,8 @@ set_palette_int:			; call it from an interruption routine
 ; Copy the pallete,
 ; then request for using it
 ; in:
-; hl - ram-disk palette addr
-; a - ram-disk activation command
+; hl - RAM Disk palette addr
+; a - RAM Disk activation command
 ; uses: bc, de, hl, a
 copy_palette_request_update:
 			lxi d, palette
@@ -436,7 +436,7 @@ PALETTE_UPDATE_EVERY_NTH_COLOR = 2 ; update every Nth color
 ; Interrupts must be enabled
 ; in:
 ; de - palette fade addr; ex. PERMANENT_PAL_MENU_ADDR + _pal_menu_palette_fade_to_black_relative
-; a - ram-disk activation command
+; a - RAM Disk activation command
 pallete_fade_out:
 			mvi c, 0
 			call pallete_fade_init
@@ -457,7 +457,7 @@ pallete_fade_in: = @pallete_fade_in
 ; Resets the fade timer
 ; in:
 ; de - palette fade addr; ex. PERMANENT_PAL_MENU_ADDR + _pal_menu_palette_fade_to_black_relative
-; a - ram-disk activation command
+; a - RAM Disk activation command
 ; c - 0 - forward fade, 1 - reverse
 pallete_fade_init:
 			sta pallete_fade_update_rd_cmd + 1
@@ -466,11 +466,11 @@ pallete_fade_init:
 			lxi h, @direction + 1
 			mov m, c
 
-			; de - data addr in the ram-disk
-			; a - ram-disk activation command
+			; de - data addr in the RAM Disk
+			; a - RAM Disk activation command
 			get_word_from_ram_disk()
 			; c - fade_iterations - 2
-			; de - data addr in the ram-disk
+			; de - data addr in the RAM Disk
 
 			lxi h, pallete_fade_update_iterations + 1
 			mov m, c

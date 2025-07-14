@@ -1,25 +1,39 @@
 ;=============================================================================
-; The ram-disk mapping into the RAM memory space
+; The RAM Disk
 ;=============================================================================
+; The RAM Disk is an external 256-byte RAM space. It is split into four 64k 
+; memory pages. It operates in two modes:
+; 
+;   • Stack Mode:
+;       - Accessed using stack-related instructions
+; 
+;   • Memory-Mapped Mode:
+;       - The RAM Disk is mapped into the 0xA000–0xFFFF address space
+;       - The RAM Disk memory space operates as a regular RAM
+;
+; Stack Mode is applied if:
+;   - Stack mapping is enabled
+;   - The RAM is accessed via stack-related instructions:
+;       Push, Pop, XTHL, Call, Ret, conditional calls/returns, or RST
 
-RAM mapping is applied if:
-	- RAM mapping is enabled
-	- The RAM is accessed via non-stack instructions
-	- The address falls within the RAM mapping range associated with the current RAM mapping
+; Memory-Mapped Mode is applied if:
+;	- RAM mapping is enabled
+;	- The address falls within the RAM mapping range associated with the current
+;       RAM mapping
+;	- The RAM is accessed via non-stack instructions when Stack Mode is enabled
+;   - The RAM is accessed via stack instructions when Stack Mode is disabled
+		Example:
+		 Memory-Mapped Mode of the first RAM Disk is enabled.
+		 Memory Mapping is enabled for 0xA000-0xDFFF.
+		 Stack Mode is disabled.
+		 SP = 0xA000
+		 POP H
+		In that case, the Memory-Mapped Mode is used to access the RAM Disk.
 
-Stack mapping is applied if:
-	- Stack mapping is enabled
-	- The RAM is accessed via stack-related instructions:
-		Push, Pop, XTHL, Call, Ret, conditional calls/returns, or RST
-
-Special case:
-	If stack mapping is disabled but RAM mapping is enabled, RAM mapping applies to stack operations 
-	if the stack address falls within the RAM mapping range.
-
-The ram-disk activation command is E8ASssMM:
-	MM: The index of the Ram-Disk 64k page accessed via non-stack instructions (all instructions except mentioned below)
-	ss: The index of the RAM-Disk 64k page accessed via stack instructions (Push, Pop, XTHL, Call, Ret, C*, R*, RST)
-	S : Enable stack mapping
-	A : Enable RAM mapping for range [0xA000-0xDFFF]
-	8 : Enable RAM mapping for range [0x8000-0x9FFF]
-	E : Enable RAM mapping for range [0xE000-0xFFFF]
+; The RAM Disk activation command: %E8ASssMM:
+;	MM: The index of the RAM Disk 64k page accessed in the Stack Mode
+;	ss: The index of the RAM Disk 64k page accessed in Memory-Mapped Mode
+;	S : Enable Stack Mode
+;	A : Enable Memory-Mapped Mode with mapping for range [0xA000-0xDFFF]
+;	8 : Enable Memory-Mapped Mode with mapping for range [0x8000-0x9FFF]
+;	E : Enable Memory-Mapped Mode with mapping for range [0xE000-0xFFFF]

@@ -35,14 +35,14 @@ def export_asm(
 
 	asm_ram_data = meta_data_to_asm(data_relative_ptrs)
 
-	# save the ram-disk asm
+	# save the RAM Disk asm
 	asm_gfx_dir = str(Path(asm_data_path).parent) + "/"
 	if not os.path.exists(asm_gfx_dir):
 		os.mkdir(asm_gfx_dir)
 	with open(asm_data_path, "w") as file:
 		file.write(asm_ram_disk_data)
 	
-	# compile and save the meta and ram-disk data
+	# compile and save the meta and RAM Disk data
 	build.export_fdd_file(asm_meta_path, asm_data_path, bin_path, asm_ram_data)
 
 	return True
@@ -132,7 +132,7 @@ def ramdisk_data_to_asm(asset_j_path, asset_j, localization_id):
 			if copy_text_block_len > TEXT_LEN_MAX:
 				build.exit_error(f'export_text ERROR: text: \n"{text_block}"\n is "{copy_text_block_len}" symbols long. Which is longer than TEXT_LEN_MAX="{TEXT_LEN_MAX} symbols", path: {asset_j_path}')
 
-			# the len of bytes copied from the ram-disk
+			# the len of bytes copied from the RAM Disk
 			# rounded to the nearest (biggest) even number
 			copy_text_block_rounded_len = (copy_text_block_len // 2 + copy_text_block_len % 2) * 2
 			

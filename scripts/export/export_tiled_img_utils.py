@@ -17,7 +17,7 @@ TILED_IMG_GFX_IDX_MAX = 255
 TILED_IMG_IDXS_LEN_MAX = 512
 
 # metadata contains:
-# 	.word COPY_LENGHT ; how many pairs of bytes to copy from the ram-disk to the main memory
+# 	.word COPY_LENGHT ; how many pairs of bytes to copy from the RAM Disk to the main memory
 # 	.word SCR_BUFF0_ADDR + (0<<8 | 0)	; scr addr 
 # 	.word SCR_BUFF0_ADDR + (32<<8 | 64)	; scr addr end
 COPY_LEN = 2
@@ -182,7 +182,7 @@ def tile_idxs_to_asm(label_name, idxs_unpacked, pos_x, pos_y, tiles_w, tiles_h):
 	data_len = len(idxs) + COPY_LEN + SCR_START + SCR_END
 	copy_data_len = len(idxs) + SCR_START + SCR_END
 
-	# the len of bytes copied from the ram-disk
+	# the len of bytes copied from the RAM Disk
 	# rounded to the nearest (biggest) even number
 	idxs_data_copy_rounded_len = (copy_data_len // 2 + copy_data_len % 2) * 2
 	asm += f"{label_name.upper()}_COPY_LEN = {idxs_data_copy_rounded_len}\n"

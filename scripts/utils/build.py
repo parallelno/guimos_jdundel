@@ -6,7 +6,7 @@ import json
 
 ASSET_TYPE_BACK			= "back"
 ASSET_TYPE_FONT			= "font"
-ASSET_TYPE_FONT_RD		= "font_rd" # font_gfx_ptrs.asm will be included into the main programm. it has to be included into the ram-disk asm code manually instead.
+ASSET_TYPE_FONT_RD		= "font_rd" # font_gfx_ptrs.asm will be included into the main programm. it has to be included into the RAM Disk asm code manually instead.
 ASSET_TYPE_SPRITE		= "sprite"
 ASSET_TYPE_TEXT_ENG		= "text_eng"
 ASSET_TYPE_TEXT_RUS		= "text_rus"
@@ -306,7 +306,7 @@ def export_debug_data(out_path, labels_path, scriptsJ):
 			bpJ["autoDel"] = False
 			bpJ["comment"] = comment
 			bpJ["cond"] = operator
-			bpJ["memPages"] = 0xFFFFFFFF # means check every page of the ram-disk. TODO: add support for other memPages
+			bpJ["memPages"] = 0xFFFFFFFF # means check every page of the RAM Disk. TODO: add support for other memPages
 			bpJ["operand"] = operand
 			bpJ["status"] = 1 # enabled
 			bpJ["value"] = value
@@ -495,7 +495,7 @@ def get_cpm_filename(filename, ext = EXT_BIN):
 def export_fdd_file(asm_meta_path, asm_data_path, bin_path, asm_meta_body = ""):
 	source_name = common.path_to_basename(bin_path) 
 	
-	# compile the ram-disk asm
+	# compile the RAM Disk asm
 	compile_asm(asm_data_path, bin_path)
 	
 	file_len = os.path.getsize(bin_path)

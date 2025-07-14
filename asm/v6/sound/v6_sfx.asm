@@ -13,7 +13,7 @@ setting_sfx:	.byte SETTING_ON
 ; ...
 ; .word $0 ; SFX_DATA_EOD
 
-; TODO: move sfx data to the ram-disk
+; TODO: move sfx data to the RAM Disk
 /*
 			; light short vibrant sound. choosing an option in the menu
 sfx_song_menu_enter: 

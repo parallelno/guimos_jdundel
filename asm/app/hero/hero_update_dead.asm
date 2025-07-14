@@ -137,7 +137,7 @@ hero_dead_fade_r:
 			mvi c, TILEDATA_RESTORE_TILE
 			call room_fill_tiledata
 
-			; copy a palette from the ram-disk, then request for using it
+			; copy a palette from the RAM Disk, then request for using it
 			call level_palette_fade_in
 
 			; create an actor to move it to the right which spawns sparkle effects

@@ -12,7 +12,7 @@ def export_loads(config_j, assets, build_code_dir, build_bin_dir):
 	if os.path.exists(load_path):
 		os.remove(load_path)
 
-	# make the ram-disk segment layout
+	# make the RAM Disk segment layout
 	segments = get_ram_disk_layout(config_j)
 
 	asm = ""
@@ -60,7 +60,7 @@ def get_usage_report(load_name, allocation, free_space, segments):
 	total_used = 0
 	
 	report = ""
-	report += f"### `{load_name}` ram-disk usage:\n"
+	report += f"### `{load_name}` RAM Disk usage:\n"
 
 	total_reserved = 0
 	seg_report = ""
@@ -91,7 +91,7 @@ def get_usage_report(load_name, allocation, free_space, segments):
 	return report
 
 def get_ram_disk_layout(config_j):
-	# make the ram-disk segment layout
+	# make the RAM Disk segment layout
 	ram_disk_reserve = config_j["ram_disk_reserve"]
 	segments = {}
 	for bank_idx in range(build.RAM_DISK_BANKS_MAX):
@@ -197,7 +197,7 @@ def pack_files(load_name, assets, segments, config_j):
 				break
 		if not placed:
 			return None, None,\
-				f"Can't fit file into the ram-disk. bin_path:{bin_path}"
+				f"Can't fit file into the RAM Disk. bin_path:{bin_path}"
 	
 	free_space = sum(seg_space.values())
 	return allocation, free_space, None

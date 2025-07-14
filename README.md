@@ -108,6 +108,6 @@ assets
 * MEM - Memory
 * LEN - Length
 * SEC - Second
-* SEG - Segment (half of a 64K bank of the ram-disk)
+* SEG - Segment (half of a 64K bank of the RAM Disk)
 * RES - Result
 * PTR - Pointer

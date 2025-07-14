@@ -1,46 +1,46 @@
 FAQ:
 
 ;===========================================================================
-; Why do we reserve two bytes before each data block in the ram-disk?
+; Why do we reserve two bytes before each data block in the RAM Disk?
 ;===========================================================================
 
-To retrieve the data from the ram-disk we use the stack operation:
+To retrieve the data from the RAM Disk we use the stack operation:
 ...
-LXI SP, RAM_DISK_DATA ; the actual ram-disk data we want to read
+LXI SP, RAM_DISK_DATA ; the actual RAM Disk data we want to read
 POP BC ; read the first pair of bytes
 ...
 
 If the interruption call happen right after "LXI SP", it stores the return 
-addr into the stack. But the SP points to the ram-disk data now, so it 
+addr into the stack. But the SP points to the RAM Disk data now, so it 
 rewrites the data with the return addr. We can't prevent that because it's a
 hardware specific behavior. To avoid this issue we keep two empty bytes before 
-every ram-disk data block.
+every RAM Disk data block.
 
 ;===========================================================================
 ; Why the stack buffers are in the RAM and the working RAM-disk?
 ;===========================================================================
 
-- What is a working ram-disk?
+- What is a working RAM Disk?
 The one the engine uses. It's defined by RAM_DISK_PORT const.
 
-- What we need to keep the stack in the ram-disk?
-Retrieving the data from the ram-disk via the stack operations consists of two
+- What we need to keep the stack in the RAM Disk?
+Retrieving the data from the RAM Disk via the stack operations consists of two
 major operations: 
-* mounting the ram-disk (out ram_disk_port)
+* mounting the RAM Disk (out ram_disk_port)
 * setting up the SP pointer (LXI SP, RAM_DISK_DATA)
 
 The catch here is in between these two operations. If interruption call 
-happens before the SP points to the data it will corrupt the ram-disk data 
+happens before the SP points to the data it will corrupt the RAM Disk data 
 at the address where SP pointed. Also the main code can make several calls 
 before reaching out LXI SP, RAM_DISK_DATA. That means we have to make sure 
-the stack is present in every bank of the ram-disk.
+the stack is present in every bank of the RAM Disk.
 
 ;===========================================================================
-; Accessing different ram-disk data segments in one bank
+; Accessing different RAM Disk data segments in one bank
 ;===========================================================================
 
 If you implement the routin where you need temporal access to BC or jump 
-between ram-disk banks, use lxi sp, STACK_TEMP_ADDR safe addr before doing 
+between RAM Disk banks, use lxi sp, STACK_TEMP_ADDR safe addr before doing 
 it. Check the draw_text_ex func or TILED_IMG_DRAW_TILE for implementation
 details.
 

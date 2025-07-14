@@ -30,7 +30,7 @@ interruption:
 			; restore two bytes that were corrupted by this interruption call
 			push b
 
-			; dismount ram disks to not damage the ram-disk data with the interruption stack
+			; dismount ram disks to not damage the RAM Disk data with the interruption stack
 			RAM_DISK_OFF_NO_RESTORE()
 			lxi sp, STACK_INTERRUPTION_ADDR-2
 			push b
@@ -101,7 +101,7 @@ interruption_no_fps_update:
 			pop b
 			pop psw
 			mov l, a
-			; restore the ram-disk mode
+			; restore the RAM Disk mode
 			RAM_DISK_RESTORE()
 			; restore A
 			mov a, l

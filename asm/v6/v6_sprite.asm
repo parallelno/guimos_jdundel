@@ -85,7 +85,7 @@ sprite_get_scr_addr1:
 			; de - sprite screen addr
 			ret
 
-; initializes the sprite meta data including the ram-disk access,
+; initializes the sprite meta data including the RAM Disk access,
 ; a propriate sprite_get_scr_addr func addr, animation (frame ptrs)
 ; in:
 ; hl - points to the list where each element contains: 
@@ -109,11 +109,11 @@ sprite_uninit_meta_data:
 			mov d, m
 			inx h
 
-			; get the ram disk S cmd
+			; get the RAM Disk S cmd
 			mov a, m
 			inx h
 
-			; store the ram disk S cmd in the meta data
+			; store the RAM Disk S cmd in the meta data
 			xchg
 			mov m, a
 			; advance hl to the preshifted_sprites addr

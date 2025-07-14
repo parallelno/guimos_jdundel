@@ -3,7 +3,7 @@
 
 ; draw an FPS counter every second on the screen at FPS_SCR_ADDR addr
 ; works only in the interruption func and in the
-; main program when the ram-disk is dismount
+; main program when the RAM Disk is dismount
 ; in:
 ; A - fps
 ; uses:

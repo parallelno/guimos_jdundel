@@ -18,7 +18,7 @@ draw_sprite_width_height:
 
 ; =============================================
 ; Draw a sprite with a mask in three consiquence screen buffs with offset_x and offset_y
-; it can draw a sprite from the ram-disk if it's activated
+; it can draw a sprite from the RAM Disk if it's activated
 ; width is 1-3 bytes (24 pixels max)
 ; height is 0-255
 ; offset_x in bytes

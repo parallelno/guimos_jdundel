@@ -371,21 +371,21 @@ BY_A			= 5
 ; Ram Mapping
 ; ALL RAM_DISK_* macros has to be placed BEFORE lxi sp, *, and sphl!
 
-; restore the ram-disk mode
+; restore the RAM Disk mode
 ; usually used in the interruption routine
 .macro RAM_DISK_RESTORE(ram_disk_port = RAM_DISK_PORT)
 			lda ram_disk_mode
 			out ram_disk_port
 .endmacro
 
-; mount the ram-disk w/o storing mode
+; mount the RAM Disk w/o storing mode
 .macro RAM_DISK_ON_NO_RESTORE(command, ram_disk_port = RAM_DISK_PORT)
 			mvi a, <command
 			out ram_disk_port
 .endmacro
 
-; mount the ram-disk
-; command is a ram-disk activation command
+; mount the RAM Disk
+; command is a RAM Disk activation command
 ; call, push, pop operations are prohibited after this macro until RAM_DISK_OFF
 .macro RAM_DISK_ON(command, ram_disk_port = RAM_DISK_PORT)
 			mvi a, <command
@@ -393,20 +393,20 @@ BY_A			= 5
 			out ram_disk_port
 .endmacro
 
-; mount the ram-disk
+; mount the RAM Disk
 ; in:
-; a - ram-disk activation command
+; a - RAM Disk activation command
 .macro RAM_DISK_ON_BANK(ram_disk_port = RAM_DISK_PORT)
 			sta ram_disk_mode
 			out ram_disk_port
 .endmacro
 
-; mount the ram-disk w/o storing a mode
+; mount the RAM Disk w/o storing a mode
 .macro RAM_DISK_ON_BANK_NO_RESTORE(ram_disk_port = RAM_DISK_PORT)
 			out ram_disk_port
 .endmacro
 
-; dismount the ram-disk
+; dismount the RAM Disk
 ; lxi sp, RESTORE_SP is required after this macro
 .macro RAM_DISK_OFF(useXRA = true, ram_disk_port = RAM_DISK_PORT)
 			A_TO_ZERO(RAM_DISK_OFF_CMD, useXRA)
@@ -414,7 +414,7 @@ BY_A			= 5
 			out ram_disk_port
 .endmacro
 
-; dismount the ram-disk w/o storing mode
+; dismount the RAM Disk w/o storing mode
 ; should be used inside the interruption call or with disabled interruptions
 .macro RAM_DISK_OFF_NO_RESTORE(useXRA = true, ram_disk_port = RAM_DISK_PORT)
 			A_TO_ZERO(RAM_DISK_OFF_CMD, useXRA)
@@ -422,7 +422,7 @@ BY_A			= 5
 .endmacro
 
 ;================================================================================
-; Functions that access the ram-disk data
+; Functions that access the RAM Disk data
 .macro CALL_RAM_DISK_FUNC(func_addr, _command, disable_int = false, useXRA = true)
 		.if disable_int
 			di
@@ -435,7 +435,7 @@ BY_A			= 5
 		.endif
 .endmacro
 
-; a - ram disk activation command
+; a - RAM Disk activation command
 .macro CALL_RAM_DISK_FUNC_BANK(func_addr, disable_int = false, useXRA = true)
 		.if disable_int
 			di
