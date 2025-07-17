@@ -82,7 +82,7 @@ monster_init:
 			cmp b
 			jz @no_spawn_rate_check
 
-			ROOM_SPAWN_RATE_CHECK(rooms_spawn_rate_monsters, @exit)
+			ROOM_SPAWN_RATE_CHECK(rooms_spawn_rate, @exit)
 @no_spawn_rate_check:
 			lxi h, monster_update_ptr+1
 			mvi e, MONSTER_RUNTIME_DATA_LEN
@@ -355,7 +355,7 @@ monster_impacted:
 			mvi a, HERO_WEAPON_ID_SNOWFLAKE
 			cmp c
 			jz @set_state_freeze
-			ROOM_SPAWN_RATE_UPDATE(rooms_spawn_rate_monsters, MONSTER_SPAWN_RATE_DELTA, MONSTER_SPAWN_RATE_MAX)
+			ROOM_SPAWN_RATE_UPDATE(rooms_spawn_rate, MONSTER_SPAWN_RATE_DELTA, MONSTER_SPAWN_RATE_MAX)
 
 			; play a hit vfx
 			; de - ptr to monster_impacted_ptr + 1

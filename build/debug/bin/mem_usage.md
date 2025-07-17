@@ -1,5 +1,5 @@
 ## Main Ram memory usage:
-> Free Space: `4745`
+> Free Space: `5014`
 
 |Assembly| Usage|
 |-|-|
@@ -12,7 +12,7 @@
 |memusage_v6_utils:|639|
 |memusage_actor:|621|
 |memusage_v6_os:|583|
-|memusage_monsters:|574|
+|memusage_monsters:|578|
 |memusage_knight:|448|
 |memusage_burner:|437|
 |memusage_sword:|435|
@@ -22,12 +22,12 @@
 |memusage_caterpillar:|424|
 |memusage_v6_sprite_draw:|415|
 |memusage_skeleton:|401|
-|memusage_ui:|393|
+|memusage_ui:|398|
 |memusage_settings:|381|
 |memusage_room_tiledata:|372|
 |memusage_vampire:|368|
 |memusage_main_menu:|343|
-|memusage_hero_tile_funcs:|339|
+|memusage_hero_tile_funcs:|341|
 |memusage_hero_collision:|288|
 |memusage_v6_tiled_img_draw:|271|
 |memusage_v6_tile_draw:|269|
@@ -36,7 +36,7 @@
 |memusage_v6_text_mono_draw:|229|
 |memusage_knight_heavy:|225|
 |memusage_scythe:|222|
-|memusage_levels:|202|
+|memusage_levels:|208|
 |memusage_backs:|199|
 |memusage_room:|198|
 |memusage_dialogs:|198|

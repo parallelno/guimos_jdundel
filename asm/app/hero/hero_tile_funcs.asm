@@ -219,9 +219,7 @@ hero_cont_func_chest_spoon:
 			
 			; reset the room spawn rate
 			lda room_id
-			adi <rooms_spawn_rate_monsters
-			mov l, a
-			mvi h, >rooms_spawn_rate_monsters
+			HL_TO_A_PLUS_INT16(rooms_spawn_rate)
 			mvi m, 0
 
 			; spawn skeletons

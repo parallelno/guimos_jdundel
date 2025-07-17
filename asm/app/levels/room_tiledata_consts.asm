@@ -123,7 +123,7 @@ ITEM_ID_UI_MAX	= 8	; Items >= this ID don't appear in UI panel
 ; - Some resources are usabler (cabbage), some are not visible in UI (coins).
 ; - Some are renewable (e.g., cabbage), others not (e.g., coin).
 ; - A hero interacts with it when he steps on it.
-; - Max resource instances in all level = RESOURCES_LEN/2-RESOURCES_UNIQUE_MAX.
+; - Max resource instances in all level = RESOURCES_INST_DATA_PTRS_LEN/2-RESOURCES_UNIQUE_MAX.
 ; - res_id = d (see Resource Instance Status Data for details).
 
 ; res_id 			= 0 ; Coin: increases the hero's score

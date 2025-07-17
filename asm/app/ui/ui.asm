@@ -163,8 +163,15 @@ game_ui_draw_res:
 			; b - res_id
 			; c - displayed res counter
 			; res_id to res_ptr
-			mov l, b
-			mvi h, >hero_resources
+
+			; hl += hero_resources + b
+			mvi a, <hero_resources
+			add b
+			mov l, a
+			aci >hero_resources
+			sub l
+			mov h, a
+
 			; check if a res is available
 			mov a, m
 			CPI_ZERO()

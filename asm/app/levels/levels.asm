@@ -27,8 +27,8 @@ level_init:
 			sta scr_offset_y
 
 			; erase rooms spawn data
-			lxi h, rooms_spawn_rates
-			lxi b, rooms_spawn_rates_end
+			lxi h, rooms_spawn_rate
+			lxi b, rooms_spawn_rate_end
 			call mem_erase
 
 			; erase backs buffs
@@ -42,21 +42,25 @@ level_init:
 			call mem_erase
 
 			; erase monsters buffs
-			lxi h, actor_data_head_ptr
+			lxi h, monsters_runtime_data
 			lxi b, monsters_runtime_data_end
 			call mem_erase
+
+			; erase the actor list
+			lxi h, NULL
+			shld actor_data_head_ptr
 
 			; setup resources
 			lhld lv_resources_inst_data_pptr
 			lxi d, resources_inst_data_ptrs
-			lxi b, RESOURCES_LEN
+			lxi b, RESOURCES_INST_DATA_PTRS_LEN
 			lda lv_ram_disk_s_data
 			mem_copy_from_ram_disk()
 
 			; setup containers
 			lhld lv_containers_inst_data_pptr
 			lxi d, containers_inst_data_ptrs
-			lxi b, CONTAINERS_LEN
+			lxi b, CONTAINERS_INST_DATA_PTRS_LEN
 			lda lv_ram_disk_s_data
 			mem_copy_from_ram_disk()
 

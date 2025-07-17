@@ -3,13 +3,11 @@
 ; use:
 ; hl, e, a
 ; TODO: error: this macro does not check the level. 
-; rooms_spawn_rates array does not contain a proper data for all levels
+; rooms_spawn_rate array does not contain a proper data for all levels
 .macro ROOM_SPAWN_RATE_CHECK(rate_ptr, do_not_spawn)
 			; check rooms_break_rate if it needs to spawn
 			lda room_id
-			adi <rate_ptr
-			mov l, a
-			mvi h, >rate_ptr
+			HL_TO_A_PLUS_INT16(rate_ptr)
 
 			mov e, m
 			call random
@@ -20,9 +18,7 @@
 .macro ROOM_SPAWN_RATE_UPDATE(rate, SPAWN_RATE_DELTA, SPAWN_RATE_MIN)
 			; increase death_rate
 			lda room_id
-			adi <rate
-			mov l, a
-			mvi h, >rate
+			HL_TO_A_PLUS_INT16(rate)
 
 			mov a, m
 			adi SPAWN_RATE_DELTA

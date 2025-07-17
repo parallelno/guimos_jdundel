@@ -282,10 +282,10 @@ BACKS_RUNTIME_DATA_LEN = backs_runtime_data_end - backs_runtime_data
 ;				if room_id == CONTAINERS_STATUS_ACQUIRED, a container is acquired
 ; .endloop
 CONTAINERS_UNIQUE_MAX		= 16
-CONTAINERS_LEN				= $100
+CONTAINERS_INST_DATA_PTRS_LEN				= $100
 CONTAINERS_STATUS_ACQUIRED	= $ff
 
-containers_inst_data_ptrs:	.storage CONTAINERS_LEN
+containers_inst_data_ptrs:	.storage CONTAINERS_INST_DATA_PTRS_LEN
 ;containers_inst_data:		= containers_inst_data_ptrs + used_unique_containers (can vary) + 1
 
 ;=============================================================================
@@ -307,10 +307,10 @@ containers_inst_data_ptrs:	.storage CONTAINERS_LEN
 ;				if room_id == RESOURCES_STATUS_ACQUIRED, a resource is acquired
 ; .endloop
 RESOURCES_UNIQUE_MAX		= 16
-RESOURCES_LEN				= $100
+RESOURCES_INST_DATA_PTRS_LEN				= $100
 RESOURCES_STATUS_ACQUIRED	= $ff
 
-resources_inst_data_ptrs:	.storage RESOURCES_LEN
+resources_inst_data_ptrs:	.storage RESOURCES_INST_DATA_PTRS_LEN
 ;resources_inst_data:		= resources_inst_data_ptrs + used_unique_resources (can vary) + 1
 
 ;=============================================================================
@@ -326,9 +326,9 @@ resources_inst_data_ptrs:	.storage RESOURCES_LEN
 ; ...
 ; 0 means 100% chance to spawn a monster. 255 means no spawn
 
-rooms_spawn_rates:
-rooms_spawn_rate_monsters:		.storage ROOMS_MAX * 2
-rooms_spawn_rates_end:
+rooms_spawn_rate:
+rooms_spawn_rate:		.storage ROOMS_MAX * 2
+rooms_spawn_rate_end:
 
 ;=============================================================================
 ; contains statuss of breakables. 

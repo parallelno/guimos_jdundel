@@ -15,14 +15,9 @@
 .include "app/monsters/monsters_consts.asm"
 .include "app/bullets/bullets_consts.asm"
 
-; all runtime data assembly should be the last inclusions to not blow up the executible size
-;.include "app/app_runtime_data.asm"
-; this must be the last runtime data inclusion due to validation checks
-;.include "v6/v6_runtime_data.asm"
-; TODO: replace the include below with the auto struct packer
+; TODO: think of a way to generate runtime_data structure asm
+; to avoid manual packing the runtime data structures
 .include "runtime_data.asm"
-
-; TODO: think of a better place for it
 .include "v6/sound/v6_gc_runtime_data.asm"
 
 .include "app/app_macros.asm"

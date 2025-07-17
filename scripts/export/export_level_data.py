@@ -244,7 +244,7 @@ def get_resources_inst_data(level_j_path, resources, resource_max_tiledata):
 
 
 		if ptr + resources_inst_data_ptrs_len > 256:
-			build.exit_error(f"ERROR: {level_j_path} has resource instance data len: {ptr + resources_inst_data_ptrs_len} > {export_level_utils.RESOURCES_LEN} bytes")
+			build.exit_error(f"ERROR: {level_j_path} has resource instance data len: {ptr + resources_inst_data_ptrs_len} > {export_level_utils.RESOURCES_INST_DATA_PTRS_LEN} bytes")
 
 	asm += "\n"
 
@@ -308,8 +308,8 @@ def get_containers_inst_data(level_j_path, containers, container_max_tiledata):
 				asm += common.bytes_to_asm(data)
 				data_len += len(data)
 
-		if 	ptr + containers_inst_data_ptrs_len > export_level_utils.CONTAINERS_LEN:
-			build.exit_error(f"ERROR: {level_j_path} has container instance data len: {ptr + containers_inst_data_ptrs_len} > {export_level_utils.CONTAINERS_LEN} bytes")
+		if 	ptr + containers_inst_data_ptrs_len > export_level_utils.CONTAINERS_INST_DATA_PTRS_LEN:
+			build.exit_error(f"ERROR: {level_j_path} has container instance data len: {ptr + containers_inst_data_ptrs_len} > {export_level_utils.CONTAINERS_INST_DATA_PTRS_LEN} bytes")
 
 	asm += "\n"
 
