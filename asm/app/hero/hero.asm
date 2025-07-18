@@ -10,7 +10,11 @@ hero_game_init:
 			; erase hero resources buffs
 			lxi h, hero_resources
 			lxi b, hero_resources_end
-			jmp mem_erase
+			call mem_erase
+
+			mvi a, RES_HEALTH_INIT
+			sta hero_res_health
+			ret
 
 hero_level_init:
 			; erase hero runtime data
@@ -23,11 +27,6 @@ hero_level_init:
 			shld hero_draw_ptr
 			lxi h, hero_impacted
 			shld hero_impacted_ptr
-			ret
-
-hero_respawn:
-			mvi a, RES_HEALTH_INIT
-			sta hero_res_health
 
 			; setup a hero pos
 			lhld lv_start_pos
@@ -41,7 +40,7 @@ hero_respawn:
 
 hero_room_init:
 			call hero_idle_init
-			
+
 			; reset key data
 			A_TO_ZERO(CONTROL_CODE_NO)
 			sta action_code

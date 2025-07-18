@@ -37,11 +37,11 @@ hero_tile_func_item:
 			call game_score_add
 			call game_ui_draw_score_text
 			pop b
-			
+
 			; c - tile_idx
 			call draw_tile_16x16_buffs
 			; draw vfx
-			; bc - tile screen addr			
+			; bc - tile screen addr
 			lxi d, vfx_reward_anim
 			jmp vfx_init
 
@@ -58,7 +58,7 @@ hero_tile_func_resource:
 			FIND_INSTANCE(@no_resource_found, resources_inst_data_ptrs)
 			; c = tile_idx
 			; hl ptr to tile_idx in resources_inst_data_ptrs
-			
+
 			; remove this resource from resources_inst_data
 			inx h
 			mvi m, <RESOURCES_STATUS_ACQUIRED
@@ -72,7 +72,7 @@ hero_tile_func_resource:
 			; c - tile_idx
 			call draw_tile_16x16_buffs
 			; draw vfx
-			; bc - tile screen addr			
+			; bc - tile screen addr
 			lxi d, vfx_reward_anim
 			call vfx_init
 
@@ -106,11 +106,11 @@ hero_tile_func_teleport:
 			HL_TO_A_PLUS_INT16(room_teleports_data)
 			mov a, m
 			; a - room_id
-			
+
 			; update a room_id to teleport there
 			lhld room_id
 			mov l, a
-			mvi a, GAME_REQ_ROOM_INIT
+			mvi a, GAME_REQ_ROOM_INIT_AND_DRAW
 			call room_teleport
 
 			; check if the teleport on the left or right side
@@ -125,7 +125,7 @@ hero_tile_func_teleport:
 			jnc @teleportTopToBottom
 			cpi TILE_HEIGHT
 			jc @teleportBottomToTop
-			
+
 			; teleport keeping the same pos
 			; align the hero pos to the nearest tile
 			; a = hero pos x
@@ -204,7 +204,7 @@ hero_cont_func_chest_spoon:
 			lxi h, hero_res_spoon
 			mvi m, RES_SPOON_MAX
 			call game_ui_res_select_and_draw
-	
+
 			lxi d, TILEDATA_FUNC_ID_RESOURCES<<8 | RES_ID_SPOON
 			call game_score_add
 			call game_ui_draw_score_text
@@ -216,7 +216,7 @@ hero_cont_func_chest_spoon:
 			jmp dialog_init
 @callback:
 			call dialog_callback_room_redraw
-			
+
 			; reset the room spawn rate
 			lda room_id
 			HL_TO_A_PLUS_INT16(rooms_spawn_rate)
@@ -226,20 +226,20 @@ hero_cont_func_chest_spoon:
 			@tile_x1 = 6
 			@tile_y1 = 9
 			mvi c, @tile_x1 + @tile_y1*16	; tile_idx in the room_tiledata array.
-			mvi a, SKELETON_ID * 4 		; monster_id = 0 - skeleton (tiledata = 1*16+0=16)			
+			mvi a, SKELETON_ID * 4 		; monster_id = 0 - skeleton (tiledata = 1*16+0=16)
 			call skeleton_init
 
 			@tile_x2 = 7
 			@tile_y2 = 7
 			mvi c, @tile_x2 + @tile_y2*16	; tile_idx in the room_tiledata array.
-			mvi a, SKELETON_ID * 4 		; monster_id = 0 - skeleton (tiledata = 1*16+0=16)			
-			call skeleton_init	
+			mvi a, SKELETON_ID * 4 		; monster_id = 0 - skeleton (tiledata = 1*16+0=16)
+			call skeleton_init
 
 			@tile_x3 = 12
 			@tile_y3 = 7
 			mvi c, @tile_x3 + @tile_y3*16	; tile_idx in the room_tiledata array.
-			mvi a, SKELETON_ID * 4 		; monster_id = 0 - skeleton (tiledata = 1*16+0=16)			
-			jmp skeleton_init					
+			mvi a, SKELETON_ID * 4 		; monster_id = 0 - skeleton (tiledata = 1*16+0=16)
+			jmp skeleton_init
 
 hero_cont_func_chest_weapon0:
 			ret

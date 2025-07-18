@@ -13,7 +13,7 @@
         "*.dasm": "retroasm_8080"
     },
     "[retroasm_8080]": {
-    },    
+    },
     "window.zoomLevel": 1,
     "editor.tokenColorCustomizations": {
         "textMateRules": [

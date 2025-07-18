@@ -50,12 +50,12 @@ settings_cursor_setting_id:
 			.byte 0
 
 settings_screen:
-			lda global_request
+			lda app_request
 			sta @global_req+1
 			call settings_screen_init
 @loop:
 			; return when a user hits a space button
-			lda global_request
+			lda app_request
 @global_req:
 			cpi TEMP_BYTE
 			rnz
@@ -181,7 +181,7 @@ erase_screen_block:
 			inr l
 			cmp l
 			jnz @loop
-			
+
 			inr h
 			mov l, c
 
@@ -192,7 +192,7 @@ erase_screen_block:
 setting_controls_val_draw:
 @text_pos	.var  SETTINGS_POS
 			@text_pos = @text_pos + SETTINGS_LINE_SPACING * 2 + SETTINGS_PARAG_SPACING
-			
+
 			; erase a CONTROL PRESET settings value
 			lxi b, 8<<8 | 14
 			lxi h, SCR_BUFF1_ADDR + <@text_pos | (SETTINGS_SETTING_VAL_POS_X/8)<<8
@@ -204,7 +204,7 @@ setting_controls_val_draw:
 			call erase_screen_block
 
 			; get a setting value
-			call controls_get_preset			
+			call controls_get_preset
 
 			cpi CONTROL_PRESET_KEYBOARD
 			jz @control_preset_keyboard
@@ -218,11 +218,11 @@ setting_controls_val_draw:
 			ret
 @control_preset_keyboard:
 			; draw a preset name
-			lxi d, _options_screen_control_preset_key		
+			lxi d, _options_screen_control_preset_key
 			call text_ex_draw
-			
+
 			; draw controls
-			lxi d, _options_screen_controls_keyboard		
+			lxi d, _options_screen_controls_keyboard
 			call text_ex_draw
 			ret
 
@@ -277,7 +277,7 @@ settings_screen_cursor_update:
 			; h - action_code_old
 			; l - action_code
 
-			; return if the same key was pressed last time 
+			; return if the same key was pressed last time
 			; to avoid multiple times pressing
 			mov a, l
 			cmp h
@@ -324,7 +324,7 @@ settings_screen_cursor_update:
 			jnz @check_music
 			; set the global req to return to the main nemu
 			mvi a, GLOBAL_REQ_MENU_MAIN
-			sta global_request
+			sta app_request
 			ret
 @check_music:
 			cpi SETTINGS_ID_MUSIC

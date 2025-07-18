@@ -2,13 +2,13 @@ memusage_credits:
 ;=======================================================
 
 credits_screen:
-			lda global_request
+			lda app_request
 			sta @global_req+1
 			call credits_screen_init
 
 @loop:
 			; return when a user hits a space button
-			lda global_request
+			lda app_request
 @global_req:
 			cpi TEMP_BYTE
 			rnz
@@ -29,9 +29,9 @@ credits_screen_init:
 			call screen_fade_out
 			call screen_simple_init
 			call screen_draw_frame
-			
+
 			call screen_fade_in
-			
+
 			call screen_draw_return_text_button
 			call credits_screen_text_draw
 

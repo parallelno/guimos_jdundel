@@ -25,7 +25,7 @@ hero_dead_fade_init_gb:
 HERO_STATUS_DEATH_FADE_UPDATE_RATE = %00010001
 HERO_STATUS_DEATH_FADE_GB_TIMER = 7
 ; fade out the current pallete
-hero_dead_fade_gb:			
+hero_dead_fade_gb:
 @anim_rate: ; do a palette animation only every Nth frame
 			mvi a, HERO_STATUS_DEATH_FADE_UPDATE_RATE
 			rrc
@@ -38,7 +38,7 @@ hero_dead_fade_gb:
 @fade_gb_counter:
 			mvi a, HERO_STATUS_DEATH_FADE_GB_TIMER
 			CPI_ZERO()
-			
+
 			jz @next_status
 			dcr a
 			sta @fade_gb_counter + 1
@@ -137,8 +137,9 @@ hero_dead_fade_r:
 			mvi c, TILEDATA_RESTORE_TILE
 			call room_fill_tiledata
 
-			; copy a palette from the RAM Disk, then request for using it
-			call level_palette_fade_in
+			; fade-in
+			mvi a, LEVEL_PALETTE_FADE_IN
+			call level_palette_fade
 
 			; create an actor to move it to the right which spawns sparkle effects
 			lxi h, hero_pos_x + 1

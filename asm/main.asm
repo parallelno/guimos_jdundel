@@ -15,8 +15,6 @@
 .include "app/monsters/monsters_consts.asm"
 .include "app/bullets/bullets_consts.asm"
 
-; TODO: think of a way to generate runtime_data structure asm
-; to avoid manual packing the runtime data structures
 .include "runtime_data.asm"
 .include "v6/sound/v6_gc_runtime_data.asm"
 
@@ -54,6 +52,6 @@ memusage_end:
 RAM_FREE_SPACE = RUNTIME_DATA - memusage_end
 
 .if memusage_end >= RUNTIME_DATA
-	.error "Runtime data buffer overlaps the stack buffer at addr (" runtime_data_end ")." 
+	.error "Runtime data buffer overlaps the stack buffer at addr (" runtime_data_end ")."
 	.error "It must be within the range " BUFFERS_END_ADDR "."
 .endif

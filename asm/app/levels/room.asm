@@ -17,15 +17,14 @@ room_init:
 			call room_handle_room_tiledata
 			; TODO: optimization. do not copy UI panel
 			call room_copy_scr_to_backbuffs
-			call room_init_statuses
-			ret
+			jmp room_init_statuses
 
 ; must be called for teleporting into the other room
 ; h - level_id
 ; l - room_id
 ; a - global request
 room_teleport:
-			sta global_request
+			sta app_request
 			push h
 			call breakables_room_status_store
 			pop h
@@ -44,7 +43,7 @@ room_init_statuses:
 ; uncompress the room data (graphics tile indeces and the room tiledata)
 ; destination_addr = room_tiles_gfx_ptrs + offset
 ; offset = (size of room_tiles_gfx_ptrs buffer) / 2
-; after uncompression: 
+; after uncompression:
 ; * the room tile_idxs occupies the second half of the room_tiles_gfx_ptrs
 ; * the room tiledata occupies the room_tiledata
 
@@ -110,13 +109,13 @@ room_unpack:
 			lxi d, room_teleports_data
 			lxi b, TELEPORT_IDS_MAX
 			lda lv_ram_disk_m_data
-			ori RAM_DISK_M_8F			
-			mem_copy_from_ram_disk()	
+			ori RAM_DISK_M_8F
+			mem_copy_from_ram_disk()
 			ret
 
 
 
-; copies door and containr tiledata from room_tiledata_backup 
+; copies door and containr tiledata from room_tiledata_backup
 ; back into room_tiledata
 restore_doors_containers_tiledata:
 			mvi c, ROOM_TILEDATA_LEN
@@ -166,7 +165,7 @@ room_init_tiles_gfx:
 			dad b
 			dad b ; second addition becasue the tile gfx ptr is 2 bytes long
 			; hl - points to the tile gfx ptr
-			
+
 			; read the tile gfx ptr
 			mov c, m
 			inx h
@@ -184,4 +183,3 @@ room_init_tiles_gfx:
 			dcr a
 			jnz @loop
 			ret
-

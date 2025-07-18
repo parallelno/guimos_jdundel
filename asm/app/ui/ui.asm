@@ -12,11 +12,11 @@ RES_DISPLAYED_MAX = 3
 GAME_UI_ITEM_UPDATE_DELAY = 80
 
 game_ui_init:
-			A_TO_ZERO( RES_SELECTABLE_AVAILABLE_NONE)
+			A_TO_ZERO(RES_SELECTABLE_AVAILABLE_NONE)
 			sta game_ui_res_selected_id
 			mvi a, <global_items
 			sta game_ui_item_visible_addr
-			jmp game_ui_draw
+			ret
 
 game_ui_draw:
 			call game_ui_draw_panel
@@ -64,7 +64,7 @@ game_ui_draw_icon_mana:
 
 ; when a player hits action_2
 ; it selects the next non-empty resource
-game_ui_res_select_next:			
+game_ui_res_select_next:
 			lxi h, game_ui_res_selected_id
 			mov l, m
 			mvi c, RES_SELECTABLE_MAX
@@ -140,7 +140,7 @@ game_ui_draw_res:
 			mov a, m
 			CPI_ZERO()
 			jz @next
-			
+
 			; store an available res_id
 			mov b, l
 			dcr c
@@ -218,7 +218,7 @@ game_ui_draw_res:
 			mov l, b
 			mvi h, >hero_resources
 
-			; make the scr addr offset	
+			; make the scr addr offset
 			mvi a, RES_DISPLAYED_MAX
 			sub c
 			ADD_A(2)
@@ -254,7 +254,7 @@ game_ui_draw_res:
 			jmp tiled_img_draw_pos_offset_set
 
 @draw_selection:
-			mvi c, TEMP_BYTE 
+			mvi c, TEMP_BYTE
 			; c - selected res counter
 			; selected res counter to the scr addr
 			mvi a, RES_DISPLAYED_MAX - 1 ; because selected res counter was decreased at least once

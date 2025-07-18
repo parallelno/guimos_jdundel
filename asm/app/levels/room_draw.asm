@@ -1,6 +1,6 @@
 memusage_room_draw:
 ;=========================================================
-; redraw room after dialog shown
+; redraws the room after dialog shown
 ; it uses data inited in the room_draw
 ROOM_TILEDATA_HANDLING_ALL			= OPCODE_JMP
 ROOM_TILEDATA_HANDLING_NO_MONSTERS	= OPCODE_JNZ
@@ -19,7 +19,7 @@ room_redraw:
 			mvi a, ROOM_TILEDATA_HANDLING_ALL
 			sta room_handle_room_tiledata_check
 			ret
-			
+
 room_copy_scr_to_backbuffs:
 			; copy $a000-$ffff scr buffs to the RAM Disk back buffer
 			lxi d, SCR_BUFF1_ADDR
@@ -59,7 +59,7 @@ room_copy_scr_to_backbuffs:
 		.endif
 		.if _jmp
 			jmp room_decal_draw
-		.endif		
+		.endif
 .endmacro
 
 ; draw a decal onto the screen, and backbuffers
@@ -87,7 +87,7 @@ room_decal_draw:
 room_decal_draw_ptr_offset:
 			lxi d, TEMP_WORD
 			dad d
-			
+
 			; hl - pptr to a sprite
 			; get ptr to sprite
 			mov c, m
@@ -156,7 +156,7 @@ room_draw_tiles_ex:
 			mvi a, TILE_HEIGHT
 			add e
 			mov e, a
-@last_tile_id:			
+@last_tile_id:
 			cpi TEMP_BYTE
 			jc @new_line
 			RAM_DISK_OFF()

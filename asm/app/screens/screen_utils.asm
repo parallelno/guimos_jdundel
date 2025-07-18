@@ -8,7 +8,7 @@ screen_space_checking:
 			rz
 			; set the global req to return to the main nemu
 			mvi a, GLOBAL_REQ_MENU_MAIN
-			sta global_request
+			sta app_request
 			ret
 
 
@@ -52,7 +52,7 @@ screen_fade_out:
 
 screen_fade_in:
 			lxi d, PERMANENT_PAL_MENU_ADDR + _pal_menu_palette_fade_to_load_relative
-			mvi a, PERMANENT_PAL_MENU_RAM_DISK_S 
+			mvi a, PERMANENT_PAL_MENU_RAM_DISK_S
 			jmp pallete_fade_in
 
 screen_draw_frame:

@@ -7,9 +7,9 @@ dialogs_init:
 ; init a callback, draw a frame, a text
 ; hl - callback_tbl addr (callback pptr)
 ; de - text ptr
-; a - global_request
+; a - app_request
 dialog_init:
-			sta global_request
+			sta app_request
 
 			call dialog_is_inited
 			rz ; if it is NOP, that means a dialog is already initiated
@@ -71,7 +71,7 @@ dialog_draw_frame_text:
 			@pos_tiles_y = 0
 			mvi c, @pos_tiles_x + @pos_tiles_y * TILE_HEIGHT
 			; b - tiledata
-			; c - tile_idx in the room_tiledata array.			
+			; c - tile_idx in the room_tiledata array.
 			call backs_spawn
 
 			call text_ex_reset_spacing
@@ -96,7 +96,7 @@ STORYTELLING_TEXT_STATUS_OLD = 1
 STORYTELLING_TEXT_ENTITY_LEN = 4
 .macro STORYTELLING_TEXT_ENTITY(level_id = TEMP_BYTE, room_id = TEMP_BYTE, text_ptr = NULL_PTR)
 			; RRRR_RRLL
-			; 	RRRRRR - room_id, 
+			; 	RRRRRR - room_id,
 			;	LL - level_id
 			.byte room_id<<2 | level_id
 			.byte STORYTELLING_TEXT_STATUS_NEW
@@ -177,11 +177,9 @@ dialog_storytelling:
 			jmp dialog_init
 
 dialog_callback_room_redraw:
-			mvi a, GAME_REQ_ROOM_DRAW
-			sta global_request
+			mvi a, GAME_REQ_ROOM_REDRAW
+			sta app_request
 			; reset key data
 			lxi h, CONTROL_CODE_NO
 			shld action_code
 			ret
-
-

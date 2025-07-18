@@ -28,13 +28,13 @@ main_scr_vfx_pos_min4 = $9ba0
 main_scr_vfx_spawn_rate = 10 ;(0 - no spawn, 255 - spawn every update)
 
 main_menu:
-			lda global_request
+			lda app_request
 			sta @global_req+1
 			call main_menu_init
 
 @loop:
 			; return when a user hits any option in the main menu
-			lda global_request
+			lda app_request
 @global_req:
 			cpi TEMP_BYTE
 			rnz
@@ -43,7 +43,7 @@ main_menu:
 			call screen_simple_update
 			call screen_simple_draw
 			jmp	 @loop
-			
+
 main_menu_backgound_draw:
 			call screen_draw_frame
 			; settings frame & title
@@ -74,7 +74,7 @@ main_menu_cursor_update:
 			; h - action_code_old
 			; l - action_code
 
-			; return if the same key was pressed last time 
+			; return if the same key was pressed last time
 			; to avoid multiple times pressing
 			mov a, l
 			cmp h
@@ -191,13 +191,13 @@ main_menu_cursor_update:
 			mov c, a
 			;jmp @vfx_init
 
-@vfx_init:  
+@vfx_init:
 			lxi d, vfx_reward_anim
 			jmp vfx_init
 @space_handling:
 			lda main_menu_cursor_option_id
 			adi GLOBAL_REQ_GAME
-			sta global_request
+			sta app_request
 			ret
 
 main_menu_cursor_init:
@@ -226,7 +226,7 @@ main_menu_cursor_init:
 			; b - main_menu_cursor_option_id
 			; a - pos_y_max
 			; calc the cursor pos_y
-			
+
 @loop:		dcr b
 			jm @stop
 			sui SETTING_LINE_SPACING

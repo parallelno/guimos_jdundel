@@ -2,19 +2,17 @@ memusage_app:
 ;=======================================================
 
 app_start:
-			lxi h, load_permanent
-			ora a ; reset CY flag, to not init/start music
-			call global_load
+			GLOBAL_LOAD(load_permanent, false)
 
-@loop:
+@app_loop:
 			; store the return addr
-			lxi h, @loop
+			lxi h, @app_loop
 			push h
 			; read the global func
-global_request: = * + 1
+app_request: = * + 1
 			lxi h, GLOBAL_REQ_LOAD_MENU_MAIN
-			lxi b, global_funcs
-			dad h			
+			lxi b, app_funcs
+			dad h
 			dad b
 			mov e, m
 			inx h
@@ -23,81 +21,148 @@ global_request: = * + 1
 			; call a global func
 			pchl
 
-global_funcs:
-			.word empty_func			; GLOBAL_REQ_NONE			= 0
-			.word main_menu				; GLOBAL_REQ_MENU_MAIN		= 1
-			.word global_start_game		; GLOBAL_REQ_GAME			= 2
-			.word settings_screen		; GLOBAL_REQ_MENU_OPTIONS	= 3
-			.word scores_screen			; GLOBAL_REQ_MENU_SCORES	= 4
-			.word credits_screen		; GLOBAL_REQ_MENU_CREDITS	= 5
-			.word stats_screen			; GLOBAL_REQ_MENU_STATS		= 6
-			.word global_load_lv0		; GLOBAL_REQ_LOAD_LEVEL0 	= 7
-			.word global_load_lv1		; GLOBAL_REQ_LOAD_LEVEL1 	= 8
-			.word global_load_main_menu	; GLOBAL_REQ_LOAD_MENU_MAIN	= 9
+app_funcs:
+			.word empty_func		; GLOBAL_REQ_NONE			= 0
+			.word main_menu			; GLOBAL_REQ_MENU_MAIN		= 1
+			.word app_start_game	; GLOBAL_REQ_GAME			= 2
+			.word settings_screen	; GLOBAL_REQ_MENU_OPTIONS	= 3
+			.word scores_screen		; GLOBAL_REQ_MENU_SCORES	= 4
+			.word credits_screen	; GLOBAL_REQ_MENU_CREDITS	= 5
+			.word stats_screen		; GLOBAL_REQ_MENU_STATS		= 6
+			.word app_load_lv0		; GLOBAL_REQ_LOAD_LEVEL0 	= 7
+			.word app_load_lv1		; GLOBAL_REQ_LOAD_LEVEL1 	= 8
+			.word app_load_main_menu; GLOBAL_REQ_LOAD_MENU_MAIN	= 9
+			.word app_respawn		; GLOBAL_REQ_RESPAWN		= 10
 
 
-global_load_main_menu:
+app_load_main_menu:
 			mvi a, GLOBAL_REQ_MENU_MAIN
-			sta global_request
+			sta app_request
 
-			lxi h, load_menu
-			stc ; set CY flag, to init/start music
-			jmp global_load
+			GLOBAL_LOAD(load_menu, true, true)
 
-global_start_game:
+app_start_game:
 			lxi d, PERMANENT_PAL_MENU_ADDR + _pal_menu_palette_fade_to_load_relative
-			mvi a, PERMANENT_PAL_MENU_RAM_DISK_S 
+			mvi a, PERMANENT_PAL_MENU_RAM_DISK_S
 			call pallete_fade_out
 
 			MEM_ERASE_SP(SCR_ADDR, SCR_BUFFS_LEN)
-			
 			lxi d, PERMANENT_PAL_MENU_ADDR + _pal_menu_palette_fade_to_load_relative
 			mvi a, PERMANENT_PAL_MENU_RAM_DISK_S
 			call pallete_fade_in
 
-			lxi h, load_level0
-			stc ; set CY flag, to init/start music
-			call global_load
+			GLOBAL_LOAD(load_level0, true)
 
 			lxi d, PERMANENT_PAL_MENU_ADDR + _pal_menu_palette_fade_to_load_relative
-			mvi a, PERMANENT_PAL_MENU_RAM_DISK_S 
+			mvi a, PERMANENT_PAL_MENU_RAM_DISK_S
 			call pallete_fade_out
-			
-			MEM_ERASE_SP(SCR_ADDR, SCR_BUFFS_LEN)
 
 			call game_init
-			jmp game_level_start
+			call game_level_init
+			jmp game_loop
 
-global_load_lv0:
-			lxi h, load_level0
-			stc ; set CY flag, to init/start music
-			call global_load
-			
-			call game_init ; TODO: delete it when the loading is done
+app_load_lv0:
+			call app_uninit_level
+			mvi a, LEVEL_PALETTE_FADE_OUT
+			call level_palette_fade
 
-			A_TO_ZERO (LEVEL_ID_0)
+			MEM_ERASE_SP(SCR_ADDR, SCR_BUFFS_LEN)
+			lxi d, PERMANENT_PAL_MENU_ADDR + _pal_menu_palette_fade_to_load_relative
+			mvi a, PERMANENT_PAL_MENU_RAM_DISK_S
+			call pallete_fade_in
+
+			GLOBAL_LOAD(load_level0, true)
+
+			lxi d, PERMANENT_PAL_MENU_ADDR + _pal_menu_palette_fade_to_load_relative
+			mvi a, PERMANENT_PAL_MENU_RAM_DISK_S
+			call pallete_fade_out
+
+			A_TO_ZERO(LEVEL_ID_0)
 			sta level_id
 
-			jmp game_level_start
+			call game_level_init
+			jmp game_loop
 
-global_load_lv1:
-			call uninit_level0
+app_load_lv1:
+			call app_uninit_level
+			mvi a, LEVEL_PALETTE_FADE_OUT
+			call level_palette_fade
 
-			lxi h, load_level1
-			stc ; set CY flag, to init/start music
-			call global_load
+			MEM_ERASE_SP(SCR_ADDR, SCR_BUFFS_LEN)
+			lxi d, PERMANENT_PAL_MENU_ADDR + _pal_menu_palette_fade_to_load_relative
+			mvi a, PERMANENT_PAL_MENU_RAM_DISK_S
+			call pallete_fade_in
 
-			call game_init ; TODO: delete it when the loading is done
+			GLOBAL_LOAD(load_level1, true)
+
+			lxi d, PERMANENT_PAL_MENU_ADDR + _pal_menu_palette_fade_to_load_relative
+			mvi a, PERMANENT_PAL_MENU_RAM_DISK_S
+			call pallete_fade_out
 
 			mvi a, LEVEL_ID_1
 			sta level_id
 
-			jmp game_level_start
+			call game_level_init
+			jmp game_loop
 
-; in: 
+app_respawn:
+			call app_uninit_level
+			mvi a, LEVEL_PALETTE_FADE_OUT
+			call level_palette_fade
+
+			MEM_ERASE_SP(SCR_ADDR, SCR_BUFFS_LEN)
+			lxi d, PERMANENT_PAL_MENU_ADDR + _pal_menu_palette_fade_to_load_relative
+			mvi a, PERMANENT_PAL_MENU_RAM_DISK_S
+			call pallete_fade_in
+
+			GLOBAL_LOAD(load_level0, true)
+
+			lxi d, PERMANENT_PAL_MENU_ADDR + _pal_menu_palette_fade_to_load_relative
+			mvi a, PERMANENT_PAL_MENU_RAM_DISK_S
+			call pallete_fade_out
+
+			A_TO_ZERO(LEVEL_ID_0)
+			sta level_id
+
+			mvi a, RES_HEALTH_RESPAWN
+			sta hero_res_health
+
+			call game_level_init
+			jmp game_loop
+
+; restores sprite anim data
+app_uninit_level:
+			lda level_id
+			CPI_ZERO(LEVEL_ID_0)
+			jz uninit_level0
+			cpi LEVEL_ID_1
+			jz uninit_level1
+			ret
+
+; calls a load func, disables interrupts,
+; can init the sound
+.macro GLOBAL_LOAD(load_func, init_sound, _jmp = false)
+			lxi h, load_func
+		.if init_sound
+			stc ; set CY flag, to init/start music
+		.endif
+		.if init_sound == false
+			ora a
+		.endif
+		.if _jmp == false
+			call app_load
+		.endif
+		.if _jmp == true
+			jmp app_load
+		.endif
+.endmacro
+
+; calls a load func, disables interrupts,
+; can init the sound
+; in:
 ; hl - load func addr, ex. load_level0
 ; If CY flag is set, init the sound and start the music
-global_load:
+app_load:
 			push psw
 			push h
 			push psw

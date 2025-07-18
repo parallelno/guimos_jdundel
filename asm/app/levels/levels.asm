@@ -67,49 +67,38 @@ level_init:
 			; reset room_id
 			lhld room_id
 			mvi l, ROOM_ID_0
-			A_TO_ZERO(GLOBAL_REQ_NONE)
-			call room_teleport
-			call room_init
-			call level_palette_fade_in
-			call hero_respawn
-			jmp hero_room_init
+			mvi a, GAME_REQ_ROOM_INIT_AND_DRAW_FADE_IN
+			jmp room_teleport
 
-level_update:
-			lda global_request
-			CPI_ZERO(GLOBAL_REQ_NONE)
-			rz
-			cpi GAME_REQ_ROOM_INIT
-			jz @room_load_draw
-			cpi GAME_REQ_ROOM_DRAW
-			jz @room_draw
-			cpi GAME_REQ_RESPAWN
-			jz @respawn
-			ret
-@room_load_draw:
+; when a hero enters a room
+level_room_init_and_draw:
 			; load a new room
 			call room_init
 			call hero_room_init
 			A_TO_ZERO(GLOBAL_REQ_NONE)
-			sta global_request
+			sta app_request
 			jmp reset_game_updates_required_counter
-@room_draw:
+
+; restore the room after an opened dialog
+level_room_redraw:
 			call room_redraw
 			A_TO_ZERO(GLOBAL_REQ_NONE)
-			sta global_request
+			sta app_request
  			jmp reset_game_updates_required_counter
-@respawn:
-			; teleport the hero to the home room
-			lxi h, LEVEL_FIRST<<8 | ROOM_ID_0
-			A_TO_ZERO(GLOBAL_REQ_NONE)
-			call room_teleport
-
-			call game_ui_draw
-			call hero_respawn
-			jmp @room_load_draw
 
 
-; the palette fade-in
-level_palette_fade_in:
+; fades in/out the palette when a hero enters or leaves the level
+; in:
+; a - 1 fade in, 0 fade out
+level_palette_fade:
+			lxi h, pallete_fade_out
+			CPI_ZERO(NULL)
+			jz @fade_out
+@fade_in:
+			lxi h, pallete_fade_in
+@fade_out:
+			push h
+
 			lda level_id
 			CPI_ZERO(LEVEL_FIRST)
 @lv0_palette:
@@ -120,4 +109,5 @@ level_palette_fade_in:
 			lxi d, PERMANENT_PAL_LV1_ADDR + _pal_lv1_palette_fade_to_black_relative
 			mvi a, PERMANENT_PAL_LV1_RAM_DISK_S
 @set_palette:
-			jmp pallete_fade_in
+			pop h
+			pchl

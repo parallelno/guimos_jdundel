@@ -12,13 +12,13 @@ END_GAME_LINE_SPACING	= 12
 
 
 stats_screen:
-			lda global_request
+			lda app_request
 			sta @global_req+1
 			call stats_screen_init
 
 @loop:
 			; return when a user hits a space button
-			lda global_request
+			lda app_request
 @global_req:
 			cpi TEMP_BYTE
 			rnz
@@ -34,8 +34,8 @@ stats_screen_text_draw:
 			lxi d, _stats_game_stats
 			call text_ex_draw
 
-			
-			; draw monsters stats 
+
+			; draw monsters stats
 			mvi c, TILEDATA_FUNC_ID_MONSTERS
 			call game_stats_get
 			xchg
@@ -43,7 +43,7 @@ stats_screen_text_draw:
 			lxi b, STATS_NUMBERS_SCR_ADDR
 			call text_mono_draw_int16
 
-			; draw items stats 
+			; draw items stats
 			mvi c, TILEDATA_FUNC_ID_ITEMS
 			call game_stats_get
 			xchg
@@ -51,7 +51,7 @@ stats_screen_text_draw:
 			lxi b, STATS_NUMBERS_SCR_ADDR - END_GAME_LINE_SPACING * 1
 			call text_mono_draw_int16
 
-			; draw coins stats 
+			; draw coins stats
 			mvi c, TILEDATA_FUNC_ID_RESOURCES
 			call game_stats_get
 			xchg
@@ -59,7 +59,7 @@ stats_screen_text_draw:
 			lxi b, STATS_NUMBERS_SCR_ADDR - END_GAME_LINE_SPACING * 2
 			call text_mono_draw_int16
 
-			; draw containers stats 
+			; draw containers stats
 			mvi c, TILEDATA_FUNC_ID_CONTAINERS
 			call game_stats_get
 			xchg
@@ -67,7 +67,7 @@ stats_screen_text_draw:
 			lxi b, STATS_NUMBERS_SCR_ADDR - END_GAME_LINE_SPACING * 3
 			call text_mono_draw_int16
 
-			; draw doors stats 
+			; draw doors stats
 			mvi c, TILEDATA_FUNC_ID_DOORS
 			call game_stats_get
 			xchg
@@ -75,7 +75,7 @@ stats_screen_text_draw:
 			lxi b, STATS_NUMBERS_SCR_ADDR - END_GAME_LINE_SPACING * 4
 			call text_mono_draw_int16
 
-			; draw breakables stats 
+			; draw breakables stats
 			mvi c, TILEDATA_FUNC_ID_BREAKABLES
 			call game_stats_get
 			xchg

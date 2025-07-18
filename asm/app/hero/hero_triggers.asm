@@ -15,11 +15,8 @@ trigger_hero_no_health:
 
 @callback:
 			; requesting a level loading
-			mvi a, GAME_REQ_RESPAWN
-			sta global_request
-			; restore a hero health
-			mvi a, RES_HEALTH_INIT
-			sta hero_res_health
+			mvi a, GLOBAL_REQ_RESPAWN
+			sta app_request
 			ret
 
 ;===========================================================================
@@ -34,7 +31,7 @@ trigger_hero_knocks_his_home_door:
 			A_TO_ZERO(0)
 			sta hero_res_popsicle_pie
 			lxi h, hero_res_sword
-			call game_ui_res_select_and_draw			
+			call game_ui_res_select_and_draw
 
 			; init a dialog
 			mvi a, GAME_REQ_PAUSE
@@ -52,8 +49,8 @@ trigger_hero_knocks_dungeon_entrance:
 			jmp dialog_init
 
 @callback:
-			mvi a, GAME_REQ_END_HOME
-			sta global_request
+			mvi a, GLOBAL_REQ_MENU_STATS
+			sta app_request
 			ret
 
 ; TODO: Load level 1 for tests
@@ -64,8 +61,6 @@ trigger_test_load_lv1:
 			jmp dialog_init
 
 @callback:
-			mvi a, GAME_REQ_LV1
-			sta global_request
+			mvi a, GLOBAL_REQ_LOAD_LEVEL1
+			sta app_request
 			ret
-
-
