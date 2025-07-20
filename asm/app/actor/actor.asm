@@ -1,4 +1,4 @@
-memusage_actor:
+@memusage_actor
 .include "app/actor/actor_move.asm"
 .include "app/actor/actor_move_check_tile_collision.asm"
 
@@ -270,7 +270,7 @@ actor_erase:
 			CALL_RAM_DISK_FUNC(sprite_erase, RAM_DISK_S_BACKBUFF | RAM_DISK_M_8F)
 			ret
 @set_empty:
-			; hl - ptr to actor_update_ptr+1 
+			; hl - ptr to actor_update_ptr+1
 			ACTOR_EMPTY()
 			ret
 
@@ -278,7 +278,7 @@ actor_erase:
 ; copy sprites from a backbuffer to a scr
 ; requires (bullet_status - bullet_erase_scr_addr) == (monster_status - monster_erase_scr_addr)
 ; in:
-; hl - ptr to actor_status 
+; hl - ptr to actor_status
 actor_copy_to_scr:
 			; validation
 		.if (bullet_status - bullet_erase_scr_addr) != (monster_status - monster_erase_scr_addr)

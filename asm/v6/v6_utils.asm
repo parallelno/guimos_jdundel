@@ -1,3 +1,4 @@
+@memusage_v6_utils
 .include "asm/v6/v6_rnd.asm"
 .include "asm/v6/v6_dzx0.asm"
 
@@ -333,6 +334,7 @@ jmp_tbl:
 
 
 ; Converts local labels to absolute by adding the absolute address
+; It also can convert it back if the provided addr is negative.
 ; The the array data must ends with EOD word
 ; in:
 ; hl - points to the array of local ptrs to the data
@@ -342,7 +344,7 @@ jmp_tbl:
 ; hl - points to the last byte of EOD
 ; bc - same
 ; use: bc, de, hl, a
-update_labels_eod:
+add_offset_to_labels_eod:
 @loop:
 			; read the local ptr
 			mov e, m
@@ -364,6 +366,7 @@ update_labels_eod:
 			jmp @loop
 
 ; Converts local labels to absolute by adding the absolute address
+; It also can convert it back if the provided addr is negative.
 ; in:
 ; hl - points to the array of ptrs to the data
 ; de - the abslute data addr
@@ -372,7 +375,7 @@ update_labels_eod:
 ; hl - points to the next byte after the array
 ; c = 0
 ; de - same
-update_labels_len:
+add_offset_to_labels_len:
 @loop:
 			mov a, m
 			add e
@@ -428,7 +431,7 @@ copy_palette_request_update:
 			lxi h, palette_update_request
 			mvi m, PALETTE_UPD_REQ_YES
 			ret
-			
+
 
 PALETTE_UPDATE_EVERY_NTH_COLOR = 2 ; update every Nth color
 
@@ -449,7 +452,7 @@ pallete_fade_out:
 			hlt
 			hlt
 			dcx h
-			; CY=1 if the fade is complete			
+			; CY=1 if the fade is complete
 			jnc @loop
 			ret
 pallete_fade_in: = @pallete_fade_in
@@ -474,7 +477,7 @@ pallete_fade_init:
 
 			lxi h, pallete_fade_update_iterations + 1
 			mov m, c
-				
+
 			inx d ; advance over fade_iterations
 			INX_D(SAFE_WORD_LEN) ; advance to the first fade palette
 
@@ -494,7 +497,7 @@ pallete_fade_init:
 			dcr c
 			jnz @loop
 			xchg
-			
+
 			LXI_H_NEG(PALETTE_LEN + SAFE_WORD_LEN)
 			jmp @store_palette_pointer
 @forward_fade:
@@ -520,7 +523,7 @@ pallete_update_current_pal:
 			lxi d, TEMP_ADDR
 pallete_update_next_pal_advance:
 			lxi h, PALETTE_LEN + SAFE_WORD_LEN
-			; hl - addr offset to the next palette (PALETTE_LEN + SAFE_WORD_LEN)			
+			; hl - addr offset to the next palette (PALETTE_LEN + SAFE_WORD_LEN)
 			dad d
 			shld pallete_update_current_pal + 1
 			; de - pointer to the current palette

@@ -1,4 +1,4 @@
-memusage_firepool:
+@memusage_firepool
 ;========================================================
 ; firepool is a quest monster. it can be destroied by snowflake weapon
 
@@ -35,12 +35,12 @@ firepool_init:
 			MONSTER_INIT(firepool_update, firepool_draw, firepool_impacted, FIREPOOL_HEALTH, ACTOR_STATUS_FIREPOOL_IDLE, firepool_idle_anim, False)
 @return:
 			mvi a, TILEDATA_RESTORE_TILE
-			ret			
+			ret
 
 ;========================================================
 ; anim and a gameplay logic update
 ; in:
-; de - ptr to monster_update_ptr 
+; de - ptr to monster_update_ptr
 firepool_update:
 			; advance hl to monster_anim_timer
 			HL_ADVANCE(monster_update_ptr, monster_anim_timer, BY_HL_FROM_DE)
@@ -65,7 +65,7 @@ firepool_impacted:
 
 
 			; die
-			; advance hl to monster_pos_x+1			
+			; advance hl to monster_pos_x+1
 			HL_ADVANCE(monster_impacted_ptr+1, monster_pos_x+1, BY_HL_FROM_DE)
 			push h
 			; play a hit vfx
@@ -85,7 +85,7 @@ firepool_impacted:
 
 ; draw a sprite into a backbuffer
 ; in:
-; de - ptr to monster_draw_ptr 
+; de - ptr to monster_draw_ptr
 firepool_draw:
 			lhld firepool_get_scr_addr
 			lda firepool_ram_disk_s_cmd

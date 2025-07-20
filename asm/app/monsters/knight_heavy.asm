@@ -1,4 +1,4 @@
-memusage_knight_heavy:
+@memusage_knight_heavy
 ;========================================================
 ; this is a quest mod identical to knight, but with different behavior
 ; it spawns only if the quest was not complite
@@ -20,12 +20,12 @@ knight_heavy_init:
 			MONSTER_INIT( knight_heavy_update, knight_draw, empty_func, KNIGHT_HEALTH, ACTOR_STATUS_KNIGHT_DETECT_HERO_INIT, knight_idle_anim, False)
 @return:
 			mvi a, TILEDATA_RESTORE_TILE
-			ret			
+			ret
 
 ;========================================================
 ; anim and a gameplay logic update
 ; in:
-; de - ptr to monster_update_ptr 
+; de - ptr to monster_update_ptr
 knight_heavy_update:
 			push d
 			call knight_heavy_check_panic
@@ -57,7 +57,7 @@ knight_heavy_update:
 ; if so, check the distance to him,
 ; if so, panic!
 ; in:
-; de - ptr to monster_update_ptr 
+; de - ptr to monster_update_ptr
 ; uses:
 ; de, a
 knight_heavy_check_panic:
@@ -68,7 +68,7 @@ knight_heavy_check_panic:
 			CPI_ZERO(GAME_STATUS_NOT_ACQUIRED)
 			rz
 			; hl - ptr to monster_update_ptr
-			
+
 			; check a hero-to-monster distance
 			; advance hl to monster_pos_x+1
 			HL_ADVANCE(monster_update_ptr, monster_pos_x+1, BY_DE)
@@ -76,7 +76,7 @@ knight_heavy_check_panic:
 			mvi c, KNIGHT_QUEST_DETECT_HERO_DISTANCE
 			call actor_to_hero_distance
 			rnc ; return if it's too distanced
-			
+
 			; set the panic state
 @restore_hl:
 			lxi h, TEMP_ADDR

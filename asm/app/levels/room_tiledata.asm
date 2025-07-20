@@ -1,5 +1,5 @@
 
-memusage_room_tiledata:
+@memusage_room_tiledata
 
 ; it copies the room tiledata into room_tiledata_backup
 ; for room_redraw and storing states of breakable objects
@@ -265,7 +265,7 @@ room_get_collision_tiledata:
 ;   hl - points to the last element in room_get_tiledata_idxs
 
 ; used by room_tiledata_handling as an EOD marker
-room_get_tiledata_idxs_eod:			
+room_get_tiledata_idxs_eod:
 			.byte TILE_IDX_INVALID
 ; contains up to 4 unique tile indices
 room_get_tiledata_idxs:
@@ -308,7 +308,7 @@ room_get_tiledata_idxs:
 ; 3x3: 624 cc
 
 ; it's crazy, but I have to go back to the v1!
-; Sprites are 16 pxls max. No reason for 3x3 checking 
+; Sprites are 16 pxls max. No reason for 3x3 checking
 ; area. Teleport's logic fails if the check area bigger
 ; than 2x2 tiles.
 ; v1. 2x2 tiles MAX only!
@@ -431,18 +431,18 @@ room_fill_tiledata:
 ; de - pos_xy
 .macro TILEDATA_HANDLING(width, height, actor_tile_func_table)
 			lxi b, (width-1)<<8 | height - 1
-			lxi h, actor_tile_func_table - JMP_4_LEN ; because we skip tiledata_func_id = 0			
+			lxi h, actor_tile_func_table - JMP_4_LEN ; because we skip tiledata_func_id = 0
 			call room_tiledata_handling
-.endmacro 
+.endmacro
 
 ; in:
 ; de - pos_xy
-; hl - actor_tile_func_table - JMP_4_LEN ; because we skip tiledata_func_id = 0			 
+; hl - actor_tile_func_table - JMP_4_LEN ; because we skip tiledata_func_id = 0
 room_tiledata_handling:
 			shld @actor_tile_func_table + 1
 			; de - pos_xy
 			call room_get_tiledata
-			; hl - ptr to the last tile_idx in the array room_get_tiledata_idxs			
+			; hl - ptr to the last tile_idx in the array room_get_tiledata_idxs
 @loop:
 			mov a, m
 			cpi TILE_IDX_INVALID

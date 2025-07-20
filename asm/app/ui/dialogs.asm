@@ -1,4 +1,4 @@
-memusage_dialogs:
+@memusage_dialogs
 ;=======================================================
 
 dialogs_init:

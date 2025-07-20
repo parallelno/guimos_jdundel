@@ -42,8 +42,8 @@ v6_gc_init_song:
 			; de - points to the song data
 			push d
 			mvi c, GC_TASKS
-			call update_labels_len
-			
+			call add_offset_to_labels_len
+
 			; update _v6_gc_buffer ptr
 			pop h
 			push h
@@ -55,10 +55,10 @@ v6_gc_init_song:
 			sta v6_gc_buffer_ptr0 + 1
 			adi GC_TASKS - 1
 			sta v6_gc_buffer_ptr2
-			
+
 			; update _v6_gc_task_stack_end ptr
 			pop h
-			; hl - points to the song data			
+			; hl - points to the song data
 			lxi d, _v6_gc_task_stack_end
 			dad d
 			shld v6_gc_task_stack_end0 + 1
@@ -112,7 +112,7 @@ v6_gc_update:
 ;==========================================
 ; create a v6_gc_unpack tasks
 v6_gc_tasks_init:
-			; TODO: avoid disabling/enabling interruptions. 
+			; TODO: avoid disabling/enabling interruptions.
 			; it's not obvious behavior
 			di
 			lxi h, 0
@@ -131,7 +131,7 @@ v6_gc_tasks_init_loop:
 			; store the buffer addr to a task stack
 			mov a, c
 			rrc
-v6_gc_buffer_ptr0:			
+v6_gc_buffer_ptr0:
 			adi TEMP_ADDR ; >v6_gc_buffer
 			mov h, a
 			mov l, b
@@ -161,7 +161,7 @@ v6_gc_tasks_init_loop_storeTaskSP:
 			dcr c
 			dcr c
 			jp v6_gc_tasks_init_loop
-v6_gc_tasks_init_restore_sp: 
+v6_gc_tasks_init_restore_sp:
 			lxi sp, TEMP_ADDR
 			ei
 			ret
@@ -385,7 +385,7 @@ v6_gc_unpack:
 v6_gc_ay_update:
 			mvi e, GC_TASKS - 1
 			mov c, m
-@v6_gc_buffer_ptr:			
+@v6_gc_buffer_ptr:
 			mvi b, TEMP_ADDR ; (>v6_gc_buffer) + GC_TASKS - 1
 			ldax b
 			cpi $ff

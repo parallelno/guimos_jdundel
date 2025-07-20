@@ -1,3 +1,5 @@
+@memusage_v6_controls
+
 .include "asm/v6/v6_controls_consts.asm"
 
 action_code:
@@ -32,7 +34,7 @@ controls_keys_check:
 			HL_TO_A_PLUS_INT16(keys_to_controls_alt_tab_space)
 
 			mov e, m
-			
+
 			mvi a, %1111_0000
 			ana c
 			RRC_(4)
@@ -41,28 +43,28 @@ controls_keys_check:
 			ora e
 			sta action_code
 			ret
-keys_to_controls_arrows: 
+keys_to_controls_arrows:
 			; bits that form an offset in this tbl: down, right, up, left. they are inversed
 			; bits of data: 0,0,0,0, CONTROL_CODE_DOWN, CONTROL_CODE_UP, CONTROL_CODE_LEFT, CONTROL_CODE_RIGHT
 			.byte %1111 ; none
-			.byte %1101 ; 
-			.byte %1011 ; 
-			.byte %1001 ; 
-			.byte %1110 ; 
-			.byte %1100 ; 
-			.byte %1010 ; 
-			.byte %1000 ; 
+			.byte %1101 ;
+			.byte %1011 ;
+			.byte %1001 ;
+			.byte %1110 ;
+			.byte %1100 ;
+			.byte %1010 ;
+			.byte %1000 ;
 
 			.byte %0111 ; right + up + left
 			.byte %0101 ; right + up
-			.byte %0011 ; 
-			.byte %0001 ; 
-			.byte %0110 ; 
-			.byte %0100 ; 
+			.byte %0011 ;
+			.byte %0001 ;
+			.byte %0110 ;
+			.byte %0100 ;
 			.byte %0010	; right + up + down
 			.byte 0		; right + up + left + down
-			
-keys_to_controls_alt_tab_space: 
+
+keys_to_controls_alt_tab_space:
 			; bits that form an offset in this tbl: alt, tab, space. they are inversed
 			; bits of data: CONTROL_CODE_FIRE1, CONTROL_CODE_FIRE2, CONTROL_CODE_KEY_SPACE, CONTROL_CODE_RETURN, 0,0,0,0
 			.byte %1111_0000 ; none
@@ -72,15 +74,15 @@ keys_to_controls_alt_tab_space:
 			.byte %1011_0000 ; alt
 			.byte %0001_0000 ; alt + space
 			.byte %1010_0000 ; alt + tab
-			.byte 0			 ; alt + space + tab			
-			
+			.byte 0			 ; alt + space + tab
+
 
 controls_joy_check:
 			; read joystick "P" code
 			in $06
 			ori ~(CONTROL_CODE_KEY_SPACE && CONTROL_CODE_RETURN) ; set the default value (no action)
 			mov e, a
-			
+
 			; read key_code
 			mvi a, PORT0_OUT_IN
 			out 0
@@ -139,7 +141,7 @@ controls_flip_preset:
 			lhld controls_check_func_ptr
 			xchg
 			lhld controls_check_func_ptr_flipped
-			
+
 			shld controls_check_func_ptr
 			xchg
 			shld controls_check_func_ptr_flipped

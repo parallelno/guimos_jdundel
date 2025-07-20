@@ -1,3 +1,4 @@
+@memusage_v6_back_draw
 ;----------------------------------------------------------------
 ; draw a background sprite without an alpha channel (16xN pixels)
 ; input:
@@ -9,8 +10,8 @@
 ; .word - two safety bytes prevent data corruption caused by interruptions
 ; .byte - height
 ; .byte - width
-; 		0 - one byte width, 
-;		1 - two bytes width, 
+; 		0 - one byte width,
+;		1 - two bytes width,
 ; pixel format:
 ; odd_line:
 ; 1st screen buff : 1 -> 2
@@ -31,7 +32,7 @@ draw_back_v:
 			lxi h, $0000
 			dad sp
 			shld @restore_sp + 1
-			; bc - decal sprite data addr			
+			; bc - decal sprite data addr
 			mov h, b
 			mov l, c
 			sphl
@@ -39,7 +40,7 @@ draw_back_v:
 			pop b
 			; b - offset_x
 			; c - offset_y
-			; hl - scr addr					
+			; hl - scr addr
 			dad b
 			pop b
 
@@ -47,7 +48,7 @@ draw_back_v:
 			A_TO_ZERO(NULL)
 			cmp b
 			jnz @drawWidth16
-@drawWidth8:			
+@drawWidth8:
 ; TODO: support width = 8
 			jmp @restore_sp
 
@@ -69,63 +70,63 @@ draw_back_v:
 
 @odd_line:
 @scr8:
-			pop b					
-			mov m, c				
-			inr h					
-			mov m, b				
-@scrA:		mvi h, TEMP_BYTE		
+			pop b
+			mov m, c
+			inr h
+			mov m, b
+@scrA:		mvi h, TEMP_BYTE
 
-			pop b					
-			mov m, c				
-			dcr h					
-			mov m, b				
-@scrC:		mov h, e				
+			pop b
+			mov m, c
+			dcr h
+			mov m, b
+@scrC:		mov h, e
 
-			pop b					
-			mov m, c				
-			dcr h					
-			mov m, b				
-@scrE:		mov h, a				
+			pop b
+			mov m, c
+			dcr h
+			mov m, b
+@scrE:		mov h, a
 
-			pop b					
-			mov m, c				
-			dcr h					
-			mov m, b				
-			
+			pop b
+			mov m, c
+			dcr h
+			mov m, b
+
 			inr l
 			dcr d
 			jz @restore_sp
 
 @even_line:
 @scrE2:
-			pop b					
-			mov m, c				
-			inr h					
-			mov m, b				
-@scrC2:		mov h, e				
+			pop b
+			mov m, c
+			inr h
+			mov m, b
+@scrC2:		mov h, e
 
-			pop b					
-			mov m, c				
-			dcr h					
-			mov m, b				
-@scrA2:		mvi h, TEMP_BYTE		
+			pop b
+			mov m, c
+			dcr h
+			mov m, b
+@scrA2:		mvi h, TEMP_BYTE
 
-			pop b					
-			mov m, c				
-			dcr h					
-			mov m, b				
-@scr82:		mvi h, TEMP_BYTE		
+			pop b
+			mov m, c
+			dcr h
+			mov m, b
+@scr82:		mvi h, TEMP_BYTE
 
-			pop b					
-			mov m, c				
-			dcr h					
-			mov m, b			
-			
+			pop b
+			mov m, c
+			dcr h
+			mov m, b
+
 			inr l
 			dcr d
-			jnz @odd_line			
+			jnz @odd_line
 
-@restore_sp:		
+@restore_sp:
 			lxi sp, TEMP_ADDR
 			ret
 draw_back_v_end:

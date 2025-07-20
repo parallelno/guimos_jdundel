@@ -67,7 +67,7 @@ def ram_disk_data_to_asm(level_j_path):
 	containers = {}
 	container_max_tiledata = 0
 	breakables_count = 0
-	
+
 	room_data_asm = ""
 	room_data_ptrs = {}
 	room_addr_offset = 0
@@ -86,7 +86,7 @@ def ram_disk_data_to_asm(level_j_path):
 		# add room gfx data
 		asm_room_data = export_level_utils.room_tiles_to_asm(room_j["layers"][0], remap_idxs)
 
-		# add teleport data 
+		# add teleport data
 		teleport_tiles, asm_teleport_data = \
 			export_level_utils.room_teleport_data(room_j["layers"][2], level_j_path)
 		# merge teleport data with the room tiledata
@@ -105,12 +105,12 @@ def ram_disk_data_to_asm(level_j_path):
 		room_data_asm += f"			.word {data_len}\n"
 		room_data_asm += "			.word 0 ; safety pair of bytes for reading by POP B\n"
 		room_data_asm += compressed_room_asm + "\n"
-		
+
 		room_data_asm += "; teleport data\n"
-		room_data_asm += "			.word 0 ; safety pair of bytes for reading by POP B\n"		
+		room_data_asm += "			.word 0 ; safety pair of bytes for reading by POP B\n"
 		room_data_asm += asm_teleport_data + "\n"
 
-		TELEPORT_IDS_MAX = 16 
+		TELEPORT_IDS_MAX = 16
 
 		room_data_ptrs[room_data_label] = room_addr_offset
 		room_addr_offset += build.WORD_LEN # stored compressed_roomdata_len
@@ -143,8 +143,8 @@ def ram_disk_data_to_asm(level_j_path):
 			# count breakables
 			if export_level_utils.TILEDATA_BREAKABLESS <= tiledata < export_level_utils.TILEDATA_BREAKABLESS + export_level_utils.BREAKABLES_UNIQUE_MAX:
 				breakables_count += 1
-	
-	
+
+
 	asm = ""
 	relative_ptrs = {}
 	relative_addr = build.SAFE_WORD_LEN
@@ -160,7 +160,7 @@ def ram_disk_data_to_asm(level_j_path):
 	relative_ptrs[label] = relative_addr
 	relative_addr += data_len
 	relative_addr += build.SAFE_WORD_LEN
-	
+
 	#=====================================================================
 	# containers data
 	data_asm, label, data_len = \
@@ -194,12 +194,13 @@ def get_resources_inst_data(level_j_path, resources, resource_max_tiledata):
 	label = f"_{level_prefix}_resources_inst_data"
 
 	asm = ""
+	asm += "NULL = 0\n\n"
 	asm += "			.word 0 ; safety pair of bytes for reading by POP B\n"
 	asm += f"{label}_ptrs:\n"
 
 	# make resources_inst_data_ptrs data
 	if len(resources) > 0:
-		asm += "			.byte "		
+		asm += "			.byte "
 
 		# add resource tiledata which is not present in the level to
 		# make resources_inst_data_ptrs array contain contiguous data
@@ -300,7 +301,7 @@ def get_containers_inst_data(level_j_path, containers, container_max_tiledata):
 			if len(containers_sorted[tiledata]) > 0:
 				asm += f";			tiledata = {tiledata}, data below is pairs of tile_idx, room_id\n"
 				data = []
-				
+
 				for room_id, tile_idx in containers_sorted[tiledata]:
 					data.append(tile_idx)
 					data.append(room_id)
@@ -333,27 +334,25 @@ def ram_data_to_asm(data_ptrs, level_j_path,
 	rooms_data_data_asm, rooms_data_label, data_len = \
 		export_level_utils.get_list_of_rooms(room_paths, level_name)
 	asm += rooms_data_data_asm
-	
+
 	#=====================================================================
 	# resources data
 	data_asm, resources_inst_data_label, resources_inst_data_len = \
 		get_resources_inst_data(level_j_path, resources, resource_max_tiledata)
-	
+
 	#=====================================================================
 	# containers data
 	data_asm, containers_inst_data_label, containers_inst_data_len = \
 		get_containers_inst_data(level_j_path, containers, container_max_tiledata)
-	
+
 	#=====================================================================
 	# player's start pose
-	player_start_pose_label = f"{level_name}_start_pos"	
+	player_start_pose_label = f"{level_name}_start_pos"
 
 	#=====================================================================
 	# level data init tbl
 	data_init_tbl_label = f"{level_name}_data_init_tbl"
 	asm += f"{data_init_tbl_label}:\n"
-	# asm += f"			.byte RAM_DISK_S_{level_name.upper()}_DATA\n"
-	# asm += f"			.byte RAM_DISK_M_{level_name.upper()}_DATA\n"	
 	asm += f"			.byte TEMP_BYTE ; defined in loads.asm and inited by _data_init\n"
 	asm += f"			.byte TEMP_BYTE ; defined in loads.asm and inited by _data_init\n"
 	asm += f"			.word {rooms_data_label}\n"
@@ -377,16 +376,16 @@ def ram_data_to_asm(data_ptrs, level_j_path,
 	asm += f"; bc - {level_name.upper()}_DATA_ADDR\n"
 	asm += f"; l - RAM_DISK_S\n"
 	asm += f"; h - RAM_DISK_M\n"
-	asm += f"; ex. hl = RAM_DISK_M_LV0_GFX<<8 | RAM_DISK_S_LV0_GFX\n"	
+	asm += f"; ex. hl = RAM_DISK_M_LV0_GFX<<8 | RAM_DISK_S_LV0_GFX\n"
 	asm += f"{level_name}_data_init:\n"
 	asm += f"			shld {data_init_tbl_label}\n"
 	asm += f"\n"
-	
+
 	asm += f"			push b\n"
 	asm += f"\n"
 
 	asm += f"			lxi h, {rooms_data_label}\n"
-	asm += f"			call update_labels_eod\n"
+	asm += f"			call add_offset_to_labels_eod\n"
 	asm += f"\n"
 
 	asm += f"			pop d\n"
@@ -395,7 +394,7 @@ def ram_data_to_asm(data_ptrs, level_j_path,
 
 	asm += f"			lxi h, {resources_inst_data_label[1:]}\n"
 	asm += f"			mvi c, 2 ; _lv0_resources_inst_data_ptrs and _lv0_containers_inst_data_ptrs\n"
-	asm += f"			call update_labels_len\n"
+	asm += f"			call add_offset_to_labels_len\n"
 	asm += f"\n"
 
 	asm += f"			; copy a level init data\n"
@@ -403,7 +402,7 @@ def ram_data_to_asm(data_ptrs, level_j_path,
 	asm += f"			lxi d, lv_data_init_tbl\n"
 	asm += f"			lxi b, {data_init_tbl_label.upper()}_LEN\n"
 	asm += f"			call mem_copy_len\n"
-	
+
 	asm += f"			ret \n"
 	asm += f"\n"
 

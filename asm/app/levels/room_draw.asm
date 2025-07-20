@@ -1,4 +1,4 @@
-memusage_room_draw:
+@memusage_room_draw
 ;=========================================================
 ; redraws the room after dialog shown
 ; it uses data inited in the room_draw

@@ -1,3 +1,4 @@
+@memusage_v6_sprite
 ; get a sprite data addr
 ; in:
 ; hl - anim_ptr
@@ -35,7 +36,7 @@ sprite_get_scr_addr8:
 			INX_H(2)
 			mov e, m
 			mov	d, a
-			; de - sprite screen addr			
+			; de - sprite screen addr
 			ret
 
 ; getting scr addr of sprites preshifted for each second pixel
@@ -60,7 +61,7 @@ sprite_get_scr_addr4:
 			INX_H(2)
 			mov e, m
 			mov	d, a
-			; de - sprite screen addr			
+			; de - sprite screen addr
 			ret
 
 ; getting scr addr of non-preshifted sprites. alligned by 8 pixels horizontally
@@ -88,7 +89,7 @@ sprite_get_scr_addr1:
 ; initializes the sprite meta data including the RAM Disk access,
 ; a propriate sprite_get_scr_addr func addr, animation (frame ptrs)
 ; in:
-; hl - points to the list where each element contains: 
+; hl - points to the list where each element contains:
 ; .word {{asset_name}_ram_disk_cmd}
 ; .byte RAM_DISK_S_{asset_name}
 ; .word {sprite_gfx_addr}
@@ -102,7 +103,7 @@ sprite_uninit_meta_data:
 			sta @check_if_uninit
 @loop:
 			push d
-			
+
 			; get the meta_data addr
 			mov e, m
 			inx h
@@ -120,7 +121,7 @@ sprite_uninit_meta_data:
 			inx h
 			push h ; temporally store the pointer to the preshifted_sprites addr
 			xchg
-			
+
 			; get the sprite gfx addr
 @check_if_uninit:
 			jmp @uninit
@@ -129,7 +130,7 @@ sprite_uninit_meta_data:
 			inx h
 			mov d, m
 			jmp @cont
-@uninit:	
+@uninit:
 			; read sprite gfx addr make it negative
 			; to set the anim ptrs back to local
 			mov a, m
@@ -145,7 +146,7 @@ sprite_uninit_meta_data:
 
 			xthl
 			xchg
-			
+
 			; hl - sprite gfx addr (_hero_l_sprites)
 			; de - preshifted_sprites ptrs i.e. _hero_l_preshifted_sprites
 			call sprite_update_labels
@@ -168,7 +169,7 @@ sprite_update_labels:
 			sta @preshifted_sprites+1
 			inx h
 			; read the anim ptr
-@next_anim:			
+@next_anim:
 			mov e, m
 			inx h
 			mov d, m
@@ -190,7 +191,7 @@ sprite_update_labels:
 ; hl - anim ptr
 @update_frame_labels:
 			; check if it's the last frame (offset to the next frame < 0)
-			
+
 			inx h
 			mov a, m
 			push psw
@@ -204,7 +205,7 @@ sprite_update_labels:
 			; hl - points to the array of ptrs to the data
 			; de - the data addr
 			; c - the len of the array
-			call update_labels_len
+			call add_offset_to_labels_len
 			pop psw
 			; if a < 0, we updated the last frame in the animation
 			ora a

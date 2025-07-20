@@ -1,5 +1,5 @@
+@memusage_v6_text_mono_draw
 ; The monospaced text render procedure and the font data
-
 
 ; draw an FPS counter every second on the screen at FPS_SCR_ADDR addr
 ; works only in the interruption func and in the
@@ -39,7 +39,7 @@ text_mono_buff_len3:
 text_mono_buff_len2:
 			.storage 2
 			.byte EOD
-			
+
 /*
 ; 8-bit integer to ASCII (hex)
 ; in:
@@ -51,7 +51,7 @@ text_mono_buff_len2:
 int_to_ascii_hex:
 			mov e, a ; tmp
 			lxi b, $0f30 ; $30 - char 0 code
-			
+
 			ana b
 			cpi $0a ; to adjust chars codes
 			jc @below10
@@ -75,7 +75,7 @@ int_to_ascii_hex:
 */
 
 ; 8-bit integer to ASCII (decimal)
-; in: 
+; in:
 ; hl - number to convert
 ; de - location of ASCII string (3 bytes buffer)
 ; use:
@@ -246,7 +246,7 @@ font_mono:
 			.byte %1000000
 			.byte %1000001
 			.byte %0111110
-			.byte 0	
+			.byte 0
 			; D ($04)
 			.byte %1111110
 			.byte %1000001
@@ -255,7 +255,7 @@ font_mono:
 			.byte %1000001
 			.byte %1000001
 			.byte %1111110
-			.byte 0	
+			.byte 0
 			; E ($05)
 			.byte %1111110
 			.byte %1000001
@@ -264,7 +264,7 @@ font_mono:
 			.byte %1000000
 			.byte %1000001
 			.byte %1111110
-			.byte 0	
+			.byte 0
 			; F ($06)
 			.byte %1111110
 			.byte %1000001
@@ -273,7 +273,7 @@ font_mono:
 			.byte %1000000
 			.byte %1000000
 			.byte %1000000
-			.byte 0	
+			.byte 0
 			; rest of the alphabet
 			.storage 8*$29, 0
 .endif
@@ -285,7 +285,7 @@ font_mono:
 			.byte %10100010
 			.byte %11000010
 			.byte %01111100
-			.byte 0	
+			.byte 0
 			; 1 ($31)
 			.byte %00011000
 			.byte %00101000
@@ -294,7 +294,7 @@ font_mono:
 			.byte %00001000
 			.byte %00001000
 			.byte %00011100
-			.byte 0	
+			.byte 0
 			; 2 ($32)
 			.byte %01111100
 			.byte %10000010
@@ -303,7 +303,7 @@ font_mono:
 			.byte %10000000
 			.byte %10000000
 			.byte %11111110
-			.byte 0	
+			.byte 0
 			; 3 ($33)
 			.byte %01111100
 			.byte %10000010
@@ -330,7 +330,7 @@ font_mono:
 			.byte %00000010
 			.byte %10000010
 			.byte %01111100
-			.byte 0	
+			.byte 0
 			; 6 ($36)
 			.byte %01111100
 			.byte %10000010
@@ -339,7 +339,7 @@ font_mono:
 			.byte %10000010
 			.byte %10000010
 			.byte %01111100
-			.byte 0	
+			.byte 0
 			; 7 ($37)
 			.byte %01111110
 			.byte %10000010
@@ -348,7 +348,7 @@ font_mono:
 			.byte %00010000
 			.byte %00100000
 			.byte %00100000
-			.byte 0	
+			.byte 0
 			; 8 ($38)
 			.byte %01111100
 			.byte %10000010
@@ -357,7 +357,7 @@ font_mono:
 			.byte %10000010
 			.byte %10000010
 			.byte %01111100
-			.byte 0	
+			.byte 0
 			; 9 ($39)
 			.byte %01111100
 			.byte %10000010

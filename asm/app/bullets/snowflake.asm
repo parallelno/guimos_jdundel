@@ -1,4 +1,4 @@
-memusage_snowflake:
+@memusage_snowflake
 ;=================================================
 ; statuses.
 ; a status describes what set of animations and behavior is active
@@ -32,7 +32,7 @@ snowflake_init:
 			BULLET_INIT(snowflake_update, snowflake_draw, ACTOR_STATUS_BIT_INVIS, SNOWFLAKE_STATUS_INVIS_TIME, snowflake_run_anim, snowflake_init_speed)
 ; the move dir along with the hero dir
 ; in:
-; de - ptr to bullet_speed_x	
+; de - ptr to bullet_speed_x
 snowflake_init_speed:
 			xchg
 			; hl - ptr to bullet_speed_x
@@ -68,7 +68,7 @@ snowflake_init_speed:
 
 ; anim and a gameplay logic update
 ; in:
-; de - ptr to bullet_update_ptr 
+; de - ptr to bullet_update_ptr
 snowflake_update:
 			; advance to bullet_status
 			HL_ADVANCE(bullet_update_ptr, bullet_status, BY_HL_FROM_DE)
@@ -79,12 +79,12 @@ snowflake_update:
 			; hl - ptr to bullet_status
 			; advance hl and decr bullet_status_timer
 			inx h
-			shld @die_after_monster_collides+1			
+			shld @die_after_monster_collides+1
 			; check if it's time to die
 			dcr m
 			jz @die_over_time
 @update_movement:
-			ACTOR_UPDATE_MOVEMENT_CHECK_TILE_COLLISION(SNOWFLAKE_COLLISION_WIDTH, SNOWFLAKE_COLLISION_HEIGHT, @die) 
+			ACTOR_UPDATE_MOVEMENT_CHECK_TILE_COLLISION(SNOWFLAKE_COLLISION_WIDTH, SNOWFLAKE_COLLISION_HEIGHT, @die)
 
 			; hl points to bullet_pos_y+1
 			; advance hl to bullet_anim_timer
@@ -157,12 +157,12 @@ snowflake_update:
 			; advance and set bullet_status
 			dcx h
 			mvi m, SNOWFLAKE_STATUS_ATTACK
-			ret	
+			ret
 
 
 ; draw a sprite into a backbuffer
 ; in:
-; de - ptr to bullet_draw_ptr 
+; de - ptr to bullet_draw_ptr
 snowflake_draw:
 			lhld snowflake_get_scr_addr
 			lda snowflake_ram_disk_s_cmd

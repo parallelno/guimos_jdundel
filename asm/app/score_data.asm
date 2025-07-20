@@ -1,4 +1,4 @@
-memusage_score_data:
+@memusage_score_data
 ; TODO: Check if all entities are listed
 
 ; func_id = 1
@@ -34,7 +34,7 @@ game_score_resources:
 			.word 15	; res_id = 6 - a popsicle pie
 			.word 2		; res_id = 7 - a clothes
 			.word 1		; res_id = 8 - a cabbage
-			.word 5		; res_id = 9 - a spoon			
+			.word 5		; res_id = 9 - a spoon
 
 ; TODO: it was previosly triggered by triggers, it caused a bug
 ; because friend's door can be accessed multiple times.
@@ -92,7 +92,7 @@ game_score_lists_ptrs:
 game_stats:
 			.word 0		; monsters
 			.word NULL	; TODO: secret room
-			.word NULL	; TODO: deaths 
+			.word NULL	; TODO: deaths
 			.word NULL
 			.word NULL
 			.word 0		; items

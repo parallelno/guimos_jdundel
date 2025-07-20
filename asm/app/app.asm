@@ -1,4 +1,4 @@
-memusage_app:
+@memusage_app
 ;=======================================================
 
 app_start:
@@ -41,7 +41,15 @@ app_load_main_menu:
 
 			GLOBAL_LOAD(load_menu, true, true)
 
+GAME_SPRITES_UNINITED	= 1
+GAME_SPRITES_INITED		= 0
 app_start_game:
+			lxi h, @level_not_inited
+			A_TO_ZERO(GAME_SPRITES_INITED)
+			cmp m
+			mov m, a
+			cz app_uninit_level
+
 			lxi d, PERMANENT_PAL_MENU_ADDR + _pal_menu_palette_fade_to_load_relative
 			mvi a, PERMANENT_PAL_MENU_RAM_DISK_S
 			call pallete_fade_out
@@ -58,8 +66,11 @@ app_start_game:
 			call pallete_fade_out
 
 			call game_init
+
 			call game_level_init
 			jmp game_loop
+@level_not_inited:
+			.byte GAME_SPRITES_UNINITED
 
 app_load_lv0:
 			call app_uninit_level
@@ -77,7 +88,7 @@ app_load_lv0:
 			mvi a, PERMANENT_PAL_MENU_RAM_DISK_S
 			call pallete_fade_out
 
-			A_TO_ZERO(LEVEL_ID_0)
+			mvi a, LEVEL_ID_0
 			sta level_id
 
 			call game_level_init

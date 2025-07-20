@@ -31,7 +31,7 @@ sword_func_container:
 			pop b
 			; c - tile_idx in the room_tiledata array
 @restore_container_id:
-			mvi a, TEMP_BYTE			
+			mvi a, TEMP_BYTE
 			ADD_A(1) ; container_id to WORD ptr
 			sta room_decal_draw_ptr_offset+1
 			ROOM_DECAL_DRAW(containers_opened_gfx_ptrs, true)
@@ -127,7 +127,7 @@ sword_func_breakable:
 @not_cabbage:
 			; add score points
 			push b
-			; e - breakable_id			
+			; e - breakable_id
 			mvi d, TILEDATA_FUNC_ID_BREAKABLES
 			call game_score_add
 			call game_ui_draw_score_text
@@ -137,7 +137,7 @@ sword_func_breakable:
 			mvi b, >room_tiledata
 			mvi a, TILEDATA_RESTORE_TILE
 			stax b
-			
+
 			; c - tile_idx
 			call draw_tile_16x16_buffs
 			; draw vfx
@@ -152,8 +152,13 @@ sword_func_breakable:
 sword_func_triggers:
 			cpi TRIGGER_ID_HOME_DOOR
 			jz trigger_hero_knocks_his_home_door
-			cpi TRIGGER_ID_HOME_DUNGEON_ENTRANCE
-			jz trigger_hero_knocks_dungeon_entrance
-			cpi TRIGGER_ID_TEMP_LV1
-			jz trigger_test_load_lv1
+			cpi TRIGGER_ID_LV0
+			jz trigger_load_lv0
+			cpi TRIGGER_ID_LV1
+			jz trigger_load_lv1
+			cpi TRIGGER_ID_MAIN_MENU
+			jz trigger_load_main_menu
+			cpi TRIGGER_ID_END_GAME
+			jz trigger_end_game
+
 			ret

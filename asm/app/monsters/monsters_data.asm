@@ -1,4 +1,4 @@
-memusage_monsters_data:
+@memusage_monsters_data
 
 ; a newly inited room uses this list to call a monster Init func
 ; it's ordered by monster_id (see tiledata format in levels_data_consts.asm)
@@ -24,6 +24,8 @@ monsters2_inits:
 			JMP_4( crow_init)
 			JMP_4( bob_init)
 			JMP_4( dotty_init)
-			JMP_4( villager2_init)
-			JMP_4( villager3_init)
-			JMP_4( villager4_init)
+			JMP_4( green_hat_init)
+			JMP_4( boy_init)
+			JMP_4( old_man_init)
+			JMP_4( scarecrow_init)
+			JMP_4( mom_init)

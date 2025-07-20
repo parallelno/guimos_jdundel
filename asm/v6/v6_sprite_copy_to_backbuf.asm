@@ -1,4 +1,4 @@
-
+@memusage_v6_sprite_copy_to_backbuf
 ; copy a sprite from backbuff1 to backbuff2
 ; in:
 ; de - scr addr
@@ -73,7 +73,7 @@ sprite_copy_to_back_buff_v:
 			JMP_4(@h17)
 			JMP_4(@h18)
 			JMP_4(@h19)
-			JMP_4(@h20)					
+			JMP_4(@h20)
 
 .macro COPY_SPRITE_TO_SCR_PB2(move_up = true)
 			pop b
@@ -103,7 +103,7 @@ sprite_copy_to_back_buff_v:
 			COPY_SPRITE_TO_SCR_PB()
 		.endloop
 			COPY_SPRITE_TO_SCR_PB(false)
-	.endif			
+	.endif
 .endmacro
 
 .macro COPY_SPRITE_TO_SCR2(height)

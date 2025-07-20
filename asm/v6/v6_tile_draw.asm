@@ -1,6 +1,7 @@
+@memusage_v6_tile_draw
 ;----------------------------------------------------------------
 ; draw a tile (16x16 pixels)
-; this graphics is used to render level rooms. 
+; this graphics is used to render level rooms.
 ; This func can read gfx data from the RAM Disk if it's properly activated
 ; input:
 ; bc - a tile gfx ptr
@@ -9,7 +10,7 @@
 
 ; tile gfx format:
 ; .byte - a bit mask xxxxECA8:
-;		If "8" bit is enabled, draw the next 16 bytes in the $8000 buffer, 
+;		If "8" bit is enabled, draw the next 16 bytes in the $8000 buffer,
 ;		If "A" bit is enabled, draw the next 16 bytes in the $A000 buffer etc.
 ; .byte 4 - needs for a counter
 ; screen format:
@@ -58,12 +59,12 @@ draw_tile_16x16:
 
 			dcr d
 			jnz @loop
-@restore_sp:		
+@restore_sp:
 			lxi sp, TEMP_ADDR
 			ret
 draw_tile_16x16_end:
-			
-			
+
+
 .macro DRAWTILE16x16_DRAW_BUF()
 		.loop 7
 			pop b					; (12)
@@ -89,7 +90,7 @@ draw_tile_16x16_end:
 			mov m, c				; (8)
 			dcr l					; (8)
 			mov m, b				; (8)
-			dcr h					; (8) (704)		
+			dcr h					; (8) (704)
 .endmacro
 
 .macro DRAWTILE16x16_ERASE_BUF()
@@ -99,13 +100,13 @@ draw_tile_16x16_end:
 			inr l
 		.endloop
 			mov m, a
-			inr h		
+			inr h
 		.loop 15
 			mov m, a
-			dcr l				
+			dcr l
 		.endloop
-			mov m, a 
-			dcr h		
+			mov m, a
+			dcr h
 .endmacro
 
 

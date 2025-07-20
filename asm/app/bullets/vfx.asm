@@ -1,4 +1,4 @@
-memusage_vfx:
+@memusage_vfx
 ;=================================================
 
 ; init a preshifted VFX
@@ -21,21 +21,21 @@ vfx_init4:
 			; advance hl to bullet_update_ptr
 			dcx h
 			mvi m, <vfx_update
-			inx h 
+			inx h
 			mvi m, >vfx_update
 			; advance hl to bullet_draw_ptr
-			inx h 
+			inx h
 			mvi m, <vfx_draw4
-			inx h 
+			inx h
 			mvi m, >vfx_draw4
 
 			; advance hl to bullet_anim_ptr
 			L_ADVANCE(bullet_draw_ptr + 1, bullet_anim_ptr, BY_A)
-			
+
 @anim_ptr:  ; store anim ptr
 			lxi d, TEMP_ADDR
 			mov m, e
-			inx h			
+			inx h
 			mov m, d
 
 			mov a, b
@@ -47,10 +47,10 @@ vfx_init4:
 			mvi e, 0
 			; a = scr_x
 			; b = pos_x
-			; c = pos_y			
+			; c = pos_y
 			; e = 0 and SPRITE_W_PACKED_MIN
-			; hl - ptr to bullet_erase_scr_addr_old			
-			
+			; hl - ptr to bullet_erase_scr_addr_old
+
 			; advance hl to bullet_erase_scr_addr
 			inx h
 			mov m, c
@@ -103,12 +103,12 @@ vfx_init:
 			; advance hl to bullet_update_ptr
 			dcx h
 			mvi m, <vfx_update
-			inx h 
+			inx h
 			mvi m, >vfx_update
 			; advance hl to bullet_draw_ptr
-			inx h 
+			inx h
 			mvi m, <vfx_draw
-			inx h 
+			inx h
 			mvi m, >vfx_draw
 
 			; advance hl to bullet_status
@@ -117,11 +117,11 @@ vfx_init:
 
 			; advance hl to bullet_anim_ptr
 			L_ADVANCE(bullet_status, bullet_anim_ptr, BY_A)
-			
+
 @anim_ptr:  ; store anim ptr
 			lxi d, TEMP_ADDR
 			mov m, e
-			inx h			
+			inx h
 			mov m, d
 
 			; make a proper scr addr
@@ -133,10 +133,10 @@ vfx_init:
 			mvi d, 2
 			mvi e, 0
 			; bc - screen addr
-			; d - anim ptr offset. used in a draw func			
+			; d - anim ptr offset. used in a draw func
 			; e - 0 and SPRITE_W_PACKED_MIN
-			; hl - ptr to bullet_erase_scr_addr_old			
-			
+			; hl - ptr to bullet_erase_scr_addr_old
+
 			; advance hl to bullet_erase_scr_addr
 			inx h
 			mov m, c
@@ -170,7 +170,7 @@ vfx_init:
 
 ; anim and a gameplay logic update
 ; in:
-; de - ptr to bullet_update_ptr 
+; de - ptr to bullet_update_ptr
 vfx_update:
 			HL_ADVANCE(bullet_update_ptr, bullet_anim_timer, BY_HL_FROM_DE)
 			mvi a, VFX_ANIM_SPEED
@@ -190,12 +190,12 @@ vfx_update:
 ; de - sprite screen addr
 ; c - preshifted sprite idx*2 offset based on pos_x then +2
 ; hl - ptr to pos_y+1
-; use: a		
+; use: a
 sprite_get_scr_addr1_vfx:
-			mov d, m 
-			inx h 
+			mov d, m
+			inx h
 			mov c, m ; (pos_y) contains an anim ptr offset to get a proper preshifted frame
-			inx h 
+			inx h
 			mov e, m
 			ret
 sprite_get_scr_addr1_vfx_ptr:
@@ -203,7 +203,7 @@ sprite_get_scr_addr1_vfx_ptr:
 
 ; draw a non-preshifted sprite into a backbuffer
 ; in:
-; de - ptr to bullet_draw_ptr 
+; de - ptr to bullet_draw_ptr
 vfx_draw:
 			lhld sprite_get_scr_addr1_vfx_ptr
 			lda vfx_ram_disk_s_cmd
@@ -211,7 +211,7 @@ vfx_draw:
 
 ; draw a sprite into a backbuffer
 ; in:
-; de - ptr to bullet_draw_ptr 
+; de - ptr to bullet_draw_ptr
 vfx_draw4:
 			lhld vfx4_get_scr_addr
 			lda vfx4_ram_disk_s_cmd

@@ -1,4 +1,4 @@
-memusage_credits:
+@memusage_credits
 ;=======================================================
 
 credits_screen:

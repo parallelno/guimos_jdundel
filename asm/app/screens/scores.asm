@@ -1,4 +1,4 @@
-memusage_scores:
+@memusage_scores
 ;=======================================================
 
 SCORES_LINE_SPACING = 14

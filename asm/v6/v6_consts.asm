@@ -1,3 +1,4 @@
+@memusage_v6_consts
 	; This line is for proper formatting in VSCode
 ;=======================================================
 ; Ports
@@ -114,7 +115,7 @@ STACK_MAIN_PROGRAM_ADDR	= 0x8000 - 2
 ; used by the iterruption func
 STACK_INTERRUPTION_ADDR	= STACK_MAIN_PROGRAM_ADDR - MAIN_STACK_LEN
 ; used as a temp 2 byte space in the render routines such as sprite_copy_to_scr_v
-; It's used in rare cases when mapping is enabled, SP points to the data, and BC reg pair is 
+; It's used in rare cases when mapping is enabled, SP points to the data, and BC reg pair is
 ; temporally needed
 STACK_TEMP_ADDR			= STACK_INTERRUPTION_ADDR - INT_STACK_LEN
 STACK_MIN_ADDR			= STACK_TEMP_ADDR - TMP_STACK_LEN
@@ -184,11 +185,11 @@ OPCODE_LXI_SP	= 0x31
 ;=======================================================
 ; regs
 AY_REG_TONE_FDIV_CHA_L	= 0 ; LLLLLLLL, channel A tone frequency divider low, FDIV = HHHH * 256 + LLLLLLLL, frq = 1.7734MHz / 16 / FDIV
-AY_REG_TONE_FDIV_CHA_H	= 1 ; ----HHHH, channel A tone frequency divider high 
-AY_REG_TONE_FDIV_CHB_L	= 2 ; LLLLLLLL, channel B tone frequency divider low 
-AY_REG_TONE_FDIV_CHB_H	= 3 ; ----HHHH, channel B tone frequency divider high 
-AY_REG_TONE_FDIV_CHC_L	= 4 ; LLLLLLLL, channel C tone frequency divider low 
-AY_REG_TONE_FDIV_CHC_H	= 5 ; ----HHHH, channel C tone frequency divider high 
+AY_REG_TONE_FDIV_CHA_H	= 1 ; ----HHHH, channel A tone frequency divider high
+AY_REG_TONE_FDIV_CHB_L	= 2 ; LLLLLLLL, channel B tone frequency divider low
+AY_REG_TONE_FDIV_CHB_H	= 3 ; ----HHHH, channel B tone frequency divider high
+AY_REG_TONE_FDIV_CHC_L	= 4 ; LLLLLLLL, channel C tone frequency divider low
+AY_REG_TONE_FDIV_CHC_H	= 5 ; ----HHHH, channel C tone frequency divider high
 AY_REG_NOISE_FDIV		= 6 ; ---NNNNN, noise frequency divider, FDIV = NNNNN, frq = 1.7734MHz / 16 / FDIV
 AY_REG_MIXER			= 7 ; --CBAcba, cba - to mute tone channels, CBA - to mute noise channels, (1 = muted)
 AY_REG_VOL_CHA			= 8 ; ---EVVVV, E - envelope (1=enabled), VVVV - master volune
@@ -204,7 +205,7 @@ AY_REG_ENV				= 13; ----EEEH, envelope type = EEE, H = 1 means hold
 ;							envelope type = 4: \|\|\|\|\|\|\|, repeated decay
 ;							envelope type = 5: /|/|/|/|/|/|/|, repeated attack
 ;							envelope type = 6: /\/\/\/\/\/\/\, repeated attack-decay
-;							envelope type = 7: \/\/\/\/\/\/\/, repeated decay-attack 
+;							envelope type = 7: \/\/\/\/\/\/\/, repeated decay-attack
 ; mixer masks
 AY_REG_MIXER_T_MUTE_CHA = %00000001 ; to mute tone channel A
 AY_REG_MIXER_T_MUTE_CHB = %00000010 ; to mute tone channel B

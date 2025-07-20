@@ -1,4 +1,4 @@
-memusage_settings:
+@memusage_settings
 ;=======================================================
 
 ; text

@@ -11,9 +11,9 @@ import utils.build as build
 def export_if_updated(asset_j_path, asm_meta_path, asm_data_path, bin_path,
 		force_export):
 
-	if (force_export or 
+	if (force_export or
 		export_level_utils.is_source_updated(asset_j_path, build.ASSET_TYPE_LEVEL_DATA)):
-		
+
 		export_asm(asset_j_path, asm_meta_path, asm_data_path, bin_path)
 		print(f"export_level_gfx: {asset_j_path} got exported.")
 
@@ -34,8 +34,8 @@ def export_asm(asset_j_path, asm_meta_path, asm_data_path, bin_path):
 		os.mkdir(asm_data_dir)
 	with open(asm_data_path, "w") as file:
 		file.write(asm_ram_disk_data)
-	
-	# compile and save the gfx bin files 
+
+	# compile and save the gfx bin files
 	build.export_fdd_file(asm_meta_path, asm_data_path, bin_path, asm_ram_data)
 
 	return True
@@ -55,7 +55,7 @@ def ram_disk_data_to_asm(level_j_path):
 	#=====================================================================
 	# palette
 	path_png = level_dir + level_j["path_png"]
-	image = Image.open(path_png) 
+	image = Image.open(path_png)
 
 	palette_asm, colors, palette_label, palette_len = \
 		common_gfx.palette_file_to_asm(level_dir + level_j['palette_path'], path_png, '_' + level_name)
@@ -68,7 +68,7 @@ def ram_disk_data_to_asm(level_j_path):
 	#=====================================================================
 	# list of gfx tiles
 	image = common_gfx.remap_colors(image, colors)
-	
+
 	room_paths = level_j["rooms"]
 	rooms_j = []
 	# load and parse tiled map
@@ -82,24 +82,24 @@ def ram_disk_data_to_asm(level_j_path):
 
 	# list of tiles addreses
 	png_name = common.path_to_basename(path_png)
-	
+
 	# tile gfx data to asm
 	gfx_asm, gfx_ptrs, gfx_data_len = gfx_to_asm(rooms_j[0], image, path_png, remap_idxs, "_" + png_name)
 	asm += gfx_asm
-	
+
 	# add gfx ptrs
 	for label_name, gfx_ptr in gfx_ptrs.items():
 		relative_ptrs[label_name] = gfx_ptr + local_addrs
-	
+
 	local_addrs += gfx_data_len
 	#=====================================================================
 
-	
+
 
 	return asm, relative_ptrs, remap_idxs
 
 def ram_data_to_asm(level_j_path, relative_ptrs, remap_idxs):
-	
+
 	with open(level_j_path, "rb") as file:
 		level_j = json.load(file)
 
@@ -123,8 +123,8 @@ def ram_data_to_asm(level_j_path, relative_ptrs, remap_idxs):
 	asm += f"			.byte TEMP_BYTE ; RAM_DISK_M_{level_name.upper()}_DATA ; defined in loads.asm and inited by _gfx_init\n"
 	asm += f"			.word {list_of_tiles_label}\n"
 	asm += f"@data_end:\n"
-	asm += f"{data_init_tbl_label.upper()}_LEN = @data_end - {data_init_tbl_label}\n"	
-	asm += "\n"	
+	asm += f"{data_init_tbl_label.upper()}_LEN = @data_end - {data_init_tbl_label}\n"
+	asm += "\n"
 
 	#=====================================================================
 	# init func
@@ -139,9 +139,9 @@ def ram_data_to_asm(level_j_path, relative_ptrs, remap_idxs):
 
 	asm += f"			push b\n"
 	asm += f"\n"
-	
+
 	asm += f"			lxi h, {list_of_tiles_label}\n"
-	asm += f"			call update_labels_eod\n"
+	asm += f"			call add_offset_to_labels_eod\n"
 	asm += f"\n"
 
 	asm += f"			pop d\n"
@@ -174,7 +174,7 @@ def get_list_of_tiles(remap_idxs, label_prefix, pngLabelPrefix):
 	for i, t_idx in enumerate(remap_idxs):
 		asm += f"_{pngLabelPrefix}_tile{remap_idxs[t_idx]:02x}_relative, "
 	asm += "\n"
-	asm += f"			.word EOD\n\n"	
+	asm += f"			.word EOD\n\n"
 
 	return asm, label
 
@@ -184,10 +184,10 @@ def gfx_to_asm(room_j, image, path, remap_idxs, label_prefix):
 
 	tileW = room_j["tilewidth"]
 	tileH = room_j["tileheight"]
-	
+
 	width = room_j["layers"][0]["width"]
 	height = room_j["layers"][0]["height"]
-	
+
 	relative_ptrs = {}
 	tile_relative_addr = 2 # added safety pair of bytes for reading by POP B
 
@@ -206,7 +206,7 @@ def gfx_to_asm(room_j, image, path, remap_idxs, label_prefix):
 				#x += 1
 			tile_img.append(line)
 			#y += 1
-		
+
 		# convert indexes into bit lists.
 		bits0, bits1, bits2, bits3 = common_gfx.indexes_to_bit_lists(tile_img)
 

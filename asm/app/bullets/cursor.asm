@@ -1,4 +1,4 @@
-memusage_cursor:
+@memusage_cursor
 
 ;=========================================================
 ; This is a non-gameplay bullet object
@@ -19,10 +19,10 @@ CURSOR_ANIM_SPEED_MOVE	= 30
 ; movement speed based on the hero pos. it goes to that direction.
 cursor_init:
 			BULLET_INIT(cursor_update, bomb_draw, CURSOR_STATUS_IDLE, CURSOR_STATUS_IDLE_TIME, bomb_run_anim, empty_func)
-			
+
 ; anim and a gameplay logic update
 ; in:
-; de - ptr to bullet_update_ptr 
+; de - ptr to bullet_update_ptr
 cursor_update:
 			; de - ptr to bullet_update_ptr
 			; advance hl to bullet_pos_y+1
@@ -42,7 +42,7 @@ cursor_update:
 			mvi a, CURSOR_MOVE_SPEED_MAX
 @no_clamp:
 			jmp @apply_pos
-@move_down:			
+@move_down:
 			RRC_(2)
 			ori %1100_0000
 			; clamp to max speed

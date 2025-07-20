@@ -1,4 +1,4 @@
-memusage_bob:
+@memusage_bob
 ;========================================================
 ; npc is a quest monster. it can't be destroied.
 ; all all npcs visual and logic is in this assembly.
@@ -44,5 +44,3 @@ bob_impacted:
 
 			;call npc_friends_mom
 			ret
-
-

@@ -1,3 +1,4 @@
+@memusage_v6_tiled_img_draw
 TILED_IMG_SCR_BUFFS = 4
 TILED_IMG_TILE_H = 8
 TILE_IMG_TILE_LEN = TILED_IMG_TILE_H * TILED_IMG_SCR_BUFFS + 2 ; 8*4 bytes + a couple of safety bytes
@@ -128,7 +129,7 @@ tiled_img_draw_pos_offset:
 			sta tiled_img_draw_check_end_line + 1
 			; de - scr addr
 			; hl - tile idx data ptr
-			
+
 tiled_img_draw_loop:
 			; get tile_idx
 			mov c, m

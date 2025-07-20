@@ -1,6 +1,6 @@
-memusage_room_tiledata_spawn:
+@memusage_room_tiledata_spawn
 ;=======================================================
-; to init each tiledata in a room during a room initialization. 
+; to init each tiledata in a room during a room initialization.
 ; check room.asm room_handle_room_tiledata func
 room_tiledata_funcs:
 			JMP_4(room_tiledata_decal_walkable_spawn)	; func_id = 0
@@ -235,7 +235,7 @@ room_tiledata_container_spawn:
 			ret
 @opened:
 			; draw an opened container
-			; c - tile_idx in the room_tiledata array			
+			; c - tile_idx in the room_tiledata array
 			ROOM_DECAL_DRAW(containers_opened_gfx_ptrs)
 			mvi a, TILEDATA_RESTORE_TILE
 			ret

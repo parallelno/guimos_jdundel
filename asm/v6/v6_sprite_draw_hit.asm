@@ -1,3 +1,4 @@
+@memusage_v6_sprite_draw_hit
 ; =============================================
 ;
 ; OLD! the sprite format got changed
@@ -22,8 +23,8 @@
 ; .byte - offset_x
 ; .byte - height
 ; .byte - width
-; 		0 - one byte width, 
-;		1 - two bytes width, 
+; 		0 - one byte width,
+;		1 - two bytes width,
 ;		2 - three bytes width
 
 ; pixel format:
@@ -216,7 +217,7 @@ sprite_draw_hit_vm:	; VM stands for: V - variable height, M - mask support
 			dcr e
 			jnz @w8evenScr1
 			jmp sprite_draw_ret_ram_disk
-			
+
 .macro SPRITE_DRAW_HIT_VM(fill = true)
 			pop b
 			.if fill
@@ -227,7 +228,7 @@ sprite_draw_hit_vm:	; VM stands for: V - variable height, M - mask support
 			.if fill == false
 				mov a, m
 				ana c
-			.endif			
+			.endif
 			mov m, a
 .endmacro
 */

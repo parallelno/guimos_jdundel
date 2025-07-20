@@ -2,8 +2,8 @@
 ; asm data file: build/debug/level_data/lv1_data_data.asm
 ; bin file: build/debug/bin/LV1_DATA.BIN
 
-LV1_DATA_FILE_LEN = 836
-LV1_DATA_LAST_RECORD_LEN = 68
+LV1_DATA_FILE_LEN = 838
+LV1_DATA_LAST_RECORD_LEN = 70
 
 LV1_DATA_FILENAME_PTR:
 			.byte "LV1_DATA" ; filename
@@ -39,14 +39,14 @@ lv1_data_init:
 			push b
 
 			lxi h, lv1_data_rooms_ptrs
-			call update_labels_eod
+			call add_offset_to_labels_eod
 
 			pop d
 			; d = LV1_DATA_ADDR
 
 			lxi h, lv1_resources_inst_data_ptrs
 			mvi c, 2 ; _lv0_resources_inst_data_ptrs and _lv0_containers_inst_data_ptrs
-			call update_labels_len
+			call add_offset_to_labels_len
 
 			; copy a level init data
 			lxi h, lv1_data_init_tbl
@@ -59,6 +59,6 @@ _lv1_resources_inst_data_ptrs = 0x0002
 _lv1_containers_inst_data_ptrs = 0x0027
 LV1_BREAKABLES = 0x0008
 _lv1_room00 = 0x002e
-_lv1_room01 = 0x013b
-_lv1_room02 = 0x0256
+_lv1_room01 = 0x013e
+_lv1_room02 = 0x0259
 

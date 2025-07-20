@@ -1,4 +1,4 @@
-memusage_fart:
+@memusage_fart
 
 ;=========================================================
 ; This is a quest bullet
@@ -15,13 +15,13 @@ FART_STATUS_LIFE_TIME	= 20
 
 ; init for non-preshifted VFX (x coord aligned to 8 pixels )
 fart_init:
-			lxi h, hero_erase_scr_addr 
+			lxi h, hero_erase_scr_addr
 			mov c, m
 			inx h
 			mov b, m
 
 			BULLET_INIT(fart_update, vfx_draw, FART_STATUS_LIFE, FART_STATUS_LIFE_TIME, vfx_puff_loop_anim, fart_init_post)
-			ret			
+			ret
 
 ; vfx_draw func used for this fart bullet requires a specific pos_y and pos_x format
 ; this function provides it
@@ -46,12 +46,12 @@ fart_init_post:
 
 ; anim and a gameplay logic update
 ; in:
-; de - ptr to bullet_update_ptr 
+; de - ptr to bullet_update_ptr
 fart_update:
 			; advance to bullet_status_timer
 			xchg
 			L_ADVANCE(bullet_update_ptr, bullet_status_timer, BY_A)
-			; hl - ptr to bullet_update_ptr 
+			; hl - ptr to bullet_update_ptr
 @fraction_timer:
 			mvi a, 1
 			rlc

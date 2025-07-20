@@ -1,7 +1,7 @@
 .include "app/levels/room_draw.asm"
 .include "app/levels/room_tiledata_spawn.asm"
 .include "app/levels/room_tiledata.asm"
-memusage_room:
+@memusage_room
 
 ;=======================================================
 

@@ -1,4 +1,4 @@
-memusage_bomb:
+@memusage_bomb
 ;=================================================
 ; bullet AI:
 ; init:
@@ -107,7 +107,7 @@ bomb_init_speed:
 
 ; anim and a gameplay logic update
 ; in:
-; de - ptr to bullet_update_ptr 
+; de - ptr to bullet_update_ptr
 bomb_update:
 			; advance to bullet_status_timer
 			HL_ADVANCE(bullet_update_ptr, bullet_status_timer, BY_HL_FROM_DE)
@@ -135,7 +135,7 @@ bomb_update:
 ; draw a sprite into a backbuffer
 ; in:
 bomb_draw:
-; de - ptr to bullet_draw_ptr 
+; de - ptr to bullet_draw_ptr
 			lhld bomb_get_scr_addr
 			lda bomb_ram_disk_s_cmd
 			jmp actor_draw

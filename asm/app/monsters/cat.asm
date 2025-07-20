@@ -1,4 +1,4 @@
-memusage_cat:
+@memusage_cat
 
 
 ; statuses.
@@ -50,7 +50,7 @@ cat_init:
 ; uppdate for CAT_ID
 ; anim and a gameplay logic update
 ; in:
-; de - ptr to monster_update_ptr 
+; de - ptr to monster_update_ptr
 cat_update:
 			; advance hl to monster_status
 			HL_ADVANCE(monster_update_ptr, monster_status, BY_HL_FROM_DE)
@@ -60,7 +60,7 @@ cat_update:
 			cpi ACTOR_STATUS_CAT_DETECT_HERO
 			jz cat_update_detect_hero
 			cpi ACTOR_STATUS_CAT_DASH
-			jz cat_update_dash		
+			jz cat_update_dash
 			cpi ACTOR_STATUS_CAT_RELAX
 			jz cat_update_relax
 			cpi ACTOR_STATUS_CAT_DASH_PREP
@@ -175,8 +175,8 @@ cat_update_move:
 			dcr m
 			jz @set_detect_hero_init
 @update_movement:
-			ACTOR_UPDATE_MOVEMENT_CHECK_TILE_COLLISION(CAT_COLLISION_WIDTH, CAT_COLLISION_HEIGHT, @set_move_init) 
-			
+			ACTOR_UPDATE_MOVEMENT_CHECK_TILE_COLLISION(CAT_COLLISION_WIDTH, CAT_COLLISION_HEIGHT, @set_move_init)
+
 			; hl points to monster_pos_y+1
 			; advance hl to monster_anim_timer
 			HL_ADVANCE(monster_pos_y+1, monster_anim_timer, BY_BC)
@@ -246,16 +246,16 @@ cat_update_dash_prep:
 			; speed = pos_diff / ACTOR_STATUS_CAT_DASH_TIME
 			lda hero_pos_x+1
 			sub m
-			mov e, a 
+			mov e, a
 			mvi a, 0
 			; if posDiffX < 0, then d = $ff, else d = 0
 			sbb a
 			mov d, a
 			xchg
-			; posDiffX / ACTOR_STATUS_CAT_DASH_TIME 
-			dad h 
-			dad h 
-			dad h 
+			; posDiffX / ACTOR_STATUS_CAT_DASH_TIME
+			dad h
+			dad h
+			dad h
 			dad h
 			; to fill up L with %1111 if pos_diff < 0
 			ani %1111 ; <(%0000000011111111 / ACTOR_STATUS_CAT_DASH_TIME)
@@ -272,32 +272,32 @@ cat_update_dash_prep:
 			; do the same for Y
 			lda hero_pos_y+1
 			sub m
-			mov e, a 
+			mov e, a
 			mvi a, 0
 			; if posDiffY < 0, then d = $ff, else d = 0
 			sbb a
-			mov d, a 
+			mov d, a
 			xchg
-			; posDiffY / ACTOR_STATUS_CAT_DASH_TIME 
-			dad h 
-			dad h 
-			dad h 
-			dad h 
+			; posDiffY / ACTOR_STATUS_CAT_DASH_TIME
+			dad h
+			dad h
+			dad h
+			dad h
 			; to fill up L with %1111 if pos_diff < 0
 			ani %1111 ; <(%0000000011111111 / ACTOR_STATUS_CAT_DASH_TIME)
-			ora l 
+			ora l
 			mov l, a
 			xchg
 			; advance hl to speed_x
-			inx h 
+			inx h
 			pop b ; speed_x
-			mov m, c 
-			inx h 
+			mov m, c
+			inx h
 			mov m, b
 			; advance hl to speed_y
 			inx h
 			mov m, e
-			inx h 
+			inx h
 			mov m, d
 			ret
 
@@ -318,11 +318,11 @@ cat_update_dash:
 			jmp actor_anim_update
 @set_move_init:
 			; hl points to monster_status_timer
-			mvi m, ACTOR_STATUS_CAT_MOVE_TIME			
+			mvi m, ACTOR_STATUS_CAT_MOVE_TIME
 			; advance hl to monster_status
 			dcx h
 			mvi m, ACTOR_STATUS_CAT_MOVE_INIT
-			ret	
+			ret
 
 
 ; in:
@@ -335,7 +335,7 @@ cat_update_anim_check_collision_hero:
 
 ; draw a sprite into a backbuffer
 ; in:
-; de - ptr to monster_draw_ptr 
+; de - ptr to monster_draw_ptr
 cat_draw:
 			lhld cat_get_scr_addr
 			lda cat_ram_disk_s_cmd

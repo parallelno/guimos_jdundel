@@ -1,6 +1,6 @@
-memusage_app_utils:
+@memusage_app_utils
 ; functions that common accross this specific game
-; 
+;
 
 
 ; it fills the main ram, backbuffer, backbuffer2

@@ -18,7 +18,7 @@
 .include "asm/app/monsters/npc4.asm"
 .include "asm/app/monsters/caterpillar.asm"
 
-memusage_monsters:
+@memusage_monsters
 
 monsters_init:
 			; actor_data_head_ptr got inited in level_init with NULL
@@ -27,7 +27,7 @@ monsters_init:
 			sta monsters_runtime_data_end_marker + 1
 			; erase runtime_data
 			ACTOR_ERASE_RUNTIME_DATA(monster_update_ptr)
-			
+
 			; init runtime_data list
 			lxi h, hero_data_next_ptr
 			shld actor_data_head_ptr
@@ -72,12 +72,12 @@ monsters_init:
 monster_init:
 			RRC_(2) ; to get monster_id
 			sta @monster_id + 1
-			
+
 			shld @monster_data_ptr + 1
 
 			mov a, c
-			sta @tile_idx + 1			
-			
+			sta @tile_idx + 1
+
 			A_TO_ZERO(0)
 			cmp b
 			jz @no_spawn_rate_check
@@ -95,7 +95,7 @@ monster_init:
 			; hl - points to monster_data_next_ptr
 			xchg
 
-			
+
 			lxi h, 0
 			dad	sp
 			shld @restore_sp + 1
@@ -103,7 +103,7 @@ monster_init:
 			lxi sp, TEMP_ADDR
 
 			xchg
-			; hl - ptr to monster_data_next_ptr			
+			; hl - ptr to monster_data_next_ptr
 
 			HL_ADVANCE(monster_data_next_ptr, monster_update_ptr, BY_BC)
 			pop b ; using bc to read from the stack is requirenment
@@ -204,7 +204,7 @@ monster_init:
 @restore_sp:
 			lxi sp, TEMP_ADDR
 			RAM_DISK_OFF()
-@exit:			
+@exit:
 			; return TILEDATA_RESTORE_TILE to make the tile where a monster spawned walkable and restorable
 			mvi a, TILEDATA_RESTORE_TILE
 			ret
@@ -229,7 +229,7 @@ monsters_get_first_collided:
 			mov a, l
 			sta @collider_pos_y+1
 			mov a, b
-			sta @monster_type + 1			
+			sta @monster_type + 1
 			lxi h, monster_update_ptr+1
 
 @loop:
@@ -243,8 +243,8 @@ monsters_get_first_collided:
 @check_collision:
 			push h
 			HL_ADVANCE(monster_update_ptr+1, monster_type, BY_BC)
-			mov a, m			
-@monster_type:			
+			mov a, m
+@monster_type:
 			ani TEMP_BYTE
 			jz @no_collision
 
@@ -439,16 +439,16 @@ monsters_sort_pos_y:
 			A_TO_ZERO(NULL)
 			cmp h
 			rz ; return if the list is empty
-			
+
 			xchg
 			; de - current element
-			
+
 			lxi h, actor_data_head_ptr
 			push h
 @loop:
 			; stack - prev element, or current element from previous loop iteration
 			; de - current element, or next element from previous loop iteration
-			xchg			
+			xchg
 
 			; stack - prev element
 			; hl - current element
@@ -476,7 +476,7 @@ monsters_sort_pos_y:
 			xchg
 			; hl - next element
 			dad b
-			; a - pos_y of the current element			
+			; a - pos_y of the current element
 			; m - pos_y of the next element
 			; compare >pos_y of the current element with the next one
 			cmp m

@@ -1,89 +1,9 @@
 ## Main Ram memory usage:
-> Free Space: `4902`
+> Free Space: `4686`
 
 |Assembly| Usage|
 |-|-|
-|memusage_v6_build_uncludes:|3472|
-|memusage_hero_update:|1339|
-|memusage_v6_sprite_copy_to_backbuf:|1219|
-|memusage_v6_sprite_copy_to_scr:|1203|
-|memusage_v6_sound:|810|
-|memusage_loads:|655|
-|memusage_v6_utils:|639|
-|memusage_actor:|621|
-|memusage_v6_os:|583|
-|memusage_monsters:|578|
-|memusage_knight:|448|
-|memusage_burner:|437|
-|memusage_sword:|435|
-|memusage_goose:|433|
-|memusage_cat:|433|
-|memusage_room_tiledata_spawn:|432|
-|memusage_caterpillar:|424|
-|memusage_v6_sprite_draw:|415|
-|memusage_skeleton:|401|
-|memusage_ui:|396|
-|memusage_settings:|381|
-|memusage_room_tiledata:|372|
-|memusage_vampire:|368|
-|memusage_main_menu:|343|
-|memusage_hero_tile_funcs:|341|
-|memusage_app:|311|
-|memusage_hero_collision:|288|
-|memusage_v6_tiled_img_draw:|271|
-|memusage_v6_tile_draw:|269|
-|memusage_v6_text_ex_draw:|263|
-|memusage_hero_data:|244|
-|memusage_v6_text_mono_draw:|229|
-|memusage_knight_heavy:|225|
-|memusage_scythe:|222|
-|memusage_backs:|199|
-|memusage_dialogs:|198|
-|memusage_room:|197|
-|memusage_snowflake:|195|
-|memusage_room_draw:|191|
-|memusage_vfx:|189|
-|memusage_bullets:|178|
-|memusage_game:|176|
-|memusage_v6_decal_draw:|173|
-|memusage_levels:|170|
-|memusage_v6_sprite_erase:|168|
-|memusage_v6_controls:|166|
-|memusage_breakables:|163|
-|memusage_screen_utils:|158|
-|memusage_v6_sprite:|157|
-|memusage_bomb:|153|
-|memusage_score_data:|144|
-|memusage_sparker:|142|
-|memusage_stats:|138|
-|memusage_friends_mom:|124|
-|memusage_firepool:|123|
-|memusage_v6_interruption:|118|
-|memusage_hero_render:|108|
-|memusage_burner_quest:|108|
-|memusage_fart:|98|
-|memusage_v6_back_draw:|97|
-|memusage_monsters_data:|88|
-|memusage_hero_triggers:|81|
-|memusage_hero:|80|
-|memusage_cursor:|78|
-|memusage_scores:|78|
-|memusage_score:|66|
-|memusage_app_utils:|63|
-|memusage_credits:|58|
-|memusage_v6_gc_runtime_data:|34|
-|memusage_friends_sis:|27|
-|memusage_dotty:|27|
-|memusage_bob:|27|
-|memusage_v6_sprite_draw_invis:|26|
-|memusage_skeleton_quest:|15|
-|memusage_loads_end:|12|
-|memusage_npc:|9|
-|memusage_npc4:|9|
-|memusage_v6_macros:|0|
-|memusage_v6_consts:|0|
-|memusage_v6_build_consts:|0|
-|memusage_v6_sprite_draw_hit:|0|
+|memusage_loads:|768|
 
 ## FDD Usage:
 > Used: `325632`, Free Space: `514048`
@@ -179,7 +99,7 @@
 ---
 ### `level0` RAM Disk usage:
 
-> Used: `89874`, Free Space: `98430`
+> Used: `90804`, Free Space: `97500`
 
 - bank0 addr0
 	* CAT.BIN: addr: 0, len: `6628`
@@ -187,8 +107,8 @@
 	* BURNER.BIN: addr: 12930, len: `6116`
 	* SWORD.BIN: addr: 19046, len: `6032`
 	* GOOSE.BIN: addr: 25078, len: `3616`
-	* TI0_GFX.BIN: addr: 28694, len: `3162`
-	* SNOWFLAK.BIN: addr: 31856, len: `832`
+	* NPC.BIN: addr: 28694, len: `3436`
+	* FIREPOOL.BIN: addr: 32130, len: `558`
 
   `Used: 32688, Free: 16`
 
@@ -197,14 +117,14 @@
   `Used: 0, Free: 18`
 
 - bank1 addr0
+	* TI0_GFX.BIN: addr: 0, len: `3162`
 
-  `Used: 0, Free: 32704`
+  `Used: 3162, Free: 29542`
 
 - bank1 addr8000
 	* TXT_LV0.BIN: addr: 36670, len: `4052`
-	* PAL_LV0.BIN: addr: 40722, len: `148`
 
-  `Used: 4200, Free: 90`
+  `Used: 4052, Free: 238`
 
 - bank2 addr0
 
@@ -212,9 +132,9 @@
 
 - bank2 addr8000
 	* HERO.BIN: addr: 45124, len: `17792`
-	* NPC.BIN: addr: 62916, len: `2506`
+	* TI0_DATA.BIN: addr: 62916, len: `342`
 
-  `Used: 20298, Free: 114`
+  `Used: 18134, Free: 2278`
 
 - bank3 addr0
 
@@ -226,16 +146,16 @@
 	* NPC4.BIN: addr: 49364, len: `7464`
 	* SKELETON.BIN: addr: 56828, len: `6660`
 	* SCYTHE.BIN: addr: 63488, len: `1068`
-	* FIREPOOL.BIN: addr: 64556, len: `558`
-	* TI0_DATA.BIN: addr: 65114, len: `342`
+	* SNOWFLAK.BIN: addr: 64556, len: `832`
+	* PAL_LV0.BIN: addr: 65388, len: `148`
 
-  `Used: 32688, Free: 80`
+  `Used: 32768, Free: 0`
 
 
 ---
 ### `level1` RAM Disk usage:
 
-> Used: `66280`, Free Space: `122024`
+> Used: `66282`, Free Space: `122022`
 
 - bank0 addr0
 	* SWORD.BIN: addr: 0, len: `6032`
@@ -272,16 +192,16 @@
   `Used: 0, Free: 32704`
 
 - bank3 addr8000
-	* LV1_DATA.BIN: addr: 32768, len: `836`
-	* KNIGHT.BIN: addr: 33604, len: `10664`
-	* SKELETON.BIN: addr: 44268, len: `6660`
-	* LV1_GFX.BIN: addr: 50928, len: `6466`
-	* BURNER.BIN: addr: 57394, len: `6116`
-	* SNOWFLAK.BIN: addr: 63510, len: `832`
-	* TNT.BIN: addr: 64342, len: `720`
-	* TI0_DATA.BIN: addr: 65062, len: `342`
+	* LV1_DATA.BIN: addr: 32768, len: `838`
+	* KNIGHT.BIN: addr: 33606, len: `10664`
+	* SKELETON.BIN: addr: 44270, len: `6660`
+	* LV1_GFX.BIN: addr: 50930, len: `6466`
+	* BURNER.BIN: addr: 57396, len: `6116`
+	* SNOWFLAK.BIN: addr: 63512, len: `832`
+	* TNT.BIN: addr: 64344, len: `720`
+	* TI0_DATA.BIN: addr: 65064, len: `342`
 
-  `Used: 32636, Free: 132`
+  `Used: 32638, Free: 130`
 
 
 ---

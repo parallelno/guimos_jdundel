@@ -1,4 +1,4 @@
-memusage_scythe:
+@memusage_scythe
 ;=================================================
 ; bullet AI:
 ; init:
@@ -63,7 +63,7 @@ SCYTHE_COLLISION_HEIGHT	= 12
 ; bc - caster pos
 ; a - direction (BULLET_DIR_*)
 scythe_init:
-			sta scythe_init_speed + 1 ; 
+			sta scythe_init_speed + 1 ;
 			BULLET_INIT(scythe_update, scythe_draw, SCYTHE_STATUS_MOVE_THROW, SCYTHE_STATUS_MOVE_TIME, scythe_run_anim, scythe_init_speed)
 
 ; in:
@@ -89,7 +89,7 @@ scythe_init_speed:
 			mvi m, <SCYTHE_MOVE_SPEED_NEG
 			inx h
 			mvi m, >SCYTHE_MOVE_SPEED_NEG
-			ret	
+			ret
 @move_up:
 			mov m, e
 			inx h
@@ -105,38 +105,38 @@ scythe_init_speed:
 			inx h
 			mvi m, >SCYTHE_MOVE_SPEED_NEG
 			; advance hl to bullet_speed_y
-			inx h			
+			inx h
 			mov m, e
 			inx h
 			mov m, e
-			ret			
+			ret
 @move_right:
 			mvi m, <SCYTHE_MOVE_SPEED
 			inx h
 			mvi m, >SCYTHE_MOVE_SPEED
 			; advance hl to bullet_speed_y
-			inx h			
+			inx h
 			mov m, e
 			inx h
 			mov m, e
 			ret
-			
+
 ; anim and a gameplay logic update
 ; in:
-; de - ptr to bullet_update_ptr 
+; de - ptr to bullet_update_ptr
 scythe_update:
 			; advance to bullet_status_timer
 			HL_ADVANCE(bullet_update_ptr, bullet_status_timer, BY_HL_FROM_DE)
 			dcr m
 			jz @die
 @update_movement:
-			ACTOR_UPDATE_MOVEMENT_CHECK_TILE_COLLISION(SCYTHE_COLLISION_WIDTH, SCYTHE_COLLISION_HEIGHT, @set_bounce_after_tile_collision) 
-			
+			ACTOR_UPDATE_MOVEMENT_CHECK_TILE_COLLISION(SCYTHE_COLLISION_WIDTH, SCYTHE_COLLISION_HEIGHT, @set_bounce_after_tile_collision)
+
 			; hl points to bullet_pos_y+1
 			; advance hl to bullet_anim_timer
 			L_ADVANCE(bullet_pos_y+1, bullet_anim_timer, BY_A)
 			mvi a, SCYTHE_ANIM_SPEED_MOVE
-			BULLET_UPDATE_ANIM_CHECK_COLLISION_HERO(SCYTHE_COLLISION_WIDTH, SCYTHE_COLLISION_HEIGHT, SCYTHE_DAMAGE)	
+			BULLET_UPDATE_ANIM_CHECK_COLLISION_HERO(SCYTHE_COLLISION_WIDTH, SCYTHE_COLLISION_HEIGHT, SCYTHE_DAMAGE)
 @die_after_damage:
 			; advance hl to bullet_update_ptr+1
 			L_ADVANCE(bullet_pos_y+1, bullet_update_ptr+1, BY_A)
@@ -168,18 +168,18 @@ scythe_update:
 			dcx h
 			mvi m, <SCYTHE_MOVE_SPEED_NEG
 			ret
-@set_move_vert:		
+@set_move_vert:
 			; advance hl to bullet_speed_y+1
 			INX_H(2)
 			mov a, m
 			CPI_ZERO()
 			jp @set_move_down
-@set_move_up:			
+@set_move_up:
 			mvi m, >SCYTHE_MOVE_SPEED
 			dcx h
 			mvi m, <SCYTHE_MOVE_SPEED
 			ret
-@set_move_down:			
+@set_move_down:
 			mvi m, >SCYTHE_MOVE_SPEED_NEG
 			dcx h
 			mvi m, <SCYTHE_MOVE_SPEED_NEG
@@ -193,7 +193,7 @@ scythe_update:
 
 ; draw a sprite into a backbuffer
 ; in:
-; de - ptr to bullet_draw_ptr 
+; de - ptr to bullet_draw_ptr
 scythe_draw:
 			lhld scythe_get_scr_addr
 			lda scythe_ram_disk_s_cmd

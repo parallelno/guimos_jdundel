@@ -9,7 +9,7 @@
 .include "app/bullets/vfx.asm"
 .include "app/bullets/cursor.asm"
 
-memusage_bullets:
+@memusage_bullets
 
 bullets_init:
 			; set the last marker byte of runtime_data
@@ -92,7 +92,7 @@ bullet_init:
 			pop b ; get the ptr to init_speed func
 @restore_sp:
 			lxi sp, TEMP_ADDR
-			RAM_DISK_OFF()			
+			RAM_DISK_OFF()
 			; bc - ptr to init_speed func
 			push b
 
@@ -146,7 +146,7 @@ bullet_init:
 
 			xchg
 			; de - ptr to bullet_speed_x
-			
+
 			pop b
 			; bc - ptr to init_speed func
 
@@ -174,12 +174,12 @@ bullets_erase:
 
 ; copy sprites from a backbuffer to a scr
 ; in:
-; hl - ptr to bullet_update_ptr+1 
+; hl - ptr to bullet_update_ptr+1
 bullet_copy_to_scr:
 			; advance to bullet_status
 			HL_ADVANCE(bullet_update_ptr+1, bullet_status)
 			jmp actor_copy_to_scr
-			
+
 ; erase a sprite or restore the background behind a sprite
 ; in:
 ; hl - ptr to bullet_update_ptr+1

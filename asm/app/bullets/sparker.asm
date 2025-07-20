@@ -1,4 +1,4 @@
-memusage_sparker:
+@memusage_sparker
 
 ;=========================================================
 ; This is a non-gameplay bullet
@@ -22,7 +22,7 @@ memusage_sparker:
 ;		else:
 ;			accept new pos
 ;			update_anim
-;			check bullet-hero collision, 
+;			check bullet-hero collision,
 ;			if bullet collides with hero:
 ;				impact hero
 ;				death
@@ -62,7 +62,7 @@ sparker_init_speed:
 			; hl - ptr to bullet_speed_x
 			; set a projectile speed towards the hero
 			; pos_diff =  hero_pos - burnerPosX
-			; speed = pos_diff / ACTOR_STATUS_VAMPIRE_DASH_TIME			
+			; speed = pos_diff / ACTOR_STATUS_VAMPIRE_DASH_TIME
 			lda hero_pos_x+1
 			sub b
 			mov e, a
@@ -73,28 +73,28 @@ sparker_init_speed:
 			xchg
 			; posDiffX / SPARKER_STATUS_MOVE_TIME (it uses the fact that HL>>5 the same as HL<<3)
 			dad h
-			dad h 
+			dad h
 			;dad h
 			; to fill up L with %1111 if pos_diff < 0
 			;ani %111 ; <(%0000000011111111 / SPARKER_STATUS_DASH_TIME)
 			ani %11 ; <(%0000000011111111 / SPARKER_STATUS_DASH_TIME)
-			ora l 
+			ora l
 			mov l, a
 			push h
 			xchg
 			; do the same for Y
 			lda hero_pos_y+1
 			sub c
-			mov e, a 
+			mov e, a
 			mvi a, 0
 			; if posDiffY < 0, then d = $ff, else d = 0
 			sbb a
-			mov d, a 
+			mov d, a
 			xchg
-			; posDiffY / SPARKER_STATUS_MOVE_TIME 
-			dad h 
-			dad h 
-			;dad h 
+			; posDiffY / SPARKER_STATUS_MOVE_TIME
+			dad h
+			dad h
+			;dad h
 			; to fill up L with %1111 if pos_diff < 0
 			;ani %111 ; <(%0000000011111111 / SPARKER_STATUS_DASH_TIME)
 			ani %11 ; <(%0000000011111111 / SPARKER_STATUS_DASH_TIME)
@@ -102,19 +102,19 @@ sparker_init_speed:
 			mov l, a
 			xchg
 			pop b ; speed_x
-			mov m, c 
-			inx h 
+			mov m, c
+			inx h
 			mov m, b
 			; advance hl to speed_y
 			inx h
 			mov m, e
-			inx h 
-			mov m, d	
+			inx h
+			mov m, d
 			ret
-			
+
 ; anim and a gameplay logic update
 ; in:
-; de - ptr to bullet_update_ptr 
+; de - ptr to bullet_update_ptr
 sparker_update:
 			; advance to bullet_status_timer
 			HL_ADVANCE(bullet_update_ptr, bullet_status_timer, BY_HL_FROM_DE)
@@ -123,7 +123,7 @@ sparker_update:
 @update_movement:
 			call actor_move
 			; hl - ptr to bullet_pos_x+1
-			
+
 			shld @sparker_pos_ptr+1
 			; hl points to bullet_pos_x+1
 			; advance hl to bullet_anim_timer
@@ -141,14 +141,14 @@ sparker_update:
 			; de - vfx_anim_ptr (ex. vfx_puff_anim)
 @sparker_pos_ptr:
 			lxi h, TEMP_ADDR
-			; hl points to bullet_pos_x+1			
+			; hl points to bullet_pos_x+1
 			mov a, m
 			; pos_x to scr_x
 			; a - pos_x
 			; scr_x = pos_x/8 + $a0
 			RRC_(3)
 			ani %00011111
-			adi SPRITE_X_SCR_ADDR		
+			adi SPRITE_X_SCR_ADDR
 			mov b, a
 
 			; pos_y + rand val in the range (-3, 3)

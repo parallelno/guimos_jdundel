@@ -1,4 +1,4 @@
-memusage_score:
+@memusage_score
 
 ; add score points to hero_res_score
 ; in:

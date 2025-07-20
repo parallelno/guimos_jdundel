@@ -151,7 +151,7 @@ def export(config_j_path):
 					export_back.export_if_updated(
 							asset_j_path,
 							asm_meta_path, asm_data_path, bin_path,
-							force_export) 
+							force_export)
 				case build.ASSET_TYPE_PALETTE:
 					export_palette.export_if_updated(
 							asset_j_path,
@@ -297,6 +297,7 @@ def export_build_includes(assets, extra_includes):
 	for asset in assets:
 		asm_path = asset["asm_meta_path"]
 		if asm_path not in already_included:
+			build_include += f'@memusage_{os.path.basename(asm_path).split('.')[0]}\n'
 			build_include += f'.include "{asm_path}"\n'
 			already_included.add(asm_path)
 

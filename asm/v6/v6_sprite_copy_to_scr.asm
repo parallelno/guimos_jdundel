@@ -1,3 +1,4 @@
+@memusage_v6_sprite_copy_to_scr
 ; copy a sprite from the back buff to the screen
 ; in:
 ; de - scr addr
@@ -92,7 +93,7 @@ sprite_copy_to_scr_v:
 			JMP_4(@h17)
 			JMP_4(@h18)
 			JMP_4(@h19)
-			JMP_4(@h20)		
+			JMP_4(@h20)
 
 .macro COPY_SPRITE_TO_SCR_PB(move_up = true)
 			pop b
@@ -120,7 +121,7 @@ sprite_copy_to_scr_v:
 			COPY_SPRITE_TO_SCR_PB()
 		.endloop
 			COPY_SPRITE_TO_SCR_PB(false)
-	.endif			
+	.endif
 .endmacro
 
 .macro COPY_SPRITE_TO_SCR(height)
@@ -128,23 +129,23 @@ sprite_copy_to_scr_v:
 			; hl - scr addr
 			xchg
 			; d - width
-			mov d, a			
+			mov d, a
 			; to restore X
 			mov e, h
 
 @next_column:
 			RAM_DISK_ON(RAM_DISK_S_BACKBUFF | RAM_DISK_M_BACKBUFF | RAM_DISK_M_8F)
-			; read with non-stack operations because we must load BC before 
+			; read with non-stack operations because we must load BC before
 			; using POP B
 			mov b, m
 			dcr l
 			mov c, m
-			/* TODO: Optimization: Instead of executing extra code to prevent data 
-			corruption by the interruption break, we can do the following: When a 
-			draw function starts, we set the interruption function return address 
-			to the start of the draw function. If an interruption break occurs 
-			during a draw function call, the interruption restarts the draw 
-			function, guaranteeing that the data will not be corrupted. In short, 
+			/* TODO: Optimization: Instead of executing extra code to prevent data
+			corruption by the interruption break, we can do the following: When a
+			draw function starts, we set the interruption function return address
+			to the start of the draw function. If an interruption break occurs
+			during a draw function call, the interruption restarts the draw
+			function, guaranteeing that the data will not be corrupted. In short,
 			we call the draw function again if the interruption occurs.*/
 			RAM_DISK_ON(RAM_DISK_S_BACKBUFF)
 
@@ -164,8 +165,8 @@ sprite_copy_to_scr_v:
 			lxi h, $2000-height+2-1
 	.endif
 			dad sp
-			; set SP to a STACK_TEMP_ADDR, for the case when an interruption call 
-			; happens between sta and out $10 in RAM_DISK_ON(RAM_DISK_S_BACKBUFF) 
+			; set SP to a STACK_TEMP_ADDR, for the case when an interruption call
+			; happens between sta and out $10 in RAM_DISK_ON(RAM_DISK_S_BACKBUFF)
 			; in the code above
 			lxi sp, STACK_TEMP_ADDR
 

@@ -1,4 +1,4 @@
-memusage_skeleton:
+@memusage_skeleton
 ; mob AI:
 ; init:
 ;	 status = detectHeroInit
@@ -101,16 +101,16 @@ skeleton_init:
 ;========================================================
 ; anim and a gameplay logic update
 ; in:
-; de - ptr to monster_update_ptr 
+; de - ptr to monster_update_ptr
 skeleton_update:
 			; advance hl to monster_status
 			HL_ADVANCE(monster_update_ptr, monster_status, BY_HL_FROM_DE)
 			mov a, m
 			/*
 			NOT TODO: a call table is not faster than properly sorted cpi/jz.
-						it requres a change callig func signatures (de will 
+						it requres a change callig func signatures (de will
 						contain a ptr to monster_status instead of hl.
-						a call table takes 17*4cc. it includes xchg in calling 
+						a call table takes 17*4cc. it includes xchg in calling
 						func and JMP_4 to call it.
 						if status IDs take a big range like now (
 						ACTOR_STATUS_SKELETON_DETECT_HERO = 1,
@@ -231,7 +231,7 @@ skeleton_update_move:
 			jz @set_detect_hero_init
 @update_movement:
 			ACTOR_UPDATE_MOVEMENT_CHECK_TILE_COLLISION(SKELETON_COLLISION_WIDTH, SKELETON_COLLISION_HEIGHT, @set_move_init)
-			
+
 			; hl points to monster_pos_y+1
 			; advance hl to monster_anim_timer
 			HL_ADVANCE(monster_pos_y+1, monster_anim_timer, BY_BC)
@@ -332,7 +332,7 @@ skeleton_update_shoot:
 			mov b, m
 			INX_H(2)
 			mov c, m
-.if DEBUG			
+.if DEBUG
 			jmp scythe_init
 			ret
 .endif
@@ -347,7 +347,7 @@ skeleton_update_anim_check_collision_hero:
 
 ; draw a sprite into a backbuffer
 ; in:
-; de - ptr to monster_draw_ptr 
+; de - ptr to monster_draw_ptr
 skeleton_draw:
 			lhld skeleton_get_scr_addr
 			lda skeleton_ram_disk_s_cmd

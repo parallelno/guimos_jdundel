@@ -1,4 +1,4 @@
-memusage_friends_mom:
+@memusage_friends_mom
 ;========================================================
 ; npc is a quest monster. it can't be destroied.
 ; all all npcs visual and logic is in this assembly.
@@ -16,8 +16,6 @@ ACTOR_STATUS_FRIENDS_MOM_MOVE_TIME			= 55
 FRIENDS_MOM_ANIM_SPEED_IDLE	= 20
 
 ; gameplay
-FRIENDS_MOM_DAMAGE = 0
-FRIENDS_MOM_HEALTH = 0
 
 FRIENDS_MOM_COLLISION_WIDTH		= 16
 FRIENDS_MOM_COLLISION_HEIGHT	= 16
@@ -30,21 +28,7 @@ FRIENDS_MOM_COLLISION_HEIGHT	= 16
 ; out:
 ; a = TILEDATA_RESTORE_TILE
 friends_mom_init:
-			MONSTER_INIT(npc_update, npc_draw, friends_mom_impacted, FRIENDS_MOM_HEALTH, ACTOR_STATUS_FRIENDS_MOM_IDLE, npc_mom_idle_anim, False, MONSTER_TYPE_ALLY)
-
-;========================================================
-; anim and a gameplay logic update
-; in:
-; de - ptr to monster_update_ptr 
-npc_update:
-			; advance hl to monster_anim_timer
-			HL_ADVANCE(monster_update_ptr, monster_anim_timer, BY_HL_FROM_DE)
-			mvi a, FRIENDS_MOM_ANIM_SPEED_IDLE
-			; hl - monster_anim_timer
-			; a - anim speed
-			call actor_anim_update
-			;MONSTER_CHECK_COLLISION_HERO(FRIENDS_MOM_COLLISION_WIDTH, FRIENDS_MOM_COLLISION_HEIGHT, FRIENDS_MOM_DAMAGE)
-			ret
+			MONSTER_INIT(npc_update, npc_draw, friends_mom_impacted, NPC_HEALTH, ACTOR_STATUS_FRIENDS_MOM_IDLE, npc_friends_mom_idle_anim, False, MONSTER_TYPE_ALLY)
 
 ; in:
 ; de - ptr to monster_impacted_ptr + 1
@@ -56,14 +40,10 @@ friends_mom_impacted:
 			rz ; return if the hero used a snowflake
 			; de - ptr to monster_impacted_ptr+1
 
-			call npc_friends_mom
-			ret
-
-
 ; Interaction with a friend's mom NPC.
 ; In this routine the hero gets a key 0 to open the backyard
 ; Then he gets a popsicle pie in exchange of a dry clothes
-npc_friends_mom:
+
 			; fix for multiple calls this function when a hero hits several trigger tiledatas
 			call dialog_is_inited
 			rz
@@ -76,7 +56,7 @@ npc_friends_mom:
 
 			; if a key_0 isn't acquired, set key_0 status = ITEM_STATUS_ACQUIRED
 			mvi m, ITEM_STATUS_ACQUIRED
-			
+
 			lxi d, TILEDATA_FUNC_ID_ITEMS<<8 | ITEM_ID_KEY_0
 			call game_score_add
 			call game_ui_draw_score_text
@@ -120,4 +100,3 @@ npc_friends_mom:
 			lxi h, dialog_callback_room_redraw
 			lxi d, _dialogs_knocked_his_friend_door_clothes_returns
 			jmp dialog_init
-

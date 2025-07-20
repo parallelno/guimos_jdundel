@@ -1,4 +1,4 @@
-memusage_sword:
+@memusage_sword
 ;=================================================
 
 .include "app/bullets/sword_tile_funcs.asm"
@@ -54,7 +54,7 @@ sword_init:
 
 ; anim and a gameplay logic update
 ; in:
-; de - ptr to bullet_update_ptr 
+; de - ptr to bullet_update_ptr
 sword_update:
 			; advance to bullet_status
 			HL_ADVANCE(bullet_update_ptr, bullet_status, BY_HL_FROM_DE)
@@ -138,12 +138,12 @@ sword_check_monsters:
 			lxi h, SWORD_MONSTER_COLLISION_OFFSET_X_L<<8 | SWORD_MONSTER_COLLISION_OFFSET_Y_L
 			jnc @attkL
 			lxi h, SWORD_MONSTER_COLLISION_OFFSET_X_R<<8 | SWORD_MONSTER_COLLISION_OFFSET_Y_R
-@attkL:			
+@attkL:
 			; de - pos_xy
 			; add a collision offset
 			dad d
 
-	
+
 			; check if a bullet collides with a monster
 			mvi a, SWORD_MONSTER_COLLISION_WIDTH
 			lxi b, MONSTER_TYPE_ENEMY<<8 | SWORD_MONSTER_COLLISION_HEIGHT
@@ -170,7 +170,7 @@ sword_check_monsters:
 
 ; draw a sprite into a backbuffer
 ; in:
-; de - ptr to bullet_draw_ptr 
+; de - ptr to bullet_draw_ptr
 sword_draw:
 			lhld sword_get_scr_addr
 			lda sword_ram_disk_s_cmd

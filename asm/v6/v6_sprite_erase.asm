@@ -1,3 +1,4 @@
+@memusage_v6_sprite_erase
 ; clear a N*16 pxs square on the screen,
 ; it clears 3 screen buffers from de addr and further
 ; ex. CALL_RAM_DISK_FUNC(sprite_erase, RAM_DISK_M_8F)
@@ -54,8 +55,8 @@ sprite_erase:
 			ERASE_SPRITE_SP_COL(false)
 @restore_sp:
 			lxi sp, TEMP_ADDR
-			ret			
-erase_sprite_end:	
+			ret
+erase_sprite_end:
 
 .macro ERASE_SPRITE_SP_COL(next_column = true)
 
@@ -92,7 +93,7 @@ erase_sprite_end:
 	.endloop
 		.if next_column == true
 
-			; erase last two bytes without stack ops to fix the issue 
+			; erase last two bytes without stack ops to fix the issue
 			; when the interruption func writes outside of the tile
 			lxi h, (<(-$20*3))<<8 | <(-1)
 			dad sp
@@ -112,18 +113,17 @@ erase_sprite_end:
 			dad d
 			mvi m, 0
 			dcr l
-			mvi m, 0			
+			mvi m, 0
 
 			; advance to the next column of the first scr buff
-			lxi h, 
+			lxi h,
 			dad sp
 			; 144
-			
+
 			;w16 cc 1092
 			;w24 cc 1524
 		.endif
 */
 
-				
+
 .endmacro
-			

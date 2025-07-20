@@ -1,4 +1,4 @@
-memusage_hero_update:
+@memusage_hero_update
 .include "app/hero/hero_attack.asm"
 .include "app/hero/hero_update_dead.asm"
 
@@ -38,7 +38,7 @@ hero_update:
 			jc hero_dead
 			ret
 
-			
+
 hero_check_keys:
 			; check if an attack key is pressed
 			lhld action_code

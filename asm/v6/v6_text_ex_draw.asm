@@ -1,3 +1,5 @@
+@memusage_v6_text_ex_draw
+
 .include "asm/v6/v6_text_ex_consts.asm"
 
 LINE_SPACING_DEFAULT = -12
@@ -23,7 +25,7 @@ text_ex_set_spacing:
 			mov m, b
 			ret
 
-; set what scr buffers to draw to (SCR_BUFF3_ADDR, SCR_BUFF2_ADDR, SCR_BUFF1_ADDR)			
+; set what scr buffers to draw to (SCR_BUFF3_ADDR, SCR_BUFF2_ADDR, SCR_BUFF1_ADDR)
 ; in:
 ; a - SCR_BUFF3_ADDR or SCR_BUFF2_ADDR or SCR_BUFF1_ADDR
 text_ex_set_scr_addr:
@@ -37,7 +39,7 @@ text_ex_set_scr_addr:
 ; bc - font global gfx addr (points to where gfx was loaded)
 text_ex_init_font:
 			; set font gfx RAM Disk stack activation command
-			sta text_ex_draw_ramdisk_access_gfx + 1			
+			sta text_ex_draw_ramdisk_access_gfx + 1
 			; hl - font_gfx_ptrs
 			push h
 			; font_gfx_ptrs - ADDR_LEN because there is no char_code = 0
@@ -45,11 +47,11 @@ text_ex_init_font:
 			dcx h
 			shld text_ex_draw_font_gfx_ptrs + 1
 			pop h
-			
+
 			; update gfx local labels
 			; hl - font_gfx_ptrs with local ptrs
 			; bc - font global gfx addr
-			call update_labels_eod
+			call add_offset_to_labels_eod
 			ret
 
 ; init the text data
@@ -80,7 +82,7 @@ text_ex_init_text:
 ;	.word 16 pxls data. the first 8 pixels are empty to support shifting
 ;	.byte pos_y_offset for the next char
 ;	.byte pos_x_offset for the next char
-;	because the second byte of the each char line is 0, the sufficient 
+;	because the second byte of the each char line is 0, the sufficient
 ;	condition of the end of the char data is a non zero byte which is pos_x_offset
 ; chat gfx data always follows safety pair of bytes for reading by POP B
 
@@ -90,7 +92,7 @@ text_ex_init_text:
 ;	.byte scr pos_y
 ;	.byte char codes where 0 is the EOD, 255 is a new paragraph, 106 is a new line
 ;
-;	before rendering a text its text is copied to the ram. Copied data does not 
+;	before rendering a text its text is copied to the ram. Copied data does not
 ;	contain the length word.
 ; text data always follows safety pair of bytes for reading by POP B
 text_ex_draw:
@@ -153,7 +155,7 @@ text_ex_draw_pos_offset:
 
 
 			; bc - scr pos
-			; hl - text addr			
+			; hl - text addr
 text_ex_draw_next_char:
 			; get a char code
 			mov e, m
@@ -162,7 +164,7 @@ text_ex_draw_next_char:
 			ora e
 			jz restore_sp
 			inx h
-			
+
 			; a - char_code
 			; check if it is the end of the line
 			cpi <_LINE_BREAK_

@@ -1,5 +1,6 @@
+@memusage_v6_decal_draw
 ;----------------------------------------------------------------
-; draw a decal sprite with an alpha channel (16xN pixels) 
+; draw a decal sprite with an alpha channel (16xN pixels)
 ; TODO: support width = 8
 ; input:
 ; bc - decal sprite data addr
@@ -31,11 +32,11 @@
 			pop b
 			mov a, m
 			ana e
-			ora c	
+			ora c
 			mov m, a
 			inr h
 			mov a, m
-			ana d	
+			ana d
 			ora b
 			mov m, a
 .endmacro
@@ -44,7 +45,7 @@
 			pop b
 			mov a, m
 			ana d
-			ora c	
+			ora c
 			mov m, a
 			dcr h
 			mov a, m
@@ -67,10 +68,10 @@ draw_decal_v:
 			pop b
 			; b - offset_x
 			; c - offset_y
-			; hl - scr addr			
+			; hl - scr addr
 			dad b
 			pop b
-			
+
 			A_TO_ZERO(0)	; this is a fix of line: dcr b
 			cmp b			; we SHOULD NOT modify BC to prevent stack corruption!
 

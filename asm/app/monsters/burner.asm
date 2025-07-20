@@ -1,4 +1,4 @@
-memusage_burner:
+@memusage_burner
 ; mob AI:
 ; init:
 ;	 status = detectHeroInit
@@ -111,13 +111,13 @@ burner_init:
 ; uppdate for BURNER_ID
 ; anim and a gameplay logic update
 ; in:
-; de - ptr to monster_update_ptr 
+; de - ptr to monster_update_ptr
 burner_update:
 
 /*
 ; TODO: test. is it faster to copy the actor run-time data
 ; to the temp buffer, when access it via lhld/shld instead
-; of 
+; of
 ;			HL_ADVANCE(monster_status_timer, monster_anim_ptr),
 ;			mvi m, <burner_idle_anim
 ;			inx h
@@ -167,7 +167,7 @@ burner_update:
 			cpi ACTOR_STATUS_BURNER_DETECT_HERO
 			jz burner_update_detect_hero
 			cpi ACTOR_STATUS_BURNER_DASH
-			jz burner_update_dash		
+			jz burner_update_dash
 			cpi ACTOR_STATUS_BURNER_RELAX
 			jz burner_update_relax
 			cpi ACTOR_STATUS_BURNER_DASH_PREP
@@ -177,7 +177,7 @@ burner_update:
 			cpi ACTOR_STATUS_BURNER_DETECT_HERO_INIT
 			jz burner_update_detect_hero_init
 			cpi ACTOR_STATUS_FREEZE
-			jz burner_update_freeze		
+			jz burner_update_freeze
 			ret
 
 ; burner is immune to freeze
@@ -282,8 +282,8 @@ burner_update_move:
 			dcr m
 			jz @set_detect_hero_init
 @update_movement:
-			ACTOR_UPDATE_MOVEMENT_CHECK_TILE_COLLISION(BURNER_COLLISION_WIDTH, BURNER_COLLISION_HEIGHT, @set_move_init) 
-			
+			ACTOR_UPDATE_MOVEMENT_CHECK_TILE_COLLISION(BURNER_COLLISION_WIDTH, BURNER_COLLISION_HEIGHT, @set_move_init)
+
 			; hl points to monster_pos_y+1
 			; advance hl to monster_anim_timer
 			HL_ADVANCE(monster_pos_y+1, monster_anim_timer, BY_BC)
@@ -353,16 +353,16 @@ burner_update_dash_prep:
 			; speed = pos_diff / ACTOR_STATUS_BURNER_DASH_TIME
 			lda hero_pos_x+1
 			sub m
-			mov e, a 
+			mov e, a
 			mvi a, 0
 			; if posDiffX < 0, then d = $ff, else d = 0
 			sbb a
 			mov d, a
 			xchg
-			; posDiffX / ACTOR_STATUS_BURNER_DASH_TIME 
-			dad h 
-			dad h 
-			dad h 
+			; posDiffX / ACTOR_STATUS_BURNER_DASH_TIME
+			dad h
+			dad h
+			dad h
 			dad h
 			; to fill up L with %1111 if pos_diff < 0
 			ani %1111 ; <(%0000000011111111 / ACTOR_STATUS_BURNER_DASH_TIME)
@@ -379,32 +379,32 @@ burner_update_dash_prep:
 			; do the same for Y
 			lda hero_pos_y+1
 			sub m
-			mov e, a 
+			mov e, a
 			mvi a, 0
 			; if posDiffY < 0, then d = $ff, else d = 0
 			sbb a
-			mov d, a 
+			mov d, a
 			xchg
-			; posDiffY / ACTOR_STATUS_BURNER_DASH_TIME 
-			dad h 
-			dad h 
-			dad h 
-			dad h 
+			; posDiffY / ACTOR_STATUS_BURNER_DASH_TIME
+			dad h
+			dad h
+			dad h
+			dad h
 			; to fill up L with %1111 if pos_diff < 0
 			ani %1111 ; <(%0000000011111111 / ACTOR_STATUS_BURNER_DASH_TIME)
-			ora l 
+			ora l
 			mov l, a
 			xchg
 			; advance hl to speed_x
-			inx h 
+			inx h
 			pop b ; speed_x
-			mov m, c 
-			inx h 
+			mov m, c
+			inx h
 			mov m, b
 			; advance hl to speed_y
 			inx h
 			mov m, e
-			inx h 
+			inx h
 			mov m, d
 			ret
 
@@ -425,11 +425,11 @@ burner_update_dash:
 			jmp actor_anim_update
 @set_move_init:
 			; hl points to monster_status_timer
-			mvi m, ACTOR_STATUS_BURNER_MOVE_TIME			
+			mvi m, ACTOR_STATUS_BURNER_MOVE_TIME
 			; advance hl to monster_status
 			dcx h
 			mvi m, ACTOR_STATUS_BURNER_MOVE_INIT
-			ret	
+			ret
 
 
 ; in:
@@ -441,7 +441,7 @@ burner_update_anim_check_collision_hero:
 
 ; draw a sprite into a backbuffer
 ; in:
-; de - ptr to monster_draw_ptr 
+; de - ptr to monster_draw_ptr
 burner_draw:
 			lhld burner_get_scr_addr
 			lda burner_ram_disk_s_cmd

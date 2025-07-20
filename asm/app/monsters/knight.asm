@@ -1,4 +1,4 @@
-memusage_knight:
+@memusage_knight
 ;========================================================
 ; mob AI:
 ; init:
@@ -97,7 +97,7 @@ knight_init:
 ;========================================================
 ; anim and a gameplay logic update
 ; in:
-; de - ptr to monster_update_ptr 
+; de - ptr to monster_update_ptr
 knight_update:
 			; advance hl to monster_status
 			HL_ADVANCE(monster_update_ptr, monster_status, BY_HL_FROM_DE)
@@ -244,7 +244,7 @@ knight_update_speedup:
 			; advance hl to monster_anim_timer
 			HL_ADVANCE(monster_status, monster_anim_timer)
 			mvi a, KNIGHT_ANIM_SPEED_DEFENCE
-			jmp knight_update_anim_check_collision_hero			
+			jmp knight_update_anim_check_collision_hero
 
 ; in:
 ; hl - ptr to monster_status
@@ -257,10 +257,10 @@ knight_update_move_init:
 			HL_ADVANCE(monster_status, monster_id, BY_DE)
 			mov a, m
 			cpi KNIGHT_VERT_ID
-			lxi b, (%10000000)<<8 ; tmp c = 0 
+			lxi b, (%10000000)<<8 ; tmp c = 0
 			jz @vertical_movement
 			mvi b, %00000000
-@vertical_movement:			
+@vertical_movement:
 			xchg
 			call random
 			ani %01111111 ; to clear the last bit
@@ -367,7 +367,7 @@ knight_update_anim_check_collision_hero:
 
 ; draw a sprite into a backbuffer
 ; in:
-; de - ptr to monster_draw_ptr 
+; de - ptr to monster_draw_ptr
 knight_draw:
 			lhld knight_get_scr_addr
 			lda knight_ram_disk_s_cmd

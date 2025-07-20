@@ -1,4 +1,4 @@
-memusage_hero_triggers:
+@memusage_hero_triggers
 
 ;===========================================================================
 ; when the hero looses all the health
@@ -42,7 +42,7 @@ trigger_hero_knocks_his_home_door:
 ;===========================================================================
 ; when the hero knocks a dungeon entrance
 ; The game ends after showing the dialog
-trigger_hero_knocks_dungeon_entrance:
+trigger_end_game:
 			mvi a, GAME_REQ_PAUSE
 			lxi h, @callback
 			lxi d, _dialogs_knocked_dungeon_entrance
@@ -53,14 +53,23 @@ trigger_hero_knocks_dungeon_entrance:
 			sta app_request
 			ret
 
-; TODO: Load level 1 for tests
-trigger_test_load_lv1:
-			mvi a, GAME_REQ_PAUSE
-			lxi h, @callback
-			lxi d, _dialogs_knocked_dungeon_entrance
-			jmp dialog_init
+trigger_load_main_menu:
+			mvi a, GLOBAL_REQ_LOAD_MENU_MAIN
+			sta app_request
+			ret
 
-@callback:
+trigger_load_lv0:
+			mvi a, GLOBAL_REQ_LOAD_LEVEL0
+			sta app_request
+			ret
+
+; TODO: update. add the dialog for the first use
+trigger_load_lv1:
+			;mvi a, GAME_REQ_PAUSE
+			;lxi h, @callback
+			;lxi d, _dialogs_knocked_dungeon_entrance
+			;jmp dialog_init
+;@callback:
 			mvi a, GLOBAL_REQ_LOAD_LEVEL1
 			sta app_request
 			ret

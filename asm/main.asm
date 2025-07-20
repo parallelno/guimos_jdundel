@@ -47,11 +47,11 @@
 .include "app/screens/stats.asm"
 .include "app/game/game.asm"
 .include "app/app.asm"
-memusage_end:
+_memusage_end
 
-RAM_FREE_SPACE = RUNTIME_DATA - memusage_end
+RAM_FREE_SPACE = RUNTIME_DATA - _memusage_end
 
-.if memusage_end >= RUNTIME_DATA
+.if _memusage_end >= RUNTIME_DATA
 	.error "Runtime data buffer overlaps the stack buffer at addr (" runtime_data_end ")."
 	.error "It must be within the range " BUFFERS_END_ADDR "."
 .endif

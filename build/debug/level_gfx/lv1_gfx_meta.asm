@@ -32,7 +32,7 @@ lv1_gfx_init:
 			push b
 
 			lxi h, lv1_gfx_tiles_ptrs
-			call update_labels_eod
+			call add_offset_to_labels_eod
 
 			pop d
 			; d = LV1_DATA_ADDR

@@ -1,5 +1,5 @@
 	; This line is for proper formatting in VSCode
-memusage_v6_gc_runtime_data:
+@memusage_v6_gc_runtime_data
 
 V6_GC_BUFFER_LEN = GC_BUFFER_SIZE * GC_TASKS
 /*
@@ -25,8 +25,8 @@ V6_GC_TASK_SPS_LEN = GC_TASKS * WORD_LEN
 v6_gc_task_sps:
 			.storage V6_GC_TASK_SPS_LEN
 v6_gc_task_sps_end:
- 
-; points to a current task sp. 
+
+; points to a current task sp.
 ; *v6_gc_current_task_spp = v6_gc_task_sps[current_task]
 v6_gc_current_task_spp:
 			.storage WORD_LEN

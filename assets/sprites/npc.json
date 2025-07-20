@@ -5,8 +5,8 @@
 	"preshifted_sprites" : 1,
 	"mask" : true,
 	"anims" : {
-		"mom_idle" : {
-			"frames" : ["mom_idle0", "mom_idle0", "mom_idle1", "mom_idle2", "mom_idle2", "mom_idle1"],
+		"friends_mom_idle" : {
+			"frames" : ["friends_mom_idle0", "friends_mom_idle0", "friends_mom_idle1", "friends_mom_idle2", "friends_mom_idle2", "friends_mom_idle1"],
 			"loop" : true
 		},
 		"sis_idle" : {
@@ -18,19 +18,23 @@
 			"loop" : true
 		},
 		"dotty_idle" : {
-			"frames" : ["dotty_idle0", "dotty_idle1"],
+			"frames" : ["dotty_idle0", "dotty_idle1", "dotty_idle2", "dotty_idle1"],
 			"loop" : true
 		},
 		"greenhat_idle" : {
-			"frames" : ["greenhat_idle0", "greenhat_idle1"],
+			"frames" : ["greenhat_idle0", "greenhat_idle1", "greenhat_idle2", "greenhat_idle1"],
 			"loop" : true
 		},
 		"boy_idle" : {
-			"frames" : ["boy_idle0", "boy_idle1"],
+			"frames" : ["boy_idle0", "boy_idle1", "boy_idle2", "boy_idle1"],
 			"loop" : true
 		},
 		"oldman_idle" : {
-			"frames" : ["oldman_idle0", "oldman_idle1"],
+			"frames" : ["oldman_idle0", "oldman_idle1", "oldman_idle2", "oldman_idle1"],
+			"loop" : true
+		},
+		"mom_idle" : {
+			"frames" : ["mom_idle0", "mom_idle1", "mom_idle2", "mom_idle1"],
 			"loop" : true
 		},
 		"scarecrow_idle" : {
@@ -40,7 +44,7 @@
 	},
 	"sprites" : [
 		{
-			"name" : "mom_idle0",
+			"name" : "friends_mom_idle0",
 			"x" : 0,
 			"y"	: 32,
 			"width" : 16,
@@ -51,7 +55,7 @@
 			"mask_color" : 1
 		},
 		{
-			"name" : "mom_idle1",
+			"name" : "friends_mom_idle1",
 			"x" : 0,
 			"y"	: 48,
 			"width" : 16,
@@ -62,7 +66,7 @@
 			"mask_color" : 1
 		},
 		{
-			"name" : "mom_idle2",
+			"name" : "friends_mom_idle2",
 			"x" : 0,
 			"y"	: 64,
 			"width" : 16,
@@ -129,6 +133,14 @@
 			"mask_x" : 112
 		},
 		{
+			"name" : "dotty_idle2",
+			"x" : 96,
+			"y"	: 64,
+			"width" : 16,
+			"height" : 16,
+			"mask_x" : 112
+		},
+		{
 			"name" : "greenhat_idle0",
 			"x" : 128,
 			"y"	: 32,
@@ -140,6 +152,14 @@
 			"name" : "greenhat_idle1",
 			"x" : 128,
 			"y"	: 48,
+			"width" : 16,
+			"height" : 16,
+			"mask_x" : 144
+		},
+		{
+			"name" : "greenhat_idle2",
+			"x" : 128,
+			"y"	: 64,
 			"width" : 16,
 			"height" : 16,
 			"mask_x" : 144
@@ -161,6 +181,14 @@
 			"mask_x" : 176
 		},
 		{
+			"name" : "boy_idle2",
+			"x" : 160,
+			"y"	: 65,
+			"width" : 16,
+			"height" : 15,
+			"mask_x" : 176
+		},
+		{
 			"name" : "oldman_idle0",
 			"x" : 192,
 			"y"	: 32,
@@ -172,6 +200,38 @@
 			"name" : "oldman_idle1",
 			"x" : 192,
 			"y"	: 48,
+			"width" : 16,
+			"height" : 16,
+			"mask_x" : 208
+		},
+		{
+			"name" : "oldman_idle2",
+			"x" : 192,
+			"y"	: 64,
+			"width" : 16,
+			"height" : 16,
+			"mask_x" : 208
+		},
+		{
+			"name" : "mom_idle0",
+			"x" : 208,
+			"y"	: 32,
+			"width" : 16,
+			"height" : 16,
+			"mask_x" : 208
+		},
+		{
+			"name" : "mom_idle1",
+			"x" : 208,
+			"y"	: 48,
+			"width" : 16,
+			"height" : 16,
+			"mask_x" : 208
+		},
+		{
+			"name" : "mom_idle2",
+			"x" : 208,
+			"y"	: 64,
 			"width" : 16,
 			"height" : 16,
 			"mask_x" : 208

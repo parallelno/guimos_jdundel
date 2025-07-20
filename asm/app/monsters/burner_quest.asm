@@ -1,4 +1,4 @@
-memusage_burner_quest:
+@memusage_burner_quest
 ;========================================================
 ; this is a quest mod identical to burner, but with different behavior
 ; it is spawned once for every screen where its spawner
@@ -53,7 +53,7 @@ burner_quest_init:
 ;========================================================
 ; anim and a gameplay logic update
 ; in:
-; de - ptr to monster_update_ptr 
+; de - ptr to monster_update_ptr
 burner_quest_update:
 			; store de
 			push d
@@ -63,7 +63,7 @@ burner_quest_update:
 			mov a, m
 			cpi BURNER_RIGHT_ID
 			jz @burner_right
-@burner_up:			
+@burner_up:
 			; advance hl to monster_speed_y + 1
 			HL_ADVANCE(monster_id, monster_pos_y + 1, BY_BC)
 			; hl - ptr to monster_pos_y + 1

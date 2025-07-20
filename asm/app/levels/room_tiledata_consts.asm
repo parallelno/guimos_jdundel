@@ -5,7 +5,7 @@
 ; interacts with the game entities.
 ; NOTE:
 ; - Each room consists of a grid of tiles 16x16 pixels each. Each tile has a
-;     graphics data index and a tiledata. Room tiledata values are stored in 
+;     graphics data index and a tiledata. Room tiledata values are stored in
 ;     the `room_tiledata` array.
 ; - Tiledata can be triggered by:
 ;   1. Hero entering a room.
@@ -28,7 +28,7 @@
 ;   Tiledata = %00010000.
 ;   func_id = 1 (MONSTERS), func_arg = 0 (Skeleton).
 ;   Behavior: Spawn Skeleton when a hero enters a room. Tiledata is replaced
-;			 with TILEDATA_RESTORE_TILE, which means the tile's walkable, 
+;			 with TILEDATA_RESTORE_TILE, which means the tile's walkable,
 ;			 and background tile requires restoration after anyone steps on it.
 
 ; Masks
@@ -103,8 +103,8 @@ NPC_ID_VILLAGER4	= 11
 ;-----------------------------------------------------------------------------
 ; func_id = 6 → Global Items
 ;-----------------------------------------------------------------------------
-; - A hero interacts with it when he steps on 
-;   it. 
+; - A hero interacts with it when he steps on
+;   it.
 ; - Item_id = d. See runtime_data.asm->global_items for details.
 
 ITEM_ID_STORYTELLING = 0 ; Opens dialog when a hero steps on it
@@ -137,7 +137,7 @@ RES_ID_CLOTHES 		= 7 ; Quest resource. Used in dialog and specific puzzles.
 RES_ID_CABBAGE		= 8 ; Quest resource. Enables "fart" status on consumption.
 RES_ID_SPOON		= 9	; use it to convert hero_res_popsicle_pie into hero_res_snowflake
 
-; all tiledatas with values bigger than TILEDATA_COLLIDABLE are collidable 
+; all tiledatas with values bigger than TILEDATA_COLLIDABLE are collidable
 ; (a hero and monsters can't step on that tile)
 TILEDATA_COLLIDABLE		= 8 * TILEDATA_ARG_MAX
 
@@ -165,8 +165,11 @@ SWITCH_NYAN_CAT		= 2
 ; - Used for extra game logic like ending the game, loading the level 2, etc.
 ; - trigger_id = d
 TRIGGER_ID_HOME_DOOR = 0 ; when he hits his house door.
-TRIGGER_ID_HOME_DUNGEON_ENTRANCE = 1 ; when he hits the dungeon door.
-TRIGGER_ID_TEMP_LV1 = 7 ; enter the second level
+TRIGGER_ID_END_GAME  = 1 ; when a hero ended the game
+TRIGGER_ID_MAIN_MENU = 7 ; go to the main menu
+TRIGGER_ID_LV0 = 8       ; ... level0
+TRIGGER_ID_LV1 = 9       ; ... level1
+TRIGGER_ID_LV2 = 10      ; ... level2
 
 ;-----------------------------------------------------------------------------
 ; func_id = 11 → Containers
@@ -193,7 +196,7 @@ TRIGGER_ID_TEMP_LV1 = 7 ; enter the second level
 ; - If a hero has a key for a door, the door is unlocked, and the tile is replaced
 ;   with a walkable tile, the graphics of the unlocked door is drawn.
 ; - Each two sequential doors in a room are connected and can be opened with the
-;     same key. If one door is unlocked, the other door is also unlocked. That 
+;     same key. If one door is unlocked, the other door is also unlocked. That
 ;     happens because they unlocking state belongs to the key.
 ; - door_id = d.
 ; door_id = 0 - a door 1 left
@@ -222,7 +225,7 @@ BREAKABLE_ID_CABBAGE = 2 ; Cabbage
 ;-----------------------------------------------------------------------------
 ; func_id = 14 → Collidable Decals
 ;-----------------------------------------------------------------------------
-; - It's drawn on top of graphics tiles to increase background variety. 
+; - It's drawn on top of graphics tiles to increase background variety.
 ; - decal_collidable_id = d
 
 ; decal_collidable_id == 0 - a spider web.
@@ -242,4 +245,3 @@ TILEDATA_BACKS = TILEDATA_FUNC_ID_COLLISION * TILEDATA_ARG_MAX ; animated backgr
 ; back_id = 1 - flag front
 TILEDATA_DIALOG_PRESS_KEY = TILEDATA_BACKS + 2
 TILEDATA_COLLISION = TILEDATA_BACKS + 15 ; just a collision. no graphics, no animation
-

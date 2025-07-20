@@ -39,14 +39,14 @@ lv0_data_init:
 			push b
 
 			lxi h, lv0_data_rooms_ptrs
-			call update_labels_eod
+			call add_offset_to_labels_eod
 
 			pop d
 			; d = LV0_DATA_ADDR
 
 			lxi h, lv0_resources_inst_data_ptrs
 			mvi c, 2 ; _lv0_resources_inst_data_ptrs and _lv0_containers_inst_data_ptrs
-			call update_labels_len
+			call add_offset_to_labels_len
 
 			; copy a level init data
 			lxi h, lv0_data_init_tbl

@@ -1,3 +1,4 @@
+@memusage_v6_macros
 .macro HLT_(i)
 		.loop i
 			hlt
@@ -555,6 +556,3 @@ BY_A			= 5
 			.text string
 			.byte end_code
 .endmacro
-
-
-

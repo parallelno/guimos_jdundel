@@ -1,4 +1,4 @@
-memusage_vampire:
+@memusage_vampire
 ; mob AI:
 ; init:
 ;	 status = detectHeroInit
@@ -102,7 +102,7 @@ vampire_init:
 ;========================================================
 ; anim and a gameplay logic update
 ; in:
-; de - ptr to monster_update_ptr 
+; de - ptr to monster_update_ptr
 vampire_update:
 			; advance hl to monster_status
 			HL_ADVANCE(monster_update_ptr, monster_status, BY_HL_FROM_DE)
@@ -219,8 +219,8 @@ vampire_update_move:
 			dcr m
 			jz @set_detect_hero_init
 @update_movement:
-			ACTOR_UPDATE_MOVEMENT_CHECK_TILE_COLLISION(VAMPIRE_COLLISION_WIDTH, VAMPIRE_COLLISION_HEIGHT, @set_move_init) 
-			
+			ACTOR_UPDATE_MOVEMENT_CHECK_TILE_COLLISION(VAMPIRE_COLLISION_WIDTH, VAMPIRE_COLLISION_HEIGHT, @set_move_init)
+
 			; hl points to monster_pos_y+1
 			; advance hl to monster_anim_timer
 			HL_ADVANCE(monster_pos_y+1, monster_anim_timer, BY_BC)
@@ -277,7 +277,7 @@ vampire_update_shoot_prep:
 			; advance hl to monster_status
 			dcx h
 			mvi m, ACTOR_STATUS_VAMPIRE_SHOOT
-			
+
 			lxi h, sfx_vampire_attack
 			call v6_sfx_play
 			ret
@@ -307,7 +307,7 @@ vampire_update_anim_check_collision_hero:
 
 ; draw a sprite into a backbuffer
 ; in:
-; de - ptr to monster_draw_ptr 
+; de - ptr to monster_draw_ptr
 vampire_draw:
 			lhld vampire_get_scr_addr
 			lda vampire_ram_disk_s_cmd

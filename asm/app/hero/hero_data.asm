@@ -1,4 +1,4 @@
-memusage_hero_data:
+@memusage_hero_data
 
 hero_collision_func_table:
 			; bit layout:
