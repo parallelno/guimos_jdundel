@@ -193,9 +193,9 @@ _storytelling_storytelling_friends_secret_place:
 
 			.word 0 ; safety pair of bytes for reading by POP B
 _storytelling_storytelling_crossroad:
-			.word 172 ; data len to copy to ram
+			.word 168 ; data len to copy to ram
 			.byte 45, 16 ; scr pos (y, x)
-			TEXT("I'm shaken! A terrible monster and the corpses", _LINE_BREAK_)
+			TEXT("I'm shaken! A terrible char and the corpses", _LINE_BREAK_)
 			TEXT("of our beloved villagers! It's clear who the", _LINE_BREAK_)
 			TEXT("culprit is here! You better be trembling!", _LINE_BREAK_)
 			TEXT("I'm going to teach you a lesson!!!", )
@@ -269,7 +269,7 @@ _storytelling_hero_use_spoon:
 
 
 			.word 0 ; safety pair of bytes for reading by POP B
-_storytelling_hero_freeze_monster:
+_storytelling_hero_freeze_char:
 			.word 122 ; data len to copy to ram
 			.byte 45, 16 ; scr pos (y, x)
 			TEXT("Aha! So that's how it works. If you're all", _LINE_BREAK_)

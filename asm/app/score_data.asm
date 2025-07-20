@@ -2,16 +2,16 @@
 ; TODO: Check if all entities are listed
 
 ; func_id = 1
-game_score_monsters:
-			.word 5		; monster_id = 0 - skeleton (tiledata = 1*16+0=16)
-			.word 10	; monster_id = 1 - vampire (tiledata = 17)
-			.word 12	; monster_id = 2 - burner (tiledata = 18)
-			.word 8		; monster_id = 3 - knight horizontal walk (tiledata = 19)
-			.word 7		; monster_id = 4 - knight vertical walk (tiledata = 20)
-			.word 0		; monster_id = 5 - burner quest that runs to the right
-			.word 0		; monster_id = 6 - burner quest that runs to up
-			.word 0		; monster_id = 6 - knight quest horizontal walk
-			.word 3		; monster_id = 7 - firepool
+game_score_chars:
+			.word 5		; char_id = 0 - skeleton (tiledata = 1*16+0=16)
+			.word 10	; char_id = 1 - vampire (tiledata = 17)
+			.word 12	; char_id = 2 - burner (tiledata = 18)
+			.word 8		; char_id = 3 - knight horizontal walk (tiledata = 19)
+			.word 7		; char_id = 4 - knight vertical walk (tiledata = 20)
+			.word 0		; char_id = 5 - burner quest that runs to the right
+			.word 0		; char_id = 6 - burner quest that runs to up
+			.word 0		; char_id = 6 - knight quest horizontal walk
+			.word 3		; char_id = 7 - firepool
 
 ; func_id = 6
 game_score_items:
@@ -52,7 +52,7 @@ game_score_containers:
 			.word 50	; container_id = 2 - a chest with a weapon 1
 			.word 75	; container_id = 3 - a chest with a weapon 2
 			.word 120	; container_id = 4 - a chest with a weapon 3
-			.word 10	; container_id = 5 - a monster spawner chest. it spawns a chest monster when opened
+			.word 10	; container_id = 5 - a char spawner chest. it spawns a chest char when opened
 			.word 50	; container_id = 6 - a crate with a teleport under it to a unique location
 
 ; func_id = 12
@@ -74,7 +74,7 @@ game_score_breakables:
 
 ; pptr list to score points for each type of entity
 game_score_lists_ptrs:
-			.word game_score_monsters
+			.word game_score_chars
 			.word NULL_PTR
 			.word NULL_PTR
 			.word NULL_PTR
@@ -90,7 +90,7 @@ game_score_lists_ptrs:
 
 ; game stats shown when the game is over
 game_stats:
-			.word 0		; monsters
+			.word 0		; chars
 			.word NULL	; TODO: secret room
 			.word NULL	; TODO: deaths
 			.word NULL

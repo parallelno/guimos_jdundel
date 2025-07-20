@@ -99,7 +99,7 @@
 ---
 ### `level0` RAM Disk usage:
 
-> Used: `90804`, Free Space: `97500`
+> Used: `90802`, Free Space: `97502`
 
 - bank0 addr0
 	* CAT.BIN: addr: 0, len: `6628`
@@ -122,9 +122,9 @@
   `Used: 3162, Free: 29542`
 
 - bank1 addr8000
-	* TXT_LV0.BIN: addr: 36670, len: `4052`
+	* TXT_LV0.BIN: addr: 36670, len: `4050`
 
-  `Used: 4052, Free: 238`
+  `Used: 4050, Free: 240`
 
 - bank2 addr0
 

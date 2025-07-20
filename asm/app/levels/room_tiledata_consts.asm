@@ -8,12 +8,11 @@
 ;     graphics data index and a tiledata. Room tiledata values are stored in
 ;     the `room_tiledata` array.
 ; - Tiledata can be triggered by:
-;   1. Hero entering a room.
-;   2. Hero or monster (including bullets) stepping on the tile.
+;   1. During the room initialization when a hero enters it.
+;   2. Actor stepping on the tile.
 ; - When a tile is triggered, an assiciated function is called.
 ; - A function can replace the tiledata with a new one.
-; - If tiledata > 0 then a tile is restored on the screen when a hero,
-; 		a monster, or a bullet steps on it.
+; - If an actor steps on tiledata > 0, a tile is restored on the screen.
 ; - tiledata = 0 means no graphics is drawn on the tile, it's monotonic and
 ;     do not require restoring.
 ;
@@ -26,7 +25,7 @@
 ;
 ; Example:
 ;   Tiledata = %00010000.
-;   func_id = 1 (MONSTERS), func_arg = 0 (Skeleton).
+;   func_id = 1 (CHARS), func_arg = 0 (Skeleton).
 ;   Behavior: Spawn Skeleton when a hero enters a room. Tiledata is replaced
 ;			 with TILEDATA_RESTORE_TILE, which means the tile's walkable,
 ;			 and background tile requires restoration after anyone steps on it.
@@ -37,7 +36,7 @@ TILEDATA_ARG_MASK		= %00001111
 TILEDATA_ARG_MAX		= TILEDATA_ARG_MASK + 1
 
 ; Func IDs
-TILEDATA_FUNC_ID_MONSTERS	= 1
+TILEDATA_FUNC_ID_CHARS	= 1
 TILEDATA_FUNC_ID_TELEPORTS	= 2
 TILEDATA_FUNC_ID_NPCS		= 3
 TILEDATA_FUNC_ID_ITEMS		= 6
@@ -60,7 +59,7 @@ TILEDATA_RESTORE_TILE = 1 ; Walkable, no decal, back tile restoration
 ;     decal_walkable_id == 3 - a skull (tiledata = 2)
 
 ;-----------------------------------------------------------------------------
-; func_id = 1 → Spawn Monsters
+; func_id = 1 → Spawn chars
 ;-----------------------------------------------------------------------------
 SKELETON_ID 	= 0	;
 VAMPIRE_ID		= 1	;
@@ -138,7 +137,7 @@ RES_ID_CABBAGE		= 8 ; Quest resource. Enables "fart" status on consumption.
 RES_ID_SPOON		= 9	; use it to convert hero_res_popsicle_pie into hero_res_snowflake
 
 ; all tiledatas with values bigger than TILEDATA_COLLIDABLE are collidable
-; (a hero and monsters can't step on that tile)
+; (a hero and chars can't step on that tile)
 TILEDATA_COLLIDABLE		= 8 * TILEDATA_ARG_MAX
 
 
@@ -175,7 +174,7 @@ TRIGGER_ID_LV2 = 10      ; ... level2
 ; func_id = 11 → Containers
 ;-----------------------------------------------------------------------------
 ; - Containers drop items or any other reward when a hero hits it.
-; - Usually used for getting special weapons or keys, but can spawn monsters.
+; - Usually used for getting special weapons or keys, but can spawn chars.
 ; - When a hero pick up a container, the container tiledata is replaced with
 ;    a walkable tiledata.
 ; - container_id = d.
@@ -185,7 +184,7 @@ TRIGGER_ID_LV2 = 10      ; ... level2
 ; container_id = 2 - a chest 2
 ; container_id = 3 - a chest 3
 ; container_id = 4 - a chest 4
-; container_id = 5 - a monster spawner chest. it spawns a chest monster when opened
+; container_id = 5 - a char spawner chest. it spawns a chest char when opened
 ; container_id = 6 - a crate with a teleport under it to a unique location
 
 ;-----------------------------------------------------------------------------

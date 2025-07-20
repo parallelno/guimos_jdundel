@@ -1,6 +1,6 @@
 @memusage_friends_sis
 ;========================================================
-; npc is a quest monster. it can't be destroied.
+; npc is a quest char. it can't be destroied.
 ; all all npcs visual and logic is in this assembly.
 ; npc chose logic an a skin based on the room_id, level_id,
 
@@ -23,27 +23,27 @@ FRIENDS_SIS_COLLISION_WIDTH		= 16
 FRIENDS_SIS_COLLISION_HEIGHT	= 16
 
 ;========================================================
-; spawn and init a monster
+; spawn and init a char
 ; in:
 ; c - tile_idx in the room_tiledata array.
-; a - monster_id * 4
+; a - char_id * 4
 ; out:
 ; a = TILEDATA_RESTORE_TILE
 friends_sis_init:
 villager2_init:
 villager3_init:
 villager4_init:
-			MONSTER_INIT(npc_update, npc_draw, friends_sis_impacted, FRIENDS_SIS_HEALTH, ACTOR_STATUS_FRIENDS_SIS_IDLE, npc_sis_idle_anim, False, MONSTER_TYPE_ALLY)
+			CHAR_INIT(npc_update, npc_draw, friends_sis_impacted, FRIENDS_SIS_HEALTH, ACTOR_STATUS_FRIENDS_SIS_IDLE, npc_sis_idle_anim, False, CHAR_TYPE_ALLY)
 
 ; in:
-; de - ptr to monster_impacted_ptr + 1
+; de - ptr to char_impacted_ptr + 1
 ; c - hero_weapon_id
 friends_sis_impacted:
 			; check the weapon_id
 			mvi a, HERO_WEAPON_ID_SNOWFLAKE
 			cmp c
 			rz ; return if the hero used a snowflake
-			; de - ptr to monster_impacted_ptr+1
+			; de - ptr to char_impacted_ptr+1
 
 			;call npc_friends_mom
 			ret

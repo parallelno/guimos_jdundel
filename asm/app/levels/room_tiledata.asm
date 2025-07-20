@@ -10,7 +10,7 @@ room_backup_tiledata:
 			jmp mem_copy
 
 
-; calls the tiledata handler func to spawn a back, breakable, monster, etc
+; calls the tiledata handler func to spawn a back, breakable, char, etc
 room_handle_room_tiledata:
 			mvi a, ROOM_TILEDATA_LEN
 
@@ -32,7 +32,7 @@ room_handle_room_tiledata_ex:
 			ana b
 
 			; check if this func skippable
-			cpi TILEDATA_FUNC_ID_MONSTERS<<4
+			cpi TILEDATA_FUNC_ID_CHARS<<4
 @check:
 			jmp @no_skip
 			mvi a, TILEDATA_RESTORE_TILE

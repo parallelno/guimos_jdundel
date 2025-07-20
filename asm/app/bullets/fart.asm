@@ -6,7 +6,7 @@
 ; it lasts some certain time, then destroys itself
 ; when dies: it sets its status GAME_STATUS_USED
 ; when it's alive, it constantly spawns puff vfx
-; the quest to scary away knight_heavy monster
+; the quest to scary away knight_heavy char
 ;=========================================================
 
 ; statuses.

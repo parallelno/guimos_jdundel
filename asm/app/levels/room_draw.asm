@@ -3,7 +3,7 @@
 ; redraws the room after dialog shown
 ; it uses data inited in the room_draw
 ROOM_TILEDATA_HANDLING_ALL			= OPCODE_JMP
-ROOM_TILEDATA_HANDLING_NO_MONSTERS	= OPCODE_JNZ
+ROOM_TILEDATA_HANDLING_NO_CHARS	= OPCODE_JNZ
 ROOM_DIALOG_TILE_HEIGHT = 4
 room_redraw:
 			call backs_init
@@ -12,7 +12,7 @@ room_redraw:
 			mvi a, ROOM_DIALOG_TILE_HEIGHT * TILE_HEIGHT
 			call room_draw_tiles_ex
 
-			mvi a, ROOM_TILEDATA_HANDLING_NO_MONSTERS
+			mvi a, ROOM_TILEDATA_HANDLING_NO_CHARS
 			sta room_handle_room_tiledata_check
 			mvi a, ROOM_WIDTH * ROOM_DIALOG_TILE_HEIGHT
 			call room_handle_room_tiledata_ex

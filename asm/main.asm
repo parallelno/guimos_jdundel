@@ -12,7 +12,7 @@
 .include "app/levels/backs_consts.asm"
 .include "app/actor/actor_consts.asm"
 .include "app/hero/hero_consts.asm"
-.include "app/monsters/monsters_consts.asm"
+.include "app/chars/char_consts.asm"
 .include "app/bullets/bullets_consts.asm"
 
 .include "runtime_data.asm"
@@ -21,6 +21,7 @@
 .include "app/app_macros.asm"
 .include "app/levels/room_macros.asm"
 .include "app/actor/actor_macros.asm"
+.include "app/chars/char_macros.asm"
 
 .include "app/app_utils.asm"
 .include "app/score.asm"
@@ -29,7 +30,7 @@
 .include "app/actor/actor.asm"
 .include "app/actor/actor_draw.asm"
 .include "app/hero/hero.asm"
-.include "app/monsters/monsters.asm"
+.include "app/chars/chars.asm"
 .include "app/bullets/bullets.asm"
 .include "app/levels/breakables.asm"
 .include "app/levels/levels.asm"

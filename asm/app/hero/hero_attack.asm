@@ -55,7 +55,7 @@ hero_attack_use_cabbage:
 			INR_WRAP_M(RES_CABBAGE_FART, @no_fart)
 
 			call fart_init
-@no_fart:	
+@no_fart:
 
 			; check if a hero uses cabbage the first time
 			lda game_status_cabbage_healing
@@ -108,7 +108,7 @@ hero_attack_use_popsicle_pie:
 			lxi d, _dialogs_hero_use_pie
 			jmp dialog_init
 @pie_callback:
-			call dialog_callback_room_redraw			
+			call dialog_callback_room_redraw
 @no_hero_use_pie_dialog:
 
 			lxi h, hero_res_sword
@@ -128,7 +128,7 @@ hero_attack_use_clothes:
 			lxi d, _dialogs_hero_use_clothes
 			jmp dialog_init
 @clothes_callback:
-			call dialog_callback_room_redraw				
+			call dialog_callback_room_redraw
 @no_hero_use_clothes_dialog:
 
 			lxi h, hero_res_sword
@@ -159,7 +159,7 @@ hero_attack_use_spoon:
 			lxi d, _storytelling_hero_use_spoon
 			jmp dialog_init
 @spoon_callback:
-			call dialog_callback_room_redraw				
+			call dialog_callback_room_redraw
 @no_hero_use_spoon_dialog:
 
 			lxi h, hero_res_sword
@@ -186,7 +186,7 @@ hero_attack_use_sword:
 
 hero_attack_use_hands:
 			call hero_attack_anim_init
-			jmp hero_attack_check_monsters
+			jmp hero_attack_check_chars
 
 HANDS_COLLISION_WIDTH	= 15
 HANDS_COLLISION_HEIGHT	= 16
@@ -199,8 +199,8 @@ SWORD_TILE_COLLISION_OFFSET_X_R = 8
 SWORD_TILE_COLLISION_OFFSET_X_L = <(-7)
 SWORD_TILE_COLLISION_OFFSET_Y = 3
 
-; Check if the area near the hero collides with an allay (npc, pets, friendly animals, etc) monster
-hero_attack_check_monsters:
+; Check if the area near the hero collides with an allay (npc, pets, friendly animals, etc) char
+hero_attack_check_chars:
 			lxi h, hero_pos_x + 1
 			; get the pos_xy
 			mov d, m
@@ -212,28 +212,28 @@ hero_attack_check_monsters:
 			; add a collision offset
 			dad d
 
-	
-			; check if a hand collision intersects with a monster
-			mvi a, HANDS_COLLISION_WIDTH
-			lxi b, MONSTER_TYPE_ALLY<<8 | HANDS_COLLISION_HEIGHT
-			; hl - collision pos_xy
-			call monsters_get_first_collided
 
-			; hl - ptr to a collided monster_update_ptr + 1
+			; check if a hand collision intersects with a char
+			mvi a, HANDS_COLLISION_WIDTH
+			lxi b, CHAR_TYPE_ALLY<<8 | HANDS_COLLISION_HEIGHT
+			; hl - collision pos_xy
+			call chars_get_first_collided
+
+			; hl - ptr to a collided char_update_ptr + 1
 			mov a, m
 			cpi ACTOR_RUNTIME_DATA_DESTR
-			; if no collision with a monster, check the tiledata it is on.
+			; if no collision with a char, check the tiledata it is on.
 			jnc hero_attack_check_tiledata
 
-			; impact the monster
-			; advance hl to monster_impacted_ptr
-			HL_ADVANCE(monster_update_ptr+1, monster_impacted_ptr, BY_BC)
+			; impact the char
+			; advance hl to char_impacted_ptr
+			HL_ADVANCE(char_update_ptr+1, char_impacted_ptr, BY_BC)
 			mov e, m
 			inx h
 			mov d, m
 			xchg
 			mvi c, HERO_WEAPON_ID_HANDS
-			; call a monster_impact func
+			; call a char_impact func
 			pchl
 
 hero_attack_update:

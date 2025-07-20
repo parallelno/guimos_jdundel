@@ -79,7 +79,7 @@ snowflake_update:
 			; hl - ptr to bullet_status
 			; advance hl and decr bullet_status_timer
 			inx h
-			shld @die_after_monster_collides+1
+			shld @die_after_char_collides+1
 			; check if it's time to die
 			dcr m
 			jz @die_over_time
@@ -92,7 +92,7 @@ snowflake_update:
 			mvi a, SNOWFLAKE_ANIM_SPEED_ATTACK
 			call actor_anim_update
 			; hl points to bullet_anim_ptr
-@check_monster_collision:
+@check_char_collision:
 			; check sprite collision
 			; hl - ptr to bullet_anim_ptr
 			; advance hl to bullet_pos_x+1
@@ -106,31 +106,31 @@ snowflake_update:
 
 			; store pos_xy
 			push h
-			; check if a bullet collides with a monster
+			; check if a bullet collides with a enemy
 			mvi a, SNOWFLAKE_COLLISION_WIDTH-1
-			lxi b, MONSTER_TYPE_ENEMY<<8 | SNOWFLAKE_COLLISION_HEIGHT-1
-			call monsters_get_first_collided
+			lxi b, CHAR_TYPE_ENEMY<<8 | SNOWFLAKE_COLLISION_HEIGHT-1
+			call chars_get_first_collided
 
-			; hl - ptr to a collided monster_update_ptr+1
+			; hl - ptr to a collided char_update_ptr+1
 			mov a, m
 			cpi ACTOR_RUNTIME_DATA_DESTR
 			pop d
 			; de - pos_xy
-			; if a monster's not alive or no monster, return
+			; if a char's not alive or no char, return
 			rnc
 
-			; advance hl to monster_impacted_ptr
-			HL_ADVANCE(monster_update_ptr+1, monster_impacted_ptr, BY_BC)
+			; advance hl to char_impacted_ptr
+			HL_ADVANCE(char_update_ptr+1, char_impacted_ptr, BY_BC)
 			mov e, m
 			inx h
 			mov d, m
 			xchg
-			; call a monster_impact func
-			lxi b, @die_after_monster_collides
+			; call a char_impact func
+			lxi b, @die_after_char_collides
 			push b
 			mvi c, HERO_WEAPON_ID_SNOWFLAKE
 			pchl
-@die_after_monster_collides:
+@die_after_char_collides:
 			; hl - ptr to bullet_status_timer
 			lxi h, TEMP_ADDR
 @die_over_time:

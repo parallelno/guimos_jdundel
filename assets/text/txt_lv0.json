@@ -166,7 +166,7 @@
 			"storytelling_crossroad" : {
 				"scr_pos" : [16, 45],
 				"text": [
-				"I'm shaken! A terrible monster and the corpses",
+				"I'm shaken! A terrible char and the corpses",
 				"of our beloved villagers! It's clear who the",
 				"culprit is here! You better be trembling!",
 				"I'm going to teach you a lesson!!!"
@@ -232,7 +232,7 @@
 				"what might come in handy on an adventure!"
 			]
 			},
-			"hero_freeze_monster" : {
+			"hero_freeze_char" : {
 				"scr_pos" : [16, 45],
 				"text": [
 				"Aha! So that's how it works. If you're all",

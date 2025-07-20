@@ -22,10 +22,10 @@ burner_quest_room_ids_end:
 burner_quest_room_ids_len: = burner_quest_room_ids_end - burner_quest_room_ids
 
 ;========================================================
-; spawn and init a monster
+; spawn and init a char
 ; in:
 ; c - tile_idx in the room_tiledata array.
-; a - monster_id * 4
+; a - char_id * 4
 ; out:
 ; a = TILEDATA_RESTORE_TILE
 burner_quest_init:
@@ -46,33 +46,33 @@ burner_quest_init:
 			inr m
 
 			mov a, b
-			MONSTER_INIT(burner_quest_update, burner_draw, empty_func, BURNER_HEALTH, ACTOR_STATUS_BURNER_DETECT_HERO_INIT, burner_dash_anim)
+			CHAR_INIT(burner_quest_update, burner_draw, empty_func, BURNER_HEALTH, ACTOR_STATUS_BURNER_DETECT_HERO_INIT, burner_dash_anim)
 @return:
 			mvi a, TILEDATA_RESTORE_TILE
 			ret
 ;========================================================
 ; anim and a gameplay logic update
 ; in:
-; de - ptr to monster_update_ptr
+; de - ptr to char_update_ptr
 burner_quest_update:
 			; store de
 			push d
-			; advance hl to monster_id
-			HL_ADVANCE(monster_update_ptr, monster_id, BY_HL_FROM_DE)
+			; advance hl to char_id
+			HL_ADVANCE(char_update_ptr, char_id, BY_HL_FROM_DE)
 			; check what burner it is
 			mov a, m
 			cpi BURNER_RIGHT_ID
 			jz @burner_right
 @burner_up:
-			; advance hl to monster_speed_y + 1
-			HL_ADVANCE(monster_id, monster_pos_y + 1, BY_BC)
-			; hl - ptr to monster_pos_y + 1
+			; advance hl to char_speed_y + 1
+			HL_ADVANCE(char_id, char_pos_y + 1, BY_BC)
+			; hl - ptr to char_pos_y + 1
 			; increase pos_y
 			mov a, m
 			adi >BURNER_QUEST_SPEED
 			mov m, a
 
-			; advance hl to monster_update_ptr
+			; advance hl to char_update_ptr
 			pop h
 
 			; check if a burner hits the screen border
@@ -81,29 +81,29 @@ burner_quest_update:
 			jmp @update_anim
 
 @burner_right:
-			; advance hl to monster_pos_x + 1
-			HL_ADVANCE(monster_id, monster_pos_x + 1, BY_BC)
-			; hl - ptr to monster_pos_x + 1
+			; advance hl to char_pos_x + 1
+			HL_ADVANCE(char_id, char_pos_x + 1, BY_BC)
+			; hl - ptr to char_pos_x + 1
 			; increase pos_x
 			mov a, m
 			adi >BURNER_QUEST_SPEED
 			mov m, a
 
-			; advance hl to monster_update_ptr
+			; advance hl to char_update_ptr
 			pop h
 
 			; check if a burner hits the screen border
 			cpi BURNER_QUEST_MAX_POS_X
 			jnc @death
 @update_anim:
-			; hl points to monster_update_ptr
-			; advance hl to monster_anim_timer
-			HL_ADVANCE(monster_update_ptr, monster_anim_timer, BY_BC)
+			; hl points to char_update_ptr
+			; advance hl to char_anim_timer
+			HL_ADVANCE(char_update_ptr, char_anim_timer, BY_BC)
 
 			mvi a, BURNER_ANIM_SPEED_MOVE
 			jmp burner_update_anim_check_collision_hero
 @death:
-			; hl points to monster_update_ptr
-			HL_ADVANCE(monster_update_ptr, monster_update_ptr + 1)
-			; mark this monster dead death
-			jmp monster_destroy
+			; hl points to char_update_ptr
+			HL_ADVANCE(char_update_ptr, char_update_ptr + 1)
+			; mark this char dead death
+			jmp char_destroy

@@ -2,8 +2,8 @@
 ; asm data file: build/debug/text_eng/txt_lv0_data.asm
 ; bin file: build/debug/bin/TXT_LV0.BIN
 
-TXT_LV0_FILE_LEN = 4052
-TXT_LV0_LAST_RECORD_LEN = 84
+TXT_LV0_FILE_LEN = 4050
+TXT_LV0_LAST_RECORD_LEN = 82
 
 TXT_LV0_FILENAME_PTR:
 			.byte "TXT_LV0" ; filename
@@ -29,11 +29,11 @@ _storytelling_storytelling_friends_home = 0x0904
 _storytelling_storytelling_friends_backyard = 0x0975
 _storytelling_storytelling_friends_secret_place = 0x0a0e
 _storytelling_storytelling_crossroad = 0x0aa5
-_storytelling_storytelling_loop = 0x0b54
-_storytelling_storytelling_lost_coins = 0x0bb2
-_storytelling_storytelling_farm_entrance = 0x0c64
-_storytelling_storytelling_farm_storage = 0x0d06
-_storytelling_storytelling_dugeon_entrance = 0x0d9b
-_storytelling_hero_use_cabbage = 0x0e28
-_storytelling_hero_use_spoon = 0x0e9f
-_storytelling_hero_freeze_monster = 0x0f59
+_storytelling_storytelling_loop = 0x0b51
+_storytelling_storytelling_lost_coins = 0x0baf
+_storytelling_storytelling_farm_entrance = 0x0c61
+_storytelling_storytelling_farm_storage = 0x0d03
+_storytelling_storytelling_dugeon_entrance = 0x0d98
+_storytelling_hero_use_cabbage = 0x0e25
+_storytelling_hero_use_spoon = 0x0e9c
+_storytelling_hero_freeze_char = 0x0f56

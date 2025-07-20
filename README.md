@@ -16,14 +16,13 @@
 
 ## 📝 Description
 
-Oh, no! Your best buddy is GONE! No chill, no waiting — kickstart the daring 
+Oh, no! Your best buddy is GONE! No chill, no waiting — kickstart the daring
 rescue mission right now. Who’s gonna save the day? You are, the hero!
 
 ### Featuring:
-* *Monster! Monsters! Monster!*  
-   * *Treasure! Treasure! Treasure!*
-      * *Quirky humor, yummy pies!*
-         * *and, of course, a bit of shiny coins!*
+* Monsters! Monsters!
+* Treasure chests!
+* Quirky humor, yummy quests!
 
 
 Grab your legendary spoon, buckle up, and get ready for a frosty, wacky ride!
@@ -40,7 +39,7 @@ The journey’s gonna be wild!😊
 </p>
 
 
-## Video 
+## Video
 [![Watch the demo](docs/images/youtube_01.png)](https://www.youtube.com/watch?v=WMzj-VmqIDg)
 
 ## 🕹️ Play
@@ -48,7 +47,6 @@ The journey’s gonna be wild!😊
 
 ## 🔨 Build
 * 🛠️ Install `Retroassembler` from https://enginedesigns.net/
-* 📥 Clone [`fddutil_python`](https://github.com/parallelno/fddutil_python.git) into `\scripts` folder
 * ▶️ `F5` or `Ctrl+F5` to build & Run
 
 ## 📄 Documentation
@@ -60,36 +58,47 @@ Creating this game was a tremendous effort. It started as a benchmark and then e
 
 During the demo development, I suffered from the rudimentary debugging tools available around for this computer. I spent several months adding debugging to [`v06x`](https://github.com/svofski/vector06sdl) the emulator I used back then.
 
-After releasing the demo, I concluded I needed more dev tooling and spent another year building my own emulator [`Devector`](https://github.com/parallelno/Devector). It has advanced debugging features and must significantly speed up my development process and help me finish the final product. Fingers crossed!
+After releasing the demo, I concluded I needed more robust tooling and spent another year building my own emulator [`Devector`](https://github.com/parallelno/Devector). It has advanced debugging features and must significantly speed up my development process and help me finish the final product. Fingers crossed!
 
 ### Intro
 This project is divided into two key components: the game and the sprite engine, called V6. The engine's goal is to make life easier for retro gaming enthusiasts. Key features include:
 
-* Ultra-fast multicolor sprite rendering.
-* Advanced font rendering techniques.
+* Ultra-fast sprite rendering.
+* 8 color sprites with mask support.
+* 16 color background.
+* 16x15 tile field with 16x16 pixel tiles.
+* Animated decals.
+* Non-animated decal tiles.
+* Efficient sprite sorting by Y.
+* Top layer for projectiles (bullets).
+* Non monospaced font support.
+* Floppy disk data loading via I/O syscalls.
 * AY music and multichannel sound effects.
-* up to 8 RAM disks support, FDDs, and I/O OS functionality.
+* Up to 8 RAM disks support.
 * A powerful yet intuitive build system to simplify workflows.
 
 I hope it inspires more devs to dive into the retrocomputing world.
-
-### Provide compilation arguments to the assembly
-All arguments are strings defined in the list "args" in the .vscode/launch.json file
-
-For example you want to define a constant DEBUG with value DEBUG_ON if for some builds.
-To do it, add a string "DEBUG = DEBUG_ON" to the "args" list in the .vscode/launch.json file.
-
-
 
 ### 📁 Folder Structure
 ```plaintext
 .vscode
 └── [configuration files]
+asm
+    ├── app    # game code
+    └── v6     # game engine code
 assets
-    ├── basefdd/    # Contains FDD images with bootable OS used to store game assets
-    │               # rds308.fdd is the most preferable
-    ├── fdd_files/  # Required files
-    └── [other assets]
+    ├── backs       # Animated decals
+    ├── basefdd/    # Contains rds308.fdd bootable OS image to build the final game FDD image.
+    ├── decals      # Non-animated tiles
+    ├── design      # Design documents
+    ├── fonts       # Non-monospaced fonts (rus/eng/etc.)
+    ├── levels      # Level graphics, level data in a Tiled format
+    ├── music       # Music meta data and a source in YM format
+    ├── palletes    # Color pallets and the fade transitions
+    ├── sprites     # Sprite graphics and meta data (animations, preshifting info)
+    ├── text        # Dialog tests
+    ├── tiled_imgs  # Tiled image graphics and meta data
+    └── config.json # Configuration build file
 ```
 ### ❗ Troubleshooting
 * F5 Not Building Project After Retroassembler Installation

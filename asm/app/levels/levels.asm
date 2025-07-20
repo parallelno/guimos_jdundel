@@ -41,9 +41,9 @@ level_init:
 			lxi b, bullets_runtime_data_end
 			call mem_erase
 
-			; erase monsters buffs
-			lxi h, monsters_runtime_data
-			lxi b, monsters_runtime_data_end
+			; erase chars buffs
+			lxi h, chars_runtime_data
+			lxi b, chars_runtime_data_end
 			call mem_erase
 
 			; erase the actor list

@@ -1,32 +1,31 @@
-.include "asm/app/monsters/monsters_data.asm"
-.include "asm/app/monsters/monster_macros.asm"
-.include "asm/app/monsters/skeleton.asm"
-.include "asm/app/monsters/skeleton_quest.asm"
-.include "asm/app/monsters/vampire.asm"
-.include "asm/app/monsters/burner.asm"
-.include "asm/app/monsters/burner_quest.asm"
-.include "asm/app/monsters/knight.asm"
-.include "asm/app/monsters/knight_heavy.asm"
-.include "asm/app/monsters/goose.asm"
-.include "asm/app/monsters/cat.asm"
-.include "asm/app/monsters/firepool.asm"
-.include "asm/app/monsters/npc.asm"
-.include "asm/app/monsters/friends_mom.asm"
-.include "asm/app/monsters/friends_sis.asm"
-.include "asm/app/monsters/dotty.asm"
-.include "asm/app/monsters/bob.asm"
-.include "asm/app/monsters/npc4.asm"
-.include "asm/app/monsters/caterpillar.asm"
+.include "asm/app/chars/char_data.asm"
+.include "asm/app/chars/skeleton.asm"
+.include "asm/app/chars/skeleton_quest.asm"
+.include "asm/app/chars/vampire.asm"
+.include "asm/app/chars/burner.asm"
+.include "asm/app/chars/burner_quest.asm"
+.include "asm/app/chars/knight.asm"
+.include "asm/app/chars/knight_heavy.asm"
+.include "asm/app/chars/goose.asm"
+.include "asm/app/chars/cat.asm"
+.include "asm/app/chars/firepool.asm"
+.include "asm/app/chars/npc.asm"
+.include "asm/app/chars/friends_mom.asm"
+.include "asm/app/chars/friends_sis.asm"
+.include "asm/app/chars/dotty.asm"
+.include "asm/app/chars/bob.asm"
+.include "asm/app/chars/npc4.asm"
+.include "asm/app/chars/caterpillar.asm"
 
-@memusage_monsters
+@memusage_chars
 
-monsters_init:
+chars_init:
 			; actor_data_head_ptr got inited in level_init with NULL
 			; set the last marker byte of runtime_data
 			mvi a, ACTOR_RUNTIME_DATA_END
-			sta monsters_runtime_data_end_marker + 1
+			sta chars_runtime_data_end_marker + 1
 			; erase runtime_data
-			ACTOR_ERASE_RUNTIME_DATA(monster_update_ptr)
+			ACTOR_ERASE_RUNTIME_DATA(char_update_ptr)
 
 			; init runtime_data list
 			lxi h, hero_data_next_ptr
@@ -36,14 +35,14 @@ monsters_init:
 			ret
 
 
-; monster initialization
+; char initialization
 ; in:
 ; c - tile_idx in the room_tiledata array.
-; a - monster_id * 4
+; a - char_id * 4
 ; out:
 ; a - TILEDATA_RESTORE_TILE
-;ex. MONSTER_INIT(knight_update, knight_draw, monster_impacted, KNIGHT_HEALTH, ACTOR_STATUS_KNIGHT_DETECT_HERO_INIT, knight_idle_anim)
-.macro MONSTER_INIT(MONSTER_UPDATE_PTR, MONSTER_DRAW_PTR, MONSTER_IMPACT_PTR, MONSTER_HEALTH, MONSTER_STATUS, MONSTER_ANIM_PTR, spawn_rate_check = True, _monster_type = MONSTER_TYPE_ENEMY)
+;ex. CHAR_INIT(knight_update, knight_draw, char_impacted, KNIGHT_HEALTH, ACTOR_STATUS_KNIGHT_DETECT_HERO_INIT, knight_idle_anim)
+.macro CHAR_INIT(CHAR_UPDATE_PTR, CHAR_DRAW_PTR, CHAR_IMPACT_PTR, CHAR_HEALTH, CHAR_STATUS, CHAR_ANIM_PTR, spawn_rate_check = True, _char_type = CHAR_TYPE_ENEMY)
 		.if spawn_rate_check
 			mvi b, 1
 		.endif
@@ -51,29 +50,29 @@ monsters_init:
 			mvi b, 0
 		.endif
 
-			lxi h, @monster_init_data
-			jmp monster_init
+			lxi h, @char_init_data
+			jmp char_init
 
 			.word TEMP_WORD  ; safety word because an interruption can call
-@monster_init_data:
-			.word MONSTER_UPDATE_PTR, MONSTER_DRAW_PTR, MONSTER_STATUS<<8 | MONSTER_HEALTH, MONSTER_ANIM_PTR, MONSTER_IMPACT_PTR, _monster_type
+@char_init_data:
+			.word CHAR_UPDATE_PTR, CHAR_DRAW_PTR, CHAR_STATUS<<8 | CHAR_HEALTH, CHAR_ANIM_PTR, CHAR_IMPACT_PTR, _char_type
 .endmacro
 
-; monster initialization
+; char initialization
 ; in:
-; hl - points to @monster_init_data: .word MONSTER_UPDATE_PTR, MONSTER_DRAW_PTR, MONSTER_STATUS<<8 | MONSTER_HEALTH, MONSTER_ANIM_PTR, MONSTER_IMPACT_PTR
+; hl - points to @char_init_data: .word CHAR_UPDATE_PTR, CHAR_DRAW_PTR, CHAR_STATUS<<8 | CHAR_HEALTH, CHAR_ANIM_PTR, CHAR_IMPACT_PTR
 ; c - tile_idx in the room_tiledata array.
 ; b - spawn_rate_check
 ;		1 - yes
 ;		0 - no
-; a - monster_id * 4
+; a - char_id * 4
 ; out:
 ; a - TILEDATA_RESTORE_TILE
-monster_init:
-			RRC_(2) ; to get monster_id
-			sta @monster_id + 1
+char_init:
+			RRC_(2) ; to get char_id
+			sta @char_id + 1
 
-			shld @monster_data_ptr + 1
+			shld @char_data_ptr + 1
 
 			mov a, c
 			sta @tile_idx + 1
@@ -84,54 +83,54 @@ monster_init:
 
 			ROOM_SPAWN_RATE_CHECK(rooms_spawn_rate, @exit)
 @no_spawn_rate_check:
-			lxi h, monster_update_ptr+1
-			mvi e, MONSTER_RUNTIME_DATA_LEN
+			lxi h, char_update_ptr+1
+			mvi e, CHAR_RUNTIME_DATA_LEN
 			call actor_get_empty_data_ptr
-			; hl - ptr to monster_update_ptr + 1
+			; hl - ptr to char_update_ptr + 1
 			jnz @exit ; return if objects are too many
 
 
-			MONSTER_DATA_INSERT_AT_HEAD()
-			; hl - points to monster_data_next_ptr
+			CHAR_DATA_INSERT_AT_HEAD()
+			; hl - points to char_data_next_ptr
 			xchg
 
 
 			lxi h, 0
 			dad	sp
 			shld @restore_sp + 1
-@monster_data_ptr:
+@char_data_ptr:
 			lxi sp, TEMP_ADDR
 
 			xchg
-			; hl - ptr to monster_data_next_ptr
+			; hl - ptr to char_data_next_ptr
 
-			HL_ADVANCE(monster_data_next_ptr, monster_update_ptr, BY_BC)
+			HL_ADVANCE(char_data_next_ptr, char_update_ptr, BY_BC)
 			pop b ; using bc to read from the stack is requirenment
-			; bc - ptr to monster_update_ptr
+			; bc - ptr to char_update_ptr
 			mov m, c
-			HL_ADVANCE(monster_update_ptr, monster_update_ptr + 1)
+			HL_ADVANCE(char_update_ptr, char_update_ptr + 1)
 			mov m, b
-			HL_ADVANCE(monster_update_ptr + 1, monster_draw_ptr)
+			HL_ADVANCE(char_update_ptr + 1, char_draw_ptr)
 			pop b
-			; bc - ptr to monster_draw_ptr
+			; bc - ptr to char_draw_ptr
 			mov m, c
-			HL_ADVANCE(monster_draw_ptr, monster_draw_ptr + 1)
+			HL_ADVANCE(char_draw_ptr, char_draw_ptr + 1)
 			mov m, b
 
-			HL_ADVANCE(monster_draw_ptr + 1, monster_status)
+			HL_ADVANCE(char_draw_ptr + 1, char_status)
 			pop b
-			; b - MONSTER_STATUS
+			; b - CHAR_STATUS
 			mov m, b
 			mov a, c
-			; a - MONSTER_HEALTH
+			; a - CHAR_HEALTH
 			sta @health + 1
 
-			HL_ADVANCE(monster_status, monster_anim_ptr)
+			HL_ADVANCE(char_status, char_anim_ptr)
 
 			pop b
-			; bc - monster_anim_ptr
+			; bc - char_anim_ptr
 			mov m, c
-			HL_ADVANCE(monster_anim_ptr, monster_anim_ptr + 1)
+			HL_ADVANCE(char_anim_ptr, char_anim_ptr + 1)
 			mov m, b
 
 @tile_idx:
@@ -153,51 +152,51 @@ monster_init:
 			; d = scr_x
 			; a = pos_y
 			; e = 0 and SPRITE_W_PACKED_MIN
-			; hl - ptr to monster_anim_ptr + 1
+			; hl - ptr to char_anim_ptr + 1
 
-			HL_ADVANCE(monster_anim_ptr + 1, monster_erase_scr_addr)
+			HL_ADVANCE(char_anim_ptr + 1, char_erase_scr_addr)
 			mov m, a
-			HL_ADVANCE(monster_erase_scr_addr, monster_erase_scr_addr + 1)
+			HL_ADVANCE(char_erase_scr_addr, char_erase_scr_addr + 1)
 			mov m, d
-			HL_ADVANCE(monster_erase_scr_addr + 1, monster_erase_scr_addr_old)
+			HL_ADVANCE(char_erase_scr_addr + 1, char_erase_scr_addr_old)
 			mov m, a
-			HL_ADVANCE(monster_erase_scr_addr_old, monster_erase_scr_addr_old + 1)
+			HL_ADVANCE(char_erase_scr_addr_old, char_erase_scr_addr_old + 1)
 			mov m, d
-			HL_ADVANCE(monster_erase_scr_addr_old + 1, monster_erase_wh)
+			HL_ADVANCE(char_erase_scr_addr_old + 1, char_erase_wh)
 			mvi m, SPRITE_H_MIN
-			HL_ADVANCE(monster_erase_wh, monster_erase_wh + 1)
+			HL_ADVANCE(char_erase_wh, char_erase_wh + 1)
 			mov m, e
-			HL_ADVANCE(monster_erase_wh + 1, monster_erase_wh_old)
+			HL_ADVANCE(char_erase_wh + 1, char_erase_wh_old)
 			mvi m, SPRITE_H_MIN
-			HL_ADVANCE(monster_erase_wh_old, monster_erase_wh_old + 1)
+			HL_ADVANCE(char_erase_wh_old, char_erase_wh_old + 1)
 			mov m, e
-			HL_ADVANCE(monster_erase_wh_old + 1, monster_pos_x)
+			HL_ADVANCE(char_erase_wh_old + 1, char_pos_x)
 			mov m, e
-			HL_ADVANCE(monster_pos_x, monster_pos_x + 1)
+			HL_ADVANCE(char_pos_x, char_pos_x + 1)
 @pos_x:
 			mvi m, TEMP_BYTE ; pos_x
-			HL_ADVANCE(monster_pos_x + 1, monster_pos_y)
+			HL_ADVANCE(char_pos_x + 1, char_pos_y)
 			mov m, e
-			HL_ADVANCE(monster_pos_y, monster_pos_y + 1)
+			HL_ADVANCE(char_pos_y, char_pos_y + 1)
 			mov m, a
 
-			HL_ADVANCE(monster_pos_y + 1, monster_impacted_ptr, BY_DE)
+			HL_ADVANCE(char_pos_y + 1, char_impacted_ptr, BY_DE)
 			pop b
 			mov m, c
-			HL_ADVANCE(monster_impacted_ptr, monster_impacted_ptr + 1)
+			HL_ADVANCE(char_impacted_ptr, char_impacted_ptr + 1)
 			mov m, b
 
-			HL_ADVANCE(monster_impacted_ptr + 1, monster_id)
-@monster_id:
+			HL_ADVANCE(char_impacted_ptr + 1, char_id)
+@char_id:
 			mvi m, TEMP_BYTE
 
 
-			HL_ADVANCE(monster_id, monster_type)
+			HL_ADVANCE(char_id, char_type)
 			pop b
-			; c - MONSTER_TYPE
+			; c - CHAR_TYPE
 			mov m, c
 
-			HL_ADVANCE(monster_type, monster_health)
+			HL_ADVANCE(char_type, char_health)
 @health:
 			mvi m, TEMP_BYTE
 
@@ -205,7 +204,7 @@ monster_init:
 			lxi sp, TEMP_ADDR
 			RAM_DISK_OFF()
 @exit:
-			; return TILEDATA_RESTORE_TILE to make the tile where a monster spawned walkable and restorable
+			; return TILEDATA_RESTORE_TILE to make the tile where a char spawned walkable and restorable
 			mvi a, TILEDATA_RESTORE_TILE
 			ret
 
@@ -214,13 +213,13 @@ monster_init:
 ; l - pos_y
 ; a - collider width
 ; c - collider height
-; b - monster type to look up
+; b - char type to look up
 ; out:
 ; no collision 	- (hl) >= ACTOR_RUNTIME_DATA_DESTR
-; collision 	- hl points to a collided monster_update_ptr+1, (hl) < ACTOR_RUNTIME_DATA_DESTR
+; collision 	- hl points to a collided char_update_ptr+1, (hl) < ACTOR_RUNTIME_DATA_DESTR
 ; use:
 ; b
-monsters_get_first_collided:
+chars_get_first_collided:
 			sta @collider_width+1
 			mov a, c
 			sta @collider_height+1
@@ -229,8 +228,8 @@ monsters_get_first_collided:
 			mov a, l
 			sta @collider_pos_y+1
 			mov a, b
-			sta @monster_type + 1
-			lxi h, monster_update_ptr+1
+			sta @char_type + 1
+			lxi h, char_update_ptr+1
 
 @loop:
 			mov a, m
@@ -238,19 +237,19 @@ monsters_get_first_collided:
 			jc @check_collision
 			cpi ACTOR_RUNTIME_DATA_LAST
 			jc @next_data
-			; no collision against all alive monsters
+			; no collision against all alive chars
 			ret
 @check_collision:
 			push h
-			HL_ADVANCE(monster_update_ptr+1, monster_type, BY_BC)
+			HL_ADVANCE(char_update_ptr+1, char_type, BY_BC)
 			mov a, m
-@monster_type:
+@char_type:
 			ani TEMP_BYTE
 			jz @no_collision
 
-			HL_ADVANCE(monster_type, monster_pos_x+1, BY_BC)
+			HL_ADVANCE(char_type, char_pos_x+1, BY_BC)
 			; horizontal check
-			mov c, m 	; monster pos_x
+			mov c, m 	; char pos_x
 @collider_pos_x:
 			mvi a, TEMP_BYTE
 			mov b, a	; tmp
@@ -263,8 +262,8 @@ monsters_get_first_collided:
 			cmp b
 			jc @no_collision
 			; vertical check
-			HL_ADVANCE(monster_pos_x+1, monster_pos_y+1)
-			mov c, m ; monster pos_y
+			HL_ADVANCE(char_pos_x+1, char_pos_y+1)
+			mov c, m ; char pos_y
 @collider_pos_y:
 			mvi a, TEMP_BYTE
 			mov b, a
@@ -283,18 +282,18 @@ monsters_get_first_collided:
 @no_collision:
 			pop h
 @next_data:
-			lxi b, MONSTER_RUNTIME_DATA_LEN
+			lxi b, CHAR_RUNTIME_DATA_LEN
 			dad b
 			jmp @loop
 
-monsters_update:
-			ACTORS_INVOKE_IF_ALIVE(monster_update_ptr, monster_update_ptr, MONSTER_RUNTIME_DATA_LEN, true)
+chars_update:
+			ACTORS_INVOKE_IF_ALIVE(char_update_ptr, char_update_ptr, CHAR_RUNTIME_DATA_LEN, true)
 
-; call draw func of every alive monster and hero
+; call draw func of every alive char and hero
 ; intro: 12cc
 ; loop: 37*4+24=172cc
-monsters_draw:
-			; iterate over the list of the monster data
+chars_draw:
+			; iterate over the list of the char data
 			lxi h, actor_data_head_ptr
 @loop:
 			; hl - current element
@@ -312,86 +311,86 @@ monsters_draw:
 			lxi d, @return
 			push d
 
-			HL_ADVANCE(monster_data_next_ptr, monster_draw_ptr + 1, BY_HL_FROM_BC)
+			HL_ADVANCE(char_data_next_ptr, char_draw_ptr + 1, BY_HL_FROM_BC)
 			mov d, m
 			dcx h
 			mov e, m
 			xchg
-			; hl - addr of monster_draw_ptr
-			; de - ptr to monster_draw_ptr
+			; hl - addr of char_draw_ptr
+			; de - ptr to char_draw_ptr
 			pchl
 @return:
 			pop h ; current element = next element
 			jmp @loop
 
-monsters_copy_to_scr:
-			ACTORS_CALL_IF_ALIVE(monster_copy_to_scr, monster_update_ptr, MONSTER_RUNTIME_DATA_LEN, true)
+chars_copy_to_scr:
+			ACTORS_CALL_IF_ALIVE(char_copy_to_scr, char_update_ptr, CHAR_RUNTIME_DATA_LEN, true)
 
-monsters_erase:
-			ACTORS_CALL_IF_ALIVE(monster_erase, monster_update_ptr, MONSTER_RUNTIME_DATA_LEN, true)
+chars_erase:
+			ACTORS_CALL_IF_ALIVE(char_erase, char_update_ptr, CHAR_RUNTIME_DATA_LEN, true)
 
 ; copy a sprite from a backbuffer to a scr
 ; in:
-; hl - ptr to monster_update_ptr+1
-monster_copy_to_scr:
-			HL_ADVANCE(monster_update_ptr+1, monster_status)
+; hl - ptr to char_update_ptr+1
+char_copy_to_scr:
+			HL_ADVANCE(char_update_ptr+1, char_status)
 			jmp actor_copy_to_scr
 
 ; erase a sprite or restore the background behind a sprite
 ; in:
-; hl - ptr to monster_update_ptr+1
-; a - MONSTER_RUNTIME_DATA_* status
+; hl - ptr to char_update_ptr+1
+; a - CHAR_RUNTIME_DATA_* status
 ; ~3480cc if it mostly restores a background
-monster_erase:
-			LXI_D_TO_DIFF(monster_update_ptr+1, monster_status)
+char_erase:
+			LXI_D_TO_DIFF(char_update_ptr+1, char_status)
 			jmp actor_erase
 
-; a common routine to handle a monster impact by a hero weapon
+; a common routine to handle a char impact by a hero weapon
 ; in:
-; de - ptr to monster_impacted_ptr + 1
+; de - ptr to char_impacted_ptr + 1
 ; c - hero_weapon_id
-monster_impacted:
+char_impacted:
 			; check the weapon_id
 			mvi a, HERO_WEAPON_ID_SNOWFLAKE
 			cmp c
 			jz @set_state_freeze
-			ROOM_SPAWN_RATE_UPDATE(rooms_spawn_rate, MONSTER_SPAWN_RATE_DELTA, MONSTER_SPAWN_RATE_MAX)
+			ROOM_SPAWN_RATE_UPDATE(rooms_spawn_rate, CHAR_SPAWN_RATE_DELTA, CHAR_SPAWN_RATE_MAX)
 
 			; play a hit vfx
-			; de - ptr to monster_impacted_ptr + 1
-			HL_ADVANCE(monster_impacted_ptr+1, monster_pos_x+1, BY_HL_FROM_DE)
+			; de - ptr to char_impacted_ptr + 1
+			HL_ADVANCE(char_impacted_ptr+1, char_pos_x+1, BY_HL_FROM_DE)
 
 			mov b, m
-			HL_ADVANCE(monster_pos_x+1, monster_pos_y+1)
+			HL_ADVANCE(char_pos_x+1, char_pos_y+1)
 			mov c, m
 			lxi d, vfx4_hit_anim
 			push h
 			call vfx_init4
 			pop h
 
-			; decrease monster's health
-			HL_ADVANCE(monster_pos_y+1, monster_health, BY_DE)
+			; decrease char's health
+			HL_ADVANCE(char_pos_y+1, char_health, BY_DE)
 			dcr m
 			rnz
 
 			; add score points
 			push h
-			HL_ADVANCE(monster_health, monster_id)
+			HL_ADVANCE(char_health, char_id)
 			mov e, m
-			mvi d, TILEDATA_FUNC_ID_MONSTERS
+			mvi d, TILEDATA_FUNC_ID_CHARS
 			call game_score_add
 			call game_ui_draw_score_text
 			pop h
 
-			; mark this monster dead
-			HL_ADVANCE(monster_health, monster_update_ptr+1, BY_DE)
-			jmp monster_destroy
+			; mark this char dead
+			HL_ADVANCE(char_health, char_update_ptr+1, BY_DE)
+			jmp char_destroy
 
 @set_state_freeze:
-			; de - ptr to monster_impacted_ptr+1
-			HL_ADVANCE(monster_impacted_ptr+1, monster_status, BY_HL_FROM_DE)
+			; de - ptr to char_impacted_ptr+1
+			HL_ADVANCE(char_impacted_ptr+1, char_status, BY_HL_FROM_DE)
 			mvi m,ACTOR_STATUS_FREEZE
-			HL_ADVANCE(monster_status, monster_status_timer)
+			HL_ADVANCE(char_status, char_status_timer)
 			mvi m, ACTOR_STATUS_FREEZE_TIME
 
 			; check if a hero uses a snowflake the first time
@@ -403,19 +402,19 @@ monster_impacted:
 			; init a dialog
 			mvi a, GAME_REQ_PAUSE
 			lxi h, dialog_callback_room_redraw
-			lxi d, _storytelling_hero_freeze_monster
+			lxi d, _storytelling_hero_freeze_char
 			jmp dialog_init
 
 
 ; common freeze update func.
 ; it does nothing except counting down the status time
 ; in:
-; hl = monster_status
-monster_update_freeze:
-			HL_ADVANCE(monster_status, monster_status_timer)
+; hl = char_status
+char_update_freeze:
+			HL_ADVANCE(char_status, char_status_timer)
 			dcr m
 			rnz
-			HL_ADVANCE(monster_status_timer, monster_status)
+			HL_ADVANCE(char_status_timer, char_status)
 			dcx h
 			mvi m, ACTOR_STATUS_INIT
 			ret
@@ -423,16 +422,16 @@ monster_update_freeze:
 ; marks the actor runtime data as destroyed,
 ; and removes it from the actors list
 ; in:
-; hl - ptr to monster_update_ptr + 1
-monster_destroy:
+; hl - ptr to char_update_ptr + 1
+char_destroy:
 			ACTOR_DESTROY()
 			; remove from the list
-			MONSTER_DATA_REMOVE()
+			CHAR_DATA_REMOVE()
 			ret
 
-; sorts the monsters list by monster_pos_y
+; sorts the chars list by char_pos_y
 ; executes only one iteration of the bubble sort algorithm
-monsters_sort_pos_y:
+chars_sort_pos_y:
 			; get the current element
 			lhld actor_data_head_ptr
 			; check if the list is empty
@@ -468,7 +467,7 @@ monsters_sort_pos_y:
 			; hl - current element
 			; de - next element
 
-			LXI_B_TO_DIFF(monster_data_next_ptr, monster_pos_y + 1)
+			LXI_B_TO_DIFF(char_data_next_ptr, char_pos_y + 1)
 			dad b
 			; get >pos_y of the current element
 			mov a, m
@@ -486,10 +485,10 @@ monsters_sort_pos_y:
 @swap:
 			; swap the current and next elements
 			; stack - the prev element
-			; de - monster_pos_y + 1 of the current element
-			; hl - monster_pos_y + 1 of the next element
+			; de - char_pos_y + 1 of the current element
+			; hl - char_pos_y + 1 of the next element
 
-			LXI_B_TO_DIFF(monster_pos_y + 1, monster_data_next_ptr)
+			LXI_B_TO_DIFF(char_pos_y + 1, char_data_next_ptr)
 			dad b
 			xchg
 			dad b
@@ -535,10 +534,10 @@ monsters_sort_pos_y:
 
 @advance:
 			; stack - the prev element
-			; de - monster_pos_y + 1 of the current element
-			; hl - monster_pos_y + 1 of the next element
+			; de - char_pos_y + 1 of the current element
+			; hl - char_pos_y + 1 of the next element
 
-			LXI_B_TO_DIFF(monster_pos_y + 1, monster_data_next_ptr)
+			LXI_B_TO_DIFF(char_pos_y + 1, char_data_next_ptr)
 			dad b
 			xchg
 			dad b

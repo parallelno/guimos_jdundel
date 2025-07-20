@@ -17,7 +17,7 @@
 		{
 			"active": false,
 			"code": "local pc = GetPC()\nif pc ~= 0x3f2a then return end\n\nlocal cx = GetH()\nlocal cy = GetL()\n\nlocal cw = GetA()\nlocal ch = GetC()\n\nDrawRect(3, cx, cy, cw, ch, 0xFF0000F0)",
-			"comment": "Draw Monster Collision",
+			"comment": "Draw Char Collision",
 			"id": 2
 		},
 		{

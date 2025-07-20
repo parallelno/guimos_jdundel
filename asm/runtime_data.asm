@@ -89,55 +89,55 @@ global_states_end:		= global_states + 10
 GLOBAL_STATES_LEN = global_states_end - global_states
 
 ;=============================================================================
-; Monsters Runtime Data
+; Characters Runtime Data
 ;=============================================================================
-; Defines the per-instance runtime data for monsters.
+; Defines the per-instance runtime data for chars.
 ; NOTE:
-; - A list of structs, one per monster instance.
+; - A list of structs, one per char instance.
 ; - Accessed by the custom update and actor draw routines.
-; - The monster_update_ptr+1 also serves as an Actor Runtime Status Code
+; - The char_update_ptr+1 also serves as an Actor Runtime Status Code
 ;     (see actor_consts.asm).
-; - MONSTER_RUNTIME_DATA_LEN < $100.
-; - Max active monsters per room including dying but not dead: MONSTERS_MAX
-; - The structure from monster_update_ptr to monster_data_next_ptr must match the
+; - CHAR_RUNTIME_DATA_LEN < $100.
+; - Max active chars per room including dying but not dead: CHARS_MAX
+; - The structure from char_update_ptr to char_data_next_ptr must match the
 ;     hero's runtime data structure for compatibility with shared functions.
-; - The structure from monster_update_ptr to monster_speed_y must match the
+; - The structure from char_update_ptr to char_speed_y must match the
 ;     bullets's runtime data structure for compatibility with shared functions.
 
-MONSTERS_MAX = 15
+CHARS_MAX = 15
 
-; Base address for all monster runtime data
-monsters_runtime_data:		= $733B
-; A struct of a monster runtime data.
-monster_update_ptr:			= monsters_runtime_data + 0	 ; .word
-monster_draw_ptr:			= monsters_runtime_data + 2	 ; .word
-monster_status:				= monsters_runtime_data + 4	 ; .byte
-monster_status_timer:		= monsters_runtime_data + 5	 ; .byte
-monster_anim_timer:			= monsters_runtime_data + 6	 ; .byte
-monster_anim_ptr:			= monsters_runtime_data + 7	 ; .word
-monster_erase_scr_addr:		= monsters_runtime_data + 9	 ; .word
-monster_erase_scr_addr_old:	= monsters_runtime_data + 11 ; .word
-monster_erase_wh:			= monsters_runtime_data + 13 ; .word
-monster_erase_wh_old:		= monsters_runtime_data + 15 ; .word
-monster_pos_x:				= monsters_runtime_data + 17 ; .word
-monster_pos_y:				= monsters_runtime_data + 19 ; .word
-monster_speed_x:			= monsters_runtime_data + 21 ; .word
-monster_speed_y:			= monsters_runtime_data + 23 ; .word
-monster_data_next_ptr:		= monsters_runtime_data + 25 ; .word ; NULL if it's the last actor in the list
-monster_impacted_ptr:		= monsters_runtime_data + 27 ; .word ; called by a hero's bullet, another monster, etc. to affect this monster
-monster_id:					= monsters_runtime_data + 29 ; .byte
-monster_type:				= monsters_runtime_data + 30 ; .byte
-monster_health:				= monsters_runtime_data + 31 ; .byte ; Remaining health points
-@data_end:					= monsters_runtime_data + 32
-MONSTER_RUNTIME_DATA_LEN = @data_end - monsters_runtime_data
+; Base address for all char runtime data
+chars_runtime_data:		= $733B
+; A struct of a char runtime data.
+char_update_ptr:			= chars_runtime_data + 0	 ; .word
+char_draw_ptr:			= chars_runtime_data + 2	 ; .word
+char_status:				= chars_runtime_data + 4	 ; .byte
+char_status_timer:		= chars_runtime_data + 5	 ; .byte
+char_anim_timer:			= chars_runtime_data + 6	 ; .byte
+char_anim_ptr:			= chars_runtime_data + 7	 ; .word
+char_erase_scr_addr:		= chars_runtime_data + 9	 ; .word
+char_erase_scr_addr_old:	= chars_runtime_data + 11 ; .word
+char_erase_wh:			= chars_runtime_data + 13 ; .word
+char_erase_wh_old:		= chars_runtime_data + 15 ; .word
+char_pos_x:				= chars_runtime_data + 17 ; .word
+char_pos_y:				= chars_runtime_data + 19 ; .word
+char_speed_x:			= chars_runtime_data + 21 ; .word
+char_speed_y:			= chars_runtime_data + 23 ; .word
+char_data_next_ptr:		= chars_runtime_data + 25 ; .word ; NULL if it's the last actor in the list
+char_impacted_ptr:		= chars_runtime_data + 27 ; .word ; called by a hero's bullet, another char, etc. to affect this char
+char_id:					= chars_runtime_data + 29 ; .byte
+char_type:				= chars_runtime_data + 30 ; .byte
+char_health:				= chars_runtime_data + 31 ; .byte ; Remaining health points
+@data_end:					= chars_runtime_data + 32
+CHAR_RUNTIME_DATA_LEN = @data_end - chars_runtime_data
 
-; Memory layout for remaining monster instances (MONSTERS_MAX - 1)
-monsters_runtime_data_end_marker:	= monsters_runtime_data + MONSTER_RUNTIME_DATA_LEN * MONSTERS_MAX	; .word ACTOR_RUNTIME_DATA_END << 8
-monsters_runtime_data_end:			= monsters_runtime_data_end_marker + ADDR_LEN
-MONSTERS_RUNTIME_DATA_LEN			= monsters_runtime_data_end - monsters_runtime_data
+; Memory layout for remaining char instances (CHARS_MAX - 1)
+chars_runtime_data_end_marker:	= chars_runtime_data + CHAR_RUNTIME_DATA_LEN * CHARS_MAX	; .word ACTOR_RUNTIME_DATA_END << 8
+chars_runtime_data_end:			= chars_runtime_data_end_marker + ADDR_LEN
+CHARS_RUNTIME_DATA_LEN			= chars_runtime_data_end - chars_runtime_data
 
-.if MONSTER_RUNTIME_DATA_LEN > 256
-	.error "ERROR: MONSTER_RUNTIME_DATA_LEN (" MONSTER_RUNTIME_DATA_LEN ") > 256"
+.if CHAR_RUNTIME_DATA_LEN > 256
+	.error "ERROR: CHAR_RUNTIME_DATA_LEN (" CHAR_RUNTIME_DATA_LEN ") > 256"
 .endif
 
 ;=============================================================================
@@ -148,12 +148,12 @@ MONSTERS_RUNTIME_DATA_LEN			= monsters_runtime_data_end - monsters_runtime_data
 ; - A list of structs, one per bullet instance.
 ; - Accessed by the custom update and actor draw routines.
 ; - Data must fit inside $100 block.
-; - Max active monsters per room including dying but not dead: BULLETS_MAX.
+; - Max active chars per room including dying but not dead: BULLETS_MAX.
 ; - The bullet_update_ptr+1 also serves as an Actor Runtime Status Code
 ;     (see actor_consts.asm).
-; - The structure from monster_update_ptr to monster_data_next_ptr must match the
+; - The structure from char_update_ptr to char_data_next_ptr must match the
 ;     hero's runtime data structure for compatibility with shared functions.
-; - The structure from monster_update_ptr to monster_speed_y must match the
+; - The structure from char_update_ptr to char_speed_y must match the
 ;     bullets's runtime data structure for compatibility with shared functions.
 
 ; Base address for all bullet runtime data
@@ -193,13 +193,13 @@ BULLETS_RUNTIME_DATA_LEN			= bullets_runtime_data_end - bullets_runtime_data
 ;=============================================================================
 ; Actor Runtime Data List
 ;=============================================================================
-; - The list links the hero and non-dead monsters runtime data together.
+; - The list links the hero and non-dead chars runtime data together.
 ; - It's a singly-linked list with the head pointer actor_data_head_ptr.
 ; - The head points to the first actor runtime data (`hero_data_next_ptr` or
-;     `monster_data_next_ptr`), then the next, etc, ending with NULL.
+;     `char_data_next_ptr`), then the next, etc, ending with NULL.
 ; - Used to sort actors by Y position for correct rendering order.
 ; - One bubble sorting iteration per update.
-; - The list is updated when monsters are spawned or destroyed.
+; - The list is updated when chars are spawned or destroyed.
 
 actor_data_head_ptr:	= $7600 ; .word
 
@@ -300,7 +300,7 @@ game_status_cabbage_healing:	= game_status + 2	; First time healing with cabbage
 game_status_use_pie:			= game_status + 3	; First time using a pie
 game_status_use_clothes:		= game_status + 4	; First time using clothes
 game_status_use_spoon:			= game_status + 5	; First time using a spoon
-game_status_first_freeze:		= game_status + 6	; First time freezing a monster
+game_status_first_freeze:		= game_status + 6	; First time freezing anyone
 ; Special states
 game_status_fart:				= game_status + 7	; Fart status from cabbage
 game_status_burner_quest_room:	= game_status + 8	; Index in burner_quest_room_ids array
@@ -351,7 +351,7 @@ room_tiles_gfx_ptrs_end:	= room_tiles_gfx_ptrs + ROOM_TILES_GFX_PTRS_LEN
 ; - Room conststs of ROOM_WIDTH * ROOM_HEIGHT tiles. Each tile has its own
 ;     tiledata elements and tile graphics idx.
 ; - Tiledata is used for collision detection, and game mechanics. Tiledata can
-;     be a monster spawner, container, door, and other interactive element.
+;     be a char, char spawner, container, door, and other interactive element.
 ;     See tiledata_consts.asm for all tiledata values.
 ; - Tiledata can be modified during gameplay, e.g. breakable objects, doors,
 ;     and containers can change their tiledata when broken/opened.
@@ -553,7 +553,7 @@ BACKS_RUNTIME_DATA_LEN = backs_runtime_data_end - backs_runtime_data
 ; NOTE:
 ; - Accessed by the custom update and actor draw routines.
 ; - The structure from hero_update_ptr to hero_data_next_ptr must match the
-;     monster's runtime data structure for compatibility with shared functions.
+;     char's runtime data structure for compatibility with shared functions.
 ; - The hero_update_ptr+1 also serves as an Actor Runtime Status Code
 ;     (see actor_consts.asm).
 
@@ -575,9 +575,9 @@ hero_pos_y:					= hero_runtime_data + 19 ; .word ; first byte is a sub-pixel coo
 hero_speed_x:				= hero_runtime_data + 21 ; .word ; first byte is a sub-pixel coord speed
 hero_speed_y:				= hero_runtime_data + 23 ; .word ; first byte is a sub-pixel coord speed
 hero_data_next_ptr:			= hero_runtime_data + 25 ; .word ; points to the next actor in the actor_data_head_ptr list for sorting
-hero_impacted_ptr:			= hero_runtime_data + 27 ; .word ; called by a monster's bullet, a monster, etc. to affect a hero
+hero_impacted_ptr:			= hero_runtime_data + 27 ; .word ; called by a char's bullet, a char, etc. to affect a hero
 hero_dir:					= hero_runtime_data + 29 ; .byte ; direction flag: %0000_00VH, V - vertical, H - horizontal, (0 - negative, 1 - positive)
-hero_type:					= hero_runtime_data + 30 ; .byte ; actor type (e.g. MONSTER_TYPE_ALLY)
+hero_type:					= hero_runtime_data + 30 ; .byte ; actor type (e.g. CHAR_TYPE_ALLY)
 hero_runtime_data_end:		= hero_runtime_data + 31
 HERO_RUNTIME_DATA_LEN = hero_runtime_data_end - hero_runtime_data
 
@@ -585,7 +585,7 @@ HERO_RUNTIME_DATA_LEN = hero_runtime_data_end - hero_runtime_data
 ;=============================================================================
 ; Room Spawn Rates
 ;=============================================================================
-; Defines monster spawn rates for each room in the level.
+; Defines char spawn rates for each room in the level.
 ; NOTE:
 ; - Each byte represents the spawn rate for one room (indexed by room_id).
 ; - Value meaning:
@@ -686,104 +686,104 @@ ram_disk_mode:              = $7FBD ; BYTE_LEN
 ;=============================================================================
 
 ; validation
-.if (monster_update_ptr - monsters_runtime_data) != (hero_update_ptr - hero_runtime_data)
-	.error "hero & monster runtime data must match from update_ptr to monsters_runtime_data"
+.if (char_update_ptr - chars_runtime_data) != (hero_update_ptr - hero_runtime_data)
+	.error "hero & char runtime data must match from update_ptr to chars_runtime_data"
 .endif
-.if (monster_update_ptr - monsters_runtime_data) != (bullet_update_ptr - bullets_runtime_data)
-	.error "hero & monster & bullet runtime data must match from update_ptr to speed_y+1"
-.endif
-
-.if (monster_draw_ptr - monsters_runtime_data) != (hero_draw_ptr - hero_runtime_data)
-	.error "hero & monster runtime data must match from update_ptr to monsters_runtime_data"
-.endif
-.if (monster_draw_ptr - monsters_runtime_data) != (bullet_draw_ptr - bullets_runtime_data)
-	.error "hero & monster & bullet runtime data must match from update_ptr to speed_y+1"
+.if (char_update_ptr - chars_runtime_data) != (bullet_update_ptr - bullets_runtime_data)
+	.error "hero & char & bullet runtime data must match from update_ptr to speed_y+1"
 .endif
 
-.if (monster_status - monsters_runtime_data) != (hero_status - hero_runtime_data)
-	.error "hero & monster runtime data must match from update_ptr to monsters_runtime_data"
+.if (char_draw_ptr - chars_runtime_data) != (hero_draw_ptr - hero_runtime_data)
+	.error "hero & char runtime data must match from update_ptr to chars_runtime_data"
 .endif
-.if (monster_status - monsters_runtime_data) != (bullet_status - bullets_runtime_data)
-	.error "hero & monster & bullet runtime data must match from update_ptr to speed_y+1"
-.endif
-
-.if (monster_status_timer - monsters_runtime_data) != (hero_status_timer - hero_runtime_data)
-	.error "hero & monster runtime data must match from update_ptr to monsters_runtime_data"
-.endif
-.if (monster_status_timer - monsters_runtime_data) != (bullet_status_timer - bullets_runtime_data)
-	.error "hero & monster & bullet runtime data must match from update_ptr to speed_y+1"
+.if (char_draw_ptr - chars_runtime_data) != (bullet_draw_ptr - bullets_runtime_data)
+	.error "hero & char & bullet runtime data must match from update_ptr to speed_y+1"
 .endif
 
-.if (monster_anim_timer - monsters_runtime_data) != (hero_anim_timer - hero_runtime_data)
-	.error "hero & monster runtime data must match from update_ptr to monsters_runtime_data"
+.if (char_status - chars_runtime_data) != (hero_status - hero_runtime_data)
+	.error "hero & char runtime data must match from update_ptr to chars_runtime_data"
 .endif
-.if (monster_anim_timer - monsters_runtime_data) != (bullet_anim_timer - bullets_runtime_data)
-	.error "hero & monster & bullet runtime data must match from update_ptr to speed_y+1"
-.endif
-
-.if (monster_anim_ptr - monsters_runtime_data) != (hero_anim_ptr - hero_runtime_data)
-	.error "hero & monster runtime data must match from update_ptr to monsters_runtime_data"
-.endif
-.if (monster_anim_ptr - monsters_runtime_data) != (bullet_anim_ptr - bullets_runtime_data)
-	.error "hero & monster & bullet runtime data must match from update_ptr to speed_y+1"
+.if (char_status - chars_runtime_data) != (bullet_status - bullets_runtime_data)
+	.error "hero & char & bullet runtime data must match from update_ptr to speed_y+1"
 .endif
 
-.if (monster_erase_scr_addr - monsters_runtime_data) != (hero_erase_scr_addr - hero_runtime_data)
-	.error "hero & monster runtime data must match from update_ptr to monsters_runtime_data"
+.if (char_status_timer - chars_runtime_data) != (hero_status_timer - hero_runtime_data)
+	.error "hero & char runtime data must match from update_ptr to chars_runtime_data"
 .endif
-.if (monster_erase_scr_addr - monsters_runtime_data) != (bullet_erase_scr_addr - bullets_runtime_data)
-	.error "hero & monster & bullet runtime data must match from update_ptr to speed_y+1"
-.endif
-
-.if (monster_erase_scr_addr_old - monsters_runtime_data) != (hero_erase_scr_addr_old - hero_runtime_data)
-	.error "hero & monster runtime data must match from update_ptr to monsters_runtime_data"
-.endif
-.if (monster_erase_scr_addr_old - monsters_runtime_data) != (bullet_erase_scr_addr_old - bullets_runtime_data)
-	.error "hero & monster & bullet runtime data must match from update_ptr to speed_y+1"
+.if (char_status_timer - chars_runtime_data) != (bullet_status_timer - bullets_runtime_data)
+	.error "hero & char & bullet runtime data must match from update_ptr to speed_y+1"
 .endif
 
-.if (monster_erase_wh - monsters_runtime_data) != (hero_erase_wh - hero_runtime_data)
-	.error "hero & monster runtime data must match from update_ptr to monsters_runtime_data"
+.if (char_anim_timer - chars_runtime_data) != (hero_anim_timer - hero_runtime_data)
+	.error "hero & char runtime data must match from update_ptr to chars_runtime_data"
 .endif
-.if (monster_erase_wh - monsters_runtime_data) != (bullet_erase_wh - bullets_runtime_data)
-	.error "hero & monster & bullet runtime data must match from update_ptr to speed_y+1"
-.endif
-
-.if (monster_erase_wh_old - monsters_runtime_data) != (hero_erase_wh_old - hero_runtime_data)
-	.error "hero & monster runtime data must match from update_ptr to monsters_runtime_data"
-.endif
-.if (monster_erase_wh_old - monsters_runtime_data) != (bullet_erase_wh_old - bullets_runtime_data)
-	.error "hero & monster & bullet runtime data must match from update_ptr to speed_y+1"
+.if (char_anim_timer - chars_runtime_data) != (bullet_anim_timer - bullets_runtime_data)
+	.error "hero & char & bullet runtime data must match from update_ptr to speed_y+1"
 .endif
 
-.if (monster_pos_x - monsters_runtime_data) != (hero_pos_x - hero_runtime_data)
-	.error "hero & monster runtime data must match from update_ptr to monsters_runtime_data"
+.if (char_anim_ptr - chars_runtime_data) != (hero_anim_ptr - hero_runtime_data)
+	.error "hero & char runtime data must match from update_ptr to chars_runtime_data"
 .endif
-.if (monster_pos_x - monsters_runtime_data) != (bullet_pos_x - bullets_runtime_data)
-	.error "hero & monster & bullet runtime data must match from update_ptr to speed_y+1"
-.endif
-
-.if (monster_pos_y - monsters_runtime_data) != (hero_pos_y - hero_runtime_data)
-	.error "hero & monster runtime data must match from update_ptr to monsters_runtime_data"
-.endif
-.if (monster_pos_y - monsters_runtime_data) != (bullet_pos_y - bullets_runtime_data)
-	.error "hero & monster & bullet runtime data must match from update_ptr to speed_y+1"
+.if (char_anim_ptr - chars_runtime_data) != (bullet_anim_ptr - bullets_runtime_data)
+	.error "hero & char & bullet runtime data must match from update_ptr to speed_y+1"
 .endif
 
-.if (monster_speed_x - monsters_runtime_data) != (hero_speed_x - hero_runtime_data)
-	.error "hero & monster runtime data must match from update_ptr to monsters_runtime_data"
+.if (char_erase_scr_addr - chars_runtime_data) != (hero_erase_scr_addr - hero_runtime_data)
+	.error "hero & char runtime data must match from update_ptr to chars_runtime_data"
 .endif
-.if (monster_speed_x - monsters_runtime_data) != (bullet_speed_x - bullets_runtime_data)
-	.error "hero & monster & bullet runtime data must match from update_ptr to speed_y+1"
-.endif
-
-.if (monster_speed_y - monsters_runtime_data) != (hero_speed_y - hero_runtime_data)
-	.error "hero & monster runtime data must match from update_ptr to monsters_runtime_data"
-.endif
-.if (monster_speed_y - monsters_runtime_data) != (bullet_speed_y - bullets_runtime_data)
-	.error "hero & monster & bullet runtime data must match from update_ptr to speed_y+1"
+.if (char_erase_scr_addr - chars_runtime_data) != (bullet_erase_scr_addr - bullets_runtime_data)
+	.error "hero & char & bullet runtime data must match from update_ptr to speed_y+1"
 .endif
 
-.if (monster_data_next_ptr - monsters_runtime_data) != (hero_data_next_ptr - hero_runtime_data)
-	.error "hero & monster runtime data must match from update_ptr to monsters_runtime_data"
+.if (char_erase_scr_addr_old - chars_runtime_data) != (hero_erase_scr_addr_old - hero_runtime_data)
+	.error "hero & char runtime data must match from update_ptr to chars_runtime_data"
+.endif
+.if (char_erase_scr_addr_old - chars_runtime_data) != (bullet_erase_scr_addr_old - bullets_runtime_data)
+	.error "hero & char & bullet runtime data must match from update_ptr to speed_y+1"
+.endif
+
+.if (char_erase_wh - chars_runtime_data) != (hero_erase_wh - hero_runtime_data)
+	.error "hero & char runtime data must match from update_ptr to chars_runtime_data"
+.endif
+.if (char_erase_wh - chars_runtime_data) != (bullet_erase_wh - bullets_runtime_data)
+	.error "hero & char & bullet runtime data must match from update_ptr to speed_y+1"
+.endif
+
+.if (char_erase_wh_old - chars_runtime_data) != (hero_erase_wh_old - hero_runtime_data)
+	.error "hero & char runtime data must match from update_ptr to chars_runtime_data"
+.endif
+.if (char_erase_wh_old - chars_runtime_data) != (bullet_erase_wh_old - bullets_runtime_data)
+	.error "hero & char & bullet runtime data must match from update_ptr to speed_y+1"
+.endif
+
+.if (char_pos_x - chars_runtime_data) != (hero_pos_x - hero_runtime_data)
+	.error "hero & char runtime data must match from update_ptr to chars_runtime_data"
+.endif
+.if (char_pos_x - chars_runtime_data) != (bullet_pos_x - bullets_runtime_data)
+	.error "hero & char & bullet runtime data must match from update_ptr to speed_y+1"
+.endif
+
+.if (char_pos_y - chars_runtime_data) != (hero_pos_y - hero_runtime_data)
+	.error "hero & char runtime data must match from update_ptr to chars_runtime_data"
+.endif
+.if (char_pos_y - chars_runtime_data) != (bullet_pos_y - bullets_runtime_data)
+	.error "hero & char & bullet runtime data must match from update_ptr to speed_y+1"
+.endif
+
+.if (char_speed_x - chars_runtime_data) != (hero_speed_x - hero_runtime_data)
+	.error "hero & char runtime data must match from update_ptr to chars_runtime_data"
+.endif
+.if (char_speed_x - chars_runtime_data) != (bullet_speed_x - bullets_runtime_data)
+	.error "hero & char & bullet runtime data must match from update_ptr to speed_y+1"
+.endif
+
+.if (char_speed_y - chars_runtime_data) != (hero_speed_y - hero_runtime_data)
+	.error "hero & char runtime data must match from update_ptr to chars_runtime_data"
+.endif
+.if (char_speed_y - chars_runtime_data) != (bullet_speed_y - bullets_runtime_data)
+	.error "hero & char & bullet runtime data must match from update_ptr to speed_y+1"
+.endif
+
+.if (char_data_next_ptr - chars_runtime_data) != (hero_data_next_ptr - hero_runtime_data)
+	.error "hero & char runtime data must match from update_ptr to chars_runtime_data"
 .endif

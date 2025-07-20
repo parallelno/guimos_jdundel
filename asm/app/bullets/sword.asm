@@ -18,16 +18,16 @@ SWORD_ANIM_SPEED_ATTACK	= 150
 ; gameplay
 SWORD_DAMAGE = 1
 
-SWORD_MONSTER_COLLISION_WIDTH	= 15
-SWORD_MONSTER_COLLISION_HEIGHT	= 29
-SWORD_MONSTER_COLLISION_OFFSET_X_R = 8
-SWORD_MONSTER_COLLISION_OFFSET_Y_R = <(-7)
-SWORD_MONSTER_COLLISION_OFFSET_X_L = <(-7)
-SWORD_MONSTER_COLLISION_OFFSET_Y_L = <(-7)
+SWORD_CHAR_COLLISION_WIDTH	= 15
+SWORD_CHAR_COLLISION_HEIGHT	= 29
+SWORD_CHAR_COLLISION_OFFSET_X_R = 8
+SWORD_CHAR_COLLISION_OFFSET_Y_R = <(-7)
+SWORD_CHAR_COLLISION_OFFSET_X_L = <(-7)
+SWORD_CHAR_COLLISION_OFFSET_Y_L = <(-7)
 
 ; funcs to handle the tiledata. tiledata format is in level_data.asm->room_tiledata
 sword_tile_func_tbl:
-			RET_4()								; func_id == 1 ; spawn a monster
+			RET_4()								; func_id == 1 ; spawn a char
 			RET_4()								; func_id == 2 ; teleport
 			RET_4()								; func_id == 3 ; teleport
 			RET_4()								; func_id == 4 ; teleport
@@ -111,7 +111,7 @@ sword_update:
 			; check enemies-sword sprite collision
 			L_ADVANCE(bullet_anim_ptr+1, bullet_pos_x+1, BY_A)
 			mvi a, HERO_DIR_RIGHT
-			jmp sword_check_monsters
+			jmp sword_check_chars
 
 @attkL:
 			mvi m, < sword_attk_l_anim
@@ -121,13 +121,13 @@ sword_update:
 			; check enemies-sword sprite collision
 			L_ADVANCE(bullet_anim_ptr + 1, bullet_pos_x + 1, BY_A)
 			mvi a, HERO_DIR_LEFT
-			jmp sword_check_monsters
+			jmp sword_check_chars
 
-; check if a sword collides with a monster
+; check if a sword collides with a char
 ; in:
 ; hl - bullet_pos_x + 1
 ; a - hero dir
-sword_check_monsters:
+sword_check_chars:
 			; get the pos_xy
 			mov d, m
 			HL_ADVANCE(bullet_pos_x + 1, bullet_pos_y + 1)
@@ -135,36 +135,36 @@ sword_check_monsters:
 
 			; a - hero_dir
 			rrc
-			lxi h, SWORD_MONSTER_COLLISION_OFFSET_X_L<<8 | SWORD_MONSTER_COLLISION_OFFSET_Y_L
+			lxi h, SWORD_CHAR_COLLISION_OFFSET_X_L<<8 | SWORD_CHAR_COLLISION_OFFSET_Y_L
 			jnc @attkL
-			lxi h, SWORD_MONSTER_COLLISION_OFFSET_X_R<<8 | SWORD_MONSTER_COLLISION_OFFSET_Y_R
+			lxi h, SWORD_CHAR_COLLISION_OFFSET_X_R<<8 | SWORD_CHAR_COLLISION_OFFSET_Y_R
 @attkL:
 			; de - pos_xy
 			; add a collision offset
 			dad d
 
 
-			; check if a bullet collides with a monster
-			mvi a, SWORD_MONSTER_COLLISION_WIDTH
-			lxi b, MONSTER_TYPE_ENEMY<<8 | SWORD_MONSTER_COLLISION_HEIGHT
+			; check if a bullet collides with a char
+			mvi a, SWORD_CHAR_COLLISION_WIDTH
+			lxi b, CHAR_TYPE_ENEMY<<8 | SWORD_CHAR_COLLISION_HEIGHT
 			; de - collision pos_xy
-			call monsters_get_first_collided
+			call chars_get_first_collided
 
-			; hl - ptr to a collided monster_update_ptr + 1
+			; hl - ptr to a collided char_update_ptr + 1
 			mov a, m
 			cpi ACTOR_RUNTIME_DATA_DESTR
-			; if no collision with a monster, check the tiledata it is on.
+			; if no collision with a char, check the tiledata it is on.
 			jnc hero_attack_check_tiledata
 
-			; impact the monster
-			; advance hl to monster_impacted_ptr
-			HL_ADVANCE(monster_update_ptr+1, monster_impacted_ptr, BY_BC)
+			; impact the char
+			; advance hl to char_impacted_ptr
+			HL_ADVANCE(char_update_ptr+1, char_impacted_ptr, BY_BC)
 			mov e, m
 			inx h
 			mov d, m
 			xchg
 			mvi c, HERO_WEAPON_ID_SWORD
-			; call a monster_impact func
+			; call a char_impact func
 			pchl
 
 

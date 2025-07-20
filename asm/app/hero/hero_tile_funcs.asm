@@ -226,19 +226,19 @@ hero_cont_func_chest_spoon:
 			@tile_x1 = 6
 			@tile_y1 = 9
 			mvi c, @tile_x1 + @tile_y1*16	; tile_idx in the room_tiledata array.
-			mvi a, SKELETON_ID * 4 		; monster_id = 0 - skeleton (tiledata = 1*16+0=16)
+			mvi a, SKELETON_ID * 4 		; char_id = 0 - skeleton (tiledata = 1*16+0=16)
 			call skeleton_init
 
 			@tile_x2 = 7
 			@tile_y2 = 7
 			mvi c, @tile_x2 + @tile_y2*16	; tile_idx in the room_tiledata array.
-			mvi a, SKELETON_ID * 4 		; monster_id = 0 - skeleton (tiledata = 1*16+0=16)
+			mvi a, SKELETON_ID * 4 		; char_id = 0 - skeleton (tiledata = 1*16+0=16)
 			call skeleton_init
 
 			@tile_x3 = 12
 			@tile_y3 = 7
 			mvi c, @tile_x3 + @tile_y3*16	; tile_idx in the room_tiledata array.
-			mvi a, SKELETON_ID * 4 		; monster_id = 0 - skeleton (tiledata = 1*16+0=16)
+			mvi a, SKELETON_ID * 4 		; char_id = 0 - skeleton (tiledata = 1*16+0=16)
 			jmp skeleton_init
 
 hero_cont_func_chest_weapon0:

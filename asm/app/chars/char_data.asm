@@ -1,8 +1,8 @@
-@memusage_monsters_data
+@memusage_chars_data
 
-; a newly inited room uses this list to call a monster Init func
-; it's ordered by monster_id (see tiledata format in levels_data_consts.asm)
-monsters_inits:
+; a newly inited room uses this list to call a char Init func
+; it's ordered by char_id (see tiledata format in levels_data_consts.asm)
+chars_inits:
 			JMP_4( skeleton_init)
 			JMP_4( vampire_init)
 			JMP_4( burner_init)
@@ -14,7 +14,7 @@ monsters_inits:
 			JMP_4( firepool_init)
 			JMP_4( skeleton_quest_init)
 
-monsters2_inits:
+chars2_inits:
 			JMP_4( friends_mom_init)
 			JMP_4( friends_sis_init)
 			JMP_4( goose_init)

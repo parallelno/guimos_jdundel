@@ -35,8 +35,8 @@ stats_screen_text_draw:
 			call text_ex_draw
 
 
-			; draw monsters stats
-			mvi c, TILEDATA_FUNC_ID_MONSTERS
+			; draw chars stats
+			mvi c, TILEDATA_FUNC_ID_CHARS
 			call game_stats_get
 			xchg
 			; hl - stats

@@ -4,10 +4,10 @@
 
 
 ;========================================================
-; spawn and init a monster
+; spawn and init a char
 ; in:
 ; c - tile_idx in the room_tiledata array.
-; a - monster_id * 4
+; a - char_id * 4
 ; out:
 ; a = TILEDATA_RESTORE_TILE
 skeleton_quest_init:

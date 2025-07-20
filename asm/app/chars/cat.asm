@@ -38,22 +38,22 @@ CAT_MOVE_SPEED_NEG	= $ffff - $100 + 1
 CAT_DETECT_HERO_DISTANCE = 60
 
 ;========================================================
-; spawn and init a monster
+; spawn and init a char
 ; in:
 ; c - tile_idx in the room_tiledata array.
-; a - monster_id * 4
+; a - char_id * 4
 ; out:
 ; a = TILEDATA_RESTORE_TILE
 cat_init:
-			MONSTER_INIT(cat_update, cat_draw, monster_impacted, CAT_HEALTH, ACTOR_STATUS_CAT_DETECT_HERO_INIT, cat_idle_anim)
+			CHAR_INIT(cat_update, cat_draw, char_impacted, CAT_HEALTH, ACTOR_STATUS_CAT_DETECT_HERO_INIT, cat_idle_anim)
 
 ; uppdate for CAT_ID
 ; anim and a gameplay logic update
 ; in:
-; de - ptr to monster_update_ptr
+; de - ptr to char_update_ptr
 cat_update:
-			; advance hl to monster_status
-			HL_ADVANCE(monster_update_ptr, monster_status, BY_HL_FROM_DE)
+			; advance hl to char_status
+			HL_ADVANCE(char_update_ptr, char_status, BY_HL_FROM_DE)
 			mov a, m
 			cpi ACTOR_STATUS_CAT_MOVE
 			jz cat_update_move
@@ -75,38 +75,38 @@ cat_update:
 
 ; cat is immune to freeze
 ; in:
-; hl - ptr to monster_status
+; hl - ptr to char_status
 cat_update_freeze:
 			mvi m, ACTOR_STATUS_CAT_DETECT_HERO_INIT
 			ret
 
 ; in:
-; hl - ptr to monster_status
+; hl - ptr to char_status
 cat_update_detect_hero_init:
-			; hl = monster_status
+			; hl = char_status
 			mvi m, ACTOR_STATUS_CAT_DETECT_HERO
 			inx h
 			mvi m, ACTOR_STATUS_CAT_DETECT_HERO_TIME
-			HL_ADVANCE(monster_status_timer, monster_anim_ptr)
+			HL_ADVANCE(char_status_timer, char_anim_ptr)
 			mvi m, <cat_idle_anim
 			inx h
 			mvi m, >cat_idle_anim
 			ret
 
 ; in:
-; hl - ptr to monster_status
+; hl - ptr to char_status
 cat_update_detect_hero:
-			MONSTER_UPDATE_DETECT_HERO(CAT_DETECT_HERO_DISTANCE, ACTOR_STATUS_CAT_DASH_PREP, ACTOR_STATUS_CAT_DASH_PREP_TIME, cat_run_l_anim, CAT_ANIM_SPEED_DETECT_HERO, cat_update_anim_check_collision_hero, ACTOR_STATUS_CAT_MOVE_INIT, ACTOR_STATUS_CAT_MOVE_TIME)
+			CHAR_UPDATE_DETECT_HERO(CAT_DETECT_HERO_DISTANCE, ACTOR_STATUS_CAT_DASH_PREP, ACTOR_STATUS_CAT_DASH_PREP_TIME, cat_run_l_anim, CAT_ANIM_SPEED_DETECT_HERO, cat_update_anim_check_collision_hero, ACTOR_STATUS_CAT_MOVE_INIT, ACTOR_STATUS_CAT_MOVE_TIME)
 
 ; in:
-; hl - ptr to monster_status
+; hl - ptr to char_status
 cat_update_move_init:
 			mvi m, ACTOR_STATUS_CAT_MOVE
 
 			xchg
 			call random
-			; advance hl to monster_speed_x
-			HL_ADVANCE(monster_status, monster_speed_x, BY_HL_FROM_DE)
+			; advance hl to char_speed_x
+			HL_ADVANCE(char_status, char_speed_x, BY_HL_FROM_DE)
 
 			mvi c, 0 ; tmp c=0
 			cpi $40
@@ -151,7 +151,7 @@ cat_update_move_init:
 			inx h
 			mov m, c
 @set_anim:
-			HL_ADVANCE(monster_speed_y+1, monster_anim_ptr, BY_BC)
+			HL_ADVANCE(char_speed_y+1, char_anim_ptr, BY_BC)
 			; a = rnd
 			CPI_ZERO()
 			; if rnd is positive (up or right movement), then play cat_run_r anim
@@ -168,76 +168,76 @@ cat_update_move_init:
             ret
 
 ; in:
-; hl - ptr to monster_status
+; hl - ptr to char_status
 cat_update_move:
-			; advance hl to monster_status_timer
+			; advance hl to char_status_timer
 			inx h
 			dcr m
 			jz @set_detect_hero_init
 @update_movement:
 			ACTOR_UPDATE_MOVEMENT_CHECK_TILE_COLLISION(CAT_COLLISION_WIDTH, CAT_COLLISION_HEIGHT, @set_move_init)
 
-			; hl points to monster_pos_y+1
-			; advance hl to monster_anim_timer
-			HL_ADVANCE(monster_pos_y+1, monster_anim_timer, BY_BC)
+			; hl points to char_pos_y+1
+			; advance hl to char_anim_timer
+			HL_ADVANCE(char_pos_y+1, char_anim_timer, BY_BC)
 			mvi a, CAT_ANIM_SPEED_MOVE
 			jmp cat_update_anim_check_collision_hero
 
 @set_move_init:
-			; hl points to monster_pos_x
-			; advance hl to monster_status
-			HL_ADVANCE(monster_pos_x, monster_status, BY_BC)
+			; hl points to char_pos_x
+			; advance hl to char_status
+			HL_ADVANCE(char_pos_x, char_status, BY_BC)
 			mvi m, ACTOR_STATUS_CAT_MOVE_INIT
 			inx h
 			mvi m, ACTOR_STATUS_CAT_MOVE_TIME
 			ret
 @set_detect_hero_init:
- 			; hl - ptr to monster_status_timer
-			; advance hl to monster_status
+ 			; hl - ptr to char_status_timer
+			; advance hl to char_status
 			dcx h
 			mvi m, ACTOR_STATUS_CAT_DETECT_HERO_INIT
 			ret
 
 ; in:
-; hl - ptr to monster_status
+; hl - ptr to char_status
 cat_update_relax:
-			; hl = monster_status
-			; advance hl to monster_status_timer
+			; hl = char_status
+			; advance hl to char_status_timer
 			inx h
 			dcr m
 			jz @set_move_init
-			; advance hl to monster_anim_timer
-			HL_ADVANCE(monster_status_timer, monster_anim_timer)
+			; advance hl to char_anim_timer
+			HL_ADVANCE(char_status_timer, char_anim_timer)
 			mvi a, CAT_ANIM_SPEED_RELAX
 			jmp cat_update_anim_check_collision_hero
  @set_move_init:
- 			; hl - ptr to monster_status_timer
+ 			; hl - ptr to char_status_timer
 			mvi m, ACTOR_STATUS_CAT_MOVE_TIME
-			; advance hl to monster_status
+			; advance hl to char_status
 			dcx h
 			mvi m, ACTOR_STATUS_CAT_MOVE_INIT
 			ret
 
 ; in:
-; hl - ptr to monster_status
+; hl - ptr to char_status
 cat_update_dash_prep:
-			; hl = monster_status
-			; advance hl to monster_status_timer
+			; hl = char_status
+			; advance hl to char_status_timer
 			inx h
 			dcr m
 			jz @set_dash
-			; advance hl to monster_anim_timer
-			HL_ADVANCE(monster_status_timer, monster_anim_timer)
+			; advance hl to char_anim_timer
+			HL_ADVANCE(char_status_timer, char_anim_timer)
 			mvi a, CAT_ANIM_SPEED_DASH_PREP
 			jmp cat_update_anim_check_collision_hero
  @set_dash:
-  			; hl - ptr to monster_status_timer
+  			; hl - ptr to char_status_timer
 			mvi m, ACTOR_STATUS_CAT_DASH_TIME
-			; advance hl to monster_status
+			; advance hl to char_status
 			dcx h
 			mvi m, ACTOR_STATUS_CAT_DASH
-			; advance hl to monster_pos_x
-			HL_ADVANCE(monster_status, monster_pos_x, BY_BC)
+			; advance hl to char_pos_x
+			HL_ADVANCE(char_status, char_pos_x, BY_BC)
 			; reset sub pixel pos_x
 			mvi m, 0
 			; advance hl to pos_x+1
@@ -302,40 +302,40 @@ cat_update_dash_prep:
 			ret
 
 ; in:
-; hl - ptr to monster_status
+; hl - ptr to char_status
 cat_update_dash:
-			; hl = monster_status
-			; advance hl to monster_status_timer
+			; hl = char_status
+			; advance hl to char_status_timer
 			inx h
 			dcr m
 			jm @set_move_init
 @apply_movement:
 			call actor_move
-			; hl - ptr to monster_pos_x+1
-			; advance hl to monster_anim_timer
-			HL_ADVANCE(monster_pos_x+1, monster_anim_timer, BY_BC)
+			; hl - ptr to char_pos_x+1
+			; advance hl to char_anim_timer
+			HL_ADVANCE(char_pos_x+1, char_anim_timer, BY_BC)
 			mvi a, CAT_ANIM_SPEED_DASH
 			jmp actor_anim_update
 @set_move_init:
-			; hl points to monster_status_timer
+			; hl points to char_status_timer
 			mvi m, ACTOR_STATUS_CAT_MOVE_TIME
-			; advance hl to monster_status
+			; advance hl to char_status
 			dcx h
 			mvi m, ACTOR_STATUS_CAT_MOVE_INIT
 			ret
 
 
 ; in:
-; hl - monster_anim_timer
+; hl - char_anim_timer
 ; a - anim speed
 cat_update_anim_check_collision_hero:
 			call actor_anim_update
-			MONSTER_CHECK_COLLISION_HERO(CAT_COLLISION_WIDTH, CAT_COLLISION_HEIGHT, CAT_DAMAGE)
+			CHAR_CHECK_COLLISION_HERO(CAT_COLLISION_WIDTH, CAT_COLLISION_HEIGHT, CAT_DAMAGE)
 
 
 ; draw a sprite into a backbuffer
 ; in:
-; de - ptr to monster_draw_ptr
+; de - ptr to char_draw_ptr
 cat_draw:
 			lhld cat_get_scr_addr
 			lda cat_ram_disk_s_cmd

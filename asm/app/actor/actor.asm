@@ -5,10 +5,10 @@
 ; mark all actors killed to let
 ; them wipe out from the screen
 ; in:
-; hl - monster_update_ptr+1 or bullet_update_ptr+1
+; hl - char_update_ptr+1 or bullet_update_ptr+1
 ; bc - runtime_data_len
 ; ex.
-; KILL_ALL_MONSTERS()
+; KILL_ALL_CHARS()
 ; KILL_ALL_BULLETS()
 actor_kill_all:
 @loop:
@@ -23,9 +23,9 @@ actor_kill_all:
 			dad b
 			jmp @loop
 
-.macro KILL_ALL_MONSTERS()
-			lxi h, monster_update_ptr+1
-			lxi b, MONSTER_RUNTIME_DATA_LEN
+.macro KILL_ALL_CHARS()
+			lxi h, char_update_ptr+1
+			lxi b, CHAR_RUNTIME_DATA_LEN
 			call actor_kill_all
 .endmacro
 .macro KILL_ALL_BULLETS()
@@ -70,16 +70,16 @@ actor_anim_update:
 			mov m, e
 			ret
 
-; look up an empty spot in the actor (monster, bullet, back, fx) runtime data
+; look up an empty spot in the actor (char, bullet, back, fx) runtime data
 ; in:
-; hl - ptr to actor_runtime_data+1, ex monster_update_ptr+1
+; hl - ptr to actor_runtime_data+1, ex char_update_ptr+1
 ; e - RUNTIME_DATA_LEN
 ; return:
 ; hl - a ptr to an empty actor runtime_data+1
 ; z flag != 1 if no memory for a new entity
 ; uses:
 ; hl, de, a
-; TODO: optimize. store hl into lastRemovedMonsterRuntimeDataPtr
+; TODO: optimize. store hl into lastRemovedCharRuntimeDataPtr
 actor_get_empty_data_ptr:
 			mvi d, 0
 @loop:
@@ -117,7 +117,7 @@ actor_get_empty_data_ptr:
 
 ; calls a provided func for each actor with a status ACTOR_RUNTIME_DATA_ALIVE
 ; a ptr of a provided func has to be stored in the runtime data
-; an invoked func will get DE pointing to a func ptr in the runtime data (monster_update_ptr or bullet_draw_ptr, etc)
+; an invoked func will get DE pointing to a func ptr in the runtime data (char_update_ptr or bullet_draw_ptr, etc)
 ; ex. ACTORS_INVOKE_IF_ALIVE(bullet_update_ptr, bullet_update_ptr, BULLET_RUNTIME_DATA_LEN, true)
 ; in:
 ; a - an offset from actor_update_ptr to func_ptr
@@ -174,8 +174,8 @@ actors_invoke_if_alive:
 			jmp @loop
 
 ; calls any provided func for each actor with a status ACTOR_RUNTIME_DATA_ALIVE or ACTOR_RUNTIME_DATA_DESTR
-; a called func will get HL pointing to a monster_update_ptr+1 in the runtime data, and A holding an actor status
-; ex. ACTORS_CALL_IF_ALIVE(monster_copy_to_scr, monster_update_ptr, MONSTER_RUNTIME_DATA_LEN, true)
+; a called func will get HL pointing to a char_update_ptr+1 in the runtime data, and A holding an actor status
+; ex. ACTORS_CALL_IF_ALIVE(char_copy_to_scr, char_update_ptr, CHAR_RUNTIME_DATA_LEN, true)
 ; in:
 ; hl - a func addr
 ; de - actor_update_ptr+1
@@ -216,19 +216,19 @@ actors_call_if_alive:
 			jmp @loop
 
 ; erase a sprite or restore the background behind a sprite
-; requires (bullet_status - bullet_erase_scr_addr) == (monster_status - monster_erase_scr_addr)
-; requires (bullet_erase_scr_addr+1 - bullet_erase_wh) == (monster_erase_scr_addr+1 - monster_erase_wh)
+; requires (bullet_status - bullet_erase_scr_addr) == (char_status - char_erase_scr_addr)
+; requires (bullet_erase_scr_addr+1 - bullet_erase_wh) == (char_erase_scr_addr+1 - char_erase_wh)
 ; in:
 ; hl - ptr to actor_update_ptr+1
 ; de - LXI_D_TO_DIFF(actor_update_ptr+1, actor_status)
 ; a - ACTOR_RUNTIME_DATA_* status
 actor_erase:
 			; validation
-		.if ~((bullet_status - bullet_erase_scr_addr) == (monster_status - monster_erase_scr_addr))
-			.error "actor_erase func fails because !((bullet_status - bullet_erase_scr_addr) == (monster_status - monster_erase_scr_addr))"
+		.if ~((bullet_status - bullet_erase_scr_addr) == (char_status - char_erase_scr_addr))
+			.error "actor_erase func fails because !((bullet_status - bullet_erase_scr_addr) == (char_status - char_erase_scr_addr))"
 		.endif
-		.if ~((bullet_erase_scr_addr+1 - bullet_erase_wh) == (monster_erase_scr_addr+1 - monster_erase_wh))
-			.error "actor_erase func fails because !((bullet_erase_scr_addr+1 - bullet_erase_wh) == (monster_erase_scr_addr+1 - monster_erase_wh))"
+		.if ~((bullet_erase_scr_addr+1 - bullet_erase_wh) == (char_erase_scr_addr+1 - char_erase_wh))
+			.error "actor_erase func fails because !((bullet_erase_scr_addr+1 - bullet_erase_wh) == (char_erase_scr_addr+1 - char_erase_wh))"
 		.endif
 
 			; if an actor is destroyed mark its data as empty
@@ -276,13 +276,13 @@ actor_erase:
 
 
 ; copy sprites from a backbuffer to a scr
-; requires (bullet_status - bullet_erase_scr_addr) == (monster_status - monster_erase_scr_addr)
+; requires (bullet_status - bullet_erase_scr_addr) == (char_status - char_erase_scr_addr)
 ; in:
 ; hl - ptr to actor_status
 actor_copy_to_scr:
 			; validation
-		.if (bullet_status - bullet_erase_scr_addr) != (monster_status - monster_erase_scr_addr)
-			.error "actor_erase func fails because (bullet_status - bullet_erase_scr_addr) != (monster_status - monster_erase_scr_addr)"
+		.if (bullet_status - bullet_erase_scr_addr) != (char_status - char_erase_scr_addr)
+			.error "actor_erase func fails because (bullet_status - bullet_erase_scr_addr) != (char_status - char_erase_scr_addr)"
 		.endif
 
 			; if it is invisible, return
@@ -290,28 +290,28 @@ actor_copy_to_scr:
 			ani ACTOR_STATUS_BIT_INVIS
 			rnz
 
-			; advance to monster_erase_scr_addr
-			HL_ADVANCE(monster_status, monster_erase_scr_addr, BY_BC)
-			; read monster_erase_scr_addr
+			; advance to char_erase_scr_addr
+			HL_ADVANCE(char_status, char_erase_scr_addr, BY_BC)
+			; read char_erase_scr_addr
 			mov c, m
 			inx h
 			mov b, m
 			inx h
-			; read monster_erase_scr_addr_old
+			; read char_erase_scr_addr_old
 			mov e, m
 			inx h
 			mov d, m
-			; store monster_erase_scr_addr temp
+			; store char_erase_scr_addr temp
 			xchg
 			shld @old_top_right_corner+1
 			xchg
-			; store monster_erase_scr_addr to monster_erase_scr_addr_old
+			; store char_erase_scr_addr to char_erase_scr_addr_old
 			mov m, b
 			dcx h
 			mov m, c
 			; bc - hero_erase_scr_addr
 			; de - hero_erase_scr_addr_old
-			; hl - ptr to monster_erase_scr_addr_old
+			; hl - ptr to char_erase_scr_addr_old
 			; get min(b, d), min(c, e)
 			mov a, d
 			cmp b
@@ -325,12 +325,12 @@ actor_copy_to_scr:
 @keep_old_y:
 			; tmp store a scr addr to copy
 			push d
-			; bc - monster_erase_scr_addr
-			; calc top-right corner addr (hero_erase_scr_addr + monster_erase_wh)
+			; bc - char_erase_scr_addr
+			; calc top-right corner addr (hero_erase_scr_addr + char_erase_wh)
 			INX_H(2)
 			mov d, b
 			mov e, c
-			; bc - monster_erase_wh
+			; bc - char_erase_wh
 			mov c, m
 			inx h
 			mov b, m
@@ -338,8 +338,8 @@ actor_copy_to_scr:
 			xchg
 			dad b
 			xchg
-			; bc - monster_erase_wh_old
-			; store monster_erase_wh to monster_erase_wh_old
+			; bc - char_erase_wh_old
+			; store char_erase_wh to char_erase_wh_old
 			mov a, m
 			mov m, c
 			mov c, a
@@ -347,12 +347,12 @@ actor_copy_to_scr:
 			mov a, m
 			mov m, b
 			mov b, a
-			; calc old top-right corner addr (hero_erase_scr_addr_old + monster_erase_wh_old)
+			; calc old top-right corner addr (hero_erase_scr_addr_old + char_erase_wh_old)
 @old_top_right_corner:
 			lxi h, TEMP_WORD
 			dad b
-			; hl - hero_erase_scr_addr_old + monster_erase_wh_old
-			; de - hero_erase_scr_addr + monster_erase_wh
+			; hl - hero_erase_scr_addr_old + char_erase_wh_old
+			; de - hero_erase_scr_addr + char_erase_wh
 			; get max(h, d), max(l, e)
 			mov a, h
 			cmp d
@@ -391,7 +391,7 @@ actor_to_hero_distance:
 @check_pos_x_diff:
 			cmp c
 			rnc ; return if a pos_x diff too big
-			; advance hl to monster_pos_y+1
+			; advance hl to char_pos_y+1
 			INX_H(2)
 			lda hero_pos_y+1
 			sub m

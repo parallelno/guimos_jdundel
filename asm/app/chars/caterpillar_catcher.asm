@@ -1,6 +1,6 @@
 @memusage_caterpillar_catcher
 ;========================================================
-; npc is a quest monster. it can't be destroied.
+; npc is a quest char. it can't be destroied.
 ; it looks like a metalic can lifted up by a small wood stick.
 ; if the caterpillar collides with it, it will catch it.
 ; catching has a timer. if it's over, all caught caterpillar

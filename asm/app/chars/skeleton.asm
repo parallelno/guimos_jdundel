@@ -89,27 +89,27 @@ SKELETON_MOVE_SPEED_NEG	= $ffff - $100 + 1
 SKELETON_DETECT_HERO_DISTANCE = 60
 
 ;========================================================
-; spawn and init a monster
+; spawn and init a char
 ; in:
 ; c - tile_idx in the room_tiledata array.
-; a - monster_id * 4
+; a - char_id * 4
 ; out:
 ; a = TILEDATA_RESTORE_TILE
 skeleton_init:
-			MONSTER_INIT(skeleton_update, skeleton_draw, monster_impacted, SKELETON_HEALTH, ACTOR_STATUS_SKELETON_DETECT_HERO_INIT, skeleton_idle_anim)
+			CHAR_INIT(skeleton_update, skeleton_draw, char_impacted, SKELETON_HEALTH, ACTOR_STATUS_SKELETON_DETECT_HERO_INIT, skeleton_idle_anim)
 
 ;========================================================
 ; anim and a gameplay logic update
 ; in:
-; de - ptr to monster_update_ptr
+; de - ptr to char_update_ptr
 skeleton_update:
-			; advance hl to monster_status
-			HL_ADVANCE(monster_update_ptr, monster_status, BY_HL_FROM_DE)
+			; advance hl to char_status
+			HL_ADVANCE(char_update_ptr, char_status, BY_HL_FROM_DE)
 			mov a, m
 			/*
 			NOT TODO: a call table is not faster than properly sorted cpi/jz.
 						it requres a change callig func signatures (de will
-						contain a ptr to monster_status instead of hl.
+						contain a ptr to char_status instead of hl.
 						a call table takes 17*4cc. it includes xchg in calling
 						func and JMP_4 to call it.
 						if status IDs take a big range like now (
@@ -132,36 +132,36 @@ skeleton_update:
 			cpi ACTOR_STATUS_SKELETON_SHOOT
 			jz skeleton_update_shoot
 			cpi ACTOR_STATUS_FREEZE
-			jz monster_update_freeze
+			jz char_update_freeze
 			ret
 
 ; in:
-; hl - ptr to monster_status
+; hl - ptr to char_status
 skeleton_update_detect_hero_init:
-			; hl = monster_status
+			; hl = char_status
 			mvi m, ACTOR_STATUS_SKELETON_DETECT_HERO
 			inx h
 			mvi m, ACTOR_STATUS_SKELETON_DETECT_HERO_TIME
-			HL_ADVANCE(monster_status_timer, monster_anim_ptr)
+			HL_ADVANCE(char_status_timer, char_anim_ptr)
 			mvi m, <skeleton_idle_anim
 			inx h
 			mvi m, >skeleton_idle_anim
 			ret
 
 ; in:
-; hl - ptr to monster_status
+; hl - ptr to char_status
 skeleton_update_detect_hero:
-			MONSTER_UPDATE_DETECT_HERO(SKELETON_DETECT_HERO_DISTANCE, ACTOR_STATUS_SKELETON_SHOOT_PREP, ACTOR_STATUS_SKELETON_SHOOT_PREP_TIME, skeleton_idle_anim, SKELETON_ANIM_SPEED_DETECT_HERO, skeleton_update_anim_check_collision_hero, ACTOR_STATUS_SKELETON_MOVE_INIT, ACTOR_STATUS_SKELETON_MOVE_TIME)
+			CHAR_UPDATE_DETECT_HERO(SKELETON_DETECT_HERO_DISTANCE, ACTOR_STATUS_SKELETON_SHOOT_PREP, ACTOR_STATUS_SKELETON_SHOOT_PREP_TIME, skeleton_idle_anim, SKELETON_ANIM_SPEED_DETECT_HERO, skeleton_update_anim_check_collision_hero, ACTOR_STATUS_SKELETON_MOVE_INIT, ACTOR_STATUS_SKELETON_MOVE_TIME)
 
 ; in:
-; hl - ptr to monster_status
+; hl - ptr to char_status
 skeleton_update_move_init:
-			; hl = monster_status
+			; hl = char_status
 			mvi m, ACTOR_STATUS_SKELETON_MOVE
 			xchg
 			call random
-			; advance hl to monster_speed_x
-			HL_ADVANCE(monster_status, monster_speed_x, BY_HL_FROM_DE)
+			; advance hl to char_speed_x
+			HL_ADVANCE(char_status, char_speed_x, BY_HL_FROM_DE)
 			mvi c, 0 ; tmp c=0
 			cpi $40
 			jc @speed_x_positive
@@ -205,7 +205,7 @@ skeleton_update_move_init:
 			inx h
 			mov m, c
 @set_anim:
-			HL_ADVANCE(monster_speed_y+1, monster_anim_ptr, BY_BC)
+			HL_ADVANCE(char_speed_y+1, char_anim_ptr, BY_BC)
 			; a = rnd
 			CPI_ZERO()
 			; if rnd is positive (up or right movement), then play skeleton_run_r_anim anim
@@ -222,87 +222,87 @@ skeleton_update_move_init:
             ret
 
 ; in:
-; hl - ptr to monster_status
+; hl - ptr to char_status
 skeleton_update_move:
-			; hl = monster_status
-			; advance hl to monster_status_timer
+			; hl = char_status
+			; advance hl to char_status_timer
 			inx h
 			dcr m
 			jz @set_detect_hero_init
 @update_movement:
 			ACTOR_UPDATE_MOVEMENT_CHECK_TILE_COLLISION(SKELETON_COLLISION_WIDTH, SKELETON_COLLISION_HEIGHT, @set_move_init)
 
-			; hl points to monster_pos_y+1
-			; advance hl to monster_anim_timer
-			HL_ADVANCE(monster_pos_y+1, monster_anim_timer, BY_BC)
+			; hl points to char_pos_y+1
+			; advance hl to char_anim_timer
+			HL_ADVANCE(char_pos_y+1, char_anim_timer, BY_BC)
 			mvi a, SKELETON_ANIM_SPEED_MOVE
 			jmp skeleton_update_anim_check_collision_hero
 
 @set_move_init:
-			; hl points to monster_pos_x
-			; advance hl to monster_status
-			HL_ADVANCE(monster_pos_x, monster_status, BY_BC)
+			; hl points to char_pos_x
+			; advance hl to char_status
+			HL_ADVANCE(char_pos_x, char_status, BY_BC)
 			mvi m, ACTOR_STATUS_SKELETON_MOVE_INIT
 			inx h
 			mvi m, ACTOR_STATUS_SKELETON_MOVE_TIME
 			ret
 @set_detect_hero_init:
- 			; hl - ptr to monster_status_timer
+ 			; hl - ptr to char_status_timer
 			mvi m, ACTOR_STATUS_SKELETON_MOVE_TIME
-			; advance hl to monster_status
+			; advance hl to char_status
 			dcx h
 			mvi m, ACTOR_STATUS_SKELETON_DETECT_HERO_INIT
 			ret
 
 ; in:
-; hl - ptr to monster_status
+; hl - ptr to char_status
 skeleton_update_relax:
-			; hl = monster_status
-			; advance hl to monster_status_timer
+			; hl = char_status
+			; advance hl to char_status_timer
 			inx h
 			dcr m
 			jz @set_move_init
-			; advance hl to monster_anim_timer
-			HL_ADVANCE(monster_status_timer, monster_anim_timer)
+			; advance hl to char_anim_timer
+			HL_ADVANCE(char_status_timer, char_anim_timer)
 			mvi a, SKELETON_ANIM_SPEED_RELAX
 			jmp skeleton_update_anim_check_collision_hero
  @set_move_init:
- 			; hl - ptr to monster_status_timer
+ 			; hl - ptr to char_status_timer
 			mvi m, ACTOR_STATUS_SKELETON_MOVE_TIME
-			; advance hl to monster_status
+			; advance hl to char_status
 			dcx h
 			mvi m, ACTOR_STATUS_SKELETON_MOVE_INIT
 			ret
 
 ; in:
-; hl - ptr to monster_status
+; hl - ptr to char_status
 skeleton_update_shoot_prep:
-			; hl = monster_status
-			; advance hl to monster_status_timer
+			; hl = char_status
+			; advance hl to char_status_timer
 			inx h
 			dcr m
 			jz @set_shoot
-			; advance hl to monster_anim_timer
-			HL_ADVANCE(monster_status_timer, monster_anim_timer)
+			; advance hl to char_anim_timer
+			HL_ADVANCE(char_status_timer, char_anim_timer)
 			mvi a, SKELETON_ANIM_SPEED_SHOOT_PREP
 			jmp skeleton_update_anim_check_collision_hero
  @set_shoot:
-  			; hl - ptr to monster_status_timer
-			; advance hl to monster_status
+  			; hl - ptr to char_status_timer
+			; advance hl to char_status
 			dcx h
 			mvi m, ACTOR_STATUS_SKELETON_SHOOT
 			ret
 
 ; in:
-; hl - ptr to monster_status
+; hl - ptr to char_status
 skeleton_update_shoot:
-			; hl = monster_status
+			; hl = char_status
 			mvi m, ACTOR_STATUS_SKELETON_RELAX
-			; advance hl to monster_status_timer
+			; advance hl to char_status_timer
 			inx h
 			mvi m, ACTOR_STATUS_SKELETON_RELAX_TIME
 
-			HL_ADVANCE(monster_status_timer, monster_speed_x, BY_BC)
+			HL_ADVANCE(char_status_timer, char_speed_x, BY_BC)
 			mov a, m
 			inx h
 			ora m
@@ -314,10 +314,10 @@ skeleton_update_shoot:
 @shoot_left:
 			mvi a, BULLET_DIR_L
 @shoot_right:
-			LXI_B_TO_DIFF(monster_speed_x+1, monster_pos_x+1)
+			LXI_B_TO_DIFF(char_speed_x+1, char_pos_x+1)
 			jmp @set_bullet_pos
 @shoot_vert:
-			; advance hl to monster_speed_y+1
+			; advance hl to char_speed_y+1
 			INX_H(2)
 			mov a, m
 			CPI_ZERO()
@@ -326,7 +326,7 @@ skeleton_update_shoot:
 @shoot_down:
 			mvi a, BULLET_DIR_D
 @shoot_up:
-			LXI_B_TO_DIFF(monster_speed_y+1, monster_pos_x+1)
+			LXI_B_TO_DIFF(char_speed_y+1, char_pos_x+1)
 @set_bullet_pos:
 			dad b
 			mov b, m
@@ -339,15 +339,15 @@ skeleton_update_shoot:
 
 
 ; in:
-; hl - monster_anim_timer
+; hl - char_anim_timer
 ; a - anim speed
 skeleton_update_anim_check_collision_hero:
 			call actor_anim_update
-			MONSTER_CHECK_COLLISION_HERO(SKELETON_COLLISION_WIDTH, SKELETON_COLLISION_HEIGHT, SKELETON_DAMAGE)
+			CHAR_CHECK_COLLISION_HERO(SKELETON_COLLISION_WIDTH, SKELETON_COLLISION_HEIGHT, SKELETON_DAMAGE)
 
 ; draw a sprite into a backbuffer
 ; in:
-; de - ptr to monster_draw_ptr
+; de - ptr to char_draw_ptr
 skeleton_draw:
 			lhld skeleton_get_scr_addr
 			lda skeleton_ram_disk_s_cmd

@@ -6,7 +6,7 @@
 ;=======================================================
 
 room_init:
-			call monsters_init
+			call chars_init
 			call bullets_init
 			call backs_init
 			call room_unpack

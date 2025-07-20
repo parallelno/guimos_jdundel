@@ -51,9 +51,8 @@ game_update:
 
 @update:
 			call hero_update
-			call monsters_update
+			call chars_update
 			call bullets_update
-			;call level_update
 @pause:
 			call backs_update
 			call game_ui_update
@@ -97,16 +96,16 @@ game_draw:
 			cpi GAME_REQ_PAUSE
 			rz
 
-			call monsters_sort_pos_y
+			call chars_sort_pos_y
 
-			call monsters_draw ; it also calls hero_draw
+			call chars_draw ; it also calls hero_draw
 			call bullets_draw
 
 			call hero_copy_to_scr
-			call monsters_copy_to_scr
+			call chars_copy_to_scr
 			call bullets_copy_to_scr
 
 			call hero_erase
-			call monsters_erase
+			call chars_erase
 			call bullets_erase
 			ret

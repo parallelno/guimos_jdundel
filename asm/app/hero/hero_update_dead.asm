@@ -12,7 +12,7 @@ hero_dead:
 			ret
 
 hero_dead_fade_init_gb:
-			KILL_ALL_MONSTERS()
+			KILL_ALL_CHARS()
 			KILL_ALL_BULLETS()
 
 			; set the status

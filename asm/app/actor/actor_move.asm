@@ -1,4 +1,4 @@
-; updates the actor's position based on its speed 
+; updates the actor's position based on its speed
 ; pos_xy += speed_xy
 
 ; in:
@@ -9,7 +9,7 @@
 ; rev 2 212cc (26.4% faster!)
 ; 27 bytes
 actor_move:
-			HL_ADVANCE(monster_status_timer, monster_speed_y + 1, BY_BC)
+			HL_ADVANCE(char_status_timer, char_speed_y + 1, BY_BC)
 			mov d, m
 			dcx h
 			mov a, m
@@ -33,7 +33,7 @@ actor_move:
 			adc d
 			mov m, a
 
-			HL_ADVANCE(monster_pos_y + 1, monster_pos_x)
+			HL_ADVANCE(char_pos_y + 1, char_pos_x)
 			mov a, m
 			add c
 			mov m, a
@@ -105,7 +105,7 @@ actor_check_tile_collision:
 			xchg
 			shld actor_update_movement_check_tile_collision_xy + 1
 
-			HL_ADVANCE(monster_status_timer, monster_speed_y + 1, BY_HL_FROM_DE)
+			HL_ADVANCE(char_status_timer, char_speed_y + 1, BY_HL_FROM_DE)
 			mov d, m
 			dcx h
 			mov e, m
@@ -133,7 +133,7 @@ actor_check_tile_collision:
 			mov m, a
 			mov e, a
 
-			HL_ADVANCE(monster_pos_y + 1, monster_pos_x)
+			HL_ADVANCE(char_pos_y + 1, char_pos_x)
 			mov a, m
 			sta @old_pos_x_l + 1
 			add c
@@ -218,7 +218,7 @@ actor_check_tile_collision:
 			; check the X coord
 			cpi TILE_WIDTH
 			jc @collided
-@room_collision_width:			
+@room_collision_width:
 			cpi TEMP_BYTE
 			jnc @collided
 			; check if the Y coord
@@ -262,4 +262,4 @@ actor_check_tile_collision:
 			; hl points to pos_x
 			stc ; set CY=1, collided
 			ret
-actor_update_movement_check_tile_collision_xy = @check_tile_collision			
+actor_update_movement_check_tile_collision_xy = @check_tile_collision

@@ -156,7 +156,7 @@ bullet_init:
 			mov h, b
 			pchl
 @ret:
-			; return TILEDATA_RESTORE_TILE to make the tile where a monster spawned walkable and restorable
+			; return TILEDATA_RESTORE_TILE to make the tile where a char spawned walkable and restorable
 			mvi a, TILEDATA_RESTORE_TILE
 			ret
 
