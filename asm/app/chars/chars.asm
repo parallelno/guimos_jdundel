@@ -10,12 +10,14 @@
 .include "asm/app/chars/cat.asm"
 .include "asm/app/chars/firepool.asm"
 .include "asm/app/chars/npc.asm"
+.include "asm/app/chars/mom.asm"
 .include "asm/app/chars/friends_mom.asm"
 .include "asm/app/chars/friends_sis.asm"
 .include "asm/app/chars/dotty.asm"
 .include "asm/app/chars/bob.asm"
 .include "asm/app/chars/npc4.asm"
 .include "asm/app/chars/caterpillar.asm"
+.include "asm/app/chars/scarecrow.asm"
 
 @memusage_chars
 

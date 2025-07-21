@@ -109,7 +109,7 @@ _font_ampercent:
 
 			.word 0 ; safety pair of bytes for reading by POP B
 _font_quote:
-			.byte 8, 0 ; offset_y, offset_x
+			.byte 6, 0 ; offset_y, offset_x
 			.word 0x80,0x40,
 			.byte 0, 3 ; next_char_pos_y_offset, next_char_pos_x_offset
 

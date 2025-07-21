@@ -129,6 +129,35 @@ _dialogs_hero_use_clothes:
 			TEXT("Deal's a deal! Promised to fetch and bring", _LINE_BREAK_)
 			TEXT("the dry clothes, so get to it!", )
 
+
+			.word 0 ; safety pair of bytes for reading by POP B
+_dialogs_mom_first_hi:
+			.word 160 ; data len to copy to ram
+			.byte 45, 16 ; scr pos (y, x)
+			TEXT("Mom: Hey sweetie! You're up bright and early-", _LINE_BREAK_)
+			TEXT("up to your usual shenanigans, I bet! But hey,", _LINE_BREAK_)
+			TEXT("don't forget to visit Uncle Bob, okay? He's", _LINE_BREAK_)
+			TEXT("been asking for you!", )
+
+
+			.word 0 ; safety pair of bytes for reading by POP B
+_dialogs_bob_first_hi:
+			.word 176 ; data len to copy to ram
+			.byte 45, 16 ; scr pos (y, x)
+			TEXT("Uncle Bob: My hero! Just in time! I need you", _LINE_BREAK_)
+			TEXT("to shoo off those pesky crows from my field.", _LINE_BREAK_)
+			TEXT("There's a scarecrow chillin' in the backyard-", _LINE_BREAK_)
+			TEXT("go grab it and plant it like a champ!", )
+
+
+			.word 0 ; safety pair of bytes for reading by POP B
+_dialogs_bob_waits_scare:
+			.word 94 ; data len to copy to ram
+			.byte 45, 16 ; scr pos (y, x)
+			TEXT("Uncle Bob: I am waiting you to shoo off", _LINE_BREAK_)
+			TEXT("those pesky crows from my field.", _LINE_BREAK_)
+			TEXT("TODO: update text", )
+
 ;===================================================================================
 ; storytelling
 ;===================================================================================

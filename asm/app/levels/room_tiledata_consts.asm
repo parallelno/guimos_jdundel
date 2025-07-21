@@ -107,12 +107,12 @@ NPC_ID_VILLAGER4	= 11
 ; - Item_id = d. See runtime_data.asm->global_items for details.
 
 ITEM_ID_STORYTELLING = 0 ; Opens dialog when a hero steps on it
-ITEM_ID_KEY_0	= 1	; key 0, shown in the UI panel
-; item_id 		= 2 ; key 1, ...
-; item_id 		= 3 ; key 2, ...
-; item_id 		= 4 ; key 3, ...
-; item_id 		= 5 ; key 4, ...
-; item_id 		= 6 ; key 5, ...
+ITEM_ID_KEY_0	= 1	; friend's mom gives it
+; item_id 		= 2 ;
+ITEM_ID_KEY_2	= 3 ; uncle bob gives it
+; item_id 		= 4 ;
+; item_id 		= 5 ;
+; item_id 		= 6 ;
 ITEM_ID_UI_MAX	= 8	; Items >= this ID don't appear in UI panel
 
 ;-----------------------------------------------------------------------------

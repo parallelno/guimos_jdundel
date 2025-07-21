@@ -304,8 +304,12 @@ game_status_first_freeze:		= game_status + 6	; First time freezing anyone
 ; Special states
 game_status_fart:				= game_status + 7	; Fart status from cabbage
 game_status_burner_quest_room:	= game_status + 8	; Index in burner_quest_room_ids array
-game_status_reserved1:			= game_status + 9
-game_status_reserved2:			= game_status + 10
+game_status_mom:				= game_status + 9   ; Mom's status
+	MOM_STATUS_FIRST_HI	= 0
+	MOM_STATUS_HELP_BOB	= 1
+game_status_bob:				= game_status + 10
+	BOB_STATUS_FIRST_HI			= 0
+	BOB_STATUS_WAITING_SCARE	= 1
 game_status_reserved3:			= game_status + 11
 game_status_reserved4:			= game_status + 12
 game_status_reserved5:			= game_status + 13

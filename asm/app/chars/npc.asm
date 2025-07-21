@@ -1,6 +1,6 @@
 @memusage_npc
 
-NPC_ANIM_SPEED_IDLE = 20
+NPC_ANIM_SPEED_IDLE = 2
 
 NPC_HEALTH = 0
 NPC_DAMAGE = 0
@@ -8,10 +8,6 @@ NPC_DAMAGE = 0
 green_hat_init:
 boy_init:
 old_man_init:
-scarecrow_init:
-mom_init:
-.breakpoint
-			CHAR_INIT(npc_update, npc_draw, mom_impacted, NPC_HEALTH, ACTOR_STATUS_INIT, npc_mom_idle_anim, False, CHAR_TYPE_ALLY)
 
 
 ;========================================================
@@ -25,19 +21,6 @@ npc_update:
 			; hl - char_anim_timer
 			; a - anim speed
 			call actor_anim_update
-			ret
-
-; in:
-; de - ptr to char_impacted_ptr + 1
-; c - hero_weapon_id
-mom_impacted:
-			; check the weapon_id
-			mvi a, HERO_WEAPON_ID_SNOWFLAKE
-			cmp c
-			rz ; return if the hero used a snowflake
-			; de - ptr to char_impacted_ptr+1
-
-			; TODO: add interaction logic
 			ret
 
 ; draw a sprite into a backbuffer

@@ -25,7 +25,7 @@ _main_menu_settings:
 _main_menu_license:
 			.word 42 ; data len to copy to ram
 			.byte 32, 26 ; scr pos (y, x)
-			TEXT("2023. Developed by Fedotovskikh family", )
+			TEXT("2025. Developed by Fedotovskikh family", )
 
 ;===================================================================================
 ; scores screen

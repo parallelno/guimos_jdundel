@@ -108,6 +108,32 @@
 				"Deal's a deal! Promised to fetch and bring",
 				"the dry clothes, so get to it!"
 			]
+			},
+			"mom_first_hi" : {
+				"scr_pos" : [16, 45],
+				"text": [
+				"Mom: Hey sweetie! You're up bright and early-",
+				"up to your usual shenanigans, I bet! But hey,",
+				"don't forget to visit Uncle Bob, okay? He's",
+				"been asking for you!"
+			]
+			},
+			"bob_first_hi" : {
+				"scr_pos" : [16, 45],
+				"text": [
+				"Uncle Bob: My hero! Just in time! I need you",
+				"to shoo off those pesky crows from my field.",
+				"There's a scarecrow chillin' in the backyard-",
+				"go grab it and plant it like a champ!"
+			]
+			},
+			"bob_waits_scare" : {
+				"scr_pos" : [16, 45],
+				"text": [
+				"Uncle Bob: I am waiting you to shoo off",
+				"those pesky crows from my field.",
+				"TODO: update text"
+			]
 			}
 		},
 		"storytelling" : {

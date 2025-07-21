@@ -1,46 +1,46 @@
 @memusage_bob
-;========================================================
-; npc is a quest char. it can't be destroied.
-; all all npcs visual and logic is in this assembly.
-; npc chose logic an a skin based on the room_id, level_id,
 
-; statuses.
-; personal actor statuses must be in a range of 0 to ACTOR_STATUS_CUSTOM including.
-ACTOR_STATUS_BOB_IDLE				= ACTOR_STATUS_INIT
-
-; status duration in updates.
-ACTOR_STATUS_BOB_RELAX_TIME			= 25
-ACTOR_STATUS_BOB_MOVE_TIME			= 55
-
-; animation speed (the less the slower, 0-255, 255 means the next frame is almost every update)
-BOB_ANIM_SPEED_IDLE	= 60
-
-; gameplay
-BOB_DAMAGE = 0
-BOB_HEALTH = 0
-
-BOB_COLLISION_WIDTH		= 16
-BOB_COLLISION_HEIGHT	= 16
-
-;========================================================
-; spawn and init a char
-; in:
-; c - tile_idx in the room_tiledata array.
-; a - char_id * 4
-; out:
-; a = TILEDATA_RESTORE_TILE
 bob_init:
-			CHAR_INIT(npc_update, npc_draw, bob_impacted, BOB_HEALTH, ACTOR_STATUS_BOB_IDLE, npc_bob_idle_anim, False, CHAR_TYPE_ALLY)
+			CHAR_INIT(npc_update, npc_draw, @impacted, NPC_HEALTH, ACTOR_STATUS_INIT, npc_bob_idle_anim, False, CHAR_TYPE_ALLY)
 
 ; in:
 ; de - ptr to char_impacted_ptr + 1
 ; c - hero_weapon_id
-bob_impacted:
+@impacted:
 			; check the weapon_id
 			mvi a, HERO_WEAPON_ID_SNOWFLAKE
 			cmp c
 			rz ; return if the hero used a snowflake
 			; de - ptr to char_impacted_ptr+1
 
-			;call npc_friends_mom
+			; prevents multiple calls this function
+			; when a hero hits multiple triggers at once
+			call dialog_is_inited
+			rz
+
+			lda game_status_bob
+			CPI_ZERO(BOB_STATUS_FIRST_HI)
+			jz @quest_help_bob
+			cpi BOB_STATUS_WAITING_SCARE
+			jz @quest_waits_scare
 			ret
+
+@quest_help_bob:
+			mvi a, BOB_STATUS_WAITING_SCARE
+			sta game_status_bob
+
+			mvi a, ITEM_STATUS_ACQUIRED
+			sta global_items + ITEM_ID_KEY_2 - 1 ; because the first item_id = 1
+
+			; init a dialog
+			mvi a, GAME_REQ_PAUSE
+			lxi h, dialog_callback_room_redraw
+			lxi d, _dialogs_bob_first_hi
+			jmp dialog_init
+
+@quest_waits_scare:
+			; init a dialog
+			mvi a, GAME_REQ_PAUSE
+			lxi h, dialog_callback_room_redraw
+			lxi d, _dialogs_bob_waits_scare
+			jmp dialog_init

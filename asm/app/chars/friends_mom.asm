@@ -28,33 +28,35 @@ FRIENDS_MOM_COLLISION_HEIGHT	= 16
 ; out:
 ; a = TILEDATA_RESTORE_TILE
 friends_mom_init:
-			CHAR_INIT(npc_update, npc_draw, friends_mom_impacted, NPC_HEALTH, ACTOR_STATUS_FRIENDS_MOM_IDLE, npc_friends_mom_idle_anim, False, CHAR_TYPE_ALLY)
+			CHAR_INIT(npc_update, npc_draw, @impacted, NPC_HEALTH, ACTOR_STATUS_FRIENDS_MOM_IDLE, npc_friends_mom_idle_anim, False, CHAR_TYPE_ALLY)
 
+; Interaction with a friend's mom NPC.
+; In this routine the hero gets a key 0 to open the backyard
+; Then he gets a popsicle pie in exchange of a dry clothes
 ; in:
 ; de - ptr to char_impacted_ptr + 1
 ; c - hero_weapon_id
-friends_mom_impacted:
+@impacted:
 			; check the weapon_id
 			mvi a, HERO_WEAPON_ID_SNOWFLAKE
 			cmp c
 			rz ; return if the hero used a snowflake
 			; de - ptr to char_impacted_ptr+1
 
-; Interaction with a friend's mom NPC.
-; In this routine the hero gets a key 0 to open the backyard
-; Then he gets a popsicle pie in exchange of a dry clothes
-
-			; fix for multiple calls this function when a hero hits several trigger tiledatas
+			; prevents multiple calls this function
+			; when a hero hits multiple triggers at once
 			call dialog_is_inited
 			rz
 
-			lxi h, global_items + ITEM_ID_KEY_0 - 1 ; because the first item_id = 1
 			; check the key 0 status
+			lxi h, global_items + ITEM_ID_KEY_0 - 1 ; because the first item_id = 1
 			A_TO_ZERO(ITEM_STATUS_NOT_ACQUIRED)
 			cmp m
-			jnz @check_clothes; if it is acquired or used, check clothes item
+			; if it's been acquired/used, check clothes item
+			jnz @check_clothes
 
-			; if a key_0 isn't acquired, set key_0 status = ITEM_STATUS_ACQUIRED
+			; if a key_0 isn't acquired,
+			; set key_0 status = ITEM_STATUS_ACQUIRED
 			mvi m, ITEM_STATUS_ACQUIRED
 
 			lxi d, TILEDATA_FUNC_ID_ITEMS<<8 | ITEM_ID_KEY_0

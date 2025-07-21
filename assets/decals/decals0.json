@@ -3,7 +3,7 @@
 	"asset_type" : "decal",
 	"path_png" : "art/sprites_decals.png",
 	"lists" : {
-		"decals_walkable" : ["bones", "skull"], 
+		"decals_walkable" : ["bones", "skull"],
 		"decals_collidable" : ["web1"],
 		"items" : ["key_0", "key_1", "key_1", "key_2", "key_3"],
 		"resources" : ["coin", "coin", "coin", "coin", "tnt", "potion_red", "popsicle_pie", "dry_clothes"],
@@ -12,7 +12,7 @@
 		"doors_opened" : ["door_0_open_l", "door_0_open_r", "door_1_open_l", "door_1_open_r", "door_1_open_l", "door_1_open_r", "door_0_open_l", "door_0_open_r", "door_1_open_l", "door_1_open_r"],
 		"containers" : ["chest_small", "chest_big", "chest_weapon0"],
 		"containers_opened" : ["chest_small_opened", "chest_big_opened", "chest_weapon0_opened"],
-		"switches" : ["bongo_cat_bottom", "bongo_cat_bottom", "nyan_cat_bottom"] 
+		"switches" : ["bongo_cat_bottom", "bongo_cat_bottom", "nyan_cat_bottom"]
 	},
 	"sprites" : [
 		{
@@ -277,7 +277,7 @@
 		},
 		{
 			"name" : "door_2_r",
-			"x" : 96,
+			"x" : 112,
 			"y"	: 160,
 			"width" : 16,
 			"height" : 16,

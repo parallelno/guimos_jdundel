@@ -350,7 +350,7 @@ game_ui_draw_items:
 @tiled_img_ptrs:
 			.word _ti0_item_key_0	; item_id = 1
 			.word _ti0_item_key_1	; item_id = 2
-			.word _ti0_item_key_1	; item_id = 3
-			.word _ti0_item_key_2	; item_id = 4
-			.word _ti0_item_key_3	; item_id = 5
-			.word _ti0_item_key_0 ; tmp ; id = 6
+			.word _ti0_item_key_2	; item_id = 3
+			.word _ti0_item_key_3	; item_id = 4
+			.word _ti0_item_key_4	; item_id = 5
+			.word _ti0_item_key_4 	; item_id = 6

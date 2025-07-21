@@ -127,7 +127,7 @@ _ti0_item_key_4:
 			.word _TI0_ITEM_KEY_4_COPY_LEN ; data len to copy
 			.word 0x8000 + (19<<8 | 240)	; scr addr
 			.word 0x8000 + (21<<8 | 0)	; scr addr end
-			.byte 0x5D, 0x00, 0x5B, 0x5C, 
+			.byte 0x5D, 0x5E, 0x5B, 0x5C, 
 _TI0_RES_EMPTY_COPY_LEN = 10
 			.word 0 ; safety pair of bytes for reading by POP B
 _ti0_res_empty:
