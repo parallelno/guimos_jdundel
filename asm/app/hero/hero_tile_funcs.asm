@@ -181,8 +181,8 @@ hero_res_func_health:
 			mov m, a
 			jmp game_ui_draw_health_text
 */
-hero_res_func_clothes:
-			lxi h, hero_res_clothes
+hero_res_func_laundry:
+			lxi h, hero_res_laundry
 			inr m
 			CLAMP_M(RES_CLOTHS_MAX)
 			jmp game_ui_res_select_and_draw

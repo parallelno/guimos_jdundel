@@ -51,10 +51,10 @@ _ti0_res_tnt:
 			.word 0x8000 + (6<<8 | 240)	; scr addr
 			.word 0x8000 + (10<<8 | 0)	; scr addr end
 			.byte 0x31, 0x32, 0x18, 0x18, 0x2F, 0x30, 0x0E, 0x0E, 
-_TI0_RES_CLOTHES_COPY_LEN = 12
+_TI0_RES_LAUNDRY_COPY_LEN = 12
 			.word 0 ; safety pair of bytes for reading by POP B
-_ti0_res_clothes:
-			.word _TI0_RES_CLOTHES_COPY_LEN ; data len to copy
+_ti0_res_laundry:
+			.word _TI0_RES_LAUNDRY_COPY_LEN ; data len to copy
 			.word 0x8000 + (6<<8 | 240)	; scr addr
 			.word 0x8000 + (10<<8 | 0)	; scr addr end
 			.byte 0x35, 0x36, 0x18, 0x18, 0x33, 0x34, 0x0E, 0x0E, 

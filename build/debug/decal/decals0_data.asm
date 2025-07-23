@@ -201,7 +201,7 @@ _decals0_potion_red_relative:
 
 
 			.word 0  ; safety pair of bytes for reading by POP B
-_decals0_dry_clothes_relative:
+_decals0_dry_laundry_relative:
 			.byte 0, 0; offset_y, offset_x
 			.byte 10, 1; height, width
 			.byte 0xFF, 0xF9, 0x00, 0x00, 0x00, 0x00, 0x06, 0x00, 0x00, 0x00, 0xC0, 0xE0, 0x00, 0x00, 0x1F, 0x3F, 

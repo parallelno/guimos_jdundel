@@ -25,7 +25,7 @@ _decals0_coin_relative = 1332
 _decals0_tnt_relative = 1458
 _decals0_popsicle_pie_relative = 1574
 _decals0_potion_red_relative = 1730
-_decals0_dry_clothes_relative = 1856
+_decals0_dry_laundry_relative = 1856
 _decals0_door_0_l_relative = 1962
 _decals0_door_0_r_relative = 2128
 _decals0_door_1_l_relative = 2294
@@ -51,7 +51,7 @@ decals0_gfx_ptrs:
 decals_walkable_gfx_ptrs: .word _decals0_bones_relative, _decals0_skull_relative, 
 decals_collidable_gfx_ptrs: .word _decals0_web1_relative, 
 items_gfx_ptrs: .word _decals0_key_0_relative, _decals0_key_1_relative, _decals0_key_1_relative, _decals0_key_2_relative, _decals0_key_3_relative, 
-resources_gfx_ptrs: .word _decals0_coin_relative, _decals0_coin_relative, _decals0_coin_relative, _decals0_coin_relative, _decals0_tnt_relative, _decals0_potion_red_relative, _decals0_popsicle_pie_relative, _decals0_dry_clothes_relative, 
+resources_gfx_ptrs: .word _decals0_coin_relative, _decals0_coin_relative, _decals0_coin_relative, _decals0_coin_relative, _decals0_tnt_relative, _decals0_potion_red_relative, _decals0_popsicle_pie_relative, _decals0_dry_laundry_relative, 
 breakable_gfx_ptrs: .word _decals0_barrel_relative, _decals0_crate_relative, _decals0_cabbage_relative, 
 doors_gfx_ptrs: .word _decals0_door_0_l_relative, _decals0_door_0_r_relative, _decals0_door_1_l_relative, _decals0_door_1_r_relative, _decals0_door_2_l_relative, _decals0_door_2_r_relative, _decals0_door_0_l_relative, _decals0_door_0_r_relative, _decals0_door_4_l_relative, _decals0_door_4_r_relative, 
 doors_opened_gfx_ptrs: .word _decals0_door_0_open_l_relative, _decals0_door_0_open_r_relative, _decals0_door_1_open_l_relative, _decals0_door_1_open_r_relative, _decals0_door_1_open_l_relative, _decals0_door_1_open_r_relative, _decals0_door_0_open_l_relative, _decals0_door_0_open_r_relative, _decals0_door_1_open_l_relative, _decals0_door_1_open_r_relative, 

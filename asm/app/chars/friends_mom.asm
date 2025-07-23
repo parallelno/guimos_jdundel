@@ -53,7 +53,7 @@ friends_mom_init:
 			A_TO_ZERO(ITEM_STATUS_NOT_ACQUIRED)
 			cmp m
 			; if it's been acquired/used, check clothes item
-			jnz @check_clothes
+			jnz @check_laundry
 
 			; if a key_0 isn't acquired,
 			; set key_0 status = ITEM_STATUS_ACQUIRED
@@ -69,10 +69,10 @@ friends_mom_init:
 			lxi d, _dialogs_knocked_his_friend_door
 			jmp dialog_init
 
-@check_clothes:
+@check_laundry:
 			; key_0 is acquired
 			; check if clothes are acquired
-			lxi h, hero_res_clothes
+			lxi h, hero_res_laundry
 			A_TO_ZERO(0)
 			cmp m
 			jnz @clothes_acquired
@@ -80,7 +80,7 @@ friends_mom_init:
 			; the hero returns without clothes
 			mvi a, GAME_REQ_PAUSE
 			lxi h, dialog_callback_room_redraw
-			lxi d, _dialogs_knocked_his_friend_door_no_clothes
+			lxi d, _dialogs_knocked_his_friend_door_no_laundry
 			jmp dialog_init
 
 @clothes_acquired:
@@ -100,5 +100,5 @@ friends_mom_init:
 			; init a dialog
 			mvi a, GAME_REQ_PAUSE
 			lxi h, dialog_callback_room_redraw
-			lxi d, _dialogs_knocked_his_friend_door_clothes_returns
+			lxi d, _dialogs_knocked_his_friend_door_laundry_returns
 			jmp dialog_init

@@ -16,7 +16,7 @@ hero_attack_init:
 			shld hero_speed_x
 			shld hero_speed_y
 
-			lda game_ui_res_selected_id
+			lda game_ui_res_selected_ptr
 			cpi <hero_res_sword
 			jz hero_attack_use_sword
 			cpi <hero_res_snowflake
@@ -27,8 +27,8 @@ hero_attack_init:
 			jz hero_attack_use_cabbage
 			cpi <hero_res_spoon
 			jz hero_attack_use_spoon
-			cpi <hero_res_clothes
-			jz hero_attack_use_clothes
+			cpi <hero_res_laundry
+			jz hero_attack_use_laundry
 			jmp hero_attack_use_hands
 
 hero_attack_use_snowflake:
@@ -115,21 +115,21 @@ hero_attack_use_popsicle_pie:
 			call game_ui_res_select_and_draw
 			jmp hero_attack_use_hands
 
-hero_attack_use_clothes:
+hero_attack_use_laundry:
 			; check if a hero uses clothes the first time
-			lda game_status_use_clothes
+			lda game_status_use_laundry
 			CPI_ZERO()
-			jnz @no_hero_use_clothes_dialog
+			jnz @no_hero_use_laundry_dialog
 			inr a
-			sta game_status_use_clothes
+			sta game_status_use_laundry
 			; init a dialog
 			mvi a, GAME_REQ_PAUSE
 			lxi h, @clothes_callback
-			lxi d, _dialogs_hero_use_clothes
+			lxi d, _dialogs_hero_use_laundry
 			jmp dialog_init
 @clothes_callback:
 			call dialog_callback_room_redraw
-@no_hero_use_clothes_dialog:
+@no_hero_use_laundry_dialog:
 
 			lxi h, hero_res_sword
 			call game_ui_res_select_and_draw

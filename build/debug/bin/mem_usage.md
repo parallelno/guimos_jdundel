@@ -1,5 +1,5 @@
 ## Main Ram memory usage:
-> Free Space: `4547`
+> Free Space: `4516`
 
 |Assembly| Usage|
 |-|-|
@@ -99,16 +99,16 @@
 ---
 ### `level0` RAM Disk usage:
 
-> Used: `91238`, Free Space: `97066`
+> Used: `91312`, Free Space: `96992`
 
 - bank0 addr0
 	* CAT.BIN: addr: 0, len: `6628`
 	* LV0_GFX.BIN: addr: 6628, len: `6302`
 	* BURNER.BIN: addr: 12930, len: `6116`
 	* SWORD.BIN: addr: 19046, len: `6032`
-	* TXT_LV0.BIN: addr: 25078, len: `4490`
+	* TXT_LV0.BIN: addr: 25078, len: `4556`
 
-  `Used: 29568, Free: 3136`
+  `Used: 29634, Free: 3070`
 
 - bank0 addr8000
 
@@ -133,23 +133,23 @@
 - bank2 addr8000
 	* HERO.BIN: addr: 45124, len: `17792`
 	* TI0_DATA.BIN: addr: 62916, len: `342`
+	* PAL_LV0.BIN: addr: 63258, len: `148`
 
-  `Used: 18134, Free: 2278`
+  `Used: 18282, Free: 2130`
 
 - bank3 addr0
 
   `Used: 0, Free: 32704`
 
 - bank3 addr8000
-	* LV0_DATA.BIN: addr: 32768, len: `5928`
-	* KNIGHT.BIN: addr: 38696, len: `10664`
-	* NPC4.BIN: addr: 49360, len: `7464`
-	* SKELETON.BIN: addr: 56824, len: `6660`
-	* SCYTHE.BIN: addr: 63484, len: `1068`
-	* SNOWFLAK.BIN: addr: 64552, len: `832`
-	* PAL_LV0.BIN: addr: 65384, len: `148`
+	* LV0_DATA.BIN: addr: 32768, len: `5936`
+	* KNIGHT.BIN: addr: 38704, len: `10664`
+	* NPC4.BIN: addr: 49368, len: `7464`
+	* SKELETON.BIN: addr: 56832, len: `6660`
+	* SCYTHE.BIN: addr: 63492, len: `1068`
+	* SNOWFLAK.BIN: addr: 64560, len: `832`
 
-  `Used: 32764, Free: 4`
+  `Used: 32624, Free: 144`
 
 
 ---

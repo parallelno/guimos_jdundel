@@ -23,6 +23,8 @@ bob_init:
 			jz @quest_help_bob
 			cpi BOB_STATUS_WAITING_SCARE
 			jz @quest_waits_scare
+			cpi BOB_STATUS_GOT_SCARECROW
+			jz @quest_waits_scare
 			ret
 
 @quest_help_bob:

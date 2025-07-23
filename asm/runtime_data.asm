@@ -136,8 +136,8 @@ chars_runtime_data_end_marker:	= chars_runtime_data + CHAR_RUNTIME_DATA_LEN * CH
 chars_runtime_data_end:			= chars_runtime_data_end_marker + ADDR_LEN
 CHARS_RUNTIME_DATA_LEN			= chars_runtime_data_end - chars_runtime_data
 
-.if CHAR_RUNTIME_DATA_LEN > 256
-	.error "ERROR: CHAR_RUNTIME_DATA_LEN (" CHAR_RUNTIME_DATA_LEN ") > 256"
+.if CHAR_RUNTIME_DATA_LEN > $100
+	.error "ERROR: CHAR_RUNTIME_DATA_LEN (" CHAR_RUNTIME_DATA_LEN ") > $100"
 .endif
 
 ;=============================================================================
@@ -183,11 +183,8 @@ bullets_runtime_data_end_marker:	= bullets_runtime_data + BULLET_RUNTIME_DATA_LE
 bullets_runtime_data_end:			= bullets_runtime_data_end_marker + ADDR_LEN
 BULLETS_RUNTIME_DATA_LEN			= bullets_runtime_data_end - bullets_runtime_data
 
-.if BULLETS_RUNTIME_DATA_LEN > $100
-	.error "ERROR: BULLETS_RUNTIME_DATA_LEN (" BULLETS_RUNTIME_DATA_LEN ") > $100"
-.endif
 .if bullets_runtime_data>>8 != (bullets_runtime_data_end - 1)>>8
-	.error "ERROR: bullets_runtime_data and bullets_runtime_data_end must be in the same $100 block"
+	.error "ERROR: bullets_runtime_data must fit inside $100 block"
 .endif
 
 ;=============================================================================
@@ -298,7 +295,7 @@ game_status_fire_extinguished:	= game_status + 1	; Number of fire walls extingui
 ; To show "first-time use" dialogs
 game_status_cabbage_healing:	= game_status + 2	; First time healing with cabbage
 game_status_use_pie:			= game_status + 3	; First time using a pie
-game_status_use_clothes:		= game_status + 4	; First time using clothes
+game_status_use_laundry:		= game_status + 4	; First time using clothes
 game_status_use_spoon:			= game_status + 5	; First time using a spoon
 game_status_first_freeze:		= game_status + 6	; First time freezing anyone
 ; Special states
@@ -310,6 +307,7 @@ game_status_mom:				= game_status + 9   ; Mom's status
 game_status_bob:				= game_status + 10
 	BOB_STATUS_FIRST_HI			= 0
 	BOB_STATUS_WAITING_SCARE	= 1
+	BOB_STATUS_GOT_SCARECROW	= 2
 game_status_reserved3:			= game_status + 11
 game_status_reserved4:			= game_status + 12
 game_status_reserved5:			= game_status + 13
@@ -377,6 +375,10 @@ ROOM_TILEDATA_LEN	= ROOM_WIDTH * ROOM_HEIGHT
 room_tiledata:		= $7B00
 room_tiledata_end:	= room_tiledata + ROOM_TILEDATA_LEN
 
+.if room_tiledata>>8 != (room_tiledata_end-1)>>8
+	.error "ERROR: room_tiledata must fit inside $100 block"
+.endif
+
 ;=============================================================================
 ; Palette Data
 ;=============================================================================
@@ -442,6 +444,11 @@ CONTAINERS_STATUS_ACQUIRED		= $ff
 
 containers_inst_data_ptrs:	= $7C00
 ;containers_inst_data:		= containers_inst_data_ptrs + used_unique_containers (can vary) + 1
+containers_inst_data_ptrs_end: = containers_inst_data_ptrs + CONTAINERS_INST_DATA_PTRS_LEN
+
+.if containers_inst_data_ptrs>>8 != (containers_inst_data_ptrs_end-1)>>8
+	.error "ERROR: containers_inst_data_ptrs must fit inside $100 block"
+.endif
 
 ;=============================================================================
 ; Resource Instance Status Data
@@ -457,7 +464,11 @@ RESOURCES_STATUS_ACQUIRED		= $ff
 
 resources_inst_data_ptrs:	= $7D00
 ;resources_inst_data:		= resources_inst_data_ptrs + used_unique_resources (can vary) + 1
+resources_inst_data_ptrs_end: = resources_inst_data_ptrs + RESOURCES_INST_DATA_PTRS_LEN
 
+.if resources_inst_data_ptrs>>8 != (resources_inst_data_ptrs_end-1)>>8
+	.error "ERROR: resources_inst_data_ptrs must fit inside $100 block"
+.endif
 
 ;=============================================================================
 ; Breakables
@@ -515,6 +526,9 @@ breakables_status_buffs_end:	= breakables_status_buf_free_ptr + BREAKABLES_STATU
 .if LV0_BREAKABLES + LV1_BREAKABLES > BREAKABLES_MAX
 	.error "ERROR: breakables in all levels: " LV0_BREAKABLES + LV1_BREAKABLES ". It exeeds BREAKABLES_MAX (" BREAKABLES_MAX ")"
 .endif
+.if breakables_status_buf_free_ptr>>8 != (breakables_status_buffs_end-1)>>8
+	.error "ERROR: breakables_status_buf_free_ptr must fit inside $100 block"
+.endif
 
 
 ;=============================================================================
@@ -543,11 +557,8 @@ backs_runtime_data_end_marker:	= backs_runtime_data + BACK_RUNTIME_DATA_LEN * BA
 backs_runtime_data_end:			= backs_runtime_data_end_marker + WORD_LEN
 BACKS_RUNTIME_DATA_LEN = backs_runtime_data_end - backs_runtime_data
 
-.if BACKS_RUNTIME_DATA_LEN > $100
-	.error "ERROR: BACKS_RUNTIME_DATA_LEN (" BACKS_RUNTIME_DATA_LEN ") > $100"
-.endif
 .if backs_runtime_data>>8 != (backs_runtime_data_end - 1)>>8
-	.error "ERROR: backs_runtime_data and backs_runtime_data_end must be in the same $100 block"
+	.error "ERROR: backs_runtime_data must fit inside $100 block"
 .endif
 
 ;=============================================================================
@@ -618,6 +629,7 @@ ROOMS_SPAWN_RATE_LEN = rooms_spawn_rate_end - rooms_spawn_rate
 ; - A maximum of 15 resources is supported.
 ; - `hero_res_sword` to `hero_res_spoon` are selectable resources shown in the UI.
 ; - Some resources are marked as quest-related.
+; - Data must fit inside $100 block.
 
 hero_resources:			= $7F9D
 hero_res_score:			= hero_resources + 0  ; .word
@@ -627,29 +639,28 @@ hero_res_snowflake:		= hero_resources + 4  ; .byte
 hero_res_tnt:			= hero_resources + 5  ; .byte
 hero_res_potion_health:	= hero_resources + 6  ; .byte
 hero_res_popsicle_pie:	= hero_resources + 7  ; .byte
-hero_res_clothes:		= hero_resources + 8  ; .byte (Quest resource)
+hero_res_laundry:		= hero_resources + 8  ; .byte (Quest resource)
 hero_res_cabbage:		= hero_resources + 9  ; .byte (Quest resource)
 hero_res_spoon:			= hero_resources + 10 ; .byte
-hero_res_not_used_01:	= hero_resources + 11 ; .byte (Reserved)
-hero_res_not_used_02:	= hero_resources + 12
-hero_res_not_used_03:	= hero_resources + 13
-hero_res_not_used_04:	= hero_resources + 14
-hero_res_not_used_06:	= hero_resources + 15
+hero_res_scarecrow:		= hero_resources + 11 ; .byte
+hero_res_not_used_02:	= hero_resources + 12 ; .byte
+hero_res_not_used_03:	= hero_resources + 13 ; .byte
+hero_res_not_used_04:	= hero_resources + 14 ; .byte
+hero_res_not_used_06:	= hero_resources + 15 ; .byte
+hero_res_end:			= hero_resources + 16 ; last resource + 1
 
-; Currently selected resource ID for use in the game UI.
-; Format (0000_RRRR):
-;	RRRR - Resource ID (0–15), does not match tiledata index directly,
-;          because hero_res_score takes two bytes.
-;	0    - Indicates no resource selected.
-game_ui_res_selected_id:	= hero_resources + 16 ; .byte (0000_RRRR format)
+; Currently selected resource low addr for use in the game UI.
+;	NULL    - Indicates no resource selected.
+game_ui_res_selected_ptr:	= hero_resources + 16 ; .byte
 hero_resources_end:			= hero_resources + 17
 HERO_RESOURCES_LEN = hero_resources_end - hero_resources
 
-RES_SELECTABLE_AVAILABLE_NONE	= 0
-RES_SELECTABLE_ID_CLOTHES		= 4
 RES_SELECTABLE_FIRST	= hero_res_sword
-RES_SELECTABLE_LAST		= hero_res_spoon
-RES_SELECTABLE_MAX		= RES_SELECTABLE_LAST - RES_SELECTABLE_FIRST + 1
+RES_SELECTABLE_MAX		= hero_res_end - RES_SELECTABLE_FIRST
+
+.if hero_resources>>8 != (hero_resources_end-1)>>8
+	.error "ERROR: hero_resources must fit inside $100 block"
+.endif
 
 ;=============================================================================
 ; Global Item Statuses

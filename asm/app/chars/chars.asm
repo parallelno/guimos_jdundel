@@ -347,7 +347,10 @@ char_erase:
 			LXI_D_TO_DIFF(char_update_ptr+1, char_status)
 			jmp actor_erase
 
-; a common routine to handle a char impact by a hero weapon
+; a common routine to handle a char impacted by a hero weapon
+; it decrease the health of the char. if the healf is below 0,
+; the char does, score adds, if the weapon is a snowflake,
+; the char freeses.
 ; in:
 ; de - ptr to char_impacted_ptr + 1
 ; c - hero_weapon_id

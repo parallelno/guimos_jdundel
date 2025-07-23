@@ -47,7 +47,7 @@ hero_res_func_tbl:
 			RET_4()								; res_id == 5
 			JMP_4( hero_res_func_potion_health)	; res_id == 6
 			JMP_4( hero_res_func_potion_mana)	; res_id == 7
-			JMP_4( hero_res_func_clothes)		; res_id == 8
+			JMP_4( hero_res_func_laundry)		; res_id == 8
 			RET_4()								; res_id == 9
 			RET_4()								; res_id == 10
 			RET_4()								; res_id == 11

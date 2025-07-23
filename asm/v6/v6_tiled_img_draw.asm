@@ -53,14 +53,11 @@ tiled_img_init_gfx:
 
 ; in:
 ; de - local idx_data addr
-
-; if called tiled_img_draw_pos_offset
+tiled_img_draw:
+			lxi h, 0
 ; in:
 ; hl - scr_addr_offset
 ; de - local idx_data addr
-
-tiled_img_draw:
-			lxi h, 0
 tiled_img_draw_pos_offset_set:
 			shld tiled_img_draw_pos_offset + 1
 			; de - idx data addr in the RAM Disk
@@ -184,6 +181,7 @@ tiled_img_draw_loop:
 			; offset += tile_idx * 2
 			dad b
 			; add tile_gfxs_ptr
+			; it's a pointer where the graphics data is loaded
 tiled_img_draw_gfx_addr:
 			lxi b, TEMP_ADDR
 			dad b

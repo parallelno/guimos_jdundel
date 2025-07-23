@@ -67,7 +67,7 @@ _dialogs_knocked_his_friend_door:
 
 
 			.word 0 ; safety pair of bytes for reading by POP B
-_dialogs_knocked_his_friend_door_no_clothes:
+_dialogs_knocked_his_friend_door_no_laundry:
 			.word 90 ; data len to copy to ram
 			.byte 45, 16 ; scr pos (y, x)
 			TEXT("Friend's mom: Oh, sugar, no clothes means", _LINE_BREAK_)
@@ -75,11 +75,11 @@ _dialogs_knocked_his_friend_door_no_clothes:
 
 
 			.word 0 ; safety pair of bytes for reading by POP B
-_dialogs_knocked_his_friend_door_clothes_returns:
-			.word 154 ; data len to copy to ram
+_dialogs_knocked_his_friend_door_laundry_returns:
+			.word 156 ; data len to copy to ram
 			.byte 45, 16 ; scr pos (y, x)
 			TEXT("Friend's mom: Sweetie, you're the best", _LINE_BREAK_)
-			TEXT("helper in the world! Here's a fresh-baked", _LINE_BREAK_)
+			TEXT("helper in the world! Here's a fresh-frozen", _LINE_BREAK_)
 			TEXT("popsicle pie, piping chill. Hurry and take", _LINE_BREAK_)
 			TEXT("it home before it warms up!", )
 
@@ -123,7 +123,7 @@ _dialogs_hero_use_pie:
 
 
 			.word 0 ; safety pair of bytes for reading by POP B
-_dialogs_hero_use_clothes:
+_dialogs_hero_use_laundry:
 			.word 76 ; data len to copy to ram
 			.byte 45, 16 ; scr pos (y, x)
 			TEXT("Deal's a deal! Promised to fetch and bring", _LINE_BREAK_)
@@ -156,6 +156,14 @@ _dialogs_bob_waits_scare:
 			.byte 45, 16 ; scr pos (y, x)
 			TEXT("Uncle Bob: I am waiting you to shoo off", _LINE_BREAK_)
 			TEXT("those pesky crows from my field.", _LINE_BREAK_)
+			TEXT("TODO: update text", )
+
+
+			.word 0 ; safety pair of bytes for reading by POP B
+_dialogs_got_scarecrow:
+			.word 62 ; data len to copy to ram
+			.byte 45, 16 ; scr pos (y, x)
+			TEXT("Here we go! Let's plant it on the field.", _LINE_BREAK_)
 			TEXT("TODO: update text", )
 
 ;===================================================================================

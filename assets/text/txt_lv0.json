@@ -52,18 +52,18 @@
 				"freshly baked popsicle pie, deal?"
 			]
 			},
-			"knocked_his_friend_door_no_clothes" : {
+			"knocked_his_friend_door_no_laundry" : {
 				"scr_pos" : [16, 45],
 				"text": [
 				"Friend's mom: Oh, sugar, no clothes means",
 				"no pie, remember? We had a straight-up deal."
 			]
 			},
-			"knocked_his_friend_door_clothes_returns" : {
+			"knocked_his_friend_door_laundry_returns" : {
 				"scr_pos" : [16, 45],
 				"text": [
 				"Friend's mom: Sweetie, you're the best",
-				"helper in the world! Here's a fresh-baked",
+				"helper in the world! Here's a fresh-frozen",
 				"popsicle pie, piping chill. Hurry and take",
 				"it home before it warms up!"
 			]
@@ -102,7 +102,7 @@
 				"once. Until then, I definitely need a spoon."
 			]
 			},
-			"hero_use_clothes" : {
+			"hero_use_laundry" : {
 				"scr_pos" : [16, 45],
 				"text": [
 				"Deal's a deal! Promised to fetch and bring",
@@ -132,6 +132,13 @@
 				"text": [
 				"Uncle Bob: I am waiting you to shoo off",
 				"those pesky crows from my field.",
+				"TODO: update text"
+			]
+			},
+			"got_scarecrow" : {
+				"scr_pos" : [16, 45],
+				"text": [
+				"Here we go! Let's plant it on the field.",
 				"TODO: update text"
 			]
 			}
