@@ -62,6 +62,14 @@ bob_init:
 @dialog_callback:
 			call dialog_callback_room_redraw
 
+			; play vfx
+			lxi h, hero_erase_scr_addr
+			mov c, m
+			HL_ADVANCE(hero_erase_scr_addr, hero_erase_scr_addr + 1)
+			mov b, m
+			lxi d, vfx_reward_anim
+			call vfx_init
+
 			lxi h, hero_res_caterpillar_catcher
 			inr m
 			; redraw ui

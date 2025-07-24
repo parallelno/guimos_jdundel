@@ -82,6 +82,7 @@ hero_attack_use_cabbage:
 			; a - hero health
 			cpi RES_HEALTH_MAX
 			jz @no_vfx
+
 			lxi h, hero_erase_scr_addr
 			mov c, m
 			HL_ADVANCE(hero_erase_scr_addr, hero_erase_scr_addr + 1)
@@ -124,10 +125,10 @@ hero_attack_use_laundry:
 			sta game_status_use_laundry
 			; init a dialog
 			mvi a, GAME_REQ_PAUSE
-			lxi h, @clothes_callback
+			lxi h, @laundry_callback
 			lxi d, _dialogs_hero_use_laundry
 			jmp dialog_init
-@clothes_callback:
+@laundry_callback:
 			call dialog_callback_room_redraw
 @no_hero_use_laundry_dialog:
 

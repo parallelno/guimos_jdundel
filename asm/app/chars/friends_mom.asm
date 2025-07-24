@@ -75,15 +75,15 @@ friends_mom_init:
 			lxi h, hero_res_laundry
 			A_TO_ZERO(0)
 			cmp m
-			jnz @clothes_acquired
-@clothes_not_acquired:
+			jnz @laundry_acquired
+@laundry_not_acquired:
 			; the hero returns without clothes
 			mvi a, GAME_REQ_PAUSE
 			lxi h, dialog_callback_room_redraw
 			lxi d, _dialogs_knocked_his_friend_door_no_laundry
 			jmp dialog_init
 
-@clothes_acquired:
+@laundry_acquired:
 			; a hero returns with clothes
 			; remove the clothes item
 			; a = 0
