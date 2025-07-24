@@ -25,16 +25,18 @@ game_score_items:
 
 ; func_id = 7
 game_score_resources:
-			.word 1		; res_id = 0 - a coin (tiledata = 7*16+0 = 160)
-			.word 3		; res_id = 1 - a health crystal
-			.word 50	; res_id = 2 - a sword
-			.word 5		; res_id = 3 - a snowflake
-			.word 15	; res_id = 4 - a tnt
-			.word 10	; res_id = 5 - a potion health
-			.word 15	; res_id = 6 - a popsicle pie
-			.word 2		; res_id = 7 - a clothes
-			.word 1		; res_id = 8 - a cabbage
-			.word 5		; res_id = 9 - a spoon
+			.word 1		; res_id = 0  - coin (tiledata = 7*16+0 = 160)
+			.word 3		; res_id = 1  - health crystal
+			.word 50	; res_id = 2  - sword
+			.word 5		; res_id = 3  - snowflake
+			.word 15	; res_id = 4  - tnt
+			.word 10	; res_id = 5  - potion health
+			.word 15	; res_id = 6  - popsicle pie
+			.word 2		; res_id = 7  - clothes
+			.word 1		; res_id = 8  - cabbage
+			.word 5		; res_id = 9  - spoon
+			.word 10	; res_id = 10 - scarecrow
+			.word 20	; res_id = 10 - caterpillar catcher
 
 ; TODO: it was previosly triggered by triggers, it caused a bug
 ; because friend's door can be accessed multiple times.
@@ -96,7 +98,7 @@ game_stats:
 			.word NULL
 			.word NULL
 			.word 0		; items
-			.word 0		; resource: coins
+			.word 0		; resource: coins, cabbage, etc.
 			.word NULL
 			.word NULL
 			.word 0		; TODO: check secrets above

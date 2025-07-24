@@ -166,6 +166,22 @@ _dialogs_got_scarecrow:
 			TEXT("Here we go! Let's plant it on the field.", _LINE_BREAK_)
 			TEXT("TODO: update text", )
 
+
+			.word 0 ; safety pair of bytes for reading by POP B
+_dialogs_set_scarecrow:
+			.word 62 ; data len to copy to ram
+			.byte 45, 16 ; scr pos (y, x)
+			TEXT("Thank you! Take this caterpillar catcher!", _LINE_BREAK_)
+			TEXT("TODO: update text", )
+
+
+			.word 0 ; safety pair of bytes for reading by POP B
+_dialogs_bob_happy:
+			.word 32 ; data len to copy to ram
+			.byte 45, 16 ; scr pos (y, x)
+			TEXT("Thank you!", _LINE_BREAK_)
+			TEXT("TODO: update text", )
+
 ;===================================================================================
 ; storytelling
 ;===================================================================================

@@ -18,18 +18,22 @@ bob_init:
 			call dialog_is_inited
 			rz
 
-			lda game_status_bob
+			lxi h, game_status_bob
+			mov a, m
 			CPI_ZERO(BOB_STATUS_FIRST_HI)
 			jz @quest_help_bob
 			cpi BOB_STATUS_WAITING_SCARE
 			jz @quest_waits_scare
 			cpi BOB_STATUS_GOT_SCARECROW
 			jz @quest_waits_scare
+			cpi BOB_STATUS_SET_SCARECROW
+			jz @quest_completed
+			cpi BOB_STATUS_HAPPY
+			jz @bob_happy
 			ret
 
 @quest_help_bob:
-			mvi a, BOB_STATUS_WAITING_SCARE
-			sta game_status_bob
+			mvi m, BOB_STATUS_WAITING_SCARE
 
 			mvi a, ITEM_STATUS_ACQUIRED
 			sta global_items + ITEM_ID_KEY_2 - 1 ; because the first item_id = 1
@@ -45,4 +49,31 @@ bob_init:
 			mvi a, GAME_REQ_PAUSE
 			lxi h, dialog_callback_room_redraw
 			lxi d, _dialogs_bob_waits_scare
+			jmp dialog_init
+
+@quest_completed:
+			mvi m, BOB_STATUS_HAPPY
+
+			; init a dialog
+			mvi a, GAME_REQ_PAUSE
+			lxi h, @dialog_callback
+			lxi d, _dialogs_set_scarecrow
+			jmp dialog_init
+@dialog_callback:
+			call dialog_callback_room_redraw
+
+			lxi h, hero_res_caterpillar_catcher
+			inr m
+			; redraw ui
+			call game_ui_res_select_and_draw
+			; add score points
+			lxi d, TILEDATA_FUNC_ID_RESOURCES<<8 | RES_ID_CATERPILLAR_CATCHER
+			call game_score_add
+			jmp game_ui_draw_score_text
+
+@bob_happy:
+			; init a dialog
+			mvi a, GAME_REQ_PAUSE
+			lxi h, dialog_callback_room_redraw
+			lxi d, _dialogs_bob_happy
 			jmp dialog_init

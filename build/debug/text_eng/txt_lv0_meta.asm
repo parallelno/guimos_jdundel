@@ -2,8 +2,8 @@
 ; asm data file: build/debug/text_eng/txt_lv0_data.asm
 ; bin file: build/debug/bin/TXT_LV0.BIN
 
-TXT_LV0_FILE_LEN = 4556
-TXT_LV0_LAST_RECORD_LEN = 76
+TXT_LV0_FILE_LEN = 4656
+TXT_LV0_LAST_RECORD_LEN = 48
 
 TXT_LV0_FILENAME_PTR:
 			.byte "TXT_LV0" ; filename
@@ -26,18 +26,20 @@ _dialogs_mom_first_hi = 0x074f
 _dialogs_bob_first_hi = 0x07f2
 _dialogs_bob_waits_scare = 0x08a6
 _dialogs_got_scarecrow = 0x0907
-_storytelling_storytelling_home = 0x0948
-_storytelling_storytelling_farm_fence = 0x09c9
-_storytelling_storytelling_road_to_friends_home = 0x0a70
-_storytelling_storytelling_friends_home = 0x0afe
-_storytelling_storytelling_friends_backyard = 0x0b6f
-_storytelling_storytelling_friends_secret_place = 0x0c08
-_storytelling_storytelling_crossroad = 0x0c9f
-_storytelling_storytelling_loop = 0x0d4b
-_storytelling_storytelling_lost_coins = 0x0da9
-_storytelling_storytelling_farm_entrance = 0x0e5b
-_storytelling_storytelling_farm_storage = 0x0efd
-_storytelling_storytelling_dugeon_entrance = 0x0f92
-_storytelling_hero_use_cabbage = 0x101f
-_storytelling_hero_use_spoon = 0x1096
-_storytelling_hero_freeze_char = 0x1150
+_dialogs_set_scarecrow = 0x0948
+_dialogs_bob_happy = 0x098a
+_storytelling_storytelling_home = 0x09ad
+_storytelling_storytelling_farm_fence = 0x0a2e
+_storytelling_storytelling_road_to_friends_home = 0x0ad5
+_storytelling_storytelling_friends_home = 0x0b63
+_storytelling_storytelling_friends_backyard = 0x0bd4
+_storytelling_storytelling_friends_secret_place = 0x0c6d
+_storytelling_storytelling_crossroad = 0x0d04
+_storytelling_storytelling_loop = 0x0db0
+_storytelling_storytelling_lost_coins = 0x0e0e
+_storytelling_storytelling_farm_entrance = 0x0ec0
+_storytelling_storytelling_farm_storage = 0x0f62
+_storytelling_storytelling_dugeon_entrance = 0x0ff7
+_storytelling_hero_use_cabbage = 0x1084
+_storytelling_hero_use_spoon = 0x10fb
+_storytelling_hero_freeze_char = 0x11b5

@@ -141,6 +141,20 @@
 				"Here we go! Let's plant it on the field.",
 				"TODO: update text"
 			]
+			},
+			"set_scarecrow" : {
+				"scr_pos" : [16, 45],
+				"text": [
+				"Thank you! Take this caterpillar catcher!",
+				"TODO: update text"
+			]
+			},
+			"bob_happy" : {
+				"scr_pos" : [16, 45],
+				"text": [
+				"Thank you!",
+				"TODO: update text"
+			]
 			}
 		},
 		"storytelling" : {

@@ -178,8 +178,9 @@
 			"name" : "quote",
 			"x" : 104,
 			"y"	: 54,
-			"width" : 2,
+			"width" : 1,
 			"height" : 2,
+			"offset_x": 0,
 			"offset_y": 6
 		},
 		{
@@ -635,7 +636,7 @@
 			"name" : "r",
 			"x" : 56,
 			"y"	: 122,
-			"width" : 4,
+			"width" : 5,
 			"height" : 8,
 			"offset_x": 0,
 			"offset_y": -2

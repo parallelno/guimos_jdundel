@@ -111,7 +111,7 @@ _font_ampercent:
 _font_quote:
 			.byte 6, 0 ; offset_y, offset_x
 			.word 0x80,0x40,
-			.byte 0, 3 ; next_char_pos_y_offset, next_char_pos_x_offset
+			.byte 0, 2 ; next_char_pos_y_offset, next_char_pos_x_offset
 
 			.word 0 ; safety pair of bytes for reading by POP B
 _font_parent_l:
@@ -423,7 +423,7 @@ _font_q:
 _font_r:
 			.byte -2, -1 ; offset_y, offset_x
 			.word 0xC,0x10,0x50,0x60,0x50,0x50,0x50,0xE0,
-			.byte 0, 5 ; next_char_pos_y_offset, next_char_pos_x_offset
+			.byte 0, 6 ; next_char_pos_y_offset, next_char_pos_x_offset
 
 			.word 0 ; safety pair of bytes for reading by POP B
 _font_s:
