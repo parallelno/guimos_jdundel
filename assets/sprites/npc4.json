@@ -1,12 +1,12 @@
 {
 	"palette_path" : "../palettes/pal_lv0.json",
-	"asset_type" : "sprite",	
-	"path_png" : "art/sprites_npc4.png",	
+	"asset_type" : "sprite",
+	"path_png" : "art/sprites_npc4.png",
 	"preshifted_sprites" : 4,
-	"mask" : true,	
+	"mask" : true,
 	"anims" : {
 		"caterpillar_run"	: {
-			"frames" : ["caterpillar_run0", "caterpillar_run1"],
+			"frames" : ["caterpillar_run0", "caterpillar_run1", "caterpillar_run2", "caterpillar_run1"],
 			"loop" : true
 		},
 		"chiken_idle_r" : {
@@ -41,27 +41,37 @@
 	"sprites" : [
 		{
 			"name" : "caterpillar_run0",
-			"x" : 32,
-			"y"	: 41,
-			"width" : 16,
-			"height" : 7,
-			"offset_x" : 0,
-			"offset_y" : 0,
-			"mask_x" : 49
-		},
-		{
-			"name" : "caterpillar_run1",
-			"x" : 32,
-			"y"	: 59,
+			"x" : 96,
+			"y"	: 43,
 			"width" : 16,
 			"height" : 5,
 			"offset_x" : 0,
 			"offset_y" : 0,
-			"mask_x" : 48
+			"mask_x" : 112
+		},
+		{
+			"name" : "caterpillar_run1",
+			"x" : 96,
+			"y"	: 58,
+			"width" : 16,
+			"height" : 6,
+			"offset_x" : 0,
+			"offset_y" : 0,
+			"mask_x" : 112
+		},
+		{
+			"name" : "caterpillar_run2",
+			"x" : 96,
+			"y"	: 73,
+			"width" : 16,
+			"height" : 7,
+			"offset_x" : 0,
+			"offset_y" : 0,
+			"mask_x" : 112
 		},
 		{
 			"name" : "chiken_run_r0",
-			"x" : 64,
+			"x" : 97,
 			"y"	: 162,
 			"width" : 16,
 			"height" : 14,

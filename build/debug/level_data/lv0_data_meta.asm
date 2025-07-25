@@ -2,8 +2,8 @@
 ; asm data file: build/debug/level_data/lv0_data_data.asm
 ; bin file: build/debug/bin/LV0_DATA.BIN
 
-LV0_DATA_FILE_LEN = 5932
-LV0_DATA_LAST_RECORD_LEN = 44
+LV0_DATA_FILE_LEN = 5930
+LV0_DATA_LAST_RECORD_LEN = 42
 
 LV0_DATA_FILENAME_PTR:
 			.byte "LV0_DATA" ; filename
@@ -74,8 +74,8 @@ _lv0_12_lost_coins = 0x0e57
 _lv0_13_forest = 0x0f83
 _lv0_14_farmer_bob = 0x10a2
 _lv0_15_backyard = 0x11a7
-_lv0_16_closed_gate = 0x12d4
-_lv0_17_dottys_home = 0x13de
-_lv0_18_forest = 0x14ec
-_lv0_19_forest = 0x1611
+_lv0_16_closed_gate = 0x12d3
+_lv0_17_dottys_home = 0x13dd
+_lv0_18_forest = 0x14eb
+_lv0_19_forest = 0x1610
 
