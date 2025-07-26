@@ -1,4 +1,4 @@
-; check the char collision against a hero
+; checks collision between a char and a hero, apply damage to the hero health
 ; ex CHAR_CHECK_COLLISION_HERO(VAMPIRE_COLLISION_WIDTH, VAMPIRE_COLLISION_HEIGHT, VAMPIRE_DAMAGE)
 ; in:
 ; hl points to char_anim_ptr

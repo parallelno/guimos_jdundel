@@ -1,12 +1,12 @@
 ## Main Ram memory usage:
-> Free Space: `4344`
+> Free Space: `3967`
 
 |Assembly| Usage|
 |-|-|
 |memusage_loads:|768|
 
 ## FDD Usage:
-> Used: `329728`, Free Space: `509952`
+> Used: `331776`, Free Space: `507904`
 
 ## Ram disk usage:
 ### `permanent` RAM Disk usage:
@@ -99,7 +99,7 @@
 ---
 ### `level0` RAM Disk usage:
 
-> Used: `92042`, Free Space: `96262`
+> Used: `92620`, Free Space: `95684`
 
 - bank0 addr0
 	* CAT.BIN: addr: 0, len: `6628`
@@ -115,10 +115,10 @@
   `Used: 0, Free: 18`
 
 - bank1 addr0
-	* NPC.BIN: addr: 0, len: `3436`
-	* TI0_GFX.BIN: addr: 3436, len: `3332`
+	* TI0_GFX.BIN: addr: 0, len: `3468`
+	* NPC.BIN: addr: 3468, len: `3436`
 
-  `Used: 6768, Free: 25936`
+  `Used: 6904, Free: 25800`
 
 - bank1 addr8000
 	* GOOSE.BIN: addr: 36670, len: `3616`
@@ -133,29 +133,29 @@
 - bank2 addr8000
 	* HERO.BIN: addr: 45124, len: `17792`
 	* SNOWFLAK.BIN: addr: 62916, len: `832`
+	* TI0_DATA.BIN: addr: 63748, len: `356`
+	* PAL_LV0.BIN: addr: 64104, len: `148`
 
-  `Used: 18624, Free: 1788`
+  `Used: 19128, Free: 1284`
 
 - bank3 addr0
 
   `Used: 0, Free: 32704`
 
 - bank3 addr8000
-	* LV0_DATA.BIN: addr: 32768, len: `5930`
-	* KNIGHT.BIN: addr: 38698, len: `10664`
-	* NPC4.BIN: addr: 49362, len: `7916`
-	* SKELETON.BIN: addr: 57278, len: `6660`
-	* SCYTHE.BIN: addr: 63938, len: `1068`
-	* TI0_DATA.BIN: addr: 65006, len: `356`
-	* PAL_LV0.BIN: addr: 65362, len: `148`
+	* LV0_DATA.BIN: addr: 32768, len: `5932`
+	* KNIGHT.BIN: addr: 38700, len: `10664`
+	* NPC4.BIN: addr: 49364, len: `8356`
+	* SKELETON.BIN: addr: 57720, len: `6660`
+	* SCYTHE.BIN: addr: 64380, len: `1068`
 
-  `Used: 32742, Free: 26`
+  `Used: 32680, Free: 88`
 
 
 ---
 ### `level1` RAM Disk usage:
 
-> Used: `66466`, Free Space: `121838`
+> Used: `66602`, Free Space: `121702`
 
 - bank0 addr0
 	* SWORD.BIN: addr: 0, len: `6032`
@@ -172,10 +172,10 @@
   `Used: 0, Free: 32704`
 
 - bank1 addr8000
-	* TI0_GFX.BIN: addr: 36670, len: `3332`
-	* TNT.BIN: addr: 40002, len: `720`
+	* TI0_GFX.BIN: addr: 36670, len: `3468`
+	* TNT.BIN: addr: 40138, len: `720`
 
-  `Used: 4052, Free: 238`
+  `Used: 4188, Free: 102`
 
 - bank2 addr0
 

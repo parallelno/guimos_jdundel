@@ -56,3 +56,23 @@ ACTOR_STATUS_CUSTOM      = ~ACTOR_STATUS_BITS - 3
 
 ; Freeze duration constant
 ACTOR_STATUS_FREEZE_TIME = BUFF_FREEZE_TIME
+
+;=============================================================================
+; Actor Runtime Data Structure
+;=============================================================================
+; The hero, chars, and bullets are actors and must replicate actor structure.
+; The can include extra fields that are specific to them.
+actor_update_ptr:			= 0  ;.word
+actor_draw_ptr:				= 2  ;.word
+actor_status:				= 4  ;.byte
+actor_status_timer:			= 5  ;.byte
+actor_anim_timer:			= 6  ;.byte
+actor_anim_ptr:				= 7  ;.word
+actor_erase_scr_addr:		= 9  ;.word
+actor_erase_scr_addr_old:	= 11 ;.word
+actor_erase_wh:				= 13 ;.word
+actor_erase_wh_old:			= 15 ;.word
+actor_pos_x:				= 17 ;.word
+actor_pos_y:				= 19 ;.word
+actor_speed_x:				= 21 ;.word
+actor_speed_y:				= 23 ;.word

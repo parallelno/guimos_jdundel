@@ -109,14 +109,14 @@ CHARS_MAX = 15
 ; Base address for all char runtime data
 chars_runtime_data:		= $733B
 ; A struct of a char runtime data.
-char_update_ptr:			= chars_runtime_data + 0	 ; .word
-char_draw_ptr:			= chars_runtime_data + 2	 ; .word
-char_status:				= chars_runtime_data + 4	 ; .byte
-char_status_timer:		= chars_runtime_data + 5	 ; .byte
-char_anim_timer:			= chars_runtime_data + 6	 ; .byte
-char_anim_ptr:			= chars_runtime_data + 7	 ; .word
-char_erase_scr_addr:		= chars_runtime_data + 9	 ; .word
-char_erase_scr_addr_old:	= chars_runtime_data + 11 ; .word
+char_update_ptr:		= chars_runtime_data + 0  ; .word
+char_draw_ptr:			= chars_runtime_data + 2  ; .word
+char_status:			= chars_runtime_data + 4  ; .byte
+char_status_timer:		= chars_runtime_data + 5  ; .byte
+char_anim_timer:		= chars_runtime_data + 6  ; .byte
+char_anim_ptr:			= chars_runtime_data + 7  ; .word
+char_erase_scr_addr:	= chars_runtime_data + 9  ; .word
+char_erase_scr_addr_old:= chars_runtime_data + 11 ; .word
 char_erase_wh:			= chars_runtime_data + 13 ; .word
 char_erase_wh_old:		= chars_runtime_data + 15 ; .word
 char_pos_x:				= chars_runtime_data + 17 ; .word
@@ -125,10 +125,10 @@ char_speed_x:			= chars_runtime_data + 21 ; .word
 char_speed_y:			= chars_runtime_data + 23 ; .word
 char_data_next_ptr:		= chars_runtime_data + 25 ; .word ; NULL if it's the last actor in the list
 char_impacted_ptr:		= chars_runtime_data + 27 ; .word ; called by a hero's bullet, another char, etc. to affect this char
-char_id:					= chars_runtime_data + 29 ; .byte
+char_id:				= chars_runtime_data + 29 ; .byte
 char_type:				= chars_runtime_data + 30 ; .byte
-char_health:				= chars_runtime_data + 31 ; .byte ; Remaining health points
-@data_end:					= chars_runtime_data + 32
+char_health:			= chars_runtime_data + 31 ; .byte ; Remaining health points
+@data_end:				= chars_runtime_data + 32
 CHAR_RUNTIME_DATA_LEN = @data_end - chars_runtime_data
 
 ; Memory layout for remaining char instances (CHARS_MAX - 1)

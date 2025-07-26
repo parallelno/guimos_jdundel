@@ -18,6 +18,7 @@
 .include "asm/app/chars/npc4.asm"
 .include "asm/app/chars/caterpillar.asm"
 .include "asm/app/chars/scarecrow.asm"
+.include "asm/app/chars/crow.asm"
 
 @memusage_chars
 

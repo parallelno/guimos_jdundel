@@ -23,7 +23,7 @@ def rename_extention(path, ext):
 	return os.path.splitext(path)[0] + ext
 
 def is_bytes_zeros(bytes):
-	for byte in bytes: 
+	for byte in bytes:
 		if byte != 0 : return False
 	return True
 
@@ -59,9 +59,9 @@ def bin_to_asm(path, out_path):
 			if data:
 				txt += "\n.byte "
 				for byte in data:
-					txt += str(byte) + ", " 
+					txt += str(byte) + ", "
 			else: break
-		
+
 		with open(out_path, "w") as fw:
 			fw.write(txt)
 
@@ -86,7 +86,7 @@ def DeleteDir(dir):
 		shutil.rmtree(dir)
 
 def run_command(command, comment = "", check_path = ""):
-	if comment != "" : 
+	if comment != "" :
 		build.printc(comment, build.TextColor.CYAN)
 
 	if check_path == "" or os.path.isfile(check_path):
@@ -102,11 +102,11 @@ def rename_file(path, new_path, delete_old = False):
 	if os.path.isfile(f"{path}"):
 		if os.path.isfile(f"{new_path}"):
 			delete_file(new_path)
-		
+
 		os.rename(f"{path}", f"{new_path}")
-		
+
 		if delete_old:
-			delete_file(path)		
+			delete_file(path)
 	else:
 		build.exit_error(f"rename_file ERROR: file doesn't exist: {path}")
 
@@ -161,7 +161,7 @@ def get_label_addr(path, _label):
 def compress(source_path, path_compressed):
 	delete_file(path_compressed)
 	run_command(f"{build.packer_path} {source_path} {path_compressed}")
-	
+
 def asm_compress_to_asm(asm, path_tmp = "temp/", delete_tmp_asm = True, delete_tmp_bin = True, delete_tmp_packed = True):
 	asm = ".org 0 \n" + asm
 
@@ -176,10 +176,10 @@ def asm_compress_to_asm(asm, path_tmp = "temp/", delete_tmp_asm = True, delete_t
 	# asm to temp bin
 	cmd = f"{build.assembler_path.replace('/', '\\')} {path_asm} {path_bin}"
 	run_command(cmd)
-	
+
 	# pack a room data
 	run_command(f"{build.packer_path.replace('/', '\\')} {path_bin} {path_packed}")
-	
+
 	# load bin
 	asm_packed = None
 	with open(path_packed, "rb") as file:
@@ -189,7 +189,7 @@ def asm_compress_to_asm(asm, path_tmp = "temp/", delete_tmp_asm = True, delete_t
 	if delete_tmp_asm:
 		delete_file(path_asm)
 	if delete_tmp_bin:
-		delete_file(path_bin) 
+		delete_file(path_bin)
 	if delete_tmp_packed:
 		delete_file(path_packed)
 

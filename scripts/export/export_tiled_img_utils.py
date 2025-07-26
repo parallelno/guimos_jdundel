@@ -18,7 +18,7 @@ TILED_IMG_IDXS_LEN_MAX = 512
 
 # metadata contains:
 # 	.word COPY_LENGHT ; how many pairs of bytes to copy from the RAM Disk to the main memory
-# 	.word SCR_BUFF0_ADDR + (0<<8 | 0)	; scr addr 
+# 	.word SCR_BUFF0_ADDR + (0<<8 | 0)	; scr addr
 # 	.word SCR_BUFF0_ADDR + (32<<8 | 64)	; scr addr end
 COPY_LEN = 2
 SCR_START = 2
@@ -43,12 +43,11 @@ def is_source_updated(asset_j_path, type):
 	path_png = tiled_img_dir + tiled_img_j["path_png"]
 
 	updated = (
-		build.is_file_updated(asset_j_path) | 
-		build.is_file_updated(path_tiled_img_j) | 
+		build.is_file_updated(asset_j_path) |
+		build.is_file_updated(path_tiled_img_j) |
 		build.is_file_updated(path_tmj))
-	
-	if type == build.ASSET_TYPE_LEVEL_GFX:
-		updated |= build.is_file_updated(path_png)
+
+	updated |= build.is_file_updated(path_png)
 
 	return updated
 
@@ -58,7 +57,7 @@ def get_tiledata(bytes0, bytes1, bytes2, bytes3, use_mask):
 		# reverse every second list of bytes to support tiled_img format
 		bytes1 = bytes1[::-1]
 		bytes3 = bytes3[::-1]
-	
+
 	all_bytes = [bytes0, bytes1, bytes2, bytes3]
 	# data structure description is in draw_tiled_img.asm
 	mask = 0
@@ -66,7 +65,7 @@ def get_tiledata(bytes0, bytes1, bytes2, bytes3, use_mask):
 	for bytes in all_bytes:
 		if use_mask:
 			mask >>=  1
-			if common.is_bytes_zeros(bytes) : 
+			if common.is_bytes_zeros(bytes) :
 				continue
 			mask += 8
 
@@ -76,7 +75,7 @@ def get_tiledata(bytes0, bytes1, bytes2, bytes3, use_mask):
 
 def gfx_to_asm(label_prefix, image, remap_idxs):
 	asm = "\n"
-	
+
 	# extract tile images and convert them into asm
 	for t_idx in remap_idxs:
 		# get a tile as a color index array
@@ -91,7 +90,7 @@ def gfx_to_asm(label_prefix, image, remap_idxs):
 				line.append(color_idx)
 				#x += 1
 			tile_img.append(line)
-		
+
 		# convert indexes into bit lists.
 		bits0, bits1, bits2, bits3 = common_gfx.indexes_to_bit_lists(tile_img)
 
@@ -175,10 +174,10 @@ def pack_idxs(idxs_unpacked, tiles_w, tiles_h):
 	return idxs
 
 def tile_idxs_to_asm(label_name, idxs_unpacked, pos_x, pos_y, tiles_w, tiles_h):
-	
+
 	idxs = pack_idxs(idxs_unpacked, tiles_w, tiles_h)
 
-	asm = "" 
+	asm = ""
 	data_len = len(idxs) + COPY_LEN + SCR_START + SCR_END
 	copy_data_len = len(idxs) + SCR_START + SCR_END
 

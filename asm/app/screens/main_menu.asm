@@ -189,7 +189,6 @@ main_menu_cursor_update:
 			add c
 			CLAMP_A(<main_scr_vfx_pos_max1)
 			mov c, a
-			;jmp @vfx_init
 
 @vfx_init:
 			lxi d, vfx_reward_anim

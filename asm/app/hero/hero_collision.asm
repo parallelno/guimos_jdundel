@@ -1,6 +1,7 @@
 @memusage_hero_collision
 
-; we are here when a hero does not collide with colladable tiles, and there is no tiledata_func_id>0 round
+; we are here when a hero does not collide with colladable tiles,
+; and there is no tiledata_func_id>0 round
 hero_no_collision_no_tiledata:
 			lhld char_temp_x
 			shld hero_pos_x
@@ -8,7 +9,8 @@ hero_no_collision_no_tiledata:
 			shld hero_pos_y
 			ret
 
-; we are here when a hero does not collides with collidable tiles, but there is some tiledata around, ex. teleport
+; we are here when a hero does not collides with collidable tiles,
+; but there is some tiledata around, ex. teleport
 hero_no_collision:
 			lhld char_temp_x
 			shld hero_pos_x
