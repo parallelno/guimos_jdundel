@@ -1,7 +1,5 @@
 @memusage_scarecrow
 
-SCARECROW_STATUS_INVIS = ACTOR_STATUS_BIT_INVIS
-
 SCARECROW_ANIM_SPEED_IDLE = 30
 SCARECROW_HEALTH = 10
 
@@ -35,7 +33,7 @@ scarecrow_init:
 
 @invisible:
 			pop psw
-			CHAR_INIT(scarecrow_update, npc_draw, scarecrow_impacted, SCARECROW_HEALTH, SCARECROW_STATUS_INVIS, npc_scarecrow_idle_anim, False, CHAR_TYPE_ALLY)
+			CHAR_INIT(scarecrow_update, npc_draw, scarecrow_impacted, SCARECROW_HEALTH, ACTOR_STATUS_BIT_INVIS, npc_scarecrow_idle_anim, False, CHAR_TYPE_ALLY)
 
 ;=============================================================================
 ; anim and a gameplay logic update
@@ -90,15 +88,14 @@ scarecrow_impacted:
 			; add the scarecrow to the items
 			lxi h, hero_res_scarecrow
 			mvi m, 1
+			; hl - selected res
+			call game_ui_res_select_and_draw
 
 			; init a dialog
 			mvi a, GAME_REQ_PAUSE
-			lxi h, @dialog_callback
+			lxi h, dialog_callback_room_redraw
 			lxi d, _dialogs_got_scarecrow
 			jmp dialog_init
-@dialog_callback:
-			call dialog_callback_room_redraw
-			jmp game_ui_res_select_and_draw
 
 @setting_scarecrow:
 			; the hero is setting a scarecrow
@@ -116,6 +113,7 @@ scarecrow_impacted:
 			lxi h, hero_res_scarecrow
 			dcr m
 			; redraw ui
+			; hl - selected res
 			call game_ui_res_select_and_draw
 			; add score points
 			lxi d, TILEDATA_FUNC_ID_RESOURCES<<8 | RES_ID_SCARECROW

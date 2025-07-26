@@ -92,56 +92,56 @@ _ti0_res_scarecrow:
 			.word _TI0_RES_SCARECROW_COPY_LEN ; data len to copy
 			.word 0x8000 + (6<<8 | 240)	; scr addr
 			.word 0x8000 + (8<<8 | 0)	; scr addr end
-			.byte 0x49, 0x4A, 0x47, 0x48, 
+			.byte 0x49, 0x46, 0x47, 0x48, 
 _TI0_RES_CATERPILLAR_CATCHER_COPY_LEN = 8
 			.word 0 ; safety pair of bytes for reading by POP B
 _ti0_res_caterpillar_catcher:
 			.word _TI0_RES_CATERPILLAR_CATCHER_COPY_LEN ; data len to copy
 			.word 0x8000 + (6<<8 | 240)	; scr addr
 			.word 0x8000 + (8<<8 | 0)	; scr addr end
-			.byte 0x4D, 0x4E, 0x4B, 0x4C, 
+			.byte 0x4C, 0x4D, 0x4A, 0x4B, 
 _TI0_ITEM_KEY_0_COPY_LEN = 8
 			.word 0 ; safety pair of bytes for reading by POP B
 _ti0_item_key_0:
 			.word _TI0_ITEM_KEY_0_COPY_LEN ; data len to copy
 			.word 0x8000 + (19<<8 | 240)	; scr addr
 			.word 0x8000 + (21<<8 | 0)	; scr addr end
-			.byte 0x51, 0x52, 0x4F, 0x50, 
+			.byte 0x50, 0x51, 0x4E, 0x4F, 
 _TI0_ITEM_KEY_1_COPY_LEN = 8
 			.word 0 ; safety pair of bytes for reading by POP B
 _ti0_item_key_1:
 			.word _TI0_ITEM_KEY_1_COPY_LEN ; data len to copy
 			.word 0x8000 + (19<<8 | 240)	; scr addr
 			.word 0x8000 + (21<<8 | 0)	; scr addr end
-			.byte 0x55, 0x56, 0x53, 0x54, 
+			.byte 0x54, 0x55, 0x52, 0x53, 
 _TI0_ITEM_KEY_2_COPY_LEN = 8
 			.word 0 ; safety pair of bytes for reading by POP B
 _ti0_item_key_2:
 			.word _TI0_ITEM_KEY_2_COPY_LEN ; data len to copy
 			.word 0x8000 + (19<<8 | 240)	; scr addr
 			.word 0x8000 + (21<<8 | 0)	; scr addr end
-			.byte 0x59, 0x5A, 0x57, 0x58, 
+			.byte 0x58, 0x59, 0x56, 0x57, 
 _TI0_ITEM_KEY_3_COPY_LEN = 8
 			.word 0 ; safety pair of bytes for reading by POP B
 _ti0_item_key_3:
 			.word _TI0_ITEM_KEY_3_COPY_LEN ; data len to copy
 			.word 0x8000 + (19<<8 | 240)	; scr addr
 			.word 0x8000 + (21<<8 | 0)	; scr addr end
-			.byte 0x5D, 0x5E, 0x5B, 0x5C, 
+			.byte 0x5C, 0x5D, 0x5A, 0x5B, 
 _TI0_ITEM_KEY_4_COPY_LEN = 8
 			.word 0 ; safety pair of bytes for reading by POP B
 _ti0_item_key_4:
 			.word _TI0_ITEM_KEY_4_COPY_LEN ; data len to copy
 			.word 0x8000 + (19<<8 | 240)	; scr addr
 			.word 0x8000 + (21<<8 | 0)	; scr addr end
-			.byte 0x61, 0x62, 0x5F, 0x60, 
+			.byte 0x60, 0x61, 0x5E, 0x5F, 
 _TI0_RES_EMPTY_COPY_LEN = 12
 			.word 0 ; safety pair of bytes for reading by POP B
 _ti0_res_empty:
 			.word _TI0_RES_EMPTY_COPY_LEN ; data len to copy
 			.word 0x8000 + (6<<8 | 240)	; scr addr
 			.word 0x8000 + (10<<8 | 0)	; scr addr end
-			.byte 0x65, 0x66, 0x18, 0x18, 0x63, 0x64, 0x0E, 0x0E, 
+			.byte 0x64, 0x65, 0x18, 0x18, 0x62, 0x63, 0x0E, 0x0E, 
 _TI0_ITEM_EMPTY_COPY_LEN = 8
 			.word 0 ; safety pair of bytes for reading by POP B
 _ti0_item_empty:

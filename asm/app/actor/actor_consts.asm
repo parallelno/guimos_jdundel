@@ -62,17 +62,18 @@ ACTOR_STATUS_FREEZE_TIME = BUFF_FREEZE_TIME
 ;=============================================================================
 ; The hero, chars, and bullets are actors and must replicate actor structure.
 ; The can include extra fields that are specific to them.
-actor_update_ptr:			= 0  ;.word
-actor_draw_ptr:				= 2  ;.word
-actor_status:				= 4  ;.byte
-actor_status_timer:			= 5  ;.byte
-actor_anim_timer:			= 6  ;.byte
-actor_anim_ptr:				= 7  ;.word
-actor_erase_scr_addr:		= 9  ;.word
-actor_erase_scr_addr_old:	= 11 ;.word
-actor_erase_wh:				= 13 ;.word
-actor_erase_wh_old:			= 15 ;.word
-actor_pos_x:				= 17 ;.word
-actor_pos_y:				= 19 ;.word
-actor_speed_x:				= 21 ;.word
-actor_speed_y:				= 23 ;.word
+actor_update_ptr:			= 0  ;.word function pointer for updating hero logic
+actor_draw_ptr:				= 2  ;.word function pointer for drawing the hero
+actor_status:				= 4  ;.byte what actor is doing visually/game mechanically
+actor_status_timer:			= 5  ;.byte duration of the current status. ticks every update
+actor_anim_timer:			= 6  ;.byte animation frame timer (triggers frame change on overflow)
+actor_anim_ptr:				= 7  ;.word points to the current frame (hero_idle_l_anim + 2 + *hero_preshifted_sprites)
+actor_erase_scr_addr:		= 9  ;.word screen addr for erasing
+actor_erase_scr_addr_old:	= 11 ;.word screen addr for erasing last frame
+actor_erase_wh:				= 13 ;.word width, height
+actor_erase_wh_old:			= 15 ;.word width, height last frame
+actor_pos_x:				= 17 ;.word 16-bit pos x
+actor_pos_y:				= 19 ;.word 16-bit pos y
+actor_speed_x:				= 21 ;.word 16-bit speed x
+actor_speed_y:				= 23 ;.word 16-bit speed y
+ACTOR_RUNTIME_DATA_LEN		= actor_speed_y + WORD_LEN

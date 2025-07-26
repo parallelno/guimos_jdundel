@@ -10,7 +10,6 @@ ACTOR_STATUS_CROW_MOVE_INIT			= 3
 ACTOR_STATUS_CROW_MOVE				= 4
 ACTOR_STATUS_CROW_ESCAPE_INIT		= 5 ; after being scared by the scarecrow
 ACTOR_STATUS_CROW_ESCAPE			= 6
-ACTOR_STATUS_CROW_GONE				= 7 | ACTOR_STATUS_BIT_INVIS
 
 ; status duration in updates.
 ACTOR_STATUS_CROW_RELAX_TIME		= 25
@@ -75,9 +74,9 @@ crow_update_check_scare_init:
 			lda game_status_bob
 			cpi BOB_STATUS_SET_SCARECROW
 			jc crow_update_relax_init
-			; scared
-			mvi m, ACTOR_STATUS_CROW_GONE
-			ret
+			; die because it's gone
+			HL_ADVANCE(char_status, char_update_ptr+1)
+			jmp char_destroy
 
 crow_update_relax_init:
 			mvi m, ACTOR_STATUS_CROW_RELAX
