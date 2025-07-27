@@ -3,6 +3,7 @@
 bob_init:
 			CHAR_INIT(npc_update, npc_draw, @impacted, NPC_HEALTH, ACTOR_STATUS_INIT, npc_bob_idle_anim, False, CHAR_TYPE_ALLY)
 
+; the hero interracts with it
 ; in:
 ; de - ptr to char_impacted_ptr + 1
 ; c - hero_weapon_id
@@ -10,7 +11,7 @@ bob_init:
 			; check the weapon_id
 			mvi a, HERO_WEAPON_ID_SNOWFLAKE
 			cmp c
-			rz ; return if the hero used a snowflake
+			jz @hit_by_snowflake ; the hero used a snowflake
 			; de - ptr to char_impacted_ptr+1
 
 			; prevents multiple calls this function
@@ -70,8 +71,10 @@ bob_init:
 			lxi d, vfx_reward_anim
 			call vfx_init
 
-			lxi h, hero_res_caterpillar_catcher
+			lxi h, hero_res_snowflake
 			inr m
+			mvi m, 100
+
 			; redraw ui
 			call game_ui_res_select_and_draw
 			; add score points
@@ -84,4 +87,11 @@ bob_init:
 			mvi a, GAME_REQ_PAUSE
 			lxi h, dialog_callback_room_redraw
 			lxi d, _dialogs_bob_happy
+			jmp dialog_init
+
+@hit_by_snowflake:
+			; init a dialog
+			mvi a, GAME_REQ_PAUSE
+			lxi h, dialog_callback_room_redraw
+			lxi d, _dialogs_mom_hit_by_snowflake
 			jmp dialog_init

@@ -21,7 +21,7 @@ scarecrow_init:
 			lda game_status_bob
 			cpi BOB_STATUS_GOT_SCARECROW
 			jc @visible
-			jmp @invisible
+			jmp @no_spawn
 
 @field_room:
 			lda game_status_bob
@@ -34,7 +34,10 @@ scarecrow_init:
 @invisible:
 			pop psw
 			CHAR_INIT(scarecrow_update, npc_draw, scarecrow_impacted, SCARECROW_HEALTH, ACTOR_STATUS_BIT_INVIS, npc_scarecrow_idle_anim, False, CHAR_TYPE_ALLY)
-
+@no_spawn:
+			pop psw
+			mvi a, TILEDATA_RESTORE_TILE
+			ret
 ;=============================================================================
 ; anim and a gameplay logic update
 ; in:
@@ -54,9 +57,9 @@ scarecrow_update:
 ; c - hero_weapon_id
 scarecrow_impacted:
 			; check the weapon_id
-			A_TO_ZERO(HERO_WEAPON_ID_HANDS)
+			mvi a, HERO_WEAPON_ID_SNOWFLAKE
 			cmp c
-			jnz char_impacted
+			rz ; the hero used a snowflake
 			; de - ptr to char_impacted_ptr+1
 
 			; prevents multiple calls this function

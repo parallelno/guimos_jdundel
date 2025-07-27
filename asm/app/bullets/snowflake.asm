@@ -108,7 +108,7 @@ snowflake_update:
 			push h
 			; check if a bullet collides with a enemy
 			mvi a, SNOWFLAKE_COLLISION_WIDTH-1
-			lxi b, CHAR_TYPE_ENEMY<<8 | SNOWFLAKE_COLLISION_HEIGHT-1
+			lxi b, CHAR_TYPE_ALL<<8 | SNOWFLAKE_COLLISION_HEIGHT-1
 			call chars_get_first_collided
 
 			; hl - ptr to a collided char_update_ptr+1
@@ -118,6 +118,7 @@ snowflake_update:
 			; de - pos_xy
 			; if a char's not alive or no char, return
 			rnc
+.breakpoint:
 
 			; advance hl to char_impacted_ptr
 			HL_ADVANCE(char_update_ptr+1, char_impacted_ptr, BY_BC)

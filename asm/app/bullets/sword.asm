@@ -146,7 +146,7 @@ sword_check_chars:
 
 			; check if a bullet collides with a char
 			mvi a, SWORD_CHAR_COLLISION_WIDTH
-			lxi b, CHAR_TYPE_ENEMY<<8 | SWORD_CHAR_COLLISION_HEIGHT
+			lxi b, CHAR_TYPE_ALL<<8 | SWORD_CHAR_COLLISION_HEIGHT
 			; de - collision pos_xy
 			call chars_get_first_collided
 

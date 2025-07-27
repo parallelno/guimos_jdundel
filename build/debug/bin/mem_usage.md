@@ -1,5 +1,5 @@
 ## Main Ram memory usage:
-> Free Space: `3967`
+> Free Space: `3936`
 
 |Assembly| Usage|
 |-|-|
@@ -99,26 +99,26 @@
 ---
 ### `level0` RAM Disk usage:
 
-> Used: `92586`, Free Space: `95718`
+> Used: `92686`, Free Space: `95618`
 
 - bank0 addr0
 	* CAT.BIN: addr: 0, len: `6628`
 	* LV0_GFX.BIN: addr: 6628, len: `6302`
 	* BURNER.BIN: addr: 12930, len: `6116`
 	* SWORD.BIN: addr: 19046, len: `6032`
-	* TXT_LV0.BIN: addr: 25078, len: `4656`
+	* TXT_LV0.BIN: addr: 25078, len: `4722`
 
-  `Used: 29734, Free: 2970`
+  `Used: 29800, Free: 2904`
 
 - bank0 addr8000
 
   `Used: 0, Free: 18`
 
 - bank1 addr0
-	* NPC.BIN: addr: 0, len: `3436`
-	* TI0_GFX.BIN: addr: 3436, len: `3434`
+	* TI0_GFX.BIN: addr: 0, len: `3468`
+	* NPC.BIN: addr: 3468, len: `3436`
 
-  `Used: 6870, Free: 25834`
+  `Used: 6904, Free: 25800`
 
 - bank1 addr8000
 	* GOOSE.BIN: addr: 36670, len: `3616`
@@ -155,7 +155,7 @@
 ---
 ### `level1` RAM Disk usage:
 
-> Used: `66568`, Free Space: `121736`
+> Used: `66602`, Free Space: `121702`
 
 - bank0 addr0
 	* SWORD.BIN: addr: 0, len: `6032`
@@ -172,10 +172,10 @@
   `Used: 0, Free: 32704`
 
 - bank1 addr8000
-	* TI0_GFX.BIN: addr: 36670, len: `3434`
-	* SNOWFLAK.BIN: addr: 40104, len: `832`
+	* TI0_GFX.BIN: addr: 36670, len: `3468`
+	* TNT.BIN: addr: 40138, len: `720`
 
-  `Used: 4266, Free: 24`
+  `Used: 4188, Free: 102`
 
 - bank2 addr0
 
@@ -199,9 +199,9 @@
 	* LV1_GFX.BIN: addr: 50930, len: `6466`
 	* BURNER.BIN: addr: 57396, len: `6116`
 	* SCYTHE.BIN: addr: 63512, len: `1068`
-	* TNT.BIN: addr: 64580, len: `720`
+	* SNOWFLAK.BIN: addr: 64580, len: `832`
 
-  `Used: 32532, Free: 236`
+  `Used: 32644, Free: 124`
 
 
 ---

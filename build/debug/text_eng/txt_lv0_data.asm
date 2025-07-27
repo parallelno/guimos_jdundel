@@ -182,6 +182,22 @@ _dialogs_bob_happy:
 			TEXT("Thank you!", _LINE_BREAK_)
 			TEXT("TODO: update text", )
 
+
+			.word 0 ; safety pair of bytes for reading by POP B
+_dialogs_mom_hit_by_snowflake:
+			.word 30 ; data len to copy to ram
+			.byte 45, 16 ; scr pos (y, x)
+			TEXT("Stop it!", _LINE_BREAK_)
+			TEXT("TODO: update text", )
+
+
+			.word 0 ; safety pair of bytes for reading by POP B
+_dialogs_bob_hit_by_snowflake:
+			.word 30 ; data len to copy to ram
+			.byte 45, 16 ; scr pos (y, x)
+			TEXT("Stop it!", _LINE_BREAK_)
+			TEXT("TODO: update text", )
+
 ;===================================================================================
 ; storytelling
 ;===================================================================================

@@ -155,6 +155,20 @@
 				"Thank you!",
 				"TODO: update text"
 			]
+			},
+			"mom_hit_by_snowflake" : {
+				"scr_pos" : [16, 45],
+				"text": [
+				"Stop it!",
+				"TODO: update text"
+			]
+			},
+			"bob_hit_by_snowflake" : {
+				"scr_pos" : [16, 45],
+				"text": [
+				"Stop it!",
+				"TODO: update text"
+			]
 			}
 		},
 		"storytelling" : {
