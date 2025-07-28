@@ -284,7 +284,7 @@ game_ui_draw_res:
 			.word _ti0_res_cabbage
 			.word _ti0_res_spoon
 			.word _ti0_res_scarecrow
-			.word _ti0_res_caterpillar_catcher
+			.word _ti0_res_trap
 
 ;=============================================================================
 ; Game UI – Item Display Renderer & Selector

@@ -1,5 +1,5 @@
 ## Main Ram memory usage:
-> Free Space: `3936`
+> Free Space: `3858`
 
 |Assembly| Usage|
 |-|-|
@@ -99,16 +99,16 @@
 ---
 ### `level0` RAM Disk usage:
 
-> Used: `92686`, Free Space: `95618`
+> Used: `92846`, Free Space: `95458`
 
 - bank0 addr0
 	* CAT.BIN: addr: 0, len: `6628`
 	* LV0_GFX.BIN: addr: 6628, len: `6302`
 	* BURNER.BIN: addr: 12930, len: `6116`
 	* SWORD.BIN: addr: 19046, len: `6032`
-	* TXT_LV0.BIN: addr: 25078, len: `4722`
+	* TXT_LV0.BIN: addr: 25078, len: `4880`
 
-  `Used: 29800, Free: 2904`
+  `Used: 29958, Free: 2746`
 
 - bank0 addr8000
 
@@ -143,13 +143,13 @@
   `Used: 0, Free: 32704`
 
 - bank3 addr8000
-	* LV0_DATA.BIN: addr: 32768, len: `5932`
-	* KNIGHT.BIN: addr: 38700, len: `10664`
-	* NPC4.BIN: addr: 49364, len: `8356`
-	* SKELETON.BIN: addr: 57720, len: `6660`
-	* SCYTHE.BIN: addr: 64380, len: `1068`
+	* LV0_DATA.BIN: addr: 32768, len: `5934`
+	* KNIGHT.BIN: addr: 38702, len: `10664`
+	* NPC4.BIN: addr: 49366, len: `8356`
+	* SKELETON.BIN: addr: 57722, len: `6660`
+	* SCYTHE.BIN: addr: 64382, len: `1068`
 
-  `Used: 32680, Free: 88`
+  `Used: 32682, Free: 86`
 
 
 ---

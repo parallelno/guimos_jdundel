@@ -29,6 +29,8 @@ hero_attack_init:
 			jz hero_attack_use_spoon
 			cpi <hero_res_laundry
 			jz hero_attack_use_laundry
+			cpi <hero_res_trap
+			jz hero_attack_use_trap
 			jmp hero_attack_use_hands
 
 hero_attack_use_snowflake:
@@ -140,7 +142,7 @@ hero_attack_use_spoon:
 			lxi h, hero_res_popsicle_pie
 			mov a, m
 			CPI_ZERO()
-			rz ; return if no pie
+			rz ; return if no res
 			dcr m
 			lxi h, hero_res_snowflake
 			mov a, m
@@ -162,12 +164,12 @@ hero_attack_use_spoon:
 @spoon_callback:
 			call dialog_callback_room_redraw
 @no_hero_use_spoon_dialog:
-
 			lxi h, hero_res_sword
 			call game_ui_res_select_and_draw
 			jmp hero_attack_use_hands
 
-
+; starts the attack animation.
+; left or right depends on hero_dir
 hero_attack_anim_init:
 			lda hero_dir
 			rrc
@@ -189,6 +191,43 @@ hero_attack_use_hands:
 			call hero_attack_anim_init
 			jmp hero_attack_check_chars
 
+hero_attack_use_trap:
+			; check the hero is not touching a NPC
+			call hero_attack_anim_init
+			call hero_attack_check_chars
+			lda hero_attack_check_chars_result
+			cpi ACTOR_RUNTIME_DATA_DESTR
+			rc ; return if a hero is touching a NPC
+
+			; use a trap
+			lxi h, hero_res_trap
+			mov a, m
+			CPI_ZERO()
+			rz ; return if no res
+			dcr m
+
+			; check if a hero uses a trap the first time
+			lxi h, game_status_used
+			mvi a, TRAP_USED
+			ana m
+			jnz @no_first_usage_dialog
+			inr m
+			; init a dialog
+			mvi a, GAME_REQ_PAUSE
+			lxi h, @callback
+			lxi d, _dialogs_hi_trap
+			jmp dialog_init
+
+@callback:
+			call dialog_callback_room_redraw
+@no_first_usage_dialog:
+			lxi h, hero_res_sword
+			call game_ui_res_select_and_draw
+			call hero_attack_use_hands
+			; spawn a trap
+			call trap_init
+			ret
+
 HANDS_COLLISION_WIDTH	= 15
 HANDS_COLLISION_HEIGHT	= 16
 HANDS_COLLISION_OFFSET_X = 0
@@ -200,7 +239,11 @@ SWORD_TILE_COLLISION_OFFSET_X_R = 8
 SWORD_TILE_COLLISION_OFFSET_X_L = <(-7)
 SWORD_TILE_COLLISION_OFFSET_Y = 3
 
-; Check if the area near the hero collides with an allay (npc, pets, friendly animals, etc) char
+; if a hero collides with CHAR_TYPE_ALLY char (npc, etc),
+; call its impacted func.
+; if no collision with a char, check the tiledata the hero is on.
+; it store the result in hero_attack_check_chars_result
+; result >=ACTOR_RUNTIME_DATA_DESTR means no collision with a char
 hero_attack_check_chars:
 			lxi h, hero_pos_x + 1
 			; get the pos_xy
@@ -222,6 +265,7 @@ hero_attack_check_chars:
 
 			; hl - ptr to a collided char_update_ptr + 1
 			mov a, m
+			sta hero_attack_check_chars_result
 			cpi ACTOR_RUNTIME_DATA_DESTR
 			; if no collision with a char, check the tiledata it is on.
 			jnc hero_attack_check_tiledata
@@ -236,6 +280,8 @@ hero_attack_check_chars:
 			mvi c, HERO_WEAPON_ID_HANDS
 			; call a char_impact func
 			pchl
+hero_attack_check_chars_result:
+			.byte ACTOR_RUNTIME_DATA_DESTR
 
 hero_attack_update:
 			HERO_UPDATE_ANIM(HERO_ANIM_SPEED_ATTACK)

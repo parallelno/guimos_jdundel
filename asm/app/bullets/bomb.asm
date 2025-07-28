@@ -1,5 +1,5 @@
 @memusage_bomb
-;=================================================
+;=============================================================================
 ; bullet AI:
 ; init:
 ;	status = move_forward
@@ -21,11 +21,12 @@
 ;				impact hero
 ;				death
 
-BOMB_MOVE_SPEED		= $0400				; low byte is a subpixel speed, high byte is a speed in pixels
-BOMB_MOVE_SPEED_NEG	= $ffff - $0400 + 1	; low byte is a subpixel speed, high byte is a speed in pixels
+; 16-bit speed. low byte is a subpixel speed, high byte is a speed in pixels
+BOMB_MOVE_SPEED		= $0400
+BOMB_MOVE_SPEED_NEG	= $ffff - $0400 + 1
 
 ; statuses.
-BOMB_STATUS_MOVE_THROW = 0
+BOMB_STATUS_MOVE_THROW = ACTOR_STATUS_INIT
 
 ; status duration in updates.
 ; when updated do not forget update the code below (posDiffX / SPARKER_STATUS_MOVE_TIME) to match the new value

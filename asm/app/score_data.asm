@@ -36,7 +36,7 @@ game_score_resources:
 			.word 1		; res_id = 8  - cabbage
 			.word 5		; res_id = 9  - spoon
 			.word 10	; res_id = 10 - scarecrow
-			.word 20	; res_id = 10 - caterpillar catcher
+			.word 20	; res_id = 10 - caterpillar trap
 
 ; TODO: it was previosly triggered by triggers, it caused a bug
 ; because friend's door can be accessed multiple times.

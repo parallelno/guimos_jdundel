@@ -8,6 +8,7 @@
 .include "app/bullets/fart.asm"
 .include "app/bullets/vfx.asm"
 .include "app/bullets/cursor.asm"
+.include "app/bullets/trap.asm"
 
 @memusage_bullets
 
@@ -21,25 +22,34 @@ bullets_init:
 
 
 ; bullet initialization
+; BULLET_SPEED_INIT_PTR is offten used to set the non constant bullet parameters.
+; TODO: rework this. let the bullet init func update @init_data instead of
+; override it again in the BULLET_SPEED_INIT_PTR func. then rename
+; BULLET_SPEED_INIT_PTR to custom bullet init for some specific handling.
 ; ex. BULLET_INIT(snowflake_update, snowflake_draw, ACTOR_STATUS_BIT_INVIS, SNOWFLAKE_STATUS_INVIS_TIME, snowflake_run_anim, snowflake_init_speed)
 ; in:
 ; bc - caster pos
-.macro BULLET_INIT(BULLET_UPDATE_PTR, BULLET_DRAW_PTR, BULLET_STATUS, BULLET_STATUS_TIMER, BULLET_ANIM_PTR, BULLET_SPEED_INIT)
+.macro BULLET_INIT(BULLET_UPDATE_PTR, BULLET_DRAW_PTR, BULLET_STATUS, BULLET_STATUS_TIMER, BULLET_ANIM_PTR, BULLET_SPEED_INIT_PTR)
 			lxi d, @init_data
 			jmp bullet_init
 
 			.word TEMP_WORD  ; safety word because "call actor_get_empty_data_ptr"
 			.word TEMP_WORD  ; safety word because an interruption can call
 @init_data:
-			.word BULLET_UPDATE_PTR, BULLET_DRAW_PTR, BULLET_STATUS | BULLET_STATUS_TIMER<<8, BULLET_ANIM_PTR, BULLET_SPEED_INIT
+			.word BULLET_UPDATE_PTR, BULLET_DRAW_PTR, BULLET_STATUS | BULLET_STATUS_TIMER<<8, BULLET_ANIM_PTR, BULLET_SPEED_INIT_PTR
 .endmacro
 
 ; bullet initialization
-; this func calls bullet_speed_init code to define a unique bullet behavior. in for this code
+; this func calls bullet_speed_init code to define a unique bullet behavior.
 ; in:
-; de - ptr to bullet_data: .word BULLET_UPDATE_PTR, BULLET_DRAW_PTR, BULLET_STATUS | BULLET_STATUS_TIMER<<8, BULLET_ANIM_PTR, BULLET_SPEED_INIT
+; de - ptr to bullet_data:
+; 		.word BULLET_UPDATE_PTR,
+; 		.word BULLET_DRAW_PTR
+; 		.word BULLET_STATUS | BULLET_STATUS_TIMER<<8,
+; 		.word BULLET_ANIM_PTR,
+; 		.word BULLET_SPEED_INIT_PTR
 ; bc - caster pos
-; when it calls BULLET_SPEED_INIT code
+; when it calls BULLET_SPEED_INIT_PTR code
 ; in:
 ; de - ptr to bullet_speed_x
 ; cc 876
@@ -143,22 +153,30 @@ bullet_init:
 			mov m, c
 			; advance hl to bullet_speed_x
 			inx h
-
+/*
+			; set speed to 0
+			mov m, e
+			inx h
+			mov m, e
+			; advance hl to bullet_speed_y
+			inx h
+			mov m, e
+			inx h
+			mov m, e
+			HL_ADVANCE(bullet_speed_y+1, bullet_speed_x)
+*/
 			xchg
 			; de - ptr to bullet_speed_x
 
-			pop b
-			; bc - ptr to init_speed func
-
 			lxi h, @ret
-			push h
-			mov l, c
-			mov h, b
+			xthl
+			; hl - ptr to init_speed func
 			pchl
 @ret:
 			; return TILEDATA_RESTORE_TILE to make the tile where a char spawned walkable and restorable
 			mvi a, TILEDATA_RESTORE_TILE
 			ret
+
 
 bullets_update:
 			ACTORS_INVOKE_IF_ALIVE(bullet_update_ptr, bullet_update_ptr, BULLET_RUNTIME_DATA_LEN, true)

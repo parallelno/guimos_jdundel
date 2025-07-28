@@ -143,7 +143,9 @@ CHARS_RUNTIME_DATA_LEN			= chars_runtime_data_end - chars_runtime_data
 ;=============================================================================
 ; Bullets Runtime Data
 ;=============================================================================
-; Defines the per-instance runtime data for bullets.
+; Defines the per-instance runtime data for bullets. Bullet is a simplified
+; version of a char. It can't get an impact, but it can impact a char. Bullets
+; are not sorted, they always rendered on top of all chars in a random order.
 ; NOTE:
 ; - A list of structs, one per bullet instance.
 ; - Accessed by the custom update and actor draw routines.
@@ -304,13 +306,16 @@ game_status_burner_quest_room:	= game_status + 8	; Index in burner_quest_room_id
 game_status_mom:				= game_status + 9   ; Mom's status
 	MOM_STATUS_FIRST_HI	= 0
 	MOM_STATUS_HELP_BOB	= 1
+	MOM_STATUS_CATCH_CATERPILLARS = 2
 game_status_bob:				= game_status + 10
 	BOB_STATUS_FIRST_HI			= 0
 	BOB_STATUS_WAITING_SCARE	= 1
 	BOB_STATUS_GOT_SCARECROW	= 2
 	BOB_STATUS_SET_SCARECROW	= 3
 	BOB_STATUS_HAPPY			= 4
-game_status_reserved3:			= game_status + 11
+game_status_used:				= game_status + 11 ; stores first usage of something
+	TRAP_USED	= %0000_0001
+
 game_status_reserved4:			= game_status + 12
 game_status_reserved5:			= game_status + 13
 game_status_reserved6:			= game_status + 14
@@ -645,7 +650,7 @@ hero_res_laundry:		= hero_resources + 8  ; .byte (Quest resource)
 hero_res_cabbage:		= hero_resources + 9  ; .byte (Quest resource)
 hero_res_spoon:			= hero_resources + 10 ; .byte
 hero_res_scarecrow:		= hero_resources + 11 ; .byte
-hero_res_caterpillar_catcher: = hero_resources + 12 ; .byte (Quest resource)
+hero_res_trap: 			= hero_resources + 12 ; .byte (Quest resource)
 hero_res_not_used_03:	= hero_resources + 13 ; .byte
 hero_res_not_used_04:	= hero_resources + 14 ; .byte
 hero_res_not_used_06:	= hero_resources + 15 ; .byte

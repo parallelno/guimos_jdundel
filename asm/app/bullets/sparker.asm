@@ -2,7 +2,7 @@
 
 ;=========================================================
 ; This is a non-gameplay bullet
-; It is used for one of the hero death visual sequence
+; It is used for the hero's death in-game cinematic
 ; statuses to spawn sparks along the line
 ;=========================================================
 
@@ -31,7 +31,7 @@ SPARKER_MOVE_SPEED		= $0400				; low byte is a subpixel speed, high byte is a sp
 SPARKER_MOVE_SPEED_NEG	= $ffff - $0400 + 1	; low byte is a subpixel speed, high byte is a speed in pixels
 
 ; statuses.
-SPARKER_STATUS_MOVE = 0
+SPARKER_STATUS_MOVE = ACTOR_STATUS_INIT
 
 ; status duration in updates. can be 2,4,8,16,32, etc
 ; when updated do not forget update the code below (posDiffX / SPARKER_STATUS_MOVE_TIME) to match the new value

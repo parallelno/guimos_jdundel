@@ -136,7 +136,7 @@ RES_ID_CLOTHES 		= 7 ; Quest resource. Used in dialog and specific puzzles.
 RES_ID_CABBAGE		= 8 ; Quest resource. Enables "fart" status on consumption.
 RES_ID_SPOON		= 9	; use it to convert hero_res_popsicle_pie into hero_res_snowflake
 RES_ID_SCARECROW    = 10 ; quest resource to plant in into the field
-RES_ID_CATERPILLAR_CATCHER = 11 ; quest resource to catch caterpillars
+RES_ID_TRAP = 11 ; quest resource to catch caterpillars
 
 ; all tiledatas with values bigger than TILEDATA_COLLIDABLE are collidable
 ; (a hero and chars can't step on that tile)

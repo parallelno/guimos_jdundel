@@ -54,6 +54,8 @@ bob_init:
 
 @quest_completed:
 			mvi m, BOB_STATUS_HAPPY
+			lxi h, game_status_mom
+			mvi m, MOM_STATUS_CATCH_CATERPILLARS
 
 			; init a dialog
 			mvi a, GAME_REQ_PAUSE
@@ -71,14 +73,13 @@ bob_init:
 			lxi d, vfx_reward_anim
 			call vfx_init
 
-			lxi h, hero_res_snowflake
+			lxi h, hero_res_trap
 			inr m
-			mvi m, 100
 
 			; redraw ui
 			call game_ui_res_select_and_draw
 			; add score points
-			lxi d, TILEDATA_FUNC_ID_RESOURCES<<8 | RES_ID_CATERPILLAR_CATCHER
+			lxi d, TILEDATA_FUNC_ID_RESOURCES<<8 | RES_ID_TRAP
 			call game_score_add
 			jmp game_ui_draw_score_text
 

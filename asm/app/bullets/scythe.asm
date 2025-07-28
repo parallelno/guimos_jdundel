@@ -45,7 +45,7 @@ SCYTHE_MOVE_SPEED		= $0400				; low byte is a subpixel speed, high byte is a spe
 SCYTHE_MOVE_SPEED_NEG	= $ffff - $0400 + 1	; low byte is a subpixel speed, high byte is a speed in pixels
 
 ; statuses.
-SCYTHE_STATUS_MOVE_THROW = 0
+SCYTHE_STATUS_MOVE_THROW = ACTOR_STATUS_INIT
 SCYTHE_STATUS_MOVE_BOUNCE = 1
 
 ; status duration in updates.
@@ -66,6 +66,9 @@ scythe_init:
 			sta scythe_init_speed + 1 ;
 			BULLET_INIT(scythe_update, scythe_draw, SCYTHE_STATUS_MOVE_THROW, SCYTHE_STATUS_MOVE_TIME, scythe_run_anim, scythe_init_speed)
 
+; TODO: optimization. don't erase the speed, the bullet init func does it,
+; in each branch only advance hl,
+; then assign SCYTHE_MOVE_SPEED_NEG or SCYTHE_MOVE_SPEED
 ; in:
 ; de - ptr to bullet_speed_x
 scythe_init_speed:

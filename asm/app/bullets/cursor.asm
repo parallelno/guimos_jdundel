@@ -4,7 +4,7 @@
 ; This is a non-gameplay bullet object
 ; It is used in the main menu as a cursor to select the option
 ;=========================================================
-CURSOR_STATUS_IDLE		= 0
+CURSOR_STATUS_IDLE		= ACTOR_STATUS_INIT
 CURSOR_STATUS_IDLE_TIME	= 0
 
 

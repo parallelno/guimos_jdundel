@@ -169,9 +169,9 @@ _dialogs_got_scarecrow:
 
 			.word 0 ; safety pair of bytes for reading by POP B
 _dialogs_set_scarecrow:
-			.word 62 ; data len to copy to ram
+			.word 60 ; data len to copy to ram
 			.byte 45, 16 ; scr pos (y, x)
-			TEXT("Thank you! Take this caterpillar catcher!", _LINE_BREAK_)
+			TEXT("Thank you! Take this caterpillar trap!", _LINE_BREAK_)
 			TEXT("TODO: update text", )
 
 
@@ -196,6 +196,24 @@ _dialogs_bob_hit_by_snowflake:
 			.word 30 ; data len to copy to ram
 			.byte 45, 16 ; scr pos (y, x)
 			TEXT("Stop it!", _LINE_BREAK_)
+			TEXT("TODO: update text", )
+
+
+			.word 0 ; safety pair of bytes for reading by POP B
+_dialogs_mom_catch_caterpillars:
+			.word 80 ; data len to copy to ram
+			.byte 45, 16 ; scr pos (y, x)
+			TEXT("Thank's Bob, we have trap now!", _LINE_BREAK_)
+			TEXT("Catch caterplllars, please!", _LINE_BREAK_)
+			TEXT("TODO: update text", )
+
+
+			.word 0 ; safety pair of bytes for reading by POP B
+_dialogs_hi_trap:
+			.word 74 ; data len to copy to ram
+			.byte 45, 16 ; scr pos (y, x)
+			TEXT("Wow! It was set!", _LINE_BREAK_)
+			TEXT("Let's wait for caterpillar to bait.", _LINE_BREAK_)
 			TEXT("TODO: update text", )
 
 ;===================================================================================

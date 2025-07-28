@@ -3,7 +3,7 @@
 ; statuses.
 ; a status describes what set of animations and behavior is active
 ; for ex. ACTOR_STATUS_HERO_ATTACK plays hero_attk_r or hero_attk_l depending on the direction and it spawns a weapon trail
-SNOWFLAKE_STATUS_ATTACK = 0
+SNOWFLAKE_STATUS_ATTACK = ACTOR_STATUS_INIT
 
 ; duration of statuses (in update_durations)
 SNOWFLAKE_STATUS_INVIS_TIME		= 6
@@ -118,7 +118,6 @@ snowflake_update:
 			; de - pos_xy
 			; if a char's not alive or no char, return
 			rnc
-.breakpoint:
 
 			; advance hl to char_impacted_ptr
 			HL_ADVANCE(char_update_ptr+1, char_impacted_ptr, BY_BC)

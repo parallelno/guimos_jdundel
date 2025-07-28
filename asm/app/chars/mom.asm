@@ -19,15 +19,17 @@ mom_init:
 			call dialog_is_inited
 			rz
 
-			lda game_status_mom
+			lxi h, game_status_mom
+			mov a, m
 			CPI_ZERO(MOM_STATUS_FIRST_HI)
 			jz @quest_help_bob
+			cpi MOM_STATUS_CATCH_CATERPILLARS
+			jz @quest_catch_caterpillars
 
 			ret
 
 @quest_help_bob:
-			mvi a, MOM_STATUS_HELP_BOB
-			sta game_status_mom
+			mvi m, MOM_STATUS_HELP_BOB
 
 			; init a dialog
 			mvi a, GAME_REQ_PAUSE
@@ -40,4 +42,11 @@ mom_init:
 			mvi a, GAME_REQ_PAUSE
 			lxi h, dialog_callback_room_redraw
 			lxi d, _dialogs_mom_hit_by_snowflake
+			jmp dialog_init
+
+@quest_catch_caterpillars:
+			; init a dialog
+			mvi a, GAME_REQ_PAUSE
+			lxi h, dialog_callback_room_redraw
+			lxi d, _dialogs_mom_catch_caterpillars
 			jmp dialog_init

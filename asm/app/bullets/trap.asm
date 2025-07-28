@@ -1,32 +1,37 @@
-@memusage_fart
+@memusage_trap
 
-;=========================================================
-; This is a quest bullet
-; init: it gives a hero game_status_fart
-; it lasts some certain time, then destroys itself
-; when dies: it sets its status GAME_STATUS_USED
-; when it's alive, it constantly spawns puff vfx
-; the quest to scary away knight_heavy char
-;=========================================================
+;=============================================================================
+; This is a quest trap.
+; It looks like a metal can propped up by a small wooden stick.
+; If a caterpillar touches it, the trap is triggered and captures the caterpillar.
+;
+; When placed on the ground, a countdown timer starts.
+; If the timer expires, the trap opens and any captured caterpillars are released.
+;
+; The hero must lift the trap before the timer runs out.
+; Once time is up, the trap changes appearance:
+; - If a caterpillar was caught, the trap stands upright.
+; - If nothing was caught, it falls over.
 
 ; statuses.
-FART_STATUS_LIFE		= ACTOR_STATUS_INIT
-FART_STATUS_LIFE_TIME	= 20
+TRAP_STATUS_ON		= ACTOR_STATUS_INIT
+TRAP_STATUS_SUCCESS	= 1
+TRAP_STATUS_FAIL	= 2
 
-; init for non-preshifted VFX (x coord aligned to 8 pixels )
-fart_init:
-			lxi h, hero_erase_scr_addr
-			mov c, m
-			inx h
-			mov b, m
+TRAP_STATUS_ON_TIME	= $FF
 
-			BULLET_INIT(fart_update, vfx_draw, FART_STATUS_LIFE, FART_STATUS_LIFE_TIME, vfx_puff_loop_anim, fart_init_pos)
 
-; vfx_draw func used for this fart bullet requires a specific pos_y and pos_x format
+; in:
+; bc - caster pos
+trap_init:
+/*
+BULLET_INIT(bomb_update, bomb_draw, BOMB_STATUS_MOVE_THROW, BOMB_STATUS_MOVE_TIME, bomb_dmg_anim, empty_func)
+
+; vfx_draw func used for this trap bullet requires a specific pos_y and pos_x format
 ; this function provides it
 ; in:
 ; de - ptr to bullet_speed_x
-fart_init_pos:
+trap_init_post:
 			HL_ADVANCE(bullet_speed_x, bullet_pos_x + 1, BY_HL_FROM_DE)
 			; hl - ptr to bullet_pos_x + 1
 			mov a, m
@@ -38,15 +43,15 @@ fart_init_pos:
 			; advance hl to bullet_pos_y
 			inx h
 			mvi m, 2 ; anim ptr offset. used in the vfx_draw func
-			; a hero got fart
+			; a hero got trap
 			mvi a, GAME_STATUS_ACQUIRED
-			sta game_status_fart
+			sta game_status_trap
 			ret
 
 ; anim and a gameplay logic update
 ; in:
 ; de - ptr to bullet_update_ptr
-fart_update:
+trap_update:
 			; advance to bullet_status_timer
 			xchg
 			L_ADVANCE(bullet_update_ptr, bullet_status_timer, BY_A)
@@ -81,12 +86,13 @@ fart_update:
 			call actor_anim_update
 			ret
 @die:
-			; make game_status_fart not_acquired
+			; make game_status_trap not_acquired
 			A_TO_ZERO(GAME_STATUS_NOT_ACQUIRED)
-			sta game_status_fart
-			; destroy fart vfx
+			sta game_status_trap
+			; destroy trap vfx
 			; hl points to bullet_status_timer
 			; advance hl to bullet_update_ptr + 1
 			L_ADVANCE(bullet_status_timer, bullet_update_ptr+1, BY_A)
 			ACTOR_DESTROY()
 			ret
+*/

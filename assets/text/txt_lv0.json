@@ -145,7 +145,7 @@
 			"set_scarecrow" : {
 				"scr_pos" : [16, 45],
 				"text": [
-				"Thank you! Take this caterpillar catcher!",
+				"Thank you! Take this caterpillar trap!",
 				"TODO: update text"
 			]
 			},
@@ -167,6 +167,22 @@
 				"scr_pos" : [16, 45],
 				"text": [
 				"Stop it!",
+				"TODO: update text"
+			]
+			},
+			"mom_catch_caterpillars" : {
+				"scr_pos" : [16, 45],
+				"text": [
+				"Thank's Bob, we have trap now!",
+				"Catch caterplllars, please!",
+				"TODO: update text"
+			]
+			},
+			"hi_trap" : {
+				"scr_pos" : [16, 45],
+				"text": [
+				"Wow! It was set!",
+				"Let's wait for caterpillar to bait.",
 				"TODO: update text"
 			]
 			}
