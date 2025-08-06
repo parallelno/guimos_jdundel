@@ -143,9 +143,10 @@ CHARS_RUNTIME_DATA_LEN			= chars_runtime_data_end - chars_runtime_data
 ;=============================================================================
 ; Bullets Runtime Data
 ;=============================================================================
-; Defines the per-instance runtime data for bullets. Bullet is a simplified
-; version of a char. It can't get an impact, but it can impact a char. Bullets
-; are not sorted, they always rendered on top of all chars in a random order.
+; Defines the per-instance runtime data for bullets & vfx. Bullets are like
+; chars, but they can't get an impact, though they can impact a char. Bullets
+; are not sorted by their Y position. They are rendered in a random order
+; always on top of all chars.
 ; NOTE:
 ; - A list of structs, one per bullet instance.
 ; - Accessed by the custom update and actor draw routines.
@@ -598,7 +599,11 @@ hero_speed_x:				= hero_runtime_data + actor_speed_x
 hero_speed_y:				= hero_runtime_data + actor_speed_y
 hero_data_next_ptr:			= hero_runtime_data + 25 ; .word ; points to the next actor in the actor_data_head_ptr list for sorting
 hero_impacted_ptr:			= hero_runtime_data + 27 ; .word ; called by a char's bullet, a char, etc. to affect a hero
-hero_dir:					= hero_runtime_data + 29 ; .byte ; direction flag: %0000_00VH, V - vertical, H - horizontal, (0 - negative, 1 - positive)
+hero_dir:					= hero_runtime_data + 29 ; .byte ; direction flag:
+; format: %0000_0VDHD,
+;	V - vertical movement (0 - disabled, 1 - enabled)
+;	H - horizontal movement (0 - disabled, 1 - enabled)
+;	D - direction (0 - left/down, 1 - right/up)
 hero_type:					= hero_runtime_data + 30 ; .byte ; actor type (e.g. CHAR_TYPE_ALLY)
 hero_runtime_data_end:		= hero_runtime_data + 31
 HERO_RUNTIME_DATA_LEN = hero_runtime_data_end - hero_runtime_data

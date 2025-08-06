@@ -409,6 +409,7 @@ BY_A			= 5
 
 ; dismount the RAM Disk
 ; lxi sp, RESTORE_SP is required after this macro
+; 8*4=32 cc
 .macro RAM_DISK_OFF(useXRA = true, ram_disk_port = RAM_DISK_PORT)
 			A_TO_ZERO(RAM_DISK_OFF_CMD, useXRA)
 			sta ram_disk_mode
