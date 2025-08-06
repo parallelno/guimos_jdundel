@@ -18,17 +18,17 @@ HERO_DIR_DOWN			= %1000
 
 ; hero statuses.
 ; statuses describe what set of animations and behavior is active
-; for ex. ACTOR_STATUS_HERO_ATTACK plays hero_r_attk or hero_l_attk 
+; for ex. ACTOR_STATUS_HERO_ATTACK plays hero_r_attk or hero_l_attk
 ; depending on the direction. It also spawns a weapon trail
 ; personal actor statuses must be in a range of 0 to ACTOR_STATUS_CUSTOM including.
 ; The more popular status is, the lower its id should be. For optimization purposes.
 ACTOR_STATUS_HERO_IDLE			= 0 ;\  all these statuses have to
-ACTOR_STATUS_HERO_MOVE			= 1 ; > have contigues ids to be 
+ACTOR_STATUS_HERO_MOVE			= 1 ; > have contigues ids to be
 ACTOR_STATUS_HERO_INVINCIBLE	= 2 ;/  handled properly
 ACTOR_STATUS_HERO_ATTACK		= 3
 ; statuses above this one are used for special effects and are not used in the game
 ACTOR_STATUS_HERO_DEATH_FADE_INIT_GB	= 4							 ;\  all these statuses have to
-ACTOR_STATUS_HERO_DEATH_FADE_GB			= 5 						 ; > have contigues ids to be 
+ACTOR_STATUS_HERO_DEATH_FADE_GB			= 5 						 ; > have contigues ids to be
 ACTOR_STATUS_HERO_DEATH_FADE_R			= 6 | ACTOR_STATUS_BIT_INVIS ; > handled properly
 ACTOR_STATUS_HERO_DEATH_WAIT_SPARKER	= 7 | ACTOR_STATUS_BIT_INVIS ;/
 
@@ -49,3 +49,6 @@ HERO_COLLISION_HEIGHT	= 11
 HERO_WEAPON_ID_HANDS		= 0
 HERO_WEAPON_ID_SWORD		= 1
 HERO_WEAPON_ID_SNOWFLAKE	= 2
+
+HERO_PROJECTILE_OFFSET_X	= 7
+HERO_PROJECTILE_OFFSET_Y	= 5

@@ -19,51 +19,67 @@ SNOWFLAKE_COLLISION_HEIGHT	= 12
 SNOWFLAKE_COLLISION_OFFSET_X = <(-3)
 SNOWFLAKE_COLLISION_OFFSET_Y = <(0)
 
-SNOWFLAKE_SPEED		= $300
+SNOWFLAKE_SPEED			= $300
 
+/*
+TODO:
+1. combine bullet_init/vfx_init/vfx4_init/char_init
+2. rename bullet to something meaningful that can consists of projectiles & vfx
+4. update all relative inits to use new bullet_init/vfx_init/vfx4_init/char_init
+*/
 snowflake_init:
-			; advance hl to bullet_pos_x+1
-			lxi h, hero_pos_x+1
-			mov b, m
-			; advance hl to bullet_pos_y+1
-			INX_H(2)
-			mov c, m
-			; bc - hero_pos
-			BULLET_INIT(snowflake_update, snowflake_draw, ACTOR_STATUS_BIT_INVIS, SNOWFLAKE_STATUS_INVIS_TIME, snowflake_run_anim, snowflake_init_speed)
-; the move dir along with the hero dir
-; in:
-; de - ptr to bullet_speed_x
-snowflake_init_speed:
-			xchg
-			; hl - ptr to bullet_speed_x
-			; check hero's horizontal direction
+			; check hero's vertical direction
 			lxi b, hero_dir
 			ldax b
-			ani HERO_DIR_HORIZ_MASK
-			cpi HERO_DIR_LEFT ; check the dir_h bit. if it is disabled, no horiz move.
-			lxi d, 0
-			jc @set_speed_x
-			LXI_D_NEG(SNOWFLAKE_SPEED)
-			jz @set_speed_x
-			lxi d, SNOWFLAKE_SPEED
-@set_speed_x:
-			call @set_speed
+			call @init_speed
+			xchg
+			; de - speed_x
 
 			; check hero's vertical direction
-@check_dir_vert:
 			ldax b
-			ani HERO_DIR_VERT_MASK
-			cpi HERO_DIR_DOWN ; check the dir_v bit. if it is disabled, no vert move.
-			lxi d, 0
-			jc @set_speed
-			LXI_D_NEG(SNOWFLAKE_SPEED)
-			jz @set_speed
-			lxi d, SNOWFLAKE_SPEED
-@set_speed:
-			mov m, e
-			inx h
-			mov m, d
-			inx h
+			RRC_(2)
+			call @init_speed
+			; speed_y
+			push h
+			; speed_x
+			push d
+
+			; pos_xy
+			lxi h, hero_pos_x+1
+			mov b, m
+			HL_ADVANCE(hero_pos_x+1, hero_pos_y+1)
+			mov c, m
+			; add a init projectile offset
+			lxi h, HERO_PROJECTILE_OFFSET_X<<8 | HERO_PROJECTILE_OFFSET_Y
+			dad b
+			push h
+			; BULLET_ANIM_PTR
+			lxi h, snowflake_run_anim
+			push h
+			; BULLET_STATUS | BULLET_STATUS_TIMER<<8
+			lxi h, SNOWFLAKE_STATUS_INVIS_TIME<<8 | ACTOR_STATUS_BIT_INVIS
+			push h
+			; BULLET_DRAW_PTR
+			lxi h, snowflake_draw
+			push h
+			; BULLET_UPDATE_PTR
+			lxi b, snowflake_update
+			jmp bullet_init
+
+; defines the horizontal/vertical speed
+; in:
+; a - hero_dir (0 - no move, %11 - right/up, %10 - left/down)
+; out:
+; hl - speed
+@init_speed:
+			; check the dir bit
+			ani HERO_DIR_HORIZ_MASK ; mask out dir bits
+			cpi HERO_DIR_LEFT
+			LXI_H_NEG(SNOWFLAKE_SPEED)
+			rz
+			lxi h, SNOWFLAKE_SPEED
+			rnc
+			lxi h, 0 ; speed=0
 			ret
 
 ; anim and a gameplay logic update

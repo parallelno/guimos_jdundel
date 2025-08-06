@@ -42,15 +42,30 @@ sword_tile_func_tbl:
 			JMP_4( sword_func_breakable)		; func_id == 13 ; breakable
 			RET_4()								; func_id == 14
 			RET_4()								; func_id == 15 ; collision
-
 sword_init:
+			lxi d, 0 ; speed
+			; speed_y
+			push d
+			; speed_x
+			push d
+			; pos_xy
 			lxi h, hero_pos_x + 1
 			mov b, m
 			HL_ADVANCE(hero_pos_x + 1, hero_pos_y + 1)
 			mov c, m
-			; bc - hero_pos
-			BULLET_INIT(sword_update, sword_draw, ACTOR_STATUS_BIT_INVIS, SWORD_STATUS_INVIS_TIME, NULL, empty_func)
-
+			push b
+			; BULLET_ANIM_PTR
+			lxi h, NULL
+			push h
+			; BULLET_STATUS | BULLET_STATUS_TIMER<<8
+			lxi h, SWORD_STATUS_INVIS_TIME<<8 | ACTOR_STATUS_BIT_INVIS
+			push h
+			; BULLET_DRAW_PTR
+			lxi h, sword_draw
+			push h
+			; BULLET_UPDATE_PTR
+			lxi b, sword_update
+			jmp bullet_init ; this func must return to @ret
 
 ; anim and a gameplay logic update
 ; in:

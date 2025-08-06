@@ -15,19 +15,42 @@ FART_STATUS_LIFE_TIME	= 20
 
 ; init for non-preshifted VFX (x coord aligned to 8 pixels )
 fart_init:
+			; store the this func return addr
+			; and push the new addr to return from the bullet_init func
+			lxi h, @ret
+			xthl
+			shld @ret_from_this_func_addr + 1
+
+			lxi d, 0 ; speed
+			; speed_y
+			push d
+			; speed_x
+			push d
+			; pos_xy
 			lxi h, hero_erase_scr_addr
 			mov c, m
 			inx h
 			mov b, m
+			push b
+			; BULLET_ANIM_PTR
+			lxi h, vfx_puff_loop_anim
+			push h
+			; BULLET_STATUS | BULLET_STATUS_TIMER<<8
+			lxi h, FART_STATUS_LIFE_TIME<<8 | FART_STATUS_LIFE
+			push h
+			; BULLET_DRAW_PTR
+			lxi h, vfx_draw
+			push h
+			; BULLET_UPDATE_PTR
+			lxi b, fart_update
+			jmp bullet_init ; this func must return to @ret
+@ret:
+			; CY = 0 if the bullet wasn't created
+			jnc @ret_from_this_func
 
-			BULLET_INIT(fart_update, vfx_draw, FART_STATUS_LIFE, FART_STATUS_LIFE_TIME, vfx_puff_loop_anim, fart_init_pos)
-
-; vfx_draw func used for this fart bullet requires a specific pos_y and pos_x format
-; this function provides it
-; in:
-; de - ptr to bullet_speed_x
-fart_init_pos:
-			HL_ADVANCE(bullet_speed_x, bullet_pos_x + 1, BY_HL_FROM_DE)
+			; update the bullet pos to be in a proper format
+			; for the vfx_draw func (used for this bullet)
+			HL_ADVANCE(bullet_speed_y + 1, bullet_pos_x + 1, BY_DE)
 			; hl - ptr to bullet_pos_x + 1
 			mov a, m
 			; a - pos_x
@@ -41,7 +64,12 @@ fart_init_pos:
 			; a hero got fart
 			mvi a, GAME_STATUS_ACQUIRED
 			sta game_status_fart
-			ret
+
+@ret_from_this_func:
+			mvi a, TILEDATA_RESTORE_TILE
+@ret_from_this_func_addr:
+			lxi h, TEMP_ADDR
+			pchl
 
 ; anim and a gameplay logic update
 ; in:

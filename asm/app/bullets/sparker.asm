@@ -44,73 +44,62 @@ SPARKER_ANIM_SPEED_MOVE	= 130
 VFX_SPAWN_RATE = 5
 
 ; in:
-; bc - caster pos
+; bc - pos_xy
 sparker_init:
-			mov l, c
-			mov h, b
-			shld sparker_init_speed + 1
-			BULLET_INIT(sparker_update, vfx_draw4, SPARKER_STATUS_MOVE, SPARKER_STATUS_MOVE_TIME, vfx4_spark_anim, sparker_init_speed)
-
-; bullet_speed_x and bullet_speed_y are aimed toward the hero pos.
-; in:
-; de - ptr to bullet_speed_x
-sparker_init_speed:
-			lxi b, TEMP_WORD
-			xchg
-			; b = pos_x
-			; c = pos_y
-			; hl - ptr to bullet_speed_x
 			; set a projectile speed towards the hero
-			; pos_diff =  hero_pos - burnerPosX
+			; pos_diff =  hero_pos - burner_pos
 			; speed = pos_diff / ACTOR_STATUS_VAMPIRE_DASH_TIME
-			lda hero_pos_x+1
-			sub b
-			mov e, a
-			mvi a, 0
-			; if posDiffX < 0, then d = $ff, else d = 0
-			sbb a
-			mov d, a
-			xchg
-			; posDiffX / SPARKER_STATUS_MOVE_TIME (it uses the fact that HL>>5 the same as HL<<3)
-			dad h
-			dad h
-			;dad h
-			; to fill up L with %1111 if pos_diff < 0
-			;ani %111 ; <(%0000000011111111 / SPARKER_STATUS_DASH_TIME)
-			ani %11 ; <(%0000000011111111 / SPARKER_STATUS_DASH_TIME)
-			ora l
-			mov l, a
-			push h
-			xchg
-			; do the same for Y
-			lda hero_pos_y+1
+
+			; init speed_y
+			lda hero_pos_y + 1
 			sub c
-			mov e, a
+			call @init_speed
+			; hl - speed_y
+			push h
+
+			; init speed_x
+			lda hero_pos_x + 1
+			sub b
+			call @init_speed
+			; hl - speed_x
+			push h
+
+			; pos_xy
+			push b
+			; BULLET_ANIM_PTR
+			lxi h, vfx4_spark_anim
+			push h
+			; BULLET_STATUS | BULLET_STATUS_TIMER<<8
+			lxi h, SPARKER_STATUS_MOVE_TIME<<8 | SPARKER_STATUS_MOVE
+			push h
+			; BULLET_DRAW_PTR
+			lxi h, vfx_draw4
+			push h
+			; BULLET_UPDATE_PTR
+			lxi b, sparker_update
+			jmp bullet_init
+
+; in:
+; a = pos_diff (hero_pos - pos_x)
+; out:
+; hl - speed
+@init_speed:
+			mov l, a
 			mvi a, 0
-			; if posDiffY < 0, then d = $ff, else d = 0
+			; if pos_diff < 0, then d = $ff, else d = 0
 			sbb a
-			mov d, a
-			xchg
-			; posDiffY / SPARKER_STATUS_MOVE_TIME
+			mov h, a
+			; pos_diff / SPARKER_STATUS_MOVE_TIME (it uses the fact that HL>>5 is the same as HL<<3)
 			dad h
 			dad h
 			;dad h
 			; to fill up L with %1111 if pos_diff < 0
-			;ani %111 ; <(%0000000011111111 / SPARKER_STATUS_DASH_TIME)
+			;ani %111 ; <(%0000000011111111 / BOMB_STATUS_DASH_TIME)
 			ani %11 ; <(%0000000011111111 / SPARKER_STATUS_DASH_TIME)
 			ora l
 			mov l, a
-			xchg
-			pop b ; speed_x
-			mov m, c
-			inx h
-			mov m, b
-			; advance hl to speed_y
-			inx h
-			mov m, e
-			inx h
-			mov m, d
 			ret
+
 
 ; anim and a gameplay logic update
 ; in:

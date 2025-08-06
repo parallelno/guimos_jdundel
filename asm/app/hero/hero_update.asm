@@ -361,6 +361,8 @@ hero_idle_update:
 ; uses:
 ; a, hl, de
 hero_impacted:
+
+; TODO: test
 .if DEBUG
 			ret
 .endif

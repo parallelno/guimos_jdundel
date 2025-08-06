@@ -22,57 +22,33 @@ bullets_init:
 
 
 ; bullet initialization
-; BULLET_SPEED_INIT_PTR is offten used to set the non constant bullet parameters.
-; TODO: rework this. let the bullet init func update @init_data instead of
-; override it again in the BULLET_SPEED_INIT_PTR func. then rename
-; BULLET_SPEED_INIT_PTR to custom bullet init for some specific handling.
-; ex. BULLET_INIT(snowflake_update, snowflake_draw, ACTOR_STATUS_BIT_INVIS, SNOWFLAKE_STATUS_INVIS_TIME, snowflake_run_anim, snowflake_init_speed)
 ; in:
-; bc - caster pos
-.macro BULLET_INIT(BULLET_UPDATE_PTR, BULLET_DRAW_PTR, BULLET_STATUS, BULLET_STATUS_TIMER, BULLET_ANIM_PTR, BULLET_SPEED_INIT_PTR)
-			lxi d, @init_data
-			jmp bullet_init
-
-			.word TEMP_WORD  ; safety word because "call actor_get_empty_data_ptr"
-			.word TEMP_WORD  ; safety word because an interruption can call
-@init_data:
-			.word BULLET_UPDATE_PTR, BULLET_DRAW_PTR, BULLET_STATUS | BULLET_STATUS_TIMER<<8, BULLET_ANIM_PTR, BULLET_SPEED_INIT_PTR
-.endmacro
-
-; bullet initialization
-; this func calls bullet_speed_init code to define a unique bullet behavior.
-; in:
-; de - ptr to bullet_data:
-; 		.word BULLET_UPDATE_PTR,
+; BC - BULLET_UPDATE_PTR
+; top stack:
 ; 		.word BULLET_DRAW_PTR
-; 		.word BULLET_STATUS | BULLET_STATUS_TIMER<<8,
-; 		.word BULLET_ANIM_PTR,
-; 		.word BULLET_SPEED_INIT_PTR
-; bc - caster pos
-; when it calls BULLET_SPEED_INIT_PTR code
-; in:
-; de - ptr to bullet_speed_x
-; cc 876
+; 		.word BULLET_STATUS | BULLET_STATUS_TIMER<<8
+; 		.word BULLET_ANIM_PTR
+; 		.word pos_xy
+; 		.word speed_x
+; 		.word speed_y
+; out:
+; hl - bullet_speed_y + 1 when bullet created
+; CY = 0 - bullet not created (too many objects)
+; CY = 1 - bullet created
+
+; rev1. 876 cc
+; rev2. 804 cc
+; rev3. 836 cc ( init speed_xy)
+; rev4. 580 cc
 bullet_init:
-			lxi h, 0
-			dad	sp
-			shld @restore_sp + 1
-			xchg
-			sphl
-
-			mov l, c
-			mov h, b
-			shld @caster_pos + 1
-
-			lxi h, bullet_update_ptr+1
+			lxi h, bullet_update_ptr + 1
 			mvi e, BULLET_RUNTIME_DATA_LEN
 			call actor_get_empty_data_ptr
 			jnz @restore_sp ; return when it's too many objects
 
-			; hl - ptr to bullet_update_ptr+1
+			; hl - ptr to bullet_update_ptr + 1
 			; advance hl to bullet_update_ptr
 			dcx h
-			pop b ; using bc to read from the stack is requirenment
 			mov m, c
 			inx h
 			mov m, b
@@ -99,16 +75,8 @@ bullet_init:
 			inx h
 			mov m, b
 
-			pop b ; get the ptr to init_speed func
-@restore_sp:
-			lxi sp, TEMP_ADDR
-			RAM_DISK_OFF()
-			; bc - ptr to init_speed func
-			push b
-
-@caster_pos:
-			lxi b, TEMP_WORD
-			; bc - scr pos
+			pop b
+			; bc - pos_xy
 			mov a, b
 			; a - pos_x
 			; scr_x = pos_x/8 + SPRITE_X_SCR_ADDR
@@ -151,30 +119,33 @@ bullet_init:
 			mov m, e
 			inx h
 			mov m, c
+
+			pop b
+			; bc - speed_x
 			; advance hl to bullet_speed_x
 			inx h
-/*
-			; set speed to 0
-			mov m, e
+			mov m, c
 			inx h
-			mov m, e
+			mov m, b
+
+			pop b
+			; bc - speed_y
 			; advance hl to bullet_speed_y
 			inx h
-			mov m, e
+			mov m, c
 			inx h
-			mov m, e
-			HL_ADVANCE(bullet_speed_y+1, bullet_speed_x)
-*/
-			xchg
-			; de - ptr to bullet_speed_x
+			mov m, b
 
-			lxi h, @ret
-			xthl
-			; hl - ptr to init_speed func
-			pchl
-@ret:
-			; return TILEDATA_RESTORE_TILE to make the tile where a char spawned walkable and restorable
+			; return TILEDATA_RESTORE_TILE
+			; to make the tile (where a char spawned) walkable and restorable
 			mvi a, TILEDATA_RESTORE_TILE
+			stc ; set CY = 1
+			ret
+
+@restore_sp:
+			POP_H(7) ; pop out non-used init data to restore the SP
+			mvi a, TILEDATA_RESTORE_TILE
+			ora a ; set CY = 0
 			ret
 
 

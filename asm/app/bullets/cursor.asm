@@ -13,12 +13,28 @@ CURSOR_MOVE_SPEED_MAX		= 14
 ; animation speed (the less the slower, 0-255, 255 means the next frame is almost every update)
 CURSOR_ANIM_SPEED_MOVE	= 30
 
-
 ; in:
 ; bc - pos
-; movement speed based on the hero pos. it goes to that direction.
 cursor_init:
-			BULLET_INIT(cursor_update, bomb_draw, CURSOR_STATUS_IDLE, CURSOR_STATUS_IDLE_TIME, bomb_run_anim, empty_func)
+			lxi h, 0
+			; hl - speed_y
+			push h
+			; hl - speed_x
+			push h
+			; pos_xy
+			push b
+			; BULLET_ANIM_PTR
+			lxi h, bomb_run_anim
+			push h
+			; BULLET_STATUS | BULLET_STATUS_TIMER<<8
+			lxi h, CURSOR_STATUS_IDLE_TIME<<8 | CURSOR_STATUS_IDLE
+			push h
+			; BULLET_DRAW_PTR
+			lxi h, bomb_draw
+			push h
+			; BULLET_UPDATE_PTR
+			lxi b, cursor_update
+			jmp bullet_init
 
 ; anim and a gameplay logic update
 ; in:

@@ -63,66 +63,42 @@ SCYTHE_COLLISION_HEIGHT	= 12
 ; bc - caster pos
 ; a - direction (BULLET_DIR_*)
 scythe_init:
-			sta scythe_init_speed + 1 ;
-			BULLET_INIT(scythe_update, scythe_draw, SCYTHE_STATUS_MOVE_THROW, SCYTHE_STATUS_MOVE_TIME, scythe_run_anim, scythe_init_speed)
-
-; TODO: optimization. don't erase the speed, the bullet init func does it,
-; in each branch only advance hl,
-; then assign SCYTHE_MOVE_SPEED_NEG or SCYTHE_MOVE_SPEED
-; in:
-; de - ptr to bullet_speed_x
-scythe_init_speed:
-			mvi a, TEMP_BYTE ; direction (BULLET_DIR_*)
-			xchg
-			mvi e, 0
-			; hl - ptr to bullet_speed_x
+			lxi d, 0
+			lxi h, SCYTHE_MOVE_SPEED
 
 			cpi BULLET_DIR_R
-			jz @move_right
+			jz @init_speed
 			cpi BULLET_DIR_L
 			jz @move_left
 			cpi BULLET_DIR_U
 			jz @move_up
 @move_down:
-			mov m, e
-			inx h
-			mov m, e
-			; advance hl to bullet_speed_y
-			inx h
-			mvi m, <SCYTHE_MOVE_SPEED_NEG
-			inx h
-			mvi m, >SCYTHE_MOVE_SPEED_NEG
-			ret
+			lxi h, SCYTHE_MOVE_SPEED_NEG
 @move_up:
-			mov m, e
-			inx h
-			mov m, e
-			; advance hl to bullet_speed_y
-			inx h
-			mvi m, <SCYTHE_MOVE_SPEED
-			inx h
-			mvi m, >SCYTHE_MOVE_SPEED
-			ret
+			xchg
+			jmp @init_speed
 @move_left:
-			mvi m, <SCYTHE_MOVE_SPEED_NEG
-			inx h
-			mvi m, >SCYTHE_MOVE_SPEED_NEG
-			; advance hl to bullet_speed_y
-			inx h
-			mov m, e
-			inx h
-			mov m, e
-			ret
-@move_right:
-			mvi m, <SCYTHE_MOVE_SPEED
-			inx h
-			mvi m, >SCYTHE_MOVE_SPEED
-			; advance hl to bullet_speed_y
-			inx h
-			mov m, e
-			inx h
-			mov m, e
-			ret
+			lxi h, SCYTHE_MOVE_SPEED_NEG
+@init_speed:
+			; speed_y
+			push d
+			; speed_x
+			push h
+
+			; pos_xy
+			push b
+			; BULLET_ANIM_PTR
+			lxi h, scythe_run_anim
+			push h
+			; BULLET_STATUS | BULLET_STATUS_TIMER<<8
+			lxi h, SCYTHE_STATUS_MOVE_TIME<<8 | SCYTHE_STATUS_MOVE_THROW
+			push h
+			; BULLET_DRAW_PTR
+			lxi h, scythe_draw
+			push h
+			; BULLET_UPDATE_PTR
+			lxi b, scythe_update
+			jmp bullet_init
 
 ; anim and a gameplay logic update
 ; in:
