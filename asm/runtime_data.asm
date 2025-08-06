@@ -4,7 +4,49 @@
 ;=============================================================================
 ; For RAM memory usage check
 ;=============================================================================
-RUNTIME_DATA	= $731E
+RUNTIME_DATA	= $730D
+
+;=============================================================================
+; Hero Resources
+;=============================================================================
+; Defines the runtime values of all hero-owned resources.
+; NOTE:
+; - A maximum of 15 resources is supported.
+; - `hero_res_sword` to `hero_res_spoon` are selectable resources shown in the UI.
+; - Some resources are marked as quest-related.
+; - Data must fit inside $100 block.
+
+hero_resources:			= $730D
+hero_res_score:			= hero_resources + 0  ; .word
+hero_res_health:		= hero_resources + 2  ; .byte
+hero_res_sword:			= hero_resources + 3  ; .byte (the first UI-selectable)
+hero_res_snowflake:		= hero_resources + 4  ; .byte
+hero_res_tnt:			= hero_resources + 5  ; .byte
+hero_res_potion_health:	= hero_resources + 6  ; .byte
+hero_res_popsicle_pie:	= hero_resources + 7  ; .byte
+hero_res_laundry:		= hero_resources + 8  ; .byte (Quest resource)
+hero_res_cabbage:		= hero_resources + 9  ; .byte (Quest resource)
+hero_res_spoon:			= hero_resources + 10 ; .byte
+hero_res_scarecrow:		= hero_resources + 11 ; .byte
+hero_res_trap: 			= hero_resources + 12 ; .byte (Quest resource)
+hero_res_not_used_03:	= hero_resources + 13 ; .byte
+hero_res_not_used_04:	= hero_resources + 14 ; .byte
+hero_res_not_used_06:	= hero_resources + 15 ; .byte
+hero_res_end:			= hero_resources + 16 ; last resource + 1
+
+; Currently selected resource low addr for use in the game UI.
+;	NULL    - Indicates no resource selected.
+game_ui_res_selected_ptr:	= hero_resources + 16 ; .byte
+hero_resources_end:			= hero_resources + 17
+HERO_RESOURCES_LEN = hero_resources_end - hero_resources
+
+RES_SELECTABLE_FIRST	= hero_res_sword
+RES_SELECTABLE_MAX		= hero_res_end - RES_SELECTABLE_FIRST
+
+.if hero_resources>>8 != (hero_resources_end-1)>>8
+	.error "ERROR: hero_resources must fit inside $100 block"
+.endif
+
 
 ;=============================================================================
 ; OS I/O Data
@@ -634,47 +676,6 @@ rooms_spawn_rate_end:	= rooms_spawn_rate + ROOMS_MAX
 ROOMS_SPAWN_RATE_LEN = rooms_spawn_rate_end - rooms_spawn_rate
 
 ;=============================================================================
-; Hero Resources
-;=============================================================================
-; Defines the runtime values of all hero-owned resources.
-; NOTE:
-; - A maximum of 15 resources is supported.
-; - `hero_res_sword` to `hero_res_spoon` are selectable resources shown in the UI.
-; - Some resources are marked as quest-related.
-; - Data must fit inside $100 block.
-
-hero_resources:			= $7F9D
-hero_res_score:			= hero_resources + 0  ; .word
-hero_res_health:		= hero_resources + 2  ; .byte
-hero_res_sword:			= hero_resources + 3  ; .byte (the first UI-selectable)
-hero_res_snowflake:		= hero_resources + 4  ; .byte
-hero_res_tnt:			= hero_resources + 5  ; .byte
-hero_res_potion_health:	= hero_resources + 6  ; .byte
-hero_res_popsicle_pie:	= hero_resources + 7  ; .byte
-hero_res_laundry:		= hero_resources + 8  ; .byte (Quest resource)
-hero_res_cabbage:		= hero_resources + 9  ; .byte (Quest resource)
-hero_res_spoon:			= hero_resources + 10 ; .byte
-hero_res_scarecrow:		= hero_resources + 11 ; .byte
-hero_res_trap: 			= hero_resources + 12 ; .byte (Quest resource)
-hero_res_not_used_03:	= hero_resources + 13 ; .byte
-hero_res_not_used_04:	= hero_resources + 14 ; .byte
-hero_res_not_used_06:	= hero_resources + 15 ; .byte
-hero_res_end:			= hero_resources + 16 ; last resource + 1
-
-; Currently selected resource low addr for use in the game UI.
-;	NULL    - Indicates no resource selected.
-game_ui_res_selected_ptr:	= hero_resources + 16 ; .byte
-hero_resources_end:			= hero_resources + 17
-HERO_RESOURCES_LEN = hero_resources_end - hero_resources
-
-RES_SELECTABLE_FIRST	= hero_res_sword
-RES_SELECTABLE_MAX		= hero_res_end - RES_SELECTABLE_FIRST
-
-.if hero_resources>>8 != (hero_resources_end-1)>>8
-	.error "ERROR: hero_resources must fit inside $100 block"
-.endif
-
-;=============================================================================
 ; Global Item Statuses
 ;=============================================================================
 ; Tracks the acquisition and usage status of each global items in the game.
@@ -697,7 +698,7 @@ ITEMS_MAX				= 15
 ; ...
 ; .byte - status of item_id = ITEMS_MAX-1
 
-global_items:		= $7FAE
+global_items:		= $7F9D
 global_items_end:	= global_items + ITEMS_MAX
 GLOBAL_ITEMS_END = global_items_end - global_items
 
@@ -706,13 +707,18 @@ GLOBAL_ITEMS_END = global_items_end - global_items
 ;=============================================================================
 ; Stores the current RAM-disk mode.
 ; Used by the interrupt routine to restore the mode after execution.
-ram_disk_mode:              = $7FBD ; BYTE_LEN
+ram_disk_mode:              = $7FAC ; BYTE_LEN
 
 ;=============================================================================
-; STACK_MIN_ADDR = $7FBE
+RUNTIME_DATA_END = $7FAC
 ;=============================================================================
 
 ; validation
+.if RUNTIME_DATA_END > STACK_MIN_ADDR
+	.error "RUNTIME_DATA_END (" RUNTIME_DATA_END ") > STACK_MIN_ADDR (" STACK_MIN_ADDR ")"
+.endif
+
+
 .if (char_update_ptr - chars_runtime_data) != (hero_update_ptr - hero_runtime_data)
 	.error "hero & char runtime data must match from update_ptr to chars_runtime_data"
 .endif

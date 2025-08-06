@@ -105,7 +105,7 @@ RAM_DISK_M_AF = RAM_DISK_M_AD | RAM_DISK_M_EF
 RESTART_ADDR 			= 0x0000
 INT_ADDR	 			= 0x0038
 
-MAIN_STACK_LEN	= 32 ; used in the main programm
+MAIN_STACK_LEN	= 48 ; used in the main programm
 INT_STACK_LEN	= 30 ; used in the interruption routine
 TMP_STACK_LEN	= 2  ; used as a temp 2 byte space in the render routines such as sprite_copy_to_scr_v
 
