@@ -1,7 +1,7 @@
 @memusage_sword
 ;=================================================
 
-.include "app/bullets/sword_tile_funcs.asm"
+.include "app/overlays/sword_tile_funcs.asm"
 
 ; statuses.
 ; a status describes what set of animations and behavior is active
@@ -54,66 +54,66 @@ sword_init:
 			HL_ADVANCE(hero_pos_x + 1, hero_pos_y + 1)
 			mov c, m
 			push b
-			; BULLET_ANIM_PTR
+			; OVERLAY_ANIM_PTR
 			lxi h, NULL
 			push h
-			; BULLET_STATUS | BULLET_STATUS_TIMER<<8
+			; OVERLAY_STATUS | OVERLAY_STATUS_TIMER<<8
 			lxi h, SWORD_STATUS_INVIS_TIME<<8 | ACTOR_STATUS_BIT_INVIS
 			push h
-			; BULLET_DRAW_PTR
+			; OVERLAY_DRAW_PTR
 			lxi h, sword_draw
 			push h
-			; BULLET_UPDATE_PTR
+			; OVERLAY_UPDATE_PTR
 			lxi b, sword_update
-			jmp bullet_init ; this func must return to @ret
+			jmp overlay_init ; this func must return to @ret
 
 ; anim and a gameplay logic update
 ; in:
-; de - ptr to bullet_update_ptr
+; de - ptr to overlay_update_ptr
 sword_update:
-			; advance to bullet_status
-			HL_ADVANCE(bullet_update_ptr, bullet_status, BY_HL_FROM_DE)
+			; advance to overlay_status
+			HL_ADVANCE(overlay_update_ptr, overlay_status, BY_HL_FROM_DE)
 			mov a, m
 			ani ACTOR_STATUS_BIT_INVIS
 			jnz @delay_update
 
 @attk_update:
-			; hl - ptr to bullet_status
-			; advance and decr bullet_status_timer
+			; hl - ptr to overlay_status
+			; advance and decr overlay_status_timer
 			inx h
 			; check if it's time to die
 			dcr m
 			jz @die
 
 @attk_anim_update:
-			; advance to bullet_anim_timer
+			; advance to overlay_anim_timer
 			inx h
 			mvi a, SWORD_ANIM_SPEED_ATTACK
 			jmp actor_anim_update
 
 @die:
-			L_ADVANCE(bullet_status_timer, bullet_update_ptr+1, BY_A)
+			L_ADVANCE(overlay_status_timer, overlay_update_ptr+1, BY_A)
 			ACTOR_DESTROY()
 			ret
 
 @delay_update:
-			; hl - ptr to bullet_status
-			; advance and decr bullet_status_timer
+			; hl - ptr to overlay_status
+			; advance and decr overlay_status_timer
 			inx h
 			dcr m
 			rnz
 
-			; hl - ptr to bullet_status_duration
+			; hl - ptr to overlay_status_duration
 			; set the attack
 			mvi m, SWORD_STATUS_ATTACK_TIME
-			; advance and set bullet_status
+			; advance and set overlay_status
 			dcx h
 			mvi m, SWORD_STATUS_ATTACK
 
-			; advance and reset bullet_anim_timer
+			; advance and reset overlay_anim_timer
 			INX_H(2)
 			mvi m, 0
-			; advance and set bullet_anim_ptr
+			; advance and set overlay_anim_ptr
 			inx h
 			lda hero_dir
 			rrc
@@ -124,7 +124,7 @@ sword_update:
 			mvi m, > sword_attk_r_anim
 
 			; check enemies-sword sprite collision
-			L_ADVANCE(bullet_anim_ptr+1, bullet_pos_x+1, BY_A)
+			L_ADVANCE(overlay_anim_ptr+1, overlay_pos_x+1, BY_A)
 			mvi a, HERO_DIR_RIGHT
 			jmp sword_check_chars
 
@@ -134,18 +134,18 @@ sword_update:
 			mvi m, > sword_attk_l_anim
 
 			; check enemies-sword sprite collision
-			L_ADVANCE(bullet_anim_ptr + 1, bullet_pos_x + 1, BY_A)
+			L_ADVANCE(overlay_anim_ptr + 1, overlay_pos_x + 1, BY_A)
 			mvi a, HERO_DIR_LEFT
 			jmp sword_check_chars
 
 ; check if a sword collides with a char
 ; in:
-; hl - bullet_pos_x + 1
+; hl - overlay_pos_x + 1
 ; a - hero dir
 sword_check_chars:
 			; get the pos_xy
 			mov d, m
-			HL_ADVANCE(bullet_pos_x + 1, bullet_pos_y + 1)
+			HL_ADVANCE(overlay_pos_x + 1, overlay_pos_y + 1)
 			mov e, m
 
 			; a - hero_dir
@@ -159,7 +159,7 @@ sword_check_chars:
 			dad d
 
 
-			; check if a bullet collides with a char
+			; check if a overlay collides with a char
 			mvi a, SWORD_CHAR_COLLISION_WIDTH
 			lxi b, CHAR_TYPE_ALL<<8 | SWORD_CHAR_COLLISION_HEIGHT
 			; de - collision pos_xy
@@ -185,7 +185,7 @@ sword_check_chars:
 
 ; draw a sprite into a backbuffer
 ; in:
-; de - ptr to bullet_draw_ptr
+; de - ptr to overlay_draw_ptr
 sword_draw:
 			lhld sword_get_scr_addr
 			lda sword_ram_disk_s_cmd

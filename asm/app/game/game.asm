@@ -52,7 +52,7 @@ game_update:
 @update:
 			call hero_update
 			call chars_update
-			call bullets_update
+			call overlays_update
 @pause:
 			call backs_update
 			call game_ui_update
@@ -99,13 +99,13 @@ game_draw:
 			call chars_sort_pos_y
 
 			call chars_draw ; it also calls hero_draw
-			call bullets_draw
+			call overlays_draw
 
 			call hero_copy_to_scr
 			call chars_copy_to_scr
-			call bullets_copy_to_scr
+			call overlays_copy_to_scr
 
 			call hero_erase
 			call chars_erase
-			call bullets_erase
+			call overlays_erase
 			ret

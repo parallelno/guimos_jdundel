@@ -1,6 +1,6 @@
 @memusage_scythe
 ;=================================================
-; bullet AI:
+; overlay AI:
 ; init:
 ;	status = move_forward
 ;	status_timer = moveForwardTimer
@@ -11,8 +11,8 @@
 ;		status = move_backward
 ;		status_timer = moveBackwardTimer
 ;	else:
-;		try to move a bullet
-;		if bullet collides with tiles:
+;		try to move a overlay
+;		if overlay collides with tiles:
 ;			if status = move_backward:
 ;				die
 ;			else:
@@ -20,8 +20,8 @@
 ;		else:
 ;			accept new pos
 ;			update_anim
-;			check bullet-hero collision
-;			if bullet collides with hero:
+;			check overlay-hero collision
+;			if overlay collides with hero:
 ;				impact hero
 ;				death
 ; move_backward:
@@ -29,14 +29,14 @@
 ;	if status_timer = 0
 ;		death
 ;	else:
-;		try to move a bullet
-;		if bullet collides with tiles:
+;		try to move a overlay
+;		if overlay collides with tiles:
 ;			death
 ;		else:
 ;			accept new pos
 ;			update_anim
-;			check bullet-hero collision
-;			if bullet collides with hero:
+;			check overlay-hero collision
+;			if overlay collides with hero:
 ;				impact hero
 ;				death
 
@@ -61,16 +61,16 @@ SCYTHE_COLLISION_HEIGHT	= 12
 
 ; in:
 ; bc - caster pos
-; a - direction (BULLET_DIR_*)
+; a - direction (OVERLAY_DIR_*)
 scythe_init:
 			lxi d, 0
 			lxi h, SCYTHE_MOVE_SPEED
 
-			cpi BULLET_DIR_R
+			cpi OVERLAY_DIR_R
 			jz @init_speed
-			cpi BULLET_DIR_L
+			cpi OVERLAY_DIR_L
 			jz @move_left
-			cpi BULLET_DIR_U
+			cpi OVERLAY_DIR_U
 			jz @move_up
 @move_down:
 			lxi h, SCYTHE_MOVE_SPEED_NEG
@@ -87,51 +87,51 @@ scythe_init:
 
 			; pos_xy
 			push b
-			; BULLET_ANIM_PTR
+			; OVERLAY_ANIM_PTR
 			lxi h, scythe_run_anim
 			push h
-			; BULLET_STATUS | BULLET_STATUS_TIMER<<8
+			; OVERLAY_STATUS | OVERLAY_STATUS_TIMER<<8
 			lxi h, SCYTHE_STATUS_MOVE_TIME<<8 | SCYTHE_STATUS_MOVE_THROW
 			push h
-			; BULLET_DRAW_PTR
+			; OVERLAY_DRAW_PTR
 			lxi h, scythe_draw
 			push h
-			; BULLET_UPDATE_PTR
+			; OVERLAY_UPDATE_PTR
 			lxi b, scythe_update
-			jmp bullet_init
+			jmp overlay_init
 
 ; anim and a gameplay logic update
 ; in:
-; de - ptr to bullet_update_ptr
+; de - ptr to overlay_update_ptr
 scythe_update:
-			; advance to bullet_status_timer
-			HL_ADVANCE(bullet_update_ptr, bullet_status_timer, BY_HL_FROM_DE)
+			; advance to overlay_status_timer
+			HL_ADVANCE(overlay_update_ptr, overlay_status_timer, BY_HL_FROM_DE)
 			dcr m
 			jz @die
 @update_movement:
 			ACTOR_UPDATE_MOVEMENT_CHECK_TILE_COLLISION(SCYTHE_COLLISION_WIDTH, SCYTHE_COLLISION_HEIGHT, @set_bounce_after_tile_collision)
 
-			; hl points to bullet_pos_y+1
-			; advance hl to bullet_anim_timer
-			L_ADVANCE(bullet_pos_y+1, bullet_anim_timer, BY_A)
+			; hl points to overlay_pos_y+1
+			; advance hl to overlay_anim_timer
+			L_ADVANCE(overlay_pos_y+1, overlay_anim_timer, BY_A)
 			mvi a, SCYTHE_ANIM_SPEED_MOVE
-			BULLET_UPDATE_ANIM_CHECK_COLLISION_HERO(SCYTHE_COLLISION_WIDTH, SCYTHE_COLLISION_HEIGHT, SCYTHE_DAMAGE)
+			OVERLAY_UPDATE_ANIM_CHECK_COLLISION_HERO(SCYTHE_COLLISION_WIDTH, SCYTHE_COLLISION_HEIGHT, SCYTHE_DAMAGE)
 @die_after_damage:
-			; advance hl to bullet_update_ptr+1
-			L_ADVANCE(bullet_pos_y+1, bullet_update_ptr+1, BY_A)
+			; advance hl to overlay_update_ptr+1
+			L_ADVANCE(overlay_pos_y+1, overlay_update_ptr+1, BY_A)
 			ACTOR_DESTROY()
 			ret
 @set_bounce_after_tile_collision:
 			; hl points to pos_x
-			; advance hl to bullet_status_timer
-			L_ADVANCE(bullet_pos_x, bullet_status_timer, BY_A)
+			; advance hl to overlay_status_timer
+			L_ADVANCE(overlay_pos_x, overlay_status_timer, BY_A)
 @set_bounce:
-			; hl - ptr to bullet_status_timer
-			; advance hl to bullet_status
+			; hl - ptr to overlay_status_timer
+			; advance hl to overlay_status
 			dcx h
 			mvi m, SCYTHE_STATUS_MOVE_BOUNCE
-			; advance hl to bullet_speed_x
-			L_ADVANCE(bullet_status, bullet_speed_x, BY_A)
+			; advance hl to overlay_speed_x
+			L_ADVANCE(overlay_status, overlay_speed_x, BY_A)
 			mov a, m
 			inx h
 			ora m
@@ -148,7 +148,7 @@ scythe_update:
 			mvi m, <SCYTHE_MOVE_SPEED_NEG
 			ret
 @set_move_vert:
-			; advance hl to bullet_speed_y+1
+			; advance hl to overlay_speed_y+1
 			INX_H(2)
 			mov a, m
 			CPI_ZERO()
@@ -164,15 +164,15 @@ scythe_update:
 			mvi m, <SCYTHE_MOVE_SPEED_NEG
 			ret
 @die:
-			; hl points to bullet_status_timer
-			; advance hl to bullet_update_ptr+1
-			L_ADVANCE(bullet_status_timer, bullet_update_ptr+1, BY_A)
+			; hl points to overlay_status_timer
+			; advance hl to overlay_update_ptr+1
+			L_ADVANCE(overlay_status_timer, overlay_update_ptr+1, BY_A)
 			ACTOR_DESTROY()
 			ret
 
 ; draw a sprite into a backbuffer
 ; in:
-; de - ptr to bullet_draw_ptr
+; de - ptr to overlay_draw_ptr
 scythe_draw:
 			lhld scythe_get_scr_addr
 			lda scythe_ram_disk_s_cmd

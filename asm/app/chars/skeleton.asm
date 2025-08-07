@@ -309,25 +309,25 @@ skeleton_update_shoot:
 			jz @shoot_vert
 			mov a, m
 			CPI_ZERO()
-			mvi a, BULLET_DIR_R
+			mvi a, OVERLAY_DIR_R
 			jp @shoot_right
 @shoot_left:
-			mvi a, BULLET_DIR_L
+			mvi a, OVERLAY_DIR_L
 @shoot_right:
 			LXI_B_TO_DIFF(char_speed_x+1, char_pos_x+1)
-			jmp @set_bullet_pos
+			jmp @set_overlay_pos
 @shoot_vert:
 			; advance hl to char_speed_y+1
 			INX_H(2)
 			mov a, m
 			CPI_ZERO()
-			mvi a, BULLET_DIR_U
+			mvi a, OVERLAY_DIR_U
 			jp @shoot_up
 @shoot_down:
-			mvi a, BULLET_DIR_D
+			mvi a, OVERLAY_DIR_D
 @shoot_up:
 			LXI_B_TO_DIFF(char_speed_y+1, char_pos_x+1)
-@set_bullet_pos:
+@set_overlay_pos:
 			dad b
 			mov b, m
 			INX_H(2)

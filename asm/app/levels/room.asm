@@ -7,7 +7,7 @@
 
 room_init:
 			call chars_init
-			call bullets_init
+			call overlays_init
 			call backs_init
 			call room_unpack
 			call room_backup_tiledata

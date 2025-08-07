@@ -36,9 +36,9 @@ level_init:
 			lxi b, backs_runtime_data_end
 			call mem_erase
 
-			; erase bullets buffs
-			lxi h, bullets_runtime_data
-			lxi b, bullets_runtime_data_end
+			; erase overlays buffs
+			lxi h, overlays_runtime_data
+			lxi b, overlays_runtime_data_end
 			call mem_erase
 
 			; erase chars buffs

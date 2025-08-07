@@ -13,7 +13,7 @@ hero_dead:
 
 hero_dead_fade_init_gb:
 			KILL_ALL_CHARS()
-			KILL_ALL_BULLETS()
+			KILL_ALL_OVERLAYS()
 
 			; set the status
 			mvi a, ACTOR_STATUS_HERO_DEATH_FADE_GB

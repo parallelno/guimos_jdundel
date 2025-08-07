@@ -70,7 +70,7 @@ This project is divided into two key components: the game and the sprite engine,
 * Animated decals.
 * Non-animated decal tiles.
 * Efficient sprite sorting by Y.
-* Top layer for projectiles (bullets).
+* Overlay layer for projectiles & vfx.
 * Non monospaced font support.
 * Floppy disk data loading via I/O syscalls.
 * AY music and multichannel sound effects.

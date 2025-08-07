@@ -144,7 +144,7 @@ GLOBAL_STATES_LEN = global_states_end - global_states
 ; - The structure from char_update_ptr to char_data_next_ptr must match the
 ;     hero's runtime data structure for compatibility with shared functions.
 ; - The structure from char_update_ptr to char_speed_y must match the
-;     bullets's runtime data structure for compatibility with shared functions.
+;     overlay's runtime data structure for compatibility with shared functions.
 
 CHARS_MAX = 15
 
@@ -166,14 +166,13 @@ char_pos_y:				= chars_runtime_data + actor_pos_y
 char_speed_x:			= chars_runtime_data + actor_speed_x
 char_speed_y:			= chars_runtime_data + actor_speed_y
 char_data_next_ptr:		= chars_runtime_data + 25 ; .word ; NULL if it's the last actor in the list
-char_impacted_ptr:		= chars_runtime_data + 27 ; .word ; called by a hero's bullet, another char, etc. to affect this char
+char_impacted_ptr:		= chars_runtime_data + 27 ; .word ; called by a hero, overlay, npc, etc. to affect this char
 char_id:				= chars_runtime_data + 29 ; .byte
 char_type:				= chars_runtime_data + 30 ; .byte
 char_health:			= chars_runtime_data + 31 ; .byte ; Remaining health points
 @data_end:				= chars_runtime_data + 32
 CHAR_RUNTIME_DATA_LEN = @data_end - chars_runtime_data
 
-; Memory layout for char instances
 chars_runtime_data_end_marker:	= chars_runtime_data + CHAR_RUNTIME_DATA_LEN * CHARS_MAX	; .word ACTOR_RUNTIME_DATA_END << 8
 chars_runtime_data_end:			= chars_runtime_data_end_marker + ADDR_LEN
 CHARS_RUNTIME_DATA_LEN			= chars_runtime_data_end - chars_runtime_data
@@ -183,53 +182,52 @@ CHARS_RUNTIME_DATA_LEN			= chars_runtime_data_end - chars_runtime_data
 .endif
 
 ;=============================================================================
-; Bullets Runtime Data
+; Overlays Runtime Data
 ;=============================================================================
-; Defines the per-instance runtime data for bullets & vfx. Bullets are like
-; chars, but they can't get an impact, though they can impact a char. Bullets
-; are not sorted by their Y position. They are rendered in a random order
+; Defines the per-instance runtime data for projectiles and VFX. Overlays are
+; similar to chars but cannot receive impacts. However, they can impact chars.
+; Overlays are not sorted by Y position and are rendered in an arbitrary order,
 ; always on top of all chars.
 ; NOTE:
-; - A list of structs, one per bullet instance.
+; - A list of structs, one per overlay instance.
 ; - Accessed by the custom update and actor draw routines.
 ; - Data must fit inside $100 block.
-; - Max active chars per room including dying but not dead: BULLETS_MAX.
-; - The bullet_update_ptr+1 also serves as an Actor Runtime Status Code
+; - Max active chars per room including dying but not dead: OVERLAYS_MAX.
+; - The overlay_update_ptr+1 also serves as an Actor Runtime Status Code
 ;     (see actor_consts.asm).
 ; - The structure from char_update_ptr to char_data_next_ptr must match the
 ;     hero's runtime data structure for compatibility with shared functions.
 ; - The structure from char_update_ptr to char_speed_y must match the
-;     bullets's runtime data structure for compatibility with shared functions.
+;     overlay's runtime data structure for compatibility with shared functions.
 
-; Base address for all bullet runtime data
-bullets_runtime_data:		= $751D
-; A struct of a bullet runtime data.
-bullet_update_ptr:			= bullets_runtime_data + actor_update_ptr
-bullet_draw_ptr:			= bullets_runtime_data + actor_draw_ptr
-bullet_status:				= bullets_runtime_data + actor_status
-bullet_status_timer:		= bullets_runtime_data + actor_status_timer
-bullet_anim_timer:			= bullets_runtime_data + actor_anim_timer
-bullet_anim_ptr:			= bullets_runtime_data + actor_anim_ptr
-bullet_erase_scr_addr:		= bullets_runtime_data + actor_erase_scr_addr
-bullet_erase_scr_addr_old:	= bullets_runtime_data + actor_erase_scr_addr_old
-bullet_erase_wh:			= bullets_runtime_data + actor_erase_wh
-bullet_erase_wh_old:		= bullets_runtime_data + actor_erase_wh_old
-bullet_pos_x:				= bullets_runtime_data + actor_pos_x
-bullet_pos_y:				= bullets_runtime_data + actor_pos_y
-bullet_speed_x:				= bullets_runtime_data + actor_speed_x
-bullet_speed_y:				= bullets_runtime_data + actor_speed_y
-@data_end:					= bullets_runtime_data + ACTOR_RUNTIME_DATA_LEN
+; Base address for all overlay runtime data
+overlays_runtime_data:		= $751D
+; A struct of a overlay runtime data.
+overlay_update_ptr:			= overlays_runtime_data + actor_update_ptr
+overlay_draw_ptr:			= overlays_runtime_data + actor_draw_ptr
+overlay_status:				= overlays_runtime_data + actor_status
+overlay_status_timer:		= overlays_runtime_data + actor_status_timer
+overlay_anim_timer:			= overlays_runtime_data + actor_anim_timer
+overlay_anim_ptr:			= overlays_runtime_data + actor_anim_ptr
+overlay_erase_scr_addr:		= overlays_runtime_data + actor_erase_scr_addr
+overlay_erase_scr_addr_old:	= overlays_runtime_data + actor_erase_scr_addr_old
+overlay_erase_wh:			= overlays_runtime_data + actor_erase_wh
+overlay_erase_wh_old:		= overlays_runtime_data + actor_erase_wh_old
+overlay_pos_x:				= overlays_runtime_data + actor_pos_x
+overlay_pos_y:				= overlays_runtime_data + actor_pos_y
+overlay_speed_x:			= overlays_runtime_data + actor_speed_x
+overlay_speed_y:			= overlays_runtime_data + actor_speed_y
+@data_end:					= overlays_runtime_data + ACTOR_RUNTIME_DATA_LEN
 
-BULLET_RUNTIME_DATA_LEN = @data_end - bullets_runtime_data
-BULLETS_MAX = 9 ; max active bullets in the room
+OVERLAY_RUNTIME_DATA_LEN = @data_end - overlays_runtime_data
+OVERLAYS_MAX = 9 ; max active overlays in the room
 
-; Memory layout for remaining bullet instances (BULLETS_MAX - 1)
-bullets_runtime_data_end_marker:	= bullets_runtime_data + BULLET_RUNTIME_DATA_LEN * BULLETS_MAX ; $78ff ;.word ACTOR_RUNTIME_DATA_END << 8
-bullets_runtime_data_end:			= bullets_runtime_data_end_marker + ADDR_LEN
-BULLETS_RUNTIME_DATA_LEN			= bullets_runtime_data_end - bullets_runtime_data
+overlays_runtime_data_end_marker:	= overlays_runtime_data + OVERLAY_RUNTIME_DATA_LEN * OVERLAYS_MAX
+overlays_runtime_data_end:			= overlays_runtime_data_end_marker + ADDR_LEN
+OVERLAYS_RUNTIME_DATA_LEN			= overlays_runtime_data_end - overlays_runtime_data
 
-.if bullets_runtime_data>>8 != (bullets_runtime_data_end - 1)>>8
-	.error "ERROR: bullets_runtime_data must fit inside $100 block"
+.if overlays_runtime_data>>8 != (overlays_runtime_data_end - 1)>>8
+	.error "ERROR: overlays_runtime_data must fit inside $100 block"
 .endif
 
 ;=============================================================================
@@ -602,8 +600,7 @@ back_anim_timer_speed:	= backs_runtime_data + 5	;.byte TEMP_BYTE
 BACK_RUNTIME_DATA_LEN = @data_end - backs_runtime_data
 BACKS_MAX = 10
 
-; Memory layout for remaining back instances (BACKS_MAX - 1)
-backs_runtime_data_end_marker:	= backs_runtime_data + BACK_RUNTIME_DATA_LEN * BACKS_MAX ;.word ACTOR_RUNTIME_DATA_END << 8
+backs_runtime_data_end_marker:	= backs_runtime_data + BACK_RUNTIME_DATA_LEN * BACKS_MAX
 backs_runtime_data_end:			= backs_runtime_data_end_marker + WORD_LEN
 BACKS_RUNTIME_DATA_LEN = backs_runtime_data_end - backs_runtime_data
 
@@ -640,7 +637,7 @@ hero_pos_y:					= hero_runtime_data + actor_pos_y
 hero_speed_x:				= hero_runtime_data + actor_speed_x
 hero_speed_y:				= hero_runtime_data + actor_speed_y
 hero_data_next_ptr:			= hero_runtime_data + 25 ; .word ; points to the next actor in the actor_data_head_ptr list for sorting
-hero_impacted_ptr:			= hero_runtime_data + 27 ; .word ; called by a char's bullet, a char, etc. to affect a hero
+hero_impacted_ptr:			= hero_runtime_data + 27 ; .word ; called by a char, npc, overlay, etc. to affect the hero
 hero_dir:					= hero_runtime_data + 29 ; .byte ; direction flag:
 ; format: %0000_0VDHD,
 ;	V - vertical movement (0 - disabled, 1 - enabled)
@@ -722,99 +719,99 @@ RUNTIME_DATA_END = $7FAC
 .if (char_update_ptr - chars_runtime_data) != (hero_update_ptr - hero_runtime_data)
 	.error "hero & char runtime data must match from update_ptr to chars_runtime_data"
 .endif
-.if (char_update_ptr - chars_runtime_data) != (bullet_update_ptr - bullets_runtime_data)
-	.error "hero & char & bullet runtime data must match from update_ptr to speed_y+1"
+.if (char_update_ptr - chars_runtime_data) != (overlay_update_ptr - overlays_runtime_data)
+	.error "hero & char & overlay runtime data must match from update_ptr to speed_y+1"
 .endif
 
 .if (char_draw_ptr - chars_runtime_data) != (hero_draw_ptr - hero_runtime_data)
 	.error "hero & char runtime data must match from update_ptr to chars_runtime_data"
 .endif
-.if (char_draw_ptr - chars_runtime_data) != (bullet_draw_ptr - bullets_runtime_data)
-	.error "hero & char & bullet runtime data must match from update_ptr to speed_y+1"
+.if (char_draw_ptr - chars_runtime_data) != (overlay_draw_ptr - overlays_runtime_data)
+	.error "hero & char & overlay runtime data must match from update_ptr to speed_y+1"
 .endif
 
 .if (char_status - chars_runtime_data) != (hero_status - hero_runtime_data)
 	.error "hero & char runtime data must match from update_ptr to chars_runtime_data"
 .endif
-.if (char_status - chars_runtime_data) != (bullet_status - bullets_runtime_data)
-	.error "hero & char & bullet runtime data must match from update_ptr to speed_y+1"
+.if (char_status - chars_runtime_data) != (overlay_status - overlays_runtime_data)
+	.error "hero & char & overlay runtime data must match from update_ptr to speed_y+1"
 .endif
 
 .if (char_status_timer - chars_runtime_data) != (hero_status_timer - hero_runtime_data)
 	.error "hero & char runtime data must match from update_ptr to chars_runtime_data"
 .endif
-.if (char_status_timer - chars_runtime_data) != (bullet_status_timer - bullets_runtime_data)
-	.error "hero & char & bullet runtime data must match from update_ptr to speed_y+1"
+.if (char_status_timer - chars_runtime_data) != (overlay_status_timer - overlays_runtime_data)
+	.error "hero & char & overlay runtime data must match from update_ptr to speed_y+1"
 .endif
 
 .if (char_anim_timer - chars_runtime_data) != (hero_anim_timer - hero_runtime_data)
 	.error "hero & char runtime data must match from update_ptr to chars_runtime_data"
 .endif
-.if (char_anim_timer - chars_runtime_data) != (bullet_anim_timer - bullets_runtime_data)
-	.error "hero & char & bullet runtime data must match from update_ptr to speed_y+1"
+.if (char_anim_timer - chars_runtime_data) != (overlay_anim_timer - overlays_runtime_data)
+	.error "hero & char & overlay runtime data must match from update_ptr to speed_y+1"
 .endif
 
 .if (char_anim_ptr - chars_runtime_data) != (hero_anim_ptr - hero_runtime_data)
 	.error "hero & char runtime data must match from update_ptr to chars_runtime_data"
 .endif
-.if (char_anim_ptr - chars_runtime_data) != (bullet_anim_ptr - bullets_runtime_data)
-	.error "hero & char & bullet runtime data must match from update_ptr to speed_y+1"
+.if (char_anim_ptr - chars_runtime_data) != (overlay_anim_ptr - overlays_runtime_data)
+	.error "hero & char & overlay runtime data must match from update_ptr to speed_y+1"
 .endif
 
 .if (char_erase_scr_addr - chars_runtime_data) != (hero_erase_scr_addr - hero_runtime_data)
 	.error "hero & char runtime data must match from update_ptr to chars_runtime_data"
 .endif
-.if (char_erase_scr_addr - chars_runtime_data) != (bullet_erase_scr_addr - bullets_runtime_data)
-	.error "hero & char & bullet runtime data must match from update_ptr to speed_y+1"
+.if (char_erase_scr_addr - chars_runtime_data) != (overlay_erase_scr_addr - overlays_runtime_data)
+	.error "hero & char & overlay runtime data must match from update_ptr to speed_y+1"
 .endif
 
 .if (char_erase_scr_addr_old - chars_runtime_data) != (hero_erase_scr_addr_old - hero_runtime_data)
 	.error "hero & char runtime data must match from update_ptr to chars_runtime_data"
 .endif
-.if (char_erase_scr_addr_old - chars_runtime_data) != (bullet_erase_scr_addr_old - bullets_runtime_data)
-	.error "hero & char & bullet runtime data must match from update_ptr to speed_y+1"
+.if (char_erase_scr_addr_old - chars_runtime_data) != (overlay_erase_scr_addr_old - overlays_runtime_data)
+	.error "hero & char & overlay runtime data must match from update_ptr to speed_y+1"
 .endif
 
 .if (char_erase_wh - chars_runtime_data) != (hero_erase_wh - hero_runtime_data)
 	.error "hero & char runtime data must match from update_ptr to chars_runtime_data"
 .endif
-.if (char_erase_wh - chars_runtime_data) != (bullet_erase_wh - bullets_runtime_data)
-	.error "hero & char & bullet runtime data must match from update_ptr to speed_y+1"
+.if (char_erase_wh - chars_runtime_data) != (overlay_erase_wh - overlays_runtime_data)
+	.error "hero & char & overlay runtime data must match from update_ptr to speed_y+1"
 .endif
 
 .if (char_erase_wh_old - chars_runtime_data) != (hero_erase_wh_old - hero_runtime_data)
 	.error "hero & char runtime data must match from update_ptr to chars_runtime_data"
 .endif
-.if (char_erase_wh_old - chars_runtime_data) != (bullet_erase_wh_old - bullets_runtime_data)
-	.error "hero & char & bullet runtime data must match from update_ptr to speed_y+1"
+.if (char_erase_wh_old - chars_runtime_data) != (overlay_erase_wh_old - overlays_runtime_data)
+	.error "hero & char & overlay runtime data must match from update_ptr to speed_y+1"
 .endif
 
 .if (char_pos_x - chars_runtime_data) != (hero_pos_x - hero_runtime_data)
 	.error "hero & char runtime data must match from update_ptr to chars_runtime_data"
 .endif
-.if (char_pos_x - chars_runtime_data) != (bullet_pos_x - bullets_runtime_data)
-	.error "hero & char & bullet runtime data must match from update_ptr to speed_y+1"
+.if (char_pos_x - chars_runtime_data) != (overlay_pos_x - overlays_runtime_data)
+	.error "hero & char & overlay runtime data must match from update_ptr to speed_y+1"
 .endif
 
 .if (char_pos_y - chars_runtime_data) != (hero_pos_y - hero_runtime_data)
 	.error "hero & char runtime data must match from update_ptr to chars_runtime_data"
 .endif
-.if (char_pos_y - chars_runtime_data) != (bullet_pos_y - bullets_runtime_data)
-	.error "hero & char & bullet runtime data must match from update_ptr to speed_y+1"
+.if (char_pos_y - chars_runtime_data) != (overlay_pos_y - overlays_runtime_data)
+	.error "hero & char & overlay runtime data must match from update_ptr to speed_y+1"
 .endif
 
 .if (char_speed_x - chars_runtime_data) != (hero_speed_x - hero_runtime_data)
 	.error "hero & char runtime data must match from update_ptr to chars_runtime_data"
 .endif
-.if (char_speed_x - chars_runtime_data) != (bullet_speed_x - bullets_runtime_data)
-	.error "hero & char & bullet runtime data must match from update_ptr to speed_y+1"
+.if (char_speed_x - chars_runtime_data) != (overlay_speed_x - overlays_runtime_data)
+	.error "hero & char & overlay runtime data must match from update_ptr to speed_y+1"
 .endif
 
 .if (char_speed_y - chars_runtime_data) != (hero_speed_y - hero_runtime_data)
 	.error "hero & char runtime data must match from update_ptr to chars_runtime_data"
 .endif
-.if (char_speed_y - chars_runtime_data) != (bullet_speed_y - bullets_runtime_data)
-	.error "hero & char & bullet runtime data must match from update_ptr to speed_y+1"
+.if (char_speed_y - chars_runtime_data) != (overlay_speed_y - overlays_runtime_data)
+	.error "hero & char & overlay runtime data must match from update_ptr to speed_y+1"
 .endif
 
 .if (char_data_next_ptr - chars_runtime_data) != (hero_data_next_ptr - hero_runtime_data)

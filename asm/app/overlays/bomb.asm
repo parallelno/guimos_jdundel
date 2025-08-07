@@ -1,6 +1,6 @@
 @memusage_bomb
 ;=============================================================================
-; bullet AI:
+; overlay AI:
 ; init:
 ;	status = move_forward
 ;	status_timer = moveForwardTimer
@@ -10,14 +10,14 @@
 ;	if status_timer = 0
 ;		death
 ;	else:
-;		try to move a bullet
-;		if bullet collides with tiles:
+;		try to move a overlay
+;		if overlay collides with tiles:
 ;			death
 ;		else:
 ;			accept new pos
 ;			update_anim
-;			check bullet-hero collision,
-;			if bullet collides with hero:
+;			check overlay-hero collision,
+;			if overlay collides with hero:
 ;				impact hero
 ;				death
 
@@ -44,7 +44,7 @@ BOMB_COLLISION_HEIGHT	= 10
 ; in:
 ; bc - pos_xy
 ; rev1. 372 cc
-; rev2. 452 cc (twice smaller size, compatible with bullet_init rev4)
+; rev2. 452 cc (twice smaller size, compatible with overlay_init rev4)
 bomb_dmg_init:
 			; set a projectile speed towards the hero
 			; pos_diff =  hero_pos - burner_pos
@@ -66,18 +66,18 @@ bomb_dmg_init:
 
 			; pos_xy
 			push b
-			; BULLET_ANIM_PTR
+			; OVERLAY_ANIM_PTR
 			lxi h, bomb_dmg_anim
 			push h
-			; BULLET_STATUS | BULLET_STATUS_TIMER<<8
+			; OVERLAY_STATUS | OVERLAY_STATUS_TIMER<<8
 			lxi h, BOMB_STATUS_MOVE_TIME<<8 | BOMB_STATUS_MOVE_THROW
 			push h
-			; BULLET_DRAW_PTR
+			; OVERLAY_DRAW_PTR
 			lxi h, bomb_draw
 			push h
-			; BULLET_UPDATE_PTR
+			; OVERLAY_UPDATE_PTR
 			lxi b, bomb_update
-			jmp bullet_init
+			jmp overlay_init
 
 ; in:
 ; a = pos_diff (hero_pos - pos_x)
@@ -101,35 +101,35 @@ bomb_dmg_init:
 
 ; anim and a gameplay logic update
 ; in:
-; de - ptr to bullet_update_ptr
+; de - ptr to overlay_update_ptr
 bomb_update:
-			; advance to bullet_status_timer
-			HL_ADVANCE(bullet_update_ptr, bullet_status_timer, BY_HL_FROM_DE)
+			; advance to overlay_status_timer
+			HL_ADVANCE(overlay_update_ptr, overlay_status_timer, BY_HL_FROM_DE)
 			dcr m
 			jz @die
 @update_movement:
 			call actor_move
-			; hl - ptr to bullet_pos_x+1
-			; advance hl to bullet_anim_timer
-			L_ADVANCE(bullet_pos_x+1, bullet_anim_timer, BY_A)
+			; hl - ptr to overlay_pos_x+1
+			; advance hl to overlay_anim_timer
+			L_ADVANCE(overlay_pos_x+1, overlay_anim_timer, BY_A)
 			mvi a, BOMB_ANIM_SPEED_MOVE
-			BULLET_UPDATE_ANIM_CHECK_COLLISION_HERO(BOMB_COLLISION_WIDTH, BOMB_COLLISION_HEIGHT, BOMB_DAMAGE)
+			OVERLAY_UPDATE_ANIM_CHECK_COLLISION_HERO(BOMB_COLLISION_WIDTH, BOMB_COLLISION_HEIGHT, BOMB_DAMAGE)
 			; @die_after_damage:
-			; advance hl to bullet_update_ptr+1
-			L_ADVANCE(bullet_pos_y+1, bullet_update_ptr+1, BY_A)
+			; advance hl to overlay_update_ptr+1
+			L_ADVANCE(overlay_pos_y+1, overlay_update_ptr+1, BY_A)
 			ACTOR_DESTROY()
 			ret
 @die:
-			; hl points to bullet_status_timer
-			; advance hl to bullet_update_ptr+1
-			L_ADVANCE(bullet_status_timer, bullet_update_ptr+1, BY_A)
+			; hl points to overlay_status_timer
+			; advance hl to overlay_update_ptr+1
+			L_ADVANCE(overlay_status_timer, overlay_update_ptr+1, BY_A)
 			ACTOR_DESTROY()
 			ret
 
 ; draw a sprite into a backbuffer
 ; in:
 bomb_draw:
-; de - ptr to bullet_draw_ptr
+; de - ptr to overlay_draw_ptr
 			lhld bomb_get_scr_addr
 			lda bomb_ram_disk_s_cmd
 			jmp actor_draw

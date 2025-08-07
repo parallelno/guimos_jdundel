@@ -13,7 +13,7 @@
 .include "app/actor/actor_consts.asm"
 .include "app/hero/hero_consts.asm"
 .include "app/chars/char_consts.asm"
-.include "app/bullets/bullets_consts.asm"
+.include "app/overlays/overlays_consts.asm"
 
 .include "runtime_data.asm"
 .include "v6/sound/v6_gc_runtime_data.asm"
@@ -31,7 +31,7 @@
 .include "app/actor/actor_draw.asm"
 .include "app/hero/hero.asm"
 .include "app/chars/chars.asm"
-.include "app/bullets/bullets.asm"
+.include "app/overlays/overlays.asm"
 .include "app/levels/breakables.asm"
 .include "app/levels/levels.asm"
 .include "app/levels/room.asm"

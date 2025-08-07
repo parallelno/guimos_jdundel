@@ -115,7 +115,7 @@ sword_func_breakable:
 			CPI_ZERO(RES_EMPTY)
 			rz ; return if no sword
 
-			; if breakable_id == BREAKABLE_ID_CABBAGE, spawn a fart bullet
+			; if breakable_id == BREAKABLE_ID_CABBAGE, spawn a fart overlay
 			; e - breakable_id
 			mvi a, BREAKABLE_ID_CABBAGE
 			cmp e

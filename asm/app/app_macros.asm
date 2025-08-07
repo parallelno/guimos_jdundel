@@ -2,7 +2,7 @@
 ; it advances a reg by the diff equals to (addr_to - addr_from)
 ; if a diff is inside of [-2, 2],it uses: INX_H(N)/DCX_H(N). 8-16cc
 ; if a diff is outside of [-2, 2],it uses: mov a, NN; add reg; mov reg, a. 20cc
-; supports runtime data that's fit inside one $100 block: backs_runtime_data, bullets_runtime_data
+; supports runtime data that's fit inside one $100 block: backs_runtime_data, overlays_runtime_data
 ; use:
 ; reg, a
 .macro C_ADVANCE(addr_from, addr_to, reg_a = NULL)
@@ -35,8 +35,8 @@
 			.endif
 		.endif
 
-		.if (>addr_from != >backs_runtime_data && >addr_from != >bullets_runtime_data ) || (>addr_to != >backs_runtime_data && >addr_to != >bullets_runtime_data)
-			.error "C_ADVANCE(" addr_from ", " addr_to", "reg_a") with diff (" diff_addr ") is designed only for the runtime data fit into one $100 block (backs_runtime_data and bullets_runtime_data). For wider runtimedata use HL_ADVANCE instead."
+		.if (>addr_from != >backs_runtime_data && >addr_from != >overlays_runtime_data ) || (>addr_to != >backs_runtime_data && >addr_to != >overlays_runtime_data)
+			.error "C_ADVANCE(" addr_from ", " addr_to", "reg_a") with diff (" diff_addr ") is designed only for the runtime data fit into one $100 block (backs_runtime_data and overlays_runtime_data). For wider runtimedata use HL_ADVANCE instead."
 		.endif
 		.if reg_a != NULL && reg_a != BY_A
 			.error "C_ADVANCE(" addr_from ", " addr_to") with diff (" diff_addr ") accepts only NULL and BY_A for the third argument."
@@ -72,8 +72,8 @@
 			.endif
 		.endif
 
-		.if (>addr_from != >backs_runtime_data && >addr_from != >bullets_runtime_data ) || (>addr_to != >backs_runtime_data && >addr_to != >bullets_runtime_data)
-			.error "E_ADVANCE(" addr_from ", " addr_to", "reg_a") with diff (" diff_addr ") is designed only for the runtime data fit into one $100 block (backs_runtime_data and bullets_runtime_data). For wider runtimedata use HL_ADVANCE instead."
+		.if (>addr_from != >backs_runtime_data && >addr_from != >overlays_runtime_data ) || (>addr_to != >backs_runtime_data && >addr_to != >overlays_runtime_data)
+			.error "E_ADVANCE(" addr_from ", " addr_to", "reg_a") with diff (" diff_addr ") is designed only for the runtime data fit into one $100 block (backs_runtime_data and overlays_runtime_data). For wider runtimedata use HL_ADVANCE instead."
 		.endif
 		.if reg_a != NULL && reg_a != BY_A
 			.error "E_ADVANCE(" addr_from ", " addr_to") with diff (" diff_addr ") accepts only NULL and BY_A for the third argument."
@@ -109,8 +109,8 @@
 			.endif
 		.endif
 
-		.if (>addr_from != >backs_runtime_data && >addr_from != >bullets_runtime_data ) || (>addr_to != >backs_runtime_data && >addr_to != >bullets_runtime_data)
-			.error "L_ADVANCE(" addr_from ", " addr_to", "reg_a") with diff (" diff_addr ") is designed only for the runtime data fit into one $100 block (backs_runtime_data and bullets_runtime_data). For wider runtimedata use HL_ADVANCE instead."
+		.if (>addr_from != >backs_runtime_data && >addr_from != >overlays_runtime_data ) || (>addr_to != >backs_runtime_data && >addr_to != >overlays_runtime_data)
+			.error "L_ADVANCE(" addr_from ", " addr_to", "reg_a") with diff (" diff_addr ") is designed only for the runtime data fit into one $100 block (backs_runtime_data and overlays_runtime_data). For wider runtimedata use HL_ADVANCE instead."
 		.endif
 		.if reg_a != NULL && reg_a != BY_A
 			.error "L_ADVANCE(" addr_from ", " addr_to") with diff (" diff_addr ") accepts only NULL and BY_A for the third argument."

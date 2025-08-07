@@ -23,9 +23,8 @@ SNOWFLAKE_SPEED			= $300
 
 /*
 TODO:
-1. combine bullet_init/vfx_init/vfx4_init/char_init
-2. rename bullet to something meaningful that can consists of projectiles & vfx
-4. update all relative inits to use new bullet_init/vfx_init/vfx4_init/char_init
+1. combine overlay_init/vfx_init/vfx4_init/char_init
+4. update all relative inits to use new overlay_init/vfx_init/vfx4_init/char_init
 */
 snowflake_init:
 			; check hero's vertical direction
@@ -53,18 +52,18 @@ snowflake_init:
 			lxi h, HERO_PROJECTILE_OFFSET_X<<8 | HERO_PROJECTILE_OFFSET_Y
 			dad b
 			push h
-			; BULLET_ANIM_PTR
+			; OVERLAY_ANIM_PTR
 			lxi h, snowflake_run_anim
 			push h
-			; BULLET_STATUS | BULLET_STATUS_TIMER<<8
+			; OVERLAY_STATUS | OVERLAY_STATUS_TIMER<<8
 			lxi h, SNOWFLAKE_STATUS_INVIS_TIME<<8 | ACTOR_STATUS_BIT_INVIS
 			push h
-			; BULLET_DRAW_PTR
+			; OVERLAY_DRAW_PTR
 			lxi h, snowflake_draw
 			push h
-			; BULLET_UPDATE_PTR
+			; OVERLAY_UPDATE_PTR
 			lxi b, snowflake_update
-			jmp bullet_init
+			jmp overlay_init
 
 ; defines the horizontal/vertical speed
 ; in:
@@ -84,16 +83,16 @@ snowflake_init:
 
 ; anim and a gameplay logic update
 ; in:
-; de - ptr to bullet_update_ptr
+; de - ptr to overlay_update_ptr
 snowflake_update:
-			; advance to bullet_status
-			HL_ADVANCE(bullet_update_ptr, bullet_status, BY_HL_FROM_DE)
+			; advance to overlay_status
+			HL_ADVANCE(overlay_update_ptr, overlay_status, BY_HL_FROM_DE)
 			mov a, m
 			ani ACTOR_STATUS_BIT_INVIS
 			jnz @delay_update
 
-			; hl - ptr to bullet_status
-			; advance hl and decr bullet_status_timer
+			; hl - ptr to overlay_status
+			; advance hl and decr overlay_status_timer
 			inx h
 			shld @die_after_char_collides+1
 			; check if it's time to die
@@ -102,17 +101,17 @@ snowflake_update:
 @update_movement:
 			ACTOR_UPDATE_MOVEMENT_CHECK_TILE_COLLISION(SNOWFLAKE_COLLISION_WIDTH, SNOWFLAKE_COLLISION_HEIGHT, @die)
 
-			; hl points to bullet_pos_y+1
-			; advance hl to bullet_anim_timer
-			L_ADVANCE(bullet_pos_y+1, bullet_anim_timer, BY_A)
+			; hl points to overlay_pos_y+1
+			; advance hl to overlay_anim_timer
+			L_ADVANCE(overlay_pos_y+1, overlay_anim_timer, BY_A)
 			mvi a, SNOWFLAKE_ANIM_SPEED_ATTACK
 			call actor_anim_update
-			; hl points to bullet_anim_ptr
+			; hl points to overlay_anim_ptr
 @check_char_collision:
 			; check sprite collision
-			; hl - ptr to bullet_anim_ptr
-			; advance hl to bullet_pos_x+1
-			L_ADVANCE(bullet_anim_ptr, bullet_pos_x+1, BY_A)
+			; hl - ptr to overlay_anim_ptr
+			; advance hl to overlay_pos_x+1
+			L_ADVANCE(overlay_anim_ptr, overlay_pos_x+1, BY_A)
 			; add a collision offset
 			mov d, m
 			INX_H(2)
@@ -122,7 +121,7 @@ snowflake_update:
 
 			; store pos_xy
 			push h
-			; check if a bullet collides with a enemy
+			; check if a overlay collides with a enemy
 			mvi a, SNOWFLAKE_COLLISION_WIDTH-1
 			lxi b, CHAR_TYPE_ALL<<8 | SNOWFLAKE_COLLISION_HEIGHT-1
 			call chars_get_first_collided
@@ -147,30 +146,30 @@ snowflake_update:
 			mvi c, HERO_WEAPON_ID_SNOWFLAKE
 			pchl
 @die_after_char_collides:
-			; hl - ptr to bullet_status_timer
+			; hl - ptr to overlay_status_timer
 			lxi h, TEMP_ADDR
 @die_over_time:
-			; hl - ptr to bullet_status_timer
-			L_ADVANCE(bullet_status_timer, bullet_update_ptr+1, BY_A)
+			; hl - ptr to overlay_status_timer
+			L_ADVANCE(overlay_status_timer, overlay_update_ptr+1, BY_A)
 			ACTOR_DESTROY()
 			ret
 @die:
-			; hl - ptr to bullet_pos_x
-			L_ADVANCE(bullet_pos_x, bullet_update_ptr+1, BY_A)
+			; hl - ptr to overlay_pos_x
+			L_ADVANCE(overlay_pos_x, overlay_update_ptr+1, BY_A)
 			ACTOR_DESTROY()
 			ret
 
 @delay_update:
-			; hl - ptr to bullet_status
-			; advance and decr bullet_status_timer
+			; hl - ptr to overlay_status
+			; advance and decr overlay_status_timer
 			inx h
 			dcr m
 			rnz
 
-			; hl - ptr to bullet_status_duration
+			; hl - ptr to overlay_status_duration
 			; set the attack
 			mvi m, SNOWFLAKE_STATUS_ATTACK_TIME
-			; advance and set bullet_status
+			; advance and set overlay_status
 			dcx h
 			mvi m, SNOWFLAKE_STATUS_ATTACK
 			ret
@@ -178,7 +177,7 @@ snowflake_update:
 
 ; draw a sprite into a backbuffer
 ; in:
-; de - ptr to bullet_draw_ptr
+; de - ptr to overlay_draw_ptr
 snowflake_draw:
 			lhld snowflake_get_scr_addr
 			lda snowflake_ram_disk_s_cmd

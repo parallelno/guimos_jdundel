@@ -5,7 +5,7 @@
 ; Note:
 ; - These values define how the actor system handles each runtime data entry.
 ; - The states is stored in the second byte of the hero_update_ptr,
-;     char_update_ptr, bullet_update_ptr, and back_anim_ptr depending on
+;     char_update_ptr, overlay_update_ptr, and back_anim_ptr depending on
 ;     the actor type.
 ; - If states < $FC, the actor is considered **alive**:
 ;     • Its update function will be called.
@@ -27,7 +27,7 @@ ACTOR_RUNTIME_DATA_END	  = $ff ; End of the entire actor runtime data pool.
 ; Statuses describe what set of animations and behavior is active.
 ; Note:
 ; - Statuses are stored in the `*_status` field (e.g., hero_status,
-;   char_status, bullet_status).
+;   char_status, overlay_status).
 ; - Status defines animation & behavior.
 ; - Status can have multiple enabled special bits (Flags).
 
@@ -60,7 +60,7 @@ ACTOR_STATUS_FREEZE_TIME = BUFF_FREEZE_TIME
 ;=============================================================================
 ; Actor Runtime Data Structure
 ;=============================================================================
-; The hero, chars, and bullets are actors and must replicate actor structure.
+; The hero, chars, and overlays are actors and must replicate actor structure.
 ; The can include extra fields that are specific to them.
 actor_update_ptr:			= 0  ;.word function pointer for updating hero logic
 actor_draw_ptr:				= 2  ;.word function pointer for drawing the hero

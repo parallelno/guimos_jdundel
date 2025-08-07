@@ -129,7 +129,7 @@ ITEM_ID_UI_MAX	= 8	; Items >= this ID don't appear in UI panel
 ; res_id 			= 1 ; Health Crystal: increases health immedietly when picked up
 RES_ID_SWORD		= 2 ; Main weapon. Enables melee attacking when equipped.
 RES_ID_SNOWFLAKE	= 3 ; Snowflakes: increases mana immedietly when picked up
-; res_id 			= 4 ; TNT (can be thrown as a bullet)
+; res_id 			= 4 ; TNT (can be instanced as a overlay)
 ; res_id 			= 5 ; Restores multiple health points
 RES_ID_PIE 			= 6 ; Popsicle Pie. Grants multiple snowflakes when used with RES_ID_SPOON)
 RES_ID_CLOTHES 		= 7 ; Quest resource. Used in dialog and specific puzzles.

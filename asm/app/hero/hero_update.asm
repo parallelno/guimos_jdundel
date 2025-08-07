@@ -354,7 +354,7 @@ hero_idle_update:
 			ret
 
 
-; called by a char's bullet, a char, etc. to affect a hero
+; called by a char's overlay, a char, etc. to affect a hero
 ; handling the damage
 ; in:
 ; c - damage (positive number)

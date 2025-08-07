@@ -1,4 +1,4 @@
-; renders an actor (hero, char, bullet, vfx, etc) on the screen or back buffer
+; renders an actor (hero, char, overlay, vfx, etc) on the screen or back buffer
 ; in:
 ; de - ptr to actor_draw_ptr
 ; hl - sprite_get_scr_addr1, sprite_get_scr_addr4, or sprite_get_scr_addr8

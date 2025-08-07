@@ -28,12 +28,12 @@ screen_simple_init:
 			; setup backs runtime data
 			call backs_init
 
-			; erase bullets buffs
-			lxi h, bullets_runtime_data
-			lxi b, bullets_runtime_data_end
+			; erase overlays buffs
+			lxi h, overlays_runtime_data
+			lxi b, overlays_runtime_data_end
 			call mem_erase
-			; setup bullets runtime data
-			call bullets_init
+			; setup overlays runtime data
+			call overlays_init
 
 			; fill up the tile_data_buff with tiledata = 0
 			; (walkable tile, no back restore , no decal)
@@ -70,7 +70,7 @@ screen_simple_update:
 @spec_update_func:
 			call TEMP_ADDR
 			call backs_update
-			call bullets_update
+			call overlays_update
 
 			; to check repeated key-pressing
 			lda action_code
@@ -86,9 +86,9 @@ screen_simple_draw:
 
 			; draw funcs
 			call backs_draw
-			call bullets_draw
-			call bullets_copy_to_scr
-			call bullets_erase
+			call overlays_draw
+			call overlays_copy_to_scr
+			call overlays_erase
 			ret
 
 ; draw a space button as a back object

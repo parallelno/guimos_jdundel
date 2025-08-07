@@ -5,11 +5,11 @@
 ; mark all actors killed to let
 ; them wipe out from the screen
 ; in:
-; hl - char_update_ptr+1 or bullet_update_ptr+1
+; hl - char_update_ptr+1 or overlay_update_ptr+1
 ; bc - runtime_data_len
 ; ex.
 ; KILL_ALL_CHARS()
-; KILL_ALL_BULLETS()
+; KILL_ALL_OVERLAYS()
 actor_kill_all:
 @loop:
 			mov a, m
@@ -28,9 +28,9 @@ actor_kill_all:
 			lxi b, CHAR_RUNTIME_DATA_LEN
 			call actor_kill_all
 .endmacro
-.macro KILL_ALL_BULLETS()
-			lxi h, bullet_update_ptr+1
-			lxi b, BULLET_RUNTIME_DATA_LEN
+.macro KILL_ALL_OVERLAYS()
+			lxi h, overlay_update_ptr+1
+			lxi b, OVERLAY_RUNTIME_DATA_LEN
 			call actor_kill_all
 .endmacro
 
@@ -70,7 +70,7 @@ actor_anim_update:
 			mov m, e
 			ret
 
-; look up an empty spot in the actor (char, bullet, back, fx) runtime data
+; look up an empty spot in the actor (char, overlay, back, fx) runtime data
 ; in:
 ; hl - ptr to actor_runtime_data+1, ex char_update_ptr+1
 ; e - RUNTIME_DATA_LEN
@@ -117,8 +117,8 @@ actor_get_empty_data_ptr:
 
 ; calls a provided func for each actor with a status ACTOR_RUNTIME_DATA_ALIVE
 ; a ptr of a provided func has to be stored in the runtime data
-; an invoked func will get DE pointing to a func ptr in the runtime data (char_update_ptr or bullet_draw_ptr, etc)
-; ex. ACTORS_INVOKE_IF_ALIVE(bullet_update_ptr, bullet_update_ptr, BULLET_RUNTIME_DATA_LEN, true)
+; an invoked func will get DE pointing to a func ptr in the runtime data (char_update_ptr or overlay_draw_ptr, etc)
+; ex. ACTORS_INVOKE_IF_ALIVE(overlay_update_ptr, overlay_update_ptr, OVERLAY_RUNTIME_DATA_LEN, true)
 ; in:
 ; a - an offset from actor_update_ptr to func_ptr
 ; de - actor_update_ptr + 1
@@ -216,19 +216,19 @@ actors_call_if_alive:
 			jmp @loop
 
 ; erase a sprite or restore the background behind a sprite
-; requires (bullet_status - bullet_erase_scr_addr) == (char_status - char_erase_scr_addr)
-; requires (bullet_erase_scr_addr+1 - bullet_erase_wh) == (char_erase_scr_addr+1 - char_erase_wh)
+; requires (overlay_status - overlay_erase_scr_addr) == (char_status - char_erase_scr_addr)
+; requires (overlay_erase_scr_addr+1 - overlay_erase_wh) == (char_erase_scr_addr+1 - char_erase_wh)
 ; in:
 ; hl - ptr to actor_update_ptr+1
 ; de - LXI_D_TO_DIFF(actor_update_ptr+1, actor_status)
 ; a - ACTOR_RUNTIME_DATA_* status
 actor_erase:
 			; validation
-		.if ~((bullet_status - bullet_erase_scr_addr) == (char_status - char_erase_scr_addr))
-			.error "actor_erase func fails because !((bullet_status - bullet_erase_scr_addr) == (char_status - char_erase_scr_addr))"
+		.if ~((overlay_status - overlay_erase_scr_addr) == (char_status - char_erase_scr_addr))
+			.error "actor_erase func fails because !((overlay_status - overlay_erase_scr_addr) == (char_status - char_erase_scr_addr))"
 		.endif
-		.if ~((bullet_erase_scr_addr+1 - bullet_erase_wh) == (char_erase_scr_addr+1 - char_erase_wh))
-			.error "actor_erase func fails because !((bullet_erase_scr_addr+1 - bullet_erase_wh) == (char_erase_scr_addr+1 - char_erase_wh))"
+		.if ~((overlay_erase_scr_addr+1 - overlay_erase_wh) == (char_erase_scr_addr+1 - char_erase_wh))
+			.error "actor_erase func fails because !((overlay_erase_scr_addr+1 - overlay_erase_wh) == (char_erase_scr_addr+1 - char_erase_wh))"
 		.endif
 
 			; if an actor is destroyed mark its data as empty
@@ -246,12 +246,12 @@ actor_erase:
 			rnz
 
 			; advance to actor_erase_scr_addr
-			HL_ADVANCE(bullet_status, bullet_erase_scr_addr, BY_DE)
+			HL_ADVANCE(overlay_status, overlay_erase_scr_addr, BY_DE)
 			mov e, m
 			inx h
 			mov d, m
 
-			HL_ADVANCE(bullet_erase_scr_addr+1, bullet_erase_wh)
+			HL_ADVANCE(overlay_erase_scr_addr+1, overlay_erase_wh)
 			mov a, m
 			inx h
 			mov h, m
@@ -276,13 +276,13 @@ actor_erase:
 
 
 ; copy sprites from a backbuffer to a scr
-; requires (bullet_status - bullet_erase_scr_addr) == (char_status - char_erase_scr_addr)
+; requires (overlay_status - overlay_erase_scr_addr) == (char_status - char_erase_scr_addr)
 ; in:
 ; hl - ptr to actor_status
 actor_copy_to_scr:
 			; validation
-		.if (bullet_status - bullet_erase_scr_addr) != (char_status - char_erase_scr_addr)
-			.error "actor_erase func fails because (bullet_status - bullet_erase_scr_addr) != (char_status - char_erase_scr_addr)"
+		.if (overlay_status - overlay_erase_scr_addr) != (char_status - char_erase_scr_addr)
+			.error "actor_erase func fails because (overlay_status - overlay_erase_scr_addr) != (char_status - char_erase_scr_addr)"
 		.endif
 
 			; if it is invisible, return
