@@ -18,9 +18,6 @@ KNIGHT_QUEST_MAX_POS_Y				= 255 - 16 - 14
 ; a = TILEDATA_RESTORE_TILE
 knight_heavy_init:
 			CHAR_INIT( knight_heavy_update, knight_draw, empty_func, KNIGHT_HEALTH, ACTOR_STATUS_KNIGHT_DETECT_HERO_INIT, knight_idle_anim, False)
-@return:
-			mvi a, TILEDATA_RESTORE_TILE
-			ret
 
 ;========================================================
 ; anim and a gameplay logic update

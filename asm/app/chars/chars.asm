@@ -37,161 +37,6 @@ chars_init:
 			shld hero_data_next_ptr
 			ret
 
-; char initialization
-; in:
-; c - tile_idx in the room_tiledata array.
-; CY flag - true to check spawn rate
-; a - char_id * 4
-; out:
-; a - TILEDATA_RESTORE_TILE
-; rev1: 1304 cc (spawn_rate_check = True + macro)
-char_init2:
-			; on a caller side
-			; push...
-			SET_CY(1) ; check spawn rate
-			;=========================================================
-			/*
-			// RRC_(2) ; to get char_id
-			// sta @char_id + 1
-
-			// shld @char_data_ptr + 1
-
-			// mov a, c
-			// sta @tile_idx + 1
-
-			// A_TO_ZERO(0)
-			// cmp b
-			*/
-			jnc @no_spawn_rate_check
-			ROOM_SPAWN_RATE_CHECK(rooms_spawn_rate, @restore_sp)
-@no_spawn_rate_check:
-
-			lxi h, char_update_ptr + 1
-			mvi e, CHAR_RUNTIME_DATA_LEN
-			call actor_get_empty_data_ptr
-			; hl - ptr to char_update_ptr + 1
-			jnz @restore_sp ; return when it's too many objects
-
-
-			CHAR_DATA_INSERT_AT_HEAD()
-/*
-			; hl - points to char_data_next_ptr
-
-			xchg
-
-
-			lxi h, 0
-			dad	sp
-			shld @restore_sp + 1
-@char_data_ptr:
-			lxi sp, TEMP_ADDR
-
-			xchg
-*/
-			; hl - ptr to char_data_next_ptr
-
-			HL_ADVANCE(char_data_next_ptr, char_update_ptr, BY_BC)
-			pop b ; using bc to read from the stack is requirenment
-			; bc - ptr to char_update_ptr
-			mov m, c
-			HL_ADVANCE(char_update_ptr, char_update_ptr + 1)
-			mov m, b
-			HL_ADVANCE(char_update_ptr + 1, char_draw_ptr)
-			pop b
-			; bc - ptr to char_draw_ptr
-			mov m, c
-			HL_ADVANCE(char_draw_ptr, char_draw_ptr + 1)
-			mov m, b
-
-			HL_ADVANCE(char_draw_ptr + 1, char_status)
-			pop b
-			; b - CHAR_STATUS
-			mov m, b
-			mov a, c
-			; a - CHAR_HEALTH
-			sta @health + 1
-
-			HL_ADVANCE(char_status, char_anim_ptr)
-
-			pop b
-			; bc - char_anim_ptr
-			mov m, c
-			HL_ADVANCE(char_anim_ptr, char_anim_ptr + 1)
-			mov m, b
-
-@tile_idx:
-			mvi e, TEMP_BYTE ; tile_idx
-			; e - tile_idx
-			; pos_x = tile_idx % ROOM_WIDTH * TILE_WIDTH
-			mvi a, %00001111
-			ana e
-			RLC_(4)
-			sta @pos_x + 1
-			; scr_x = pos_x/8 + $a0
-			RRC_(3)
-			adi SPRITE_X_SCR_ADDR
-			mov d, a
-			; pos_y = (tile_idx % ROOM_WIDTH) * TILE_WIDTH
-			mvi a, %11110000
-			ana e
-			mvi e, 0
-			; d = scr_x
-			; a = pos_y
-			; e = 0 and SPRITE_W_PACKED_MIN
-			; hl - ptr to char_anim_ptr + 1
-
-			HL_ADVANCE(char_anim_ptr + 1, char_erase_scr_addr)
-			mov m, a
-			HL_ADVANCE(char_erase_scr_addr, char_erase_scr_addr + 1)
-			mov m, d
-			HL_ADVANCE(char_erase_scr_addr + 1, char_erase_scr_addr_old)
-			mov m, a
-			HL_ADVANCE(char_erase_scr_addr_old, char_erase_scr_addr_old + 1)
-			mov m, d
-			HL_ADVANCE(char_erase_scr_addr_old + 1, char_erase_wh)
-			mvi m, SPRITE_H_MIN
-			HL_ADVANCE(char_erase_wh, char_erase_wh + 1)
-			mov m, e
-			HL_ADVANCE(char_erase_wh + 1, char_erase_wh_old)
-			mvi m, SPRITE_H_MIN
-			HL_ADVANCE(char_erase_wh_old, char_erase_wh_old + 1)
-			mov m, e
-			HL_ADVANCE(char_erase_wh_old + 1, char_pos_x)
-			mov m, e
-			HL_ADVANCE(char_pos_x, char_pos_x + 1)
-@pos_x:
-			mvi m, TEMP_BYTE ; pos_x
-			HL_ADVANCE(char_pos_x + 1, char_pos_y)
-			mov m, e
-			HL_ADVANCE(char_pos_y, char_pos_y + 1)
-			mov m, a
-
-			HL_ADVANCE(char_pos_y + 1, char_impacted_ptr, BY_DE)
-			pop b
-			mov m, c
-			HL_ADVANCE(char_impacted_ptr, char_impacted_ptr + 1)
-			mov m, b
-
-			HL_ADVANCE(char_impacted_ptr + 1, char_id)
-@char_id:
-			mvi m, TEMP_BYTE
-
-
-			HL_ADVANCE(char_id, char_type)
-			pop b
-			; c - CHAR_TYPE
-			mov m, c
-
-			HL_ADVANCE(char_type, char_health)
-@health:
-			mvi m, TEMP_BYTE
-@exit:
-			; return TILEDATA_RESTORE_TILE to make the tile where a char spawned walkable and restorable
-			mvi a, TILEDATA_RESTORE_TILE
-			ret
-@restore_sp:
-			; POP_H(...)
-			jmp @exit
 
 ; char initialization
 ; in:
@@ -201,176 +46,184 @@ char_init2:
 ; a - TILEDATA_RESTORE_TILE
 ;ex. CHAR_INIT(knight_update, knight_draw, char_impacted, KNIGHT_HEALTH, ACTOR_STATUS_KNIGHT_DETECT_HERO_INIT, knight_idle_anim)
 .macro CHAR_INIT(CHAR_UPDATE_PTR, CHAR_DRAW_PTR, CHAR_IMPACT_PTR, CHAR_HEALTH, CHAR_STATUS, CHAR_ANIM_PTR, spawn_rate_check = True, _char_type = CHAR_TYPE_ENEMY, jmp_ = True)
+			lxi h, @char_init_data
 		.if spawn_rate_check
 			mvi b, 1
 		.endif
-		.if spawn_rate_check == False
+		.if spawn_rate_check == false
 			mvi b, 0
 		.endif
 
-			lxi h, @char_init_data
 		.if jmp_
 			jmp char_init
 		.endif
-		.if jmp_ == False
+		.if jmp_ == false
 			call char_init
 		.endif
 
 			.word TEMP_WORD  ; safety word because an interruption can call
 @char_init_data:
-			.word CHAR_UPDATE_PTR, CHAR_DRAW_PTR, CHAR_STATUS<<8 | CHAR_HEALTH, CHAR_ANIM_PTR, CHAR_IMPACT_PTR, _char_type
+			.word CHAR_IMPACT_PTR, _char_type, CHAR_STATUS<<8 | CHAR_HEALTH
+			.word CHAR_UPDATE_PTR, CHAR_DRAW_PTR, CHAR_ANIM_PTR
 .endmacro
 
 ; char initialization
 ; in:
-; hl - points to @char_init_data: .word CHAR_UPDATE_PTR, CHAR_DRAW_PTR, CHAR_STATUS<<8 | CHAR_HEALTH, CHAR_ANIM_PTR, CHAR_IMPACT_PTR
 ; c - tile_idx in the room_tiledata array.
+; a - char_id * 4
 ; b - spawn_rate_check
 ;		1 - yes
 ;		0 - no
-; a - char_id * 4
 ; out:
-; a - TILEDATA_RESTORE_TILE
-; rev1: 1284 cc (spawn_rate_check = True)
+; a - TILEDATA_RESTORE_TILE to make the tile (where a char spawned) walkable and restorable
+; rev1: 1416 cc (spawn_rate_check = True + macro)
+; rev2: 1348 cc (spawn_rate_check = True + macro, ROOM_SPAWN_RATE_CHECK optimized )
 char_init:
 			RRC_(2) ; to get char_id
 			sta @char_id + 1
 
 			shld @char_data_ptr + 1
 
-			mov a, c
-			sta @tile_idx + 1
-
-			A_TO_ZERO(0)
-			cmp b
-			jz @no_spawn_rate_check
-
-			ROOM_SPAWN_RATE_CHECK(rooms_spawn_rate, @exit)
-@no_spawn_rate_check:
-			lxi h, char_update_ptr + 1
-			mvi e, CHAR_RUNTIME_DATA_LEN
-			call actor_get_empty_data_ptr
-			; hl - ptr to char_update_ptr + 1
-			jnz @exit ; return if objects are too many
-
-
-			CHAR_DATA_INSERT_AT_HEAD()
-			; hl - points to char_data_next_ptr
-			xchg
-
+			; store tile_idx
+			push b
 
 			lxi h, 0
 			dad	sp
 			shld @restore_sp + 1
+
+			dcr b
+			jnz @no_spawn_rate_check
+			ROOM_SPAWN_RATE_CHECK(rooms_spawn_rate, @exit)
+@no_spawn_rate_check:
+
+			lxi h, char_update_ptr + 1
+			mvi e, CHAR_RUNTIME_DATA_LEN
+			call actor_get_empty_data_ptr
+			; hl - ptr to char_update_ptr + 1
+			jnz @exit ; return when it's too many objects
+
+
+			CHAR_DATA_INSERT_AT_HEAD()
+			; hl - points to char_data_next_ptr
+
 @char_data_ptr:
 			lxi sp, TEMP_ADDR
 
-			xchg
-			; hl - ptr to char_data_next_ptr
-
-			HL_ADVANCE(char_data_next_ptr, char_update_ptr, BY_BC)
-			pop b ; using bc to read from the stack is requirenment
-			; bc - ptr to char_update_ptr
-			mov m, c
-			HL_ADVANCE(char_update_ptr, char_update_ptr + 1)
-			mov m, b
-			HL_ADVANCE(char_update_ptr + 1, char_draw_ptr)
 			pop b
-			; bc - ptr to char_draw_ptr
-			mov m, c
-			HL_ADVANCE(char_draw_ptr, char_draw_ptr + 1)
-			mov m, b
-
-			HL_ADVANCE(char_draw_ptr + 1, char_status)
-			pop b
-			; b - CHAR_STATUS
-			mov m, b
-			mov a, c
-			; a - CHAR_HEALTH
-			sta @health + 1
-
-			HL_ADVANCE(char_status, char_anim_ptr)
-
-			pop b
-			; bc - char_anim_ptr
-			mov m, c
-			HL_ADVANCE(char_anim_ptr, char_anim_ptr + 1)
-			mov m, b
-
-@tile_idx:
-			mvi e, TEMP_BYTE ; tile_idx
-			; e - tile_idx
-			; pos_x = tile_idx % ROOM_WIDTH * TILE_WIDTH
-			mvi a, %00001111
-			ana e
-			RLC_(4)
-			sta @pos_x + 1
-			; scr_x = pos_x/8 + $a0
-			RRC_(3)
-			adi SPRITE_X_SCR_ADDR
-			mov d, a
-			; pos_y = (tile_idx % ROOM_WIDTH) * TILE_WIDTH
-			mvi a, %11110000
-			ana e
-			mvi e, 0
-			; d = scr_x
-			; a = pos_y
-			; e = 0 and SPRITE_W_PACKED_MIN
-			; hl - ptr to char_anim_ptr + 1
-
-			HL_ADVANCE(char_anim_ptr + 1, char_erase_scr_addr)
-			mov m, a
-			HL_ADVANCE(char_erase_scr_addr, char_erase_scr_addr + 1)
-			mov m, d
-			HL_ADVANCE(char_erase_scr_addr + 1, char_erase_scr_addr_old)
-			mov m, a
-			HL_ADVANCE(char_erase_scr_addr_old, char_erase_scr_addr_old + 1)
-			mov m, d
-			HL_ADVANCE(char_erase_scr_addr_old + 1, char_erase_wh)
-			mvi m, SPRITE_H_MIN
-			HL_ADVANCE(char_erase_wh, char_erase_wh + 1)
-			mov m, e
-			HL_ADVANCE(char_erase_wh + 1, char_erase_wh_old)
-			mvi m, SPRITE_H_MIN
-			HL_ADVANCE(char_erase_wh_old, char_erase_wh_old + 1)
-			mov m, e
-			HL_ADVANCE(char_erase_wh_old + 1, char_pos_x)
-			mov m, e
-			HL_ADVANCE(char_pos_x, char_pos_x + 1)
-@pos_x:
-			mvi m, TEMP_BYTE ; pos_x
-			HL_ADVANCE(char_pos_x + 1, char_pos_y)
-			mov m, e
-			HL_ADVANCE(char_pos_y, char_pos_y + 1)
-			mov m, a
-
-			HL_ADVANCE(char_pos_y + 1, char_impacted_ptr, BY_DE)
-			pop b
+			; BC - CHAR_IMPACTED_PTR
+			HL_ADVANCE(char_data_next_ptr, char_impacted_ptr)
 			mov m, c
 			HL_ADVANCE(char_impacted_ptr, char_impacted_ptr + 1)
 			mov m, b
 
 			HL_ADVANCE(char_impacted_ptr + 1, char_id)
-@char_id:
-			mvi m, TEMP_BYTE
+@char_id:	mvi m, TEMP_BYTE
 
-
-			HL_ADVANCE(char_id, char_type)
 			pop b
-			; c - CHAR_TYPE
-			mov m, c
+			; B - CHAR_TYPE
+			HL_ADVANCE(char_id, char_type)
+			mov m, b
 
+			pop b
+			; C - CHAR_HEALTH
 			HL_ADVANCE(char_type, char_health)
-@health:
-			mvi m, TEMP_BYTE
+			mov m, c
+			mov a, b
+			; A - CHAR_STATUS
+
+			pop b
+			; BC - CHAR_UPDATE_PTR
+			HL_ADVANCE(char_health, char_update_ptr, BY_DE)
+			mov m, c
+			HL_ADVANCE(char_update_ptr, char_update_ptr + 1)
+			mov m, b
+
+			pop b
+			; BC - CHAR_DRAW_PTR
+			HL_ADVANCE(char_update_ptr + 1, char_draw_ptr)
+			mov m, c
+			HL_ADVANCE(char_draw_ptr, char_draw_ptr + 1)
+			mov m, b
+
+			; A - CHAR_STATUS
+			HL_ADVANCE(char_draw_ptr + 1, char_status)
+			mov m, a
+
+			pop b
+			; BC - CHAR_ANIM_PTR
+			HL_ADVANCE(char_status, char_anim_ptr)
+			mov m, c
+			HL_ADVANCE(char_anim_ptr, char_anim_ptr + 1)
+			mov m, b
 
 @restore_sp:
 			lxi sp, TEMP_ADDR
 			RAM_DISK_OFF()
-@exit:
-			; return TILEDATA_RESTORE_TILE to make the tile where a char spawned walkable and restorable
+
+			; restore tile_idx
+			pop d
+			; e - tile_idx
+			; pos_x = tile_idx % ROOM_WIDTH * TILE_WIDTH
+			mvi a, %00001111
+			ana e
+			RLC_(4)
+			mov c, a
+			; scr_x = pos_x/8 + $a0
+			RRC_(3)
+			adi SPRITE_X_SCR_ADDR
+			mov b, a
+			; pos_y = (tile_idx % ROOM_WIDTH) * TILE_WIDTH
+			mvi a, %11110000
+			ana e
+			lxi d, SPRITE_H_MIN
+			; b = scr_x
+			; c = pos_x
+			; a = pos_y
+			; d = 0 or SPRITE_W_PACKED_MIN
+			; e = SPRITE_H_MIN
+			; hl - ptr to char_anim_ptr + 1
+
+			; CHAR_ERASE_SCCR_ADDR
+			HL_ADVANCE(char_anim_ptr + 1, char_erase_scr_addr)
+			mov m, a
+			HL_ADVANCE(char_erase_scr_addr, char_erase_scr_addr + 1)
+			mov m, b
+
+			; CHAR_ERASE_SCCR_ADDR_OLD
+			HL_ADVANCE(char_erase_scr_addr + 1, char_erase_scr_addr_old)
+			mov m, a
+			HL_ADVANCE(char_erase_scr_addr_old, char_erase_scr_addr_old + 1)
+			mov m, b
+
+			; CHAR_ERASE_WH
+			HL_ADVANCE(char_erase_scr_addr_old + 1, char_erase_wh)
+			mov m, e
+			HL_ADVANCE(char_erase_wh, char_erase_wh + 1)
+			mov m, d
+
+			; CHAR_ERASE_WH_OLD
+			HL_ADVANCE(char_erase_wh + 1, char_erase_wh_old)
+			mov m, e
+			HL_ADVANCE(char_erase_wh_old, char_erase_wh_old + 1)
+			mov m, d
+
+			; CHAR_POS_X
+			HL_ADVANCE(char_erase_wh_old + 1, char_pos_x)
+			mov m, d
+			HL_ADVANCE(char_pos_x, char_pos_x + 1)
+			mov m, c
+
+			; CHAR_POS_Y
+			HL_ADVANCE(char_pos_x + 1, char_pos_y)
+			mov m, d
+			HL_ADVANCE(char_pos_y, char_pos_y + 1)
+			mov m, a
+@restore_tile:
 			mvi a, TILEDATA_RESTORE_TILE
 			ret
+@exit:
+			pop h ; release
+			jmp @restore_tile
 
 ; in:
 ; h - pos_x

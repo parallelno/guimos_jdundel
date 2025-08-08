@@ -2,23 +2,31 @@
 ; check a spawn_rate which addr is rate_ptr + room_id
 ; use:
 ; hl, e, a
-; TODO: error: this macro does not check the level. 
+; TODO: error: this macro does not check the level.
 ; rooms_spawn_rate array does not contain a proper data for all levels
-.macro ROOM_SPAWN_RATE_CHECK(rate_ptr, do_not_spawn)
+; rev1: 100 cc
+; rev2: 88 cc
+.macro ROOM_SPAWN_RATE_CHECK(rate_addr, do_not_spawn)
 			; check rooms_break_rate if it needs to spawn
 			lda room_id
-			HL_TO_A_PLUS_INT16(rate_ptr)
+			adi <rate_addr
+			mov e, a
+			mvi d, >rate_addr
 
-			mov e, m
 			call random
-			cmp e
+			xchg
+			cmp m
 			jc do_not_spawn
 .endmacro
 
-.macro ROOM_SPAWN_RATE_UPDATE(rate, SPAWN_RATE_DELTA, SPAWN_RATE_MIN)
+; rev1: 100 cc
+; rev2: 88 cc
+.macro ROOM_SPAWN_RATE_UPDATE(rate_addr, SPAWN_RATE_DELTA, SPAWN_RATE_MIN)
 			; increase death_rate
 			lda room_id
-			HL_TO_A_PLUS_INT16(rate)
+			adi <rate_addr
+			mov l, a
+			mvi h, >rate_addr
 
 			mov a, m
 			adi SPAWN_RATE_DELTA
@@ -40,7 +48,7 @@
 ; hl ptr to tile_idx in instances_ptrs
 ; uses:
 ; hl, de, a
-; 30 bytes, 
+; 30 bytes,
 .macro FIND_INSTANCE(no_container_found, instances_ptrs)
 			; find a resource
 			mvi h, >instances_ptrs

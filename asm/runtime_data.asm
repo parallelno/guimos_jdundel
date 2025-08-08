@@ -657,6 +657,7 @@ HERO_RUNTIME_DATA_LEN = hero_runtime_data_end - hero_runtime_data
 ; - Value meaning:
 ;     0   → 100% spawn chance (always spawn)
 ;     255 → 0% spawn chance (never spawn)
+; - Data must fit inside $100 block.
 ;
 ;-----------------------------------------------------------------------------
 ; Data format:
@@ -671,6 +672,10 @@ HERO_RUNTIME_DATA_LEN = hero_runtime_data_end - hero_runtime_data
 rooms_spawn_rate:		= $7F5D
 rooms_spawn_rate_end:	= rooms_spawn_rate + ROOMS_MAX
 ROOMS_SPAWN_RATE_LEN = rooms_spawn_rate_end - rooms_spawn_rate
+
+.if rooms_spawn_rate>>8 != (rooms_spawn_rate_end - 1)>>8
+	.error "ERROR: rooms_spawn_rate must fit inside $100 block"
+.endif
 
 ;=============================================================================
 ; Global Item Statuses

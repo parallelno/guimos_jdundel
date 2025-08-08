@@ -21,11 +21,6 @@ SNOWFLAKE_COLLISION_OFFSET_Y = <(0)
 
 SNOWFLAKE_SPEED			= $300
 
-/*
-TODO:
-1. combine overlay_init/vfx_init/vfx4_init/char_init
-4. update all relative inits to use new overlay_init/vfx_init/vfx4_init/char_init
-*/
 snowflake_init:
 			; check hero's vertical direction
 			lxi b, hero_dir
