@@ -332,10 +332,7 @@ skeleton_update_shoot:
 			mov b, m
 			INX_H(2)
 			mov c, m
-.if DEBUG
 			jmp scythe_init
-			ret
-.endif
 
 
 ; in:

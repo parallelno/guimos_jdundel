@@ -21,7 +21,6 @@ jmp v6_main_init
 .include "asm/v6/v6_tiled_img_draw.asm"
 .include "asm/v6/v6_decal_draw.asm"
 .include "asm/v6/v6_back_draw.asm"
-.include "build/build_includes.asm"
 
 v6_main_init:
 			lxi h, interruption

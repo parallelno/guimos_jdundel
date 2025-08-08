@@ -181,9 +181,18 @@
 .endmacro
 
 ; it advances HL by the diff equals to (addr_to - addr_from)
-; 8-24 cc if reg_pair is not provided, it uses: INX_H(N)/DCX_H(N).
-; 24 cc if reg_pair = BY_BC/BY_DE/BY_HL_FROM_BC/BY_HL_FROM_DE, it uses: lxi reg_pair; dad reg_pair.
-; 40 cc if reg_pair = BY_A
+; 8-24 cc if reg_pair is not provided. It uses:
+; 		INX_H(N)/DCX_H(N).
+; 24 cc if reg_pair = BY_BC/BY_DE/BY_HL_FROM_BC/BY_HL_FROM_DE. It uses:
+; 		lxi reg_pair; dad reg_pair.
+; 40 cc if reg_pair = BY_A. It uses:
+;		mvi a, <diff_addr
+;		add l
+;		mov l, a
+;		mvi a, >diff_addr
+;		adc h
+;		mov h, a
+
 ; it validates the diff suggesting improvements
 ; use:
 ; hl, reg_pair

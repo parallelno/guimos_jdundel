@@ -260,25 +260,30 @@ def export_autoexec(com_filename, autoexec_path):
 def export_build_consts(config_j, build_code_dir):
 
 	# save an inter-build const file
-	inter_build_consts_path = build.BUILD_PATH + "build_consts" + build.EXT_ASM
-	with open(inter_build_consts_path, 'w') as f:
-		f.write(f'.include "{build_code_dir}/build_consts.asm"')
+	build_consts_filename = 'build_consts' + build.EXT_ASM
+	build_consts_path = build.BUILD_PATH + build_consts_filename
+	code_consts_filename = 'code_consts' + build.EXT_ASM
+	code_consts_path = build_code_dir + code_consts_filename
+	with open(build_consts_path, 'w') as f:
+		f.write(f'.include "{code_consts_path}"\n')
 
-	build_consts_path = build_code_dir + "build_consts" + build.EXT_ASM
 
 	asm = ""
 
+	asm += "; Config consts:\n"
+	for const in config_j["consts"]:
+		asm += const + "\n"
+	asm += "\n"
+
+	# ram disk reservations
+	asm += "; RAM Disk reserved blocks:\n"
 	for reservation in config_j["ram_disk_reserve"]:
 		idx = reservation["bank_idx"]
 		asm += f"RAM_DISK_M_{reservation["name"]} = RAM_DISK_M{idx}\n"
 		asm += f"RAM_DISK_S_{reservation["name"]} = RAM_DISK_S{idx}\n"
 
-	# export consts
-	for const in config_j["consts"]:
-		asm += const + "\n"
-
 	# save the file
-	with open(build_consts_path, 'w') as f:
+	with open(code_consts_path, 'w') as f:
 		f.write(asm)
 
 

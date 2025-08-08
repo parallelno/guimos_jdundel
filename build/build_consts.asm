@@ -1,1 +1,1 @@
-.include "build/debug/code//build_consts.asm"
+.include "build/debug/code/code_consts.asm"

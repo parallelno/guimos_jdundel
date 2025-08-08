@@ -15,6 +15,8 @@
 .include "app/chars/char_consts.asm"
 .include "app/overlays/overlays_consts.asm"
 
+.include "build/build_includes.asm"
+
 .include "runtime_data.asm"
 .include "v6/sound/v6_gc_runtime_data.asm"
 
@@ -48,6 +50,7 @@
 .include "app/screens/stats.asm"
 .include "app/game/game.asm"
 .include "app/app.asm"
+
 _memusage_end
 
 RAM_FREE_SPACE = RUNTIME_DATA - _memusage_end

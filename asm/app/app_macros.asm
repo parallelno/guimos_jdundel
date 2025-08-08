@@ -1,7 +1,7 @@
 
 ; it advances a reg by the diff equals to (addr_to - addr_from)
-; if a diff is inside of [-2, 2],it uses: INX_H(N)/DCX_H(N). 8-16cc
-; if a diff is outside of [-2, 2],it uses: mov a, NN; add reg; mov reg, a. 20cc
+; if a diff is inside of [-2, 2], used: INR_*(N)/DCR_*(N). 8-16cc
+; if a diff is outside of [-2, 2], used: mov a, NN; add reg; mov reg, a. 20cc
 ; supports runtime data that's fit inside one $100 block: backs_runtime_data, overlays_runtime_data
 ; use:
 ; reg, a
@@ -42,6 +42,7 @@
 			.error "C_ADVANCE(" addr_from ", " addr_to") with diff (" diff_addr ") accepts only NULL and BY_A for the third argument."
 		.endif
 .endmacro
+
 .macro E_ADVANCE(addr_from, addr_to, reg_a = NULL)
 		diff_addr = addr_to - addr_from
 		mvi_val .var diff_addr
@@ -79,6 +80,7 @@
 			.error "E_ADVANCE(" addr_from ", " addr_to") with diff (" diff_addr ") accepts only NULL and BY_A for the third argument."
 		.endif
 .endmacro
+
 .macro L_ADVANCE(addr_from, addr_to, reg_a = NULL)
 		diff_addr = addr_to - addr_from
 		mvi_val .var diff_addr

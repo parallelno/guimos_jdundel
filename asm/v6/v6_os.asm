@@ -44,11 +44,11 @@ LOADING_TEXT_SCR_BUFF = 0xB000
 ;	hl - interruption_addr
 ;=======================================================
 v6_os_init:
-			shld @set_int+1
-
+			shld STACK_MAIN_PROGRAM_ADDR - WORD_LEN * 2
 			; take from the stack the return addr
             pop h
-			shld @return+1
+			shld STACK_MAIN_PROGRAM_ADDR - WORD_LEN
+
 .if DEBUG
 			jmp @print
 @text:
@@ -75,14 +75,15 @@ v6_os_init:
 			; set the interrupt routine vector
 			mvi a, OPCODE_JMP
 			sta INT_ADDR
-@set_int:
-			lxi h, TEMP_ADDR
+
+			lxi sp, STACK_MAIN_PROGRAM_ADDR - WORD_LEN * 2
+			; "- WORD_LEN * 2" because
+			; stack contain the return addr
+			; and the addr of the interrupt routine
+			pop h
 			shld INT_ADDR + 1
-			lxi sp, STACK_MAIN_PROGRAM_ADDR
 			ei
-@return:
-			lxi h, TEMP_ADDR
-			pchl
+			ret
 
 ;=======================================================
 ; Read file
