@@ -13,23 +13,23 @@ main_menu_cursor_option_id:
 
 
 ; the area in between min-max is used to spawn bacground vfx
-main_scr_vfx_pos_max1 = $8690
-main_scr_vfx_pos_min1 = $8230
+MAIN_MENU_FX_POS_MAX1 = $3090
+MAIN_MENU_FX_POS_MIN1 = $1030
 
-main_scr_vfx_pos_max2 = $9c90
-main_scr_vfx_pos_min2 = $9730
+MAIN_MENU_FX_POS_MAX2 = $E090
+MAIN_MENU_FX_POS_MIN2 = $B830
 
-main_scr_vfx_pos_max3 = $84e0
-main_scr_vfx_pos_min3 = $82b0
+MAIN_MENU_FX_POS_MAX3 = $20E0
+MAIN_MENU_FX_POS_MIN3 = $10B0
 
-main_scr_vfx_pos_max4 = $9ce0
-main_scr_vfx_pos_min4 = $9ba0
+MAIN_MENU_FX_POS_MAX4 = $E0E0
+MAIN_MENU_FX_POS_MIN4 = $D8A0
 
 main_scr_vfx_spawn_rate = 10 ;(0 - no spawn, 255 - spawn every update)
 
 main_menu:
 			lda app_request
-			sta @global_req+1
+			sta @global_req + 1
 			call main_menu_init
 
 @loop:
@@ -98,7 +98,7 @@ main_menu_cursor_update:
 			rm ; return if a selected option = -1
 			sta main_menu_cursor_option_id
 
-			lxi h, hero_pos_y+1
+			lxi h, hero_pos_y + 1
 			mov a, m
 			adi SETTING_LINE_SPACING
 			mov m, a
@@ -111,7 +111,7 @@ main_menu_cursor_update:
 			rnc ; return if a selected option >= MAIN_MENU_OPTIONS_MAX
 			sta main_menu_cursor_option_id
 
-			lxi h, hero_pos_y+1
+			lxi h, hero_pos_y + 1
 			mov a, m
 			sui SETTING_LINE_SPACING
 			mov m, a
@@ -119,6 +119,8 @@ main_menu_cursor_update:
 @spawn_vfx:
 			; randomly chose an area to play vfx
 			call random
+			; hl - 16-bit pseudo-random number
+			; a = h
 
 			ani %11
 			jz @bottom_l
@@ -127,72 +129,100 @@ main_menu_cursor_update:
 			cpi 2
 			jz @top_l
 @top_r:
-			; bc - vfx scr addr
-			lxi b, main_scr_vfx_pos_min4
-			; add random to the scr_x
-			mvi a, %0000_0011
-			ana l
-			add b
-			CLAMP_A(>main_scr_vfx_pos_max4)
-			mov b, a
-			; add random to the scr_y
+			; pos_x min/max
+			lxi d, >MAIN_MENU_FX_POS_MIN4<<8 | >MAIN_MENU_FX_POS_MAX4
+			push d
+			; pos_x mask
+			mvi a, %0001_1111
+			push psw
+			; pos_y min/max
+			lxi d, <MAIN_MENU_FX_POS_MIN4<<8 | <MAIN_MENU_FX_POS_MAX4
+			; pos_y mask
 			mvi a, %0011_1111
-			ana h
-			add c
-			CLAMP_A(<main_scr_vfx_pos_max4)
-			mov c, a
 			jmp @vfx_init
 @top_l:
-			; bc - vfx scr addr
-			lxi b, main_scr_vfx_pos_min3
-			; add random to the scr_x
-			mvi a, %0000_0011
-			ana l
-			add b
-			CLAMP_A(>main_scr_vfx_pos_max3)
-			mov b, a
-			; add random to the scr_y
+			; pos_x min/max
+			lxi d, >MAIN_MENU_FX_POS_MIN3<<8 | >MAIN_MENU_FX_POS_MAX3
+			push d
+			; pos_x mask
+			mvi a, %0001_1111
+			push psw
+			; pos_y min/max
+			lxi d, <MAIN_MENU_FX_POS_MIN3<<8 | <MAIN_MENU_FX_POS_MAX3
+			; pos_y mask
 			mvi a, %0011_1111
-			ana h
-			add c
-			CLAMP_A(<main_scr_vfx_pos_max3)
-			mov c, a
 			jmp @vfx_init
+
 @bottom_r:
-			; bc - vfx scr addr
-			lxi b, main_scr_vfx_pos_min2
-			; add random to the scr_x
-			mvi a, %0000_0111
-			ana l
-			add b
-			CLAMP_A(>main_scr_vfx_pos_max2)
-			mov b, a
-			; add random to the scr_y
+			; pos_x min/max
+			lxi d, >MAIN_MENU_FX_POS_MIN2<<8 | >MAIN_MENU_FX_POS_MAX2
+			push d
+			; pos_x mask
+			mvi a, %0011_1111
+			push psw
+			; pos_y min/max
+			lxi d, <MAIN_MENU_FX_POS_MIN2<<8 | <MAIN_MENU_FX_POS_MAX2
+			; pos_y mask
 			mvi a, %0111_1111
-			ana h
-			add c
-			CLAMP_A(<main_scr_vfx_pos_max2)
-			mov c, a
 			jmp @vfx_init
+
 @bottom_l:
-			; bc - vfx scr addr
-			lxi b, main_scr_vfx_pos_min1
-			; add random to the scr_x
-			mvi a, %0000_0111
-			ana l
-			add b
-			CLAMP_A(>main_scr_vfx_pos_max1)
-			mov b, a
-			; add random to the scr_y
+			; pos_x min/max
+			lxi d, >MAIN_MENU_FX_POS_MIN1<<8 | >MAIN_MENU_FX_POS_MAX1
+			push d
+			; pos_x mask
+			mvi a, %0011_1111
+			push psw
+			; pos_y min/max
+			lxi d, <MAIN_MENU_FX_POS_MIN1<<8 | <MAIN_MENU_FX_POS_MAX1
+			; pos_y mask
 			mvi a, %0111_1111
+			jmp @vfx_init
+
+; calcs the rnd pos and draws a vfx
+; in:
+; hl - 16-bit rnd val
+; de - MAIN_MENU_FX_POS_MIN_Y<<8 | MAIN_MENU_FX_POS_MAX_Y
+; a - pos_y mask to extract the offset_y from rnd val
+; stack:
+; pos_x mask to extract the offset_x from rnd val
+; MAIN_MENU_FX_POS_MIN_X<<8 | MAIN_MENU_FX_POS_MAX_X
+@vfx_init:
+			; hl - 16-bit rnd val
+			; de - <MAIN_MENU_FX_POS_MIN<<8 | <MAIN_MENU_FX_POS_MAX
+			; a - pos_y mask to extract the offset_y from rnd val
 			ana h
-			add c
-			CLAMP_A(<main_scr_vfx_pos_max1)
+			call @add_offset
 			mov c, a
 
-@vfx_init:
+			pop psw
+			pop d
+			; de - <MAIN_MENU_FX_POS_MIN<<8 | <MAIN_MENU_FX_POS_MAX
+			; hl - 16-bit rnd val
+			; a - pos_x mask to extract the offset_x from rnd val
+			ana l
+			call @add_offset
+			mov b, a
+
 			lxi d, vfx_reward_anim
 			jmp vfx_init
+
+; a = min(d + a, e)
+; adds an offset and clamps the pos between
+; the min and max poses
+; in:
+; d - min pos
+; a - offset
+; e - max pos
+; out:
+; a - pos
+@add_offset:
+			add d
+			cmp e
+			rc
+			mov a, e
+			ret
+
 @space_handling:
 			lda main_menu_cursor_option_id
 			adi GLOBAL_REQ_GAME

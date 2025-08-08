@@ -3,7 +3,7 @@
 
 credits_screen:
 			lda app_request
-			sta @global_req+1
+			sta @global_req + 1
 			call credits_screen_init
 
 @loop:

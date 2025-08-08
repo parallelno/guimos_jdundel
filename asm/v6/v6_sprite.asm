@@ -15,11 +15,11 @@ sprite_get_addr:
 
 ; getting scr addr of sprites preshifted for each pixel
 ; in:
-; hl - ptr to pos_x+1 (high byte in 16-bit pos)
+; hl - ptr to pos_x + 1 (high byte in 16-bit pos)
 ; out:
 ; de - sprite screen addr
 ; c - preshifted sprite idx*2 offset based on pos_x then +2
-; hl - ptr to pos_y+1
+; hl - ptr to pos_y + 1
 ; use: a
 sprite_get_scr_addr8:
 			; calc preshifted sprite idx*2 offset
@@ -41,11 +41,11 @@ sprite_get_scr_addr8:
 
 ; getting scr addr of sprites preshifted for each second pixel
 ; in:
-; hl - ptr to pos_x+1 (high byte in 16-bit pos)
+; hl - ptr to pos_x + 1 (high byte in 16-bit pos)
 ; out:
 ; de - sprite screen addr
 ; c - preshifted sprite idx*2 offset based on pos_x then +2
-; hl - ptr to pos_y+1
+; hl - ptr to pos_y + 1
 ; use: a
 sprite_get_scr_addr4:
 			; calc preshifted sprite idx*2 offset
@@ -66,11 +66,11 @@ sprite_get_scr_addr4:
 
 ; getting scr addr of non-preshifted sprites. alligned by 8 pixels horizontally
 ; in:
-; hl - ptr to pos_x+1 (high byte in 16-bit pos)
+; hl - ptr to pos_x + 1 (high byte in 16-bit pos)
 ; out:
 ; de - sprite screen addr
 ; c - preshifted sprite idx*2 offset based on pos_x then +2
-; hl - ptr to pos_y+1
+; hl - ptr to pos_y + 1
 ; use: a
 sprite_get_scr_addr1:
 			; calc preshifted sprite idx*2 offset
@@ -84,6 +84,17 @@ sprite_get_scr_addr1:
 			mov e, m
 			mov	d, a
 			; de - sprite screen addr
+			ret
+
+; converts a scr addr to pos_xy
+; bc - scr addr (ex. $8222)
+; out:
+; bc - scr pos
+sprite_scr_addr_to_pos:
+			mvi a, ~SCR_ADDR_MASK
+			ana b
+			RLC_(3)
+			mov b, a
 			ret
 
 ; initializes the sprite meta data including the RAM Disk access,
@@ -162,11 +173,11 @@ sprite_init_meta_data: = @sprite_init_meta_data
 ; de - preshifted_sprites ptrs i.e. _hero_l_preshifted_sprites
 ; hl - sprite gfx addr (_hero_l_sprites)
 sprite_update_labels:
-			shld @gfx_addr+1
+			shld @gfx_addr + 1
 			xchg
 			; hl - _hero_l_preshifted_sprites
 			mov a, m
-			sta @preshifted_sprites+1
+			sta @preshifted_sprites + 1
 			inx h
 			; read the anim ptr
 @next_anim:

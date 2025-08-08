@@ -122,7 +122,7 @@ STORYTELLING_TEXT_COUNT = (@end_data - dialog_storytelling_texts_ptrs) / STORYTE
 
 ; restores storytelling dialog statuses
 dialog_storytelling_init:
-			lxi h, dialog_storytelling_texts_ptrs+1 ; status offset = 1 byte
+			lxi h, dialog_storytelling_texts_ptrs + 1 ; status offset = 1 byte
 			lxi d, STORYTELLING_TEXT_ENTITY_LEN
 			mvi c, STORYTELLING_TEXT_COUNT
 @loop:

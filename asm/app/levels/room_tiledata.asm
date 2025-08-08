@@ -17,7 +17,7 @@ room_handle_room_tiledata:
 ; in:
 ; a = the tile_id to stop handling
 room_handle_room_tiledata_ex:
-			sta @last_tile_id+1
+			sta @last_tile_id + 1
 
 			; handle the tiledata calling tiledata funcs
 			lxi h, room_tiledata

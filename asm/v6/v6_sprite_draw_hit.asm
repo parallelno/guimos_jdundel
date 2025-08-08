@@ -58,7 +58,7 @@ sprite_draw_hit_vm:	; VM stands for: V - variable height, M - mask support
 			pop b
 			dad b
 			; store a sprite screen addr to return it from this func
-			shld sprite_draw_scr_addr_ram_disk+1
+			shld sprite_draw_scr_addr_ram_disk + 1
 
 			; store sprite width and height
 			; b - width, c - height
@@ -66,7 +66,7 @@ sprite_draw_hit_vm:	; VM stands for: V - variable height, M - mask support
 			mov d, b
 			mov e, c
 			xchg
-			shld sprite_draw_width_height_ram_disk+1
+			shld sprite_draw_width_height_ram_disk + 1
 			xchg
 			mov a, b
 			rrc
@@ -81,11 +81,11 @@ sprite_draw_hit_vm:	; VM stands for: V - variable height, M - mask support
 			; save the high screen byte to restore X
 			rlc
 			add h
-			sta @w16oddScr1+1
+			sta @w16oddScr1 + 1
 			adi $20
 			mov d, a
 			adi $20
-			sta @w16evenScr3+1
+			sta @w16evenScr3 + 1
 
 @w16evenScr1:
 			SPRITE_DRAW_HIT_VM()
@@ -128,11 +128,11 @@ sprite_draw_hit_vm:	; VM stands for: V - variable height, M - mask support
 			; save the high screen byte to restore X
 			mvi a, 2
 			add h
-			sta @w24oddScr1+1
+			sta @w24oddScr1 + 1
 			adi $20
 			mov d, a
 			adi $20
-			sta @w24evenScr3+1
+			sta @w24evenScr3 + 1
 
 @w24evenScr1:
 			SPRITE_DRAW_HIT_VM()
@@ -188,11 +188,11 @@ sprite_draw_hit_vm:	; VM stands for: V - variable height, M - mask support
 @width8:
 			; save the high screen byte to restore X
 			mov a, h
-			sta @w8oddScr1+1
+			sta @w8oddScr1 + 1
 			adi $20
 			mov d, a
 			adi $20
-			sta @w8evenScr3+1
+			sta @w8evenScr3 + 1
 
 @w8evenScr1:
 			SPRITE_DRAW_HIT_VM()

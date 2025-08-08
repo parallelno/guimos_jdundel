@@ -51,7 +51,7 @@ settings_cursor_setting_id:
 
 settings_screen:
 			lda app_request
-			sta @global_req+1
+			sta @global_req + 1
 			call settings_screen_init
 @loop:
 			; return when a user hits a space button

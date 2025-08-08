@@ -361,7 +361,7 @@ def export_mem_usage(
 	code_block_len = len(labels) - 1 # because the last one is EOD
 	for i in range(code_block_len):
 		label_name = labels[i]
-		next_label_name = labels[i+1]
+		next_label_name = labels[i + 1]
 		code_blocks_sizes[label_name] = labels_addrs[next_label_name] - labels_addrs[label_name]
 
 	# sort the code block sizes by mem usage

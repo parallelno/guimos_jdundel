@@ -200,7 +200,7 @@ v6_gc_buffer_ptr1 = @v6_gc_buffer_ptr + 1
 v6_gc_scheduler_update:
 			lxi h, 0
 			dad sp
-			shld v6_gc_scheduler_restore_sp+1
+			shld v6_gc_scheduler_restore_sp + 1
 			lhld v6_gc_current_task_spp
 			mov e, m
 			inx h

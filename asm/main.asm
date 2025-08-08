@@ -11,7 +11,7 @@
 .include "app/game/game_consts.asm"
 .include "app/levels/backs_consts.asm"
 .include "app/actor/actor_consts.asm"
-.include "app/hero/hero_consts.asm"
+.include "app/chars/entities/hero/hero_consts.asm"
 .include "app/chars/char_consts.asm"
 .include "app/overlays/overlays_consts.asm"
 
@@ -31,14 +31,14 @@
 
 .include "app/actor/actor.asm"
 .include "app/actor/actor_draw.asm"
-.include "app/hero/hero.asm"
+.include "app/chars/entities/hero/hero.asm"
 .include "app/chars/chars.asm"
 .include "app/overlays/overlays.asm"
 .include "app/levels/breakables.asm"
 .include "app/levels/levels.asm"
 .include "app/levels/room.asm"
 .include "app/levels/backs.asm"
-.include "app/hero/hero_triggers.asm"
+.include "app/chars/entities/hero/hero_triggers.asm"
 .include "app/ui/dialogs.asm"
 .include "app/ui/ui.asm"
 

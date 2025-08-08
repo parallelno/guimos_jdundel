@@ -153,7 +153,7 @@ def get_label_addr(path, _label):
 	for line_a in labels:
 		line = line_a.decode('ascii')
 		if line.find(_label) != -1:
-			addr_s = line[line.find("$")+1:]
+			addr_s = line[line.find("$") + 1:]
 			return int(addr_s, 16)
 
 	return -1

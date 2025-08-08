@@ -186,7 +186,7 @@ room_init_tiles_gfx:
 
 ; checks if the actor collides with the room border
 ; in:
-; hl - ptr to actor_pos_x+1
+; hl - ptr to actor_pos_x + 1
 ; d - collision width
 ; e - collision height
 ; out:
@@ -202,8 +202,8 @@ room_check_border:
 			cpi TILE_WIDTH
 			jc @collides_horiz
 			; check the top side
-			HL_ADVANCE(char_pos_x+1, char_pos_y+1)
-			mvi a, (ROOM_HEIGHT - 1 ) * TILE_HEIGHT
+			HL_ADVANCE(char_pos_x + 1, char_pos_y + 1)
+			mvi a, (ROOM_HEIGHT - 1) * TILE_HEIGHT
 			sub e
 			cmp m
 			rc
@@ -214,6 +214,6 @@ room_check_border:
 			; no collision
 			ret
 @collides_horiz:
-			HL_ADVANCE(char_pos_x+1, char_pos_y+1)
+			HL_ADVANCE(char_pos_x + 1, char_pos_y + 1)
 			stc
 			ret

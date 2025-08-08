@@ -1,14 +1,14 @@
 .include "app/overlays/overlays_macros.asm"
-.include "app/overlays/vfx_consts.asm"
-.include "app/overlays/sword.asm"
-.include "app/overlays/snowflake.asm"
-.include "app/overlays/scythe.asm"
-.include "app/overlays/bomb.asm"
-.include "app/overlays/sparker.asm"
-.include "app/overlays/fart.asm"
-.include "app/overlays/vfx.asm"
-.include "app/overlays/cursor.asm"
-.include "app/overlays/trap.asm"
+.include "app/overlays/entities/vfx_consts.asm"
+.include "app/overlays/entities/sword.asm"
+.include "app/overlays/entities/snowflake.asm"
+.include "app/overlays/entities/scythe.asm"
+.include "app/overlays/entities/bomb.asm"
+.include "app/overlays/entities/sparker.asm"
+.include "app/overlays/entities/fart.asm"
+.include "app/overlays/entities/vfx.asm"
+.include "app/overlays/entities/cursor.asm"
+.include "app/overlays/entities/trap.asm"
 
 @memusage_overlays
 
@@ -33,13 +33,11 @@ overlays_init:
 ; 		.word speed_y
 ; out:
 ; hl - overlay_speed_y + 1 when overlay created
-; CY = 0 - overlay not created (too many objects)
-; CY = 1 - overlay created
 
 ; rev1. 876 cc
 ; rev2. 804 cc
 ; rev3. 836 cc ( init speed_xy)
-; rev4. 548 cc
+; rev4. 544 cc
 overlay_init:
 			lxi h, overlay_update_ptr + 1
 			mvi e, OVERLAY_RUNTIME_DATA_LEN
@@ -73,7 +71,7 @@ overlay_init:
 			mov m, b
 			; advance hl to overlay_anim_timer
 			inx h
-			mvi m, d ; 0
+			mov m, d ; 0
 			; advance hl to overlay_anim_ptr
 			inx h
 			pop b
@@ -105,12 +103,12 @@ overlay_init:
 			mov m, a
 			; advance hl to overlay_erase_wh
 			inx h
-			mvi m, e ; SPRITE_H_MIN
+			mov m, e ; SPRITE_H_MIN
 			inx h
 			mov m, d ; SPRITE_W_PACKED_MIN
 			; advance hl to overlay_erase_wh_old
 			inx h
-			mvi m, e ; SPRITE_H_MIN
+			mov m, e ; SPRITE_H_MIN
 			inx h
 			mov m, d ; SPRITE_W_PACKED_MIN
 			; advance hl to overlay_pos_x
@@ -139,13 +137,10 @@ overlay_init:
 			mov m, c
 			inx h
 			mov m, b
-
-			stc ; set CY = 1
 			ret
 
 @restore_sp:
-			POP_H(7) ; pop out non-used init data to restore the SP
-			ora a ; set CY = 0
+			POP_H(7) ; pop out not used init data to restore the SP
 			ret
 
 
@@ -163,16 +158,16 @@ overlays_erase:
 
 ; copy sprites from a backbuffer to a scr
 ; in:
-; hl - ptr to overlay_update_ptr+1
+; hl - ptr to overlay_update_ptr + 1
 overlay_copy_to_scr:
 			; advance to overlay_status
-			HL_ADVANCE(overlay_update_ptr+1, overlay_status)
+			HL_ADVANCE(overlay_update_ptr + 1, overlay_status)
 			jmp actor_copy_to_scr
 
 ; erase a sprite or restore the background behind a sprite
 ; in:
-; hl - ptr to overlay_update_ptr+1
+; hl - ptr to overlay_update_ptr + 1
 ; a - OVERLAY_RUNTIME_DATA_* status
 overlay_erase:
-			LXI_D_TO_DIFF(overlay_update_ptr+1, overlay_status)
+			LXI_D_TO_DIFF(overlay_update_ptr + 1, overlay_status)
 			jmp actor_erase

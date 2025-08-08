@@ -5,7 +5,7 @@ SCORES_LINE_SPACING = 14
 
 scores_screen:
 			lda app_request
-			sta @global_req+1
+			sta @global_req + 1
 			call scores_screen_init
 
 @loop:

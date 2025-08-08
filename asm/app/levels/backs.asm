@@ -34,7 +34,7 @@ backs_spawn:
 			call actor_get_empty_data_ptr
 			rnz ; return because too many objects
 
-			; hl - ptr to back_update_ptr+1
+			; hl - ptr to back_update_ptr + 1
 			; advance hl to back_anim_ptr
 			dcx h
 			push h
@@ -77,7 +77,7 @@ backs_spawn:
 			mvi a, %11110000
 			ana c
 			mov m, a
-			; advance hl to back_scr_addr+1
+			; advance hl to back_scr_addr + 1
 			inx h
 			; c - tile_idx
 			; scr_x = tile_idx % ROOM_WIDTH * TILE_WIDTH_B + SCR_ADDR
@@ -102,7 +102,7 @@ backs_spawn:
 			ret
 
 backs_update:
-back_runtime_data_ptr_update: = backs_update+1
+back_runtime_data_ptr_update: = backs_update + 1
 			lxi h, back_anim_ptr + 1
 			mov a, m
 			cpi ACTOR_RUNTIME_DATA_EMPTY
@@ -112,7 +112,7 @@ back_runtime_data_ptr_update: = backs_update+1
 
 @update_anim:
 			; advance hl to back_anim_timer_speed
-			L_ADVANCE(back_anim_ptr+1, back_anim_timer_speed, BY_A)
+			L_ADVANCE(back_anim_ptr + 1, back_anim_timer_speed, BY_A)
 
 			mov a, m
 			; advance hl to back_anim_timer
@@ -152,7 +152,7 @@ back_runtime_data_ptr_update: = backs_update+1
 			; advance hl to back_anim_ptr + 1
 			inx h
 			mov m, d
-			MVI_A_TO_DIFF(back_anim_ptr+1, back_anim_ptr + 1 + BACK_RUNTIME_DATA_LEN)
+			MVI_A_TO_DIFF(back_anim_ptr + 1, back_anim_ptr + 1 + BACK_RUNTIME_DATA_LEN)
 @advance_and_save_ptr:
 			add l
 			mov l, a

@@ -9,7 +9,7 @@
 ; uses:
 ; BC, DE, HL
 .function draw_fps()
-			lhld text_mono_draw_restore_sp+1
+			lhld text_mono_draw_restore_sp + 1
 			shld @tmp_restore_sp
 			;lxi h, @fps_text
 			;call int_to_ascii_hex
@@ -22,7 +22,7 @@
 			lxi b, FPS_SCR_ADDR
 			call text_mono_draw
 			lhld @tmp_restore_sp
-			shld text_mono_draw_restore_sp+1
+			shld text_mono_draw_restore_sp + 1
 			ret
 @fps_text_hi: ; do not use a shared text buffer because draw_fps is called in the int func
 			.byte $30, $30, $30, 0

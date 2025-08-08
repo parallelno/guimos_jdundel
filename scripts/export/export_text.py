@@ -24,7 +24,7 @@ def is_source_updated(asset_j_path):
 
 
 def export_asm(
-		asset_j_path, asm_meta_path, asm_data_path, 
+		asset_j_path, asm_meta_path, asm_data_path,
 		bin_path, localization_id = build.LOCAL_ENG):
 
 	with open(asset_j_path, "rb") as file:
@@ -41,7 +41,7 @@ def export_asm(
 		os.mkdir(asm_gfx_dir)
 	with open(asm_data_path, "w") as file:
 		file.write(asm_ram_disk_data)
-	
+
 	# compile and save the meta and RAM Disk data
 	build.export_fdd_file(asm_meta_path, asm_data_path, bin_path, asm_ram_data)
 
@@ -76,7 +76,7 @@ def ramdisk_data_to_asm(asset_j_path, asset_j, localization_id):
 		asm += f";===================================================================================\n"
 		asm += f"; {comment}\n"
 		asm += f";===================================================================================\n"
-		
+
 		for label_postfix  in labels_text:
 
 			label = "_" + comment.replace(" ", "_") + "_" + label_postfix.replace(" ", "_")
@@ -103,7 +103,7 @@ def ramdisk_data_to_asm(asset_j_path, asset_j, localization_id):
 					command = PARAG_BREAK_S
 					text = text_raw[:parag_break]
 
-				elif line_break >= 0 or i+1 != lines:
+				elif line_break >= 0 or i + 1 != lines:
 					command = LINE_BREAK_S
 					break_line = ""
 					if line_break >= 0:
@@ -115,9 +115,9 @@ def ramdisk_data_to_asm(asset_j_path, asset_j, localization_id):
 					text_block_asm += f'			.byte {command})\n'
 				else:
 					text_block_asm += f'			TEXT("{text}", {command})\n'
-				
+
 				text_block_asm += break_line
-				text_block_len += len(text) + 1 # +1 becase there's always a key-code at the end of the string
+				text_block_len += len(text) + 1 #  + 1 because there's always a key-code at the end of the string
 				text_block += text + "\n"
 
 
@@ -135,7 +135,7 @@ def ramdisk_data_to_asm(asset_j_path, asset_j, localization_id):
 			# the len of bytes copied from the RAM Disk
 			# rounded to the nearest (biggest) even number
 			copy_text_block_rounded_len = (copy_text_block_len // 2 + copy_text_block_len % 2) * 2
-			
+
 			asm += "\n			.word 0 ; safety pair of bytes for reading by POP B\n"
 			asm += f"{label}:\n"
 			asm += f"			.word {copy_text_block_rounded_len} ; data len to copy to ram\n"
@@ -184,7 +184,7 @@ rus_charset = {
 		}
 
 def rus_text_to_data(text, asset_j_path):
-	
+
 	result = []
 	for char_ in text:
 		if char_ not in rus_charset:
@@ -193,11 +193,3 @@ def rus_text_to_data(text, asset_j_path):
 		result.append(rus_charset[char_])
 
 	return result
-
-
-
-
-
-
-
-

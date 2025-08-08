@@ -137,7 +137,7 @@ GLOBAL_STATES_LEN = global_states_end - global_states
 ; NOTE:
 ; - A list of structs, one per char instance.
 ; - Accessed by the custom update and actor draw routines.
-; - The char_update_ptr+1 also serves as an Actor Runtime Status Code
+; - The char_update_ptr + 1 also serves as an Actor Runtime Status Code
 ;     (see actor_consts.asm).
 ; - CHAR_RUNTIME_DATA_LEN < $100.
 ; - Max active chars per room including dying but not dead: CHARS_MAX
@@ -193,7 +193,7 @@ CHARS_RUNTIME_DATA_LEN			= chars_runtime_data_end - chars_runtime_data
 ; - Accessed by the custom update and actor draw routines.
 ; - Data must fit inside $100 block.
 ; - Max active chars per room including dying but not dead: OVERLAYS_MAX.
-; - The overlay_update_ptr+1 also serves as an Actor Runtime Status Code
+; - The overlay_update_ptr + 1 also serves as an Actor Runtime Status Code
 ;     (see actor_consts.asm).
 ; - The structure from char_update_ptr to char_data_next_ptr must match the
 ;     hero's runtime data structure for compatibility with shared functions.
@@ -559,12 +559,12 @@ resources_inst_data_ptrs_end: = resources_inst_data_ptrs + RESOURCES_INST_DATA_P
 ;       .byte %IGFEDCBA
 ;       .byte %0000000J
 
-BREAKABLES_ROOMS_PER_BYTE		= 8
-BREAKABLES_ROOMS				= 128 ; max rooms that can have breakables
-BREAKABLES_STATUS_BUF_LEN 		= $100
-BREAKABLES_MAX					= 1016
-								; 1016 = (BREAKABLES_LEN - 1 - BREAKABLES_ROOMS) * BREAKABLES_ROOMS_PER_BYTE
-								; -1 because breakables_status_buf_free_ptr takes one byte
+BREAKABLES_ROOMS_PER_BYTE	= 8
+BREAKABLES_ROOMS			= 128 ; max rooms that can have breakables
+BREAKABLES_STATUS_BUF_LEN	= $100
+BREAKABLES_MAX				= 1016
+; 	1016 = (BREAKABLES_STATUS_BUF_LEN - 1 - BREAKABLES_ROOMS) * BREAKABLES_ROOMS_PER_BYTE
+;	"-1" because breakables_status_buf_free_ptr takes one byte
 
 breakables_status_buf_free_ptr:	= $7E00
 breakables_status_buf_ptrs:		= breakables_status_buf_free_ptr + 1
@@ -585,7 +585,7 @@ breakables_status_buffs_end:	= breakables_status_buf_free_ptr + BREAKABLES_STATU
 ; Stores per-instance runtime data for animated background tiles ("backs").
 ; NOTE:
 ; - A list of structs, one per back instance.
-; - The back_anim_ptr+1 also serves as an Actor Runtime States (see actor_consts.asm).
+; - The back_anim_ptr + 1 also serves as an Actor Runtime States (see actor_consts.asm).
 ; - Data must fit inside $100 block.
 
 ; Base address for all back runtime data
@@ -616,7 +616,7 @@ BACKS_RUNTIME_DATA_LEN = backs_runtime_data_end - backs_runtime_data
 ; - Accessed by the custom update and actor draw routines.
 ; - The structure from hero_update_ptr to hero_data_next_ptr must match the
 ;     char's runtime data structure for compatibility with shared functions.
-; - The hero_update_ptr+1 also serves as an Actor Runtime Status Code
+; - The hero_update_ptr + 1 also serves as an Actor Runtime Status Code
 ;     (see actor_consts.asm).
 
 ; Base address for hero runtime data
@@ -720,98 +720,98 @@ RUNTIME_DATA_END = $7FAC
 	.error "hero & char runtime data must match from update_ptr to chars_runtime_data"
 .endif
 .if (char_update_ptr - chars_runtime_data) != (overlay_update_ptr - overlays_runtime_data)
-	.error "hero & char & overlay runtime data must match from update_ptr to speed_y+1"
+	.error "hero & char & overlay runtime data must match from update_ptr to speed_y + 1"
 .endif
 
 .if (char_draw_ptr - chars_runtime_data) != (hero_draw_ptr - hero_runtime_data)
 	.error "hero & char runtime data must match from update_ptr to chars_runtime_data"
 .endif
 .if (char_draw_ptr - chars_runtime_data) != (overlay_draw_ptr - overlays_runtime_data)
-	.error "hero & char & overlay runtime data must match from update_ptr to speed_y+1"
+	.error "hero & char & overlay runtime data must match from update_ptr to speed_y + 1"
 .endif
 
 .if (char_status - chars_runtime_data) != (hero_status - hero_runtime_data)
 	.error "hero & char runtime data must match from update_ptr to chars_runtime_data"
 .endif
 .if (char_status - chars_runtime_data) != (overlay_status - overlays_runtime_data)
-	.error "hero & char & overlay runtime data must match from update_ptr to speed_y+1"
+	.error "hero & char & overlay runtime data must match from update_ptr to speed_y + 1"
 .endif
 
 .if (char_status_timer - chars_runtime_data) != (hero_status_timer - hero_runtime_data)
 	.error "hero & char runtime data must match from update_ptr to chars_runtime_data"
 .endif
 .if (char_status_timer - chars_runtime_data) != (overlay_status_timer - overlays_runtime_data)
-	.error "hero & char & overlay runtime data must match from update_ptr to speed_y+1"
+	.error "hero & char & overlay runtime data must match from update_ptr to speed_y + 1"
 .endif
 
 .if (char_anim_timer - chars_runtime_data) != (hero_anim_timer - hero_runtime_data)
 	.error "hero & char runtime data must match from update_ptr to chars_runtime_data"
 .endif
 .if (char_anim_timer - chars_runtime_data) != (overlay_anim_timer - overlays_runtime_data)
-	.error "hero & char & overlay runtime data must match from update_ptr to speed_y+1"
+	.error "hero & char & overlay runtime data must match from update_ptr to speed_y + 1"
 .endif
 
 .if (char_anim_ptr - chars_runtime_data) != (hero_anim_ptr - hero_runtime_data)
 	.error "hero & char runtime data must match from update_ptr to chars_runtime_data"
 .endif
 .if (char_anim_ptr - chars_runtime_data) != (overlay_anim_ptr - overlays_runtime_data)
-	.error "hero & char & overlay runtime data must match from update_ptr to speed_y+1"
+	.error "hero & char & overlay runtime data must match from update_ptr to speed_y + 1"
 .endif
 
 .if (char_erase_scr_addr - chars_runtime_data) != (hero_erase_scr_addr - hero_runtime_data)
 	.error "hero & char runtime data must match from update_ptr to chars_runtime_data"
 .endif
 .if (char_erase_scr_addr - chars_runtime_data) != (overlay_erase_scr_addr - overlays_runtime_data)
-	.error "hero & char & overlay runtime data must match from update_ptr to speed_y+1"
+	.error "hero & char & overlay runtime data must match from update_ptr to speed_y + 1"
 .endif
 
 .if (char_erase_scr_addr_old - chars_runtime_data) != (hero_erase_scr_addr_old - hero_runtime_data)
 	.error "hero & char runtime data must match from update_ptr to chars_runtime_data"
 .endif
 .if (char_erase_scr_addr_old - chars_runtime_data) != (overlay_erase_scr_addr_old - overlays_runtime_data)
-	.error "hero & char & overlay runtime data must match from update_ptr to speed_y+1"
+	.error "hero & char & overlay runtime data must match from update_ptr to speed_y + 1"
 .endif
 
 .if (char_erase_wh - chars_runtime_data) != (hero_erase_wh - hero_runtime_data)
 	.error "hero & char runtime data must match from update_ptr to chars_runtime_data"
 .endif
 .if (char_erase_wh - chars_runtime_data) != (overlay_erase_wh - overlays_runtime_data)
-	.error "hero & char & overlay runtime data must match from update_ptr to speed_y+1"
+	.error "hero & char & overlay runtime data must match from update_ptr to speed_y + 1"
 .endif
 
 .if (char_erase_wh_old - chars_runtime_data) != (hero_erase_wh_old - hero_runtime_data)
 	.error "hero & char runtime data must match from update_ptr to chars_runtime_data"
 .endif
 .if (char_erase_wh_old - chars_runtime_data) != (overlay_erase_wh_old - overlays_runtime_data)
-	.error "hero & char & overlay runtime data must match from update_ptr to speed_y+1"
+	.error "hero & char & overlay runtime data must match from update_ptr to speed_y + 1"
 .endif
 
 .if (char_pos_x - chars_runtime_data) != (hero_pos_x - hero_runtime_data)
 	.error "hero & char runtime data must match from update_ptr to chars_runtime_data"
 .endif
 .if (char_pos_x - chars_runtime_data) != (overlay_pos_x - overlays_runtime_data)
-	.error "hero & char & overlay runtime data must match from update_ptr to speed_y+1"
+	.error "hero & char & overlay runtime data must match from update_ptr to speed_y + 1"
 .endif
 
 .if (char_pos_y - chars_runtime_data) != (hero_pos_y - hero_runtime_data)
 	.error "hero & char runtime data must match from update_ptr to chars_runtime_data"
 .endif
 .if (char_pos_y - chars_runtime_data) != (overlay_pos_y - overlays_runtime_data)
-	.error "hero & char & overlay runtime data must match from update_ptr to speed_y+1"
+	.error "hero & char & overlay runtime data must match from update_ptr to speed_y + 1"
 .endif
 
 .if (char_speed_x - chars_runtime_data) != (hero_speed_x - hero_runtime_data)
 	.error "hero & char runtime data must match from update_ptr to chars_runtime_data"
 .endif
 .if (char_speed_x - chars_runtime_data) != (overlay_speed_x - overlays_runtime_data)
-	.error "hero & char & overlay runtime data must match from update_ptr to speed_y+1"
+	.error "hero & char & overlay runtime data must match from update_ptr to speed_y + 1"
 .endif
 
 .if (char_speed_y - chars_runtime_data) != (hero_speed_y - hero_runtime_data)
 	.error "hero & char runtime data must match from update_ptr to chars_runtime_data"
 .endif
 .if (char_speed_y - chars_runtime_data) != (overlay_speed_y - overlays_runtime_data)
-	.error "hero & char & overlay runtime data must match from update_ptr to speed_y+1"
+	.error "hero & char & overlay runtime data must match from update_ptr to speed_y + 1"
 .endif
 
 .if (char_data_next_ptr - chars_runtime_data) != (hero_data_next_ptr - hero_runtime_data)

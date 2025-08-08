@@ -356,7 +356,7 @@ def get_sprite_params(dx_l, dx_r, shift):
 	shifted_dx_r = shift + dx_r
 
 	offset_x_preshifted_local = shifted_dx_l//8 * 8
-	width_new = (shifted_dx_r//8+1) * 8 - offset_x_preshifted_local
+	width_new = (shifted_dx_r//8 + 1) * 8 - offset_x_preshifted_local
 	return offset_x_preshifted_local, width_new
 
 def make_empty_sprite_data(has_mask, w, h):
@@ -486,7 +486,7 @@ def calc_cpu_cycles(row_heights, w, h):
 	# row prep: 36*4 = 144 cc
 	# row loop: 37*4 = 148 cc per byte
 	# post row: 3*4 = 12 cc
-	# ret: (14+17) * 4 = 124 cc
+	# ret: (14 + 17) * 4 = 124 cc
 
 	row1_prep = 72
 	row1_row_prep = 144

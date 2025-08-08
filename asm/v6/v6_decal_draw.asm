@@ -89,8 +89,8 @@ draw_decal_v:
 @drawWidth16:
 			; store a max Y to check the end end the loop
 			add l
-			sta @maxY1+1
-			sta @maxY2+1
+			sta @maxY1 + 1
+			sta @maxY2 + 1
 			; store X addr to be able to restore it
 			mov a, h
 			adi @width16-1

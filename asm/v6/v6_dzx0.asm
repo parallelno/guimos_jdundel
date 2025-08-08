@@ -96,8 +96,8 @@ dzx0:
 	; which based on ZX0 z80 decoder by Einar Saukas
 
 dzx0_rd:
-			sta @ramDiskCmd1+1
-			sta @ramDiskCmd2+1
+			sta @ramDiskCmd1 + 1
+			sta @ramDiskCmd2 + 1
 
 			lxi h, $ffff
 			push h
@@ -106,10 +106,10 @@ dzx0_rd:
 @literals:
 			call @elias
 @ldir:
-			sta @restoreA1+1
+			sta @restoreA1 + 1
 @ldir_loop:
 			ldax d
-			sta @storeA+1
+			sta @storeA + 1
 			; turn on the RAM Disk
 @ramDiskCmd1:
 			mvi a, TEMP_BYTE
@@ -127,7 +127,7 @@ dzx0_rd:
 			jnz @ldir_loop
 
 @restoreA1:
-			mvi a, TEMP_BYTE		
+			mvi a, TEMP_BYTE
 			add a
 
 			jc @new_offset
@@ -140,7 +140,7 @@ dzx0_rd:
 			xchg
 
 @ldir_unpacked:
-			sta @restoreA2+1
+			sta @restoreA2 + 1
 			; turn on the RAM Disk
 @ramDiskCmd2:
 			mvi a, TEMP_BYTE
@@ -157,7 +157,7 @@ dzx0_rd:
 			RAM_DISK_OFF_NO_RESTORE()
 
 @restoreA2:
-			mvi a, TEMP_BYTE		
+			mvi a, TEMP_BYTE
 			add a
 
 			xchg

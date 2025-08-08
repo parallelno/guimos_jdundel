@@ -191,11 +191,11 @@ load_files_from_params:
 load_file:
 			shld os_file_data_ptr
 load_file_next:
-			sta @ram_disk_activation+1
+			sta @ram_disk_activation + 1
 			mov a, b
 			sta @rec_num
 			mov a, c
-			sta @restore_last_rec_len+1
+			sta @restore_last_rec_len + 1
 
 			xchg
 			; hl - ptr to a filename (8 bytes name, 3 bytes extention)
@@ -344,7 +344,7 @@ save_file:
 set_file_name:
 			; copy a filename string
 			push h
-			lxi d, CPM_FCB+1 ; file name addr
+			lxi d, CPM_FCB + 1 ; file name addr
 			lxi b, FILENAME_LEN
 			call mem_copy_len
 			pop h
@@ -416,7 +416,7 @@ v6_os_exit:
 
 v6_os_exit_prep:
 			pop h
-			shld @return+1
+			shld @return + 1
 			di
 			mvi a, RDS_MODE_0
 			sta RDS_MODE

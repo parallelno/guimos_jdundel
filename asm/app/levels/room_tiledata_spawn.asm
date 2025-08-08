@@ -99,7 +99,7 @@ room_tiledata_decal_walkable_spawn:
 			jc room_tiledata_copy
 
 			ADD_A(1) ; to make a WORD ptr
-			sta room_decal_draw_ptr_offset+1
+			sta room_decal_draw_ptr_offset + 1
 			ROOM_DECAL_DRAW(decals_walkable_gfx_ptrs - WORD_LEN * 2)
 			mvi a, TILEDATA_RESTORE_TILE
 			ret
@@ -113,7 +113,7 @@ room_tiledata_decal_walkable_spawn:
 ; a - tiledata that will be saved back into room_tiledata
 room_tiledata_decal_collidable_spawn:
 			ADD_A(1) ; to make a WORD ptr
-			sta room_decal_draw_ptr_offset+1
+			sta room_decal_draw_ptr_offset + 1
 			ROOM_DECAL_DRAW(decals_collidable_gfx_ptrs)
 			mvi a, TILEDATA_COLLISION
 			ret
@@ -127,11 +127,11 @@ room_tiledata_decal_collidable_spawn:
 ; out:
 ; a - tiledata that will be saved back into room_tiledata
 room_tiledata_breakable_spawn:
-			lxi h, @restore_tiledata+1
+			lxi h, @restore_tiledata + 1
 			mov m, b
 
 			ADD_A(1) ; to make a WORD ptr
-			sta room_decal_draw_ptr_offset+1
+			sta room_decal_draw_ptr_offset + 1
 
 			;ROOM_SPAWN_RATE_CHECK(rooms_spawn_rate_breakables, @no_spawn)
 			ROOM_DECAL_DRAW(breakable_gfx_ptrs)
@@ -150,14 +150,14 @@ room_tiledata_breakable_spawn:
 ; out:
 ; a - tiledata that will be saved back into room_tiledata
 room_tiledata_item_spawn:
-			lxi h, @restore_tiledata+1
+			lxi h, @restore_tiledata + 1
 			mov m, b
 			; check if it's storytelling dialog tiledata
 			CPI_ZERO(ITEM_ID_STORYTELLING)
 			jz @restore_tiledata
 
 			ADD_A(1) ; to make a WORD ptr
-			sta room_decal_draw_ptr_offset+1
+			sta room_decal_draw_ptr_offset + 1
 
 			; check global item status
 			mvi h, >global_items
@@ -182,7 +182,7 @@ room_tiledata_item_spawn:
 ; out:
 ; a - tiledata that will be saved back into room_tiledata
 room_tiledata_resource_spawn:
-			lxi h, @restore_tiledata+1
+			lxi h, @restore_tiledata + 1
 			mov m, b
 
 			lxi h, room_id
@@ -190,7 +190,7 @@ room_tiledata_resource_spawn:
 
 			mov l, a
 			ADD_A(1) ; resource_id to WORD ptr
-			sta room_decal_draw_ptr_offset+1
+			sta room_decal_draw_ptr_offset + 1
 
 			; find a resource
 			; d - room_id
@@ -216,7 +216,7 @@ room_tiledata_resource_spawn:
 ; out:
 ; a - tiledata that will be saved back into room_tiledata
 room_tiledata_container_spawn:
-			lxi h, @tiledata+1
+			lxi h, @tiledata + 1
 			mov m, b
 
 			lxi h, room_id
@@ -224,7 +224,7 @@ room_tiledata_container_spawn:
 
 			mov l, a
 			ADD_A(1) ; container_id to WORD ptr
-			sta room_decal_draw_ptr_offset+1
+			sta room_decal_draw_ptr_offset + 1
 
 			; find a container
 			FIND_INSTANCE(@opened, containers_inst_data_ptrs)

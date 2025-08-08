@@ -38,7 +38,7 @@ room_copy_scr_to_backbuffs:
 
 ;=========================================================
 ; draw a decal onto the screen, and backbuffers
-; requires: store entity_id*2 into room_decal_draw_ptr_offset+1 addr prior to calling this
+; requires: store entity_id*2 into room_decal_draw_ptr_offset + 1 addr prior to calling this
 ; in:
 ; c - tile_idx in the room_tiledata array.
 ; use:
@@ -64,7 +64,7 @@ room_copy_scr_to_backbuffs:
 
 ; draw a decal onto the screen, and backbuffers
 ; ex. ROOM_DECAL_DRAW(containers_gfx_ptrs, true)
-; requires: store item_id*2 into room_decal_draw_ptr_offset+1 addr prior calling this
+; requires: store item_id*2 into room_decal_draw_ptr_offset + 1 addr prior calling this
 ; in:
 ; hl - ptr to the graphics, ex. _doors_gfx_ptrs
 ; c - tile_idx in the room_tiledata array.
@@ -83,7 +83,7 @@ room_decal_draw:
 			; de - scr addr
 			push d
 
-; requires: store item_id*2 into room_decal_draw_ptr_offset+1 addr prior to calling this
+; requires: store item_id*2 into room_decal_draw_ptr_offset + 1 addr prior to calling this
 room_decal_draw_ptr_offset:
 			lxi d, TEMP_WORD
 			dad d
@@ -120,7 +120,7 @@ room_draw_tiles:
 ; in:
 ; a - tile pos_y to stop drawing
 room_draw_tiles_ex:
-			sta @last_tile_id+1
+			sta @last_tile_id + 1
 
 			lda lv_ram_disk_s_gfx
 			RAM_DISK_ON_BANK()

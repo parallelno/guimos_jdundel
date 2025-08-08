@@ -41,6 +41,7 @@ BACK_BUFF_ADDR          = 0xA000
 BACK_BUFF_LEN           = SCR_BUFF_LEN * 3
 BACK_BUFF2_ADDR         = 0xA000
 BACK_BUFF2_LEN          = SCR_BUFF_LEN * 3
+SCR_ADDR_MASK			= %1110_0000
 
 ;=======================================================
 ; Sprite

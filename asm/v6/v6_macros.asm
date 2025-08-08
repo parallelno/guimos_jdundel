@@ -536,6 +536,16 @@ BY_A			= 5
 			mov m, a
 .endmacro
 
+; rev1: 4 cc
+.macro SET_CY(val)
+		.if val == 0
+			ora a ; set CY = 0
+		.endif
+		.if val != 1
+			stc ; set CY = 1
+		.endif
+.endmacro
+
  ; ints_per_update = 2 means the update happens every second interruption (25 updates per second)
 
 ;=============================================================================

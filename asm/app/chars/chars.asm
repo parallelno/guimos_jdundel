@@ -1,24 +1,24 @@
 .include "asm/app/chars/char_data.asm"
-.include "asm/app/chars/skeleton.asm"
-.include "asm/app/chars/skeleton_quest.asm"
-.include "asm/app/chars/vampire.asm"
-.include "asm/app/chars/burner.asm"
-.include "asm/app/chars/burner_quest.asm"
-.include "asm/app/chars/knight.asm"
-.include "asm/app/chars/knight_heavy.asm"
-.include "asm/app/chars/goose.asm"
-.include "asm/app/chars/cat.asm"
-.include "asm/app/chars/firepool.asm"
-.include "asm/app/chars/npc.asm"
-.include "asm/app/chars/mom.asm"
-.include "asm/app/chars/friends_mom.asm"
-.include "asm/app/chars/friends_sis.asm"
-.include "asm/app/chars/dotty.asm"
-.include "asm/app/chars/bob.asm"
-.include "asm/app/chars/npc4.asm"
-.include "asm/app/chars/caterpillar.asm"
-.include "asm/app/chars/scarecrow.asm"
-.include "asm/app/chars/crow.asm"
+.include "asm/app/chars/entities/skeleton.asm"
+.include "asm/app/chars/entities/skeleton_quest.asm"
+.include "asm/app/chars/entities/vampire.asm"
+.include "asm/app/chars/entities/burner.asm"
+.include "asm/app/chars/entities/burner_quest.asm"
+.include "asm/app/chars/entities/knight.asm"
+.include "asm/app/chars/entities/knight_heavy.asm"
+.include "asm/app/chars/entities/goose.asm"
+.include "asm/app/chars/entities/cat.asm"
+.include "asm/app/chars/entities/firepool.asm"
+.include "asm/app/chars/entities/npc.asm"
+.include "asm/app/chars/entities/mom.asm"
+.include "asm/app/chars/entities/friends_mom.asm"
+.include "asm/app/chars/entities/friends_sis.asm"
+.include "asm/app/chars/entities/dotty.asm"
+.include "asm/app/chars/entities/bob.asm"
+.include "asm/app/chars/entities/npc4.asm"
+.include "asm/app/chars/entities/caterpillar.asm"
+.include "asm/app/chars/entities/scarecrow.asm"
+.include "asm/app/chars/entities/crow.asm"
 
 @memusage_chars
 
@@ -37,6 +37,161 @@ chars_init:
 			shld hero_data_next_ptr
 			ret
 
+; char initialization
+; in:
+; c - tile_idx in the room_tiledata array.
+; CY flag - true to check spawn rate
+; a - char_id * 4
+; out:
+; a - TILEDATA_RESTORE_TILE
+; rev1: 1304 cc (spawn_rate_check = True + macro)
+char_init2:
+			; on a caller side
+			; push...
+			SET_CY(1) ; check spawn rate
+			;=========================================================
+			/*
+			// RRC_(2) ; to get char_id
+			// sta @char_id + 1
+
+			// shld @char_data_ptr + 1
+
+			// mov a, c
+			// sta @tile_idx + 1
+
+			// A_TO_ZERO(0)
+			// cmp b
+			*/
+			jnc @no_spawn_rate_check
+			ROOM_SPAWN_RATE_CHECK(rooms_spawn_rate, @restore_sp)
+@no_spawn_rate_check:
+
+			lxi h, char_update_ptr + 1
+			mvi e, CHAR_RUNTIME_DATA_LEN
+			call actor_get_empty_data_ptr
+			; hl - ptr to char_update_ptr + 1
+			jnz @restore_sp ; return when it's too many objects
+
+
+			CHAR_DATA_INSERT_AT_HEAD()
+/*
+			; hl - points to char_data_next_ptr
+
+			xchg
+
+
+			lxi h, 0
+			dad	sp
+			shld @restore_sp + 1
+@char_data_ptr:
+			lxi sp, TEMP_ADDR
+
+			xchg
+*/
+			; hl - ptr to char_data_next_ptr
+
+			HL_ADVANCE(char_data_next_ptr, char_update_ptr, BY_BC)
+			pop b ; using bc to read from the stack is requirenment
+			; bc - ptr to char_update_ptr
+			mov m, c
+			HL_ADVANCE(char_update_ptr, char_update_ptr + 1)
+			mov m, b
+			HL_ADVANCE(char_update_ptr + 1, char_draw_ptr)
+			pop b
+			; bc - ptr to char_draw_ptr
+			mov m, c
+			HL_ADVANCE(char_draw_ptr, char_draw_ptr + 1)
+			mov m, b
+
+			HL_ADVANCE(char_draw_ptr + 1, char_status)
+			pop b
+			; b - CHAR_STATUS
+			mov m, b
+			mov a, c
+			; a - CHAR_HEALTH
+			sta @health + 1
+
+			HL_ADVANCE(char_status, char_anim_ptr)
+
+			pop b
+			; bc - char_anim_ptr
+			mov m, c
+			HL_ADVANCE(char_anim_ptr, char_anim_ptr + 1)
+			mov m, b
+
+@tile_idx:
+			mvi e, TEMP_BYTE ; tile_idx
+			; e - tile_idx
+			; pos_x = tile_idx % ROOM_WIDTH * TILE_WIDTH
+			mvi a, %00001111
+			ana e
+			RLC_(4)
+			sta @pos_x + 1
+			; scr_x = pos_x/8 + $a0
+			RRC_(3)
+			adi SPRITE_X_SCR_ADDR
+			mov d, a
+			; pos_y = (tile_idx % ROOM_WIDTH) * TILE_WIDTH
+			mvi a, %11110000
+			ana e
+			mvi e, 0
+			; d = scr_x
+			; a = pos_y
+			; e = 0 and SPRITE_W_PACKED_MIN
+			; hl - ptr to char_anim_ptr + 1
+
+			HL_ADVANCE(char_anim_ptr + 1, char_erase_scr_addr)
+			mov m, a
+			HL_ADVANCE(char_erase_scr_addr, char_erase_scr_addr + 1)
+			mov m, d
+			HL_ADVANCE(char_erase_scr_addr + 1, char_erase_scr_addr_old)
+			mov m, a
+			HL_ADVANCE(char_erase_scr_addr_old, char_erase_scr_addr_old + 1)
+			mov m, d
+			HL_ADVANCE(char_erase_scr_addr_old + 1, char_erase_wh)
+			mvi m, SPRITE_H_MIN
+			HL_ADVANCE(char_erase_wh, char_erase_wh + 1)
+			mov m, e
+			HL_ADVANCE(char_erase_wh + 1, char_erase_wh_old)
+			mvi m, SPRITE_H_MIN
+			HL_ADVANCE(char_erase_wh_old, char_erase_wh_old + 1)
+			mov m, e
+			HL_ADVANCE(char_erase_wh_old + 1, char_pos_x)
+			mov m, e
+			HL_ADVANCE(char_pos_x, char_pos_x + 1)
+@pos_x:
+			mvi m, TEMP_BYTE ; pos_x
+			HL_ADVANCE(char_pos_x + 1, char_pos_y)
+			mov m, e
+			HL_ADVANCE(char_pos_y, char_pos_y + 1)
+			mov m, a
+
+			HL_ADVANCE(char_pos_y + 1, char_impacted_ptr, BY_DE)
+			pop b
+			mov m, c
+			HL_ADVANCE(char_impacted_ptr, char_impacted_ptr + 1)
+			mov m, b
+
+			HL_ADVANCE(char_impacted_ptr + 1, char_id)
+@char_id:
+			mvi m, TEMP_BYTE
+
+
+			HL_ADVANCE(char_id, char_type)
+			pop b
+			; c - CHAR_TYPE
+			mov m, c
+
+			HL_ADVANCE(char_type, char_health)
+@health:
+			mvi m, TEMP_BYTE
+@exit:
+			; return TILEDATA_RESTORE_TILE to make the tile where a char spawned walkable and restorable
+			mvi a, TILEDATA_RESTORE_TILE
+			ret
+@restore_sp:
+			; POP_H(...)
+			jmp @exit
 
 ; char initialization
 ; in:
@@ -76,6 +231,7 @@ chars_init:
 ; a - char_id * 4
 ; out:
 ; a - TILEDATA_RESTORE_TILE
+; rev1: 1284 cc (spawn_rate_check = True)
 char_init:
 			RRC_(2) ; to get char_id
 			sta @char_id + 1
@@ -91,7 +247,7 @@ char_init:
 
 			ROOM_SPAWN_RATE_CHECK(rooms_spawn_rate, @exit)
 @no_spawn_rate_check:
-			lxi h, char_update_ptr+1
+			lxi h, char_update_ptr + 1
 			mvi e, CHAR_RUNTIME_DATA_LEN
 			call actor_get_empty_data_ptr
 			; hl - ptr to char_update_ptr + 1
@@ -224,20 +380,20 @@ char_init:
 ; b - char type to look up
 ; out:
 ; no collision 	- (hl) >= ACTOR_RUNTIME_DATA_DESTR
-; collision 	- hl points to a collided char_update_ptr+1, (hl) < ACTOR_RUNTIME_DATA_DESTR
+; collision 	- hl points to a collided char_update_ptr + 1, (hl) < ACTOR_RUNTIME_DATA_DESTR
 ; use:
 ; b
 chars_get_first_collided:
-			sta @collider_width+1
+			sta @collider_width + 1
 			mov a, c
-			sta @collider_height+1
+			sta @collider_height + 1
 			mov a, h
-			sta @collider_pos_x+1
+			sta @collider_pos_x + 1
 			mov a, l
-			sta @collider_pos_y+1
+			sta @collider_pos_y + 1
 			mov a, b
 			sta @char_type + 1
-			lxi h, char_update_ptr+1
+			lxi h, char_update_ptr + 1
 
 @loop:
 			mov a, m
@@ -249,13 +405,13 @@ chars_get_first_collided:
 			ret
 @check_collision:
 			push h
-			HL_ADVANCE(char_update_ptr+1, char_type, BY_BC)
+			HL_ADVANCE(char_update_ptr + 1, char_type, BY_BC)
 			mov a, m
 @char_type:
 			ani TEMP_BYTE
 			jz @no_collision
 
-			HL_ADVANCE(char_type, char_pos_x+1, BY_BC)
+			HL_ADVANCE(char_type, char_pos_x + 1, BY_BC)
 			; horizontal check
 			mov c, m 	; char pos_x
 @collider_pos_x:
@@ -270,7 +426,7 @@ chars_get_first_collided:
 			cmp b
 			jc @no_collision
 			; vertical check
-			HL_ADVANCE(char_pos_x+1, char_pos_y+1)
+			HL_ADVANCE(char_pos_x + 1, char_pos_y + 1)
 			mov c, m ; char pos_y
 @collider_pos_y:
 			mvi a, TEMP_BYTE
@@ -339,18 +495,18 @@ chars_erase:
 
 ; copy a sprite from a backbuffer to a scr
 ; in:
-; hl - ptr to char_update_ptr+1
+; hl - ptr to char_update_ptr + 1
 char_copy_to_scr:
-			HL_ADVANCE(char_update_ptr+1, char_status)
+			HL_ADVANCE(char_update_ptr + 1, char_status)
 			jmp actor_copy_to_scr
 
 ; erase a sprite or restore the background behind a sprite
 ; in:
-; hl - ptr to char_update_ptr+1
+; hl - ptr to char_update_ptr + 1
 ; a - CHAR_RUNTIME_DATA_* status
 ; ~3480cc if it mostly restores a background
 char_erase:
-			LXI_D_TO_DIFF(char_update_ptr+1, char_status)
+			LXI_D_TO_DIFF(char_update_ptr + 1, char_status)
 			jmp actor_erase
 
 ; a common routine to handle a char impacted by a hero weapon
@@ -369,10 +525,9 @@ char_impacted:
 
 			; play a hit vfx
 			; de - ptr to char_impacted_ptr + 1
-			HL_ADVANCE(char_impacted_ptr+1, char_pos_x+1, BY_HL_FROM_DE)
-
+			HL_ADVANCE(char_impacted_ptr + 1, char_pos_x + 1, BY_HL_FROM_DE)
 			mov b, m
-			HL_ADVANCE(char_pos_x+1, char_pos_y+1)
+			HL_ADVANCE(char_pos_x + 1, char_pos_y + 1)
 			mov c, m
 			lxi d, vfx4_hit_anim
 			push h
@@ -380,7 +535,7 @@ char_impacted:
 			pop h
 
 			; decrease char's health
-			HL_ADVANCE(char_pos_y+1, char_health, BY_DE)
+			HL_ADVANCE(char_pos_y + 1, char_health, BY_DE)
 			dcr m
 			rnz
 
@@ -394,12 +549,12 @@ char_impacted:
 			pop h
 
 			; mark this char dead
-			HL_ADVANCE(char_health, char_update_ptr+1, BY_DE)
+			HL_ADVANCE(char_health, char_update_ptr + 1, BY_DE)
 			jmp char_destroy
 
 @set_state_freeze:
-			; de - ptr to char_impacted_ptr+1
-			HL_ADVANCE(char_impacted_ptr+1, char_status, BY_HL_FROM_DE)
+			; de - ptr to char_impacted_ptr + 1
+			HL_ADVANCE(char_impacted_ptr + 1, char_status, BY_HL_FROM_DE)
 			mvi m,ACTOR_STATUS_FREEZE
 			HL_ADVANCE(char_status, char_status_timer)
 			mvi m, ACTOR_STATUS_FREEZE_TIME

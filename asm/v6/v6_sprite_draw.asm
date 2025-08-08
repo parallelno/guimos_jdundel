@@ -89,7 +89,7 @@ sprite_draw_vm:	; VM stands for: V - variable height, M - mask support
 			; c - offset_y
 			dad b
 			; store a sprite screen addr to return it from this func
-			shld draw_sprite_scr_addr+1
+			shld draw_sprite_scr_addr + 1
 			; hl - sprite screen addr + offset
 
 			; store sprite width and height
@@ -99,7 +99,7 @@ sprite_draw_vm:	; VM stands for: V - variable height, M - mask support
 			xchg
 			; h, b - width
 			; l, c - height
-			shld draw_sprite_width_height+1
+			shld draw_sprite_width_height + 1
 			xchg
 			; d, b - width
 			; e, c - height

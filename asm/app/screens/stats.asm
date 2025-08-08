@@ -13,7 +13,7 @@ END_GAME_LINE_SPACING	= 12
 
 stats_screen:
 			lda app_request
-			sta @global_req+1
+			sta @global_req + 1
 			call stats_screen_init
 
 @loop:

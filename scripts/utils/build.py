@@ -124,7 +124,7 @@ class TextColor:
 	WHITE = '\033[37m'
 	RESET = '\033[0m'  # Reset to default color
 	GRAY = '\033[90m'
-	GRAY_LIGHT = '\033[37m'	
+	GRAY_LIGHT = '\033[37m'
 
 def printc(text, color = TextColor.WHITE):
 	print(color + text + TextColor.RESET)
@@ -197,7 +197,7 @@ def is_asm_updated(asm_path):
 		inc_idx = line.find(inc_str)
 
 		if inc_idx != -1 and line[0] != ";":
-			path = line[inc_idx + len(inc_str)+1:]
+			path = line[inc_idx + len(inc_str) + 1:]
 			path = common.remove_duplicate_slashes(path)
 			path_end_q1 = path.find('"')
 			path_end_q2 = path.find("'")
@@ -274,7 +274,7 @@ def export_debug_data(out_path, labels_path, scriptsJ):
 	for line_b in lines:
 		line = line_b.decode('ascii')
 		lineParts = line.split(" ")
-		
+
 		if len(lineParts) == 0:
 			continue
 
@@ -322,7 +322,7 @@ def export_debug_data(out_path, labels_path, scriptsJ):
 			addr = int(lineParts[1][1:], 16)
 			addrS = f"0x{addr:X}"
 			codePerf["addrStart"] = addrS
-			
+
 		# check if it's a code performance end label
 		elif lineParts[0].upper().find("CODEPERFEND_") != -1:
 			label_start = lineParts[0].upper().find("CODEPERFEND_") + len("CODEPERFEND_")
@@ -341,13 +341,13 @@ def export_debug_data(out_path, labels_path, scriptsJ):
 			tokensCommentPos = lineParts[0].upper().find("WATCHPOINTSTART")
 			tokensComment = lineParts[0][tokensCommentPos + len("WATCHPOINTSTART"):]
 			[tokens, comment] = tokensComment.split("_", 1)
-			
+
 			tokens = tokens.upper()
 
 			active = not tokens.find("OFF") != -1
 			accessS = "R" if tokens.find("R_") != -1 else \
 				"W" if tokens.find("W_") != -1 else "RW"
-			
+
 			watchpoint = watchpoints.setdefault(comment, {})
 			watchpoint["comment"] = comment
 			watchpoint["globalAddr"] = globalAddrS
@@ -358,8 +358,8 @@ def export_debug_data(out_path, labels_path, scriptsJ):
 			watchpoint["type"] = "LEN"
 			watchpoint["value"] = "0x0000"
 			watchpoint["cond"] = "=ANY"
-		
-		# check if it's a watchpoint end label 
+
+		# check if it's a watchpoint end label
 		elif lineParts[0].upper().find("WATCHPOINTEND") != -1:
 			line = lineParts[0].upper()
 			comment_pos = line.find("WATCHPOINTEND") + len("WATCHPOINTEND") + 1
@@ -378,7 +378,7 @@ def export_debug_data(out_path, labels_path, scriptsJ):
 			# check if it's not for export
 			if len(label_name) >= 2 and label_name[0] == "_" and label_name[1] != "_":
 				continue
-			
+
 			addr = int(lineParts[1][1:], 16)
 			addrS = f"0x{addr:X}"
 
@@ -396,7 +396,7 @@ def export_debug_data(out_path, labels_path, scriptsJ):
 			codePerf["addrEnd"] = codePerf["addrEnd"]
 			codePerf["active"] = True
 			debug_data["codePerfs"].append(codePerf)
-	
+
 	# add watchpoints to the debug data
 	for comment_name in watchpoints:
 		watchpoint = watchpoints[comment_name]
@@ -406,7 +406,7 @@ def export_debug_data(out_path, labels_path, scriptsJ):
 	if out_path:
 		with open(out_path, "w") as file:
 			file.write(json.dumps(debug_data, indent=4))
-	
+
 	return debug_data
 
 def get_segment_size_max(segment_addr):
@@ -425,7 +425,7 @@ def find_backbuffers_bank_ids(source_j, source_j_path):
 
 	# find bank_id_backbuffer and bank_id_backbuffer2
 	bank_id_backbuffer = -1
-	bank_id_backbuffer2 = -1	
+	bank_id_backbuffer2 = -1
 	for bank_id, bank_j in enumerate(source_j["banks"]):
 		for segment_j in bank_j["segments"]:
 			for asset in segment_j["assets"]:
@@ -439,7 +439,7 @@ def find_backbuffers_bank_ids(source_j, source_j_path):
 					elif asset["asset_type"] == "backbuffer2":
 						if bank_id_backbuffer2 >= 0:
 							print(f"export_ram_disk_init ERROR: more than one chunk is reserved for bank_id_backbuffer2. path: {source_j_path}\n")
-							exit(1)						
+							exit(1)
 						bank_id_backbuffer2 = bank_id
 					continue
 
@@ -447,7 +447,7 @@ def find_backbuffers_bank_ids(source_j, source_j_path):
 		exit_error(f"export_ram_disk_init ERROR: no chunk is reserved for bank_id_backbuffer. path: {source_j_path}\n")
 	if bank_id_backbuffer2 < 0:
 		exit_error(f"export_ram_disk_init ERROR: no chunk is reserved for bank_id_backbuffer2. path: {source_j_path}\n")
-		
+
 	return bank_id_backbuffer, bank_id_backbuffer2
 
 
@@ -474,7 +474,7 @@ def compile_asm(source_path, bin_path, labels_path = ""):
 	else:
 		cmd = f"{assembler_path.replace('/', '\\')} {source_path} {bin_path}"
 		common.run_command(cmd)
-		
+
 		if not assembler_path:
 			exit_error(f'ERROR: the compiler path was not provided')
 
@@ -489,17 +489,17 @@ def compile_asm(source_path, bin_path, labels_path = ""):
 			exit_error(f"ERROR: compilation error, path: {bin_path}")
 
 CPM_FILENAME_LEN = 8
-def get_cpm_filename(filename, ext = EXT_BIN):	
+def get_cpm_filename(filename, ext = EXT_BIN):
 	return (filename[:CPM_FILENAME_LEN] + ext).upper()
 
 def export_fdd_file(asm_meta_path, asm_data_path, bin_path, asm_meta_body = ""):
-	source_name = common.path_to_basename(bin_path) 
-	
+	source_name = common.path_to_basename(bin_path)
+
 	# compile the RAM Disk asm
 	compile_asm(asm_data_path, bin_path)
-	
+
 	file_len = os.path.getsize(bin_path)
-	
+
 	# make the len even
 	if file_len & 1 == 1:
 		file_len += 1
@@ -517,7 +517,7 @@ def export_fdd_file(asm_meta_path, asm_data_path, bin_path, asm_meta_body = ""):
 	asm_meta += "\n"
 	asm_meta += f"{source_name.upper()}_FILE_LEN = {file_len}\n"
 	asm_meta += f"{source_name.upper()}_LAST_RECORD_LEN = {last_record_len}\n"
-	asm_meta += "\n"	
+	asm_meta += "\n"
 	# add the filename to the meta data
 	cmp_filename = os.path.basename(bin_path).split(".")
 	cmp_filename_wo_ext_len = len(cmp_filename[0])
@@ -532,7 +532,7 @@ def export_fdd_file(asm_meta_path, asm_data_path, bin_path, asm_meta_body = ""):
 	asm_meta += asm_meta_body
 
 	# save the asm meta file
-	asm_meta_dir = str(Path(asm_meta_path).parent) + "/"	
+	asm_meta_dir = str(Path(asm_meta_path).parent) + "/"
 	if not os.path.exists(asm_meta_dir):
 		os.mkdir(asm_meta_dir)
 	with open(asm_meta_path, "w") as file:

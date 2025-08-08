@@ -5,7 +5,7 @@
 ; mark all actors killed to let
 ; them wipe out from the screen
 ; in:
-; hl - char_update_ptr+1 or overlay_update_ptr+1
+; hl - char_update_ptr + 1 or overlay_update_ptr + 1
 ; bc - runtime_data_len
 ; ex.
 ; KILL_ALL_CHARS()
@@ -24,12 +24,12 @@ actor_kill_all:
 			jmp @loop
 
 .macro KILL_ALL_CHARS()
-			lxi h, char_update_ptr+1
+			lxi h, char_update_ptr + 1
 			lxi b, CHAR_RUNTIME_DATA_LEN
 			call actor_kill_all
 .endmacro
 .macro KILL_ALL_OVERLAYS()
-			lxi h, overlay_update_ptr+1
+			lxi h, overlay_update_ptr + 1
 			lxi b, OVERLAY_RUNTIME_DATA_LEN
 			call actor_kill_all
 .endmacro
@@ -63,7 +63,7 @@ actor_anim_update:
 			dad b
 			xchg
 			; de - the next frame ptr
-			; hl points to actor_anim_ptr+1
+			; hl points to actor_anim_ptr + 1
 			; store de into the actor_anim_ptr
 			mov m, d
 			dcx h
@@ -72,10 +72,10 @@ actor_anim_update:
 
 ; look up an empty spot in the actor (char, overlay, back, fx) runtime data
 ; in:
-; hl - ptr to actor_runtime_data+1, ex char_update_ptr+1
+; hl - ptr to actor_runtime_data + 1, ex char_update_ptr + 1
 ; e - RUNTIME_DATA_LEN
 ; return:
-; hl - a ptr to an empty actor runtime_data+1
+; hl - a ptr to an empty actor runtime_data + 1
 ; z flag != 1 if no memory for a new entity
 ; uses:
 ; hl, de, a
@@ -140,8 +140,8 @@ actor_get_empty_data_ptr:
 .endmacro
 
 actors_invoke_if_alive:
-			sta @func_ptr_offset+1
-			shld @data_len+1
+			sta @func_ptr_offset + 1
+			shld @data_len + 1
 			xchg
 @loop:
 			mov a, m
@@ -174,11 +174,11 @@ actors_invoke_if_alive:
 			jmp @loop
 
 ; calls any provided func for each actor with a status ACTOR_RUNTIME_DATA_ALIVE or ACTOR_RUNTIME_DATA_DESTR
-; a called func will get HL pointing to a char_update_ptr+1 in the runtime data, and A holding an actor status
+; a called func will get HL pointing to a char_update_ptr + 1 in the runtime data, and A holding an actor status
 ; ex. ACTORS_CALL_IF_ALIVE(char_copy_to_scr, char_update_ptr, CHAR_RUNTIME_DATA_LEN, true)
 ; in:
 ; hl - a func addr
-; de - actor_update_ptr+1
+; de - actor_update_ptr + 1
 ; a - runtime data len
 ; use:
 ; de, a
@@ -194,8 +194,8 @@ actors_invoke_if_alive:
 		.endif
 .endmacro
 actors_call_if_alive:
-			sta @data_len+1
-			shld @func_ptr+1
+			sta @data_len + 1
+			shld @func_ptr + 1
 			xchg
 @loop:
 			mov a, m
@@ -217,26 +217,26 @@ actors_call_if_alive:
 
 ; erase a sprite or restore the background behind a sprite
 ; requires (overlay_status - overlay_erase_scr_addr) == (char_status - char_erase_scr_addr)
-; requires (overlay_erase_scr_addr+1 - overlay_erase_wh) == (char_erase_scr_addr+1 - char_erase_wh)
+; requires (overlay_erase_scr_addr + 1 - overlay_erase_wh) == (char_erase_scr_addr + 1 - char_erase_wh)
 ; in:
-; hl - ptr to actor_update_ptr+1
-; de - LXI_D_TO_DIFF(actor_update_ptr+1, actor_status)
+; hl - ptr to actor_update_ptr + 1
+; de - LXI_D_TO_DIFF(actor_update_ptr + 1, actor_status)
 ; a - ACTOR_RUNTIME_DATA_* status
 actor_erase:
 			; validation
 		.if ~((overlay_status - overlay_erase_scr_addr) == (char_status - char_erase_scr_addr))
 			.error "actor_erase func fails because !((overlay_status - overlay_erase_scr_addr) == (char_status - char_erase_scr_addr))"
 		.endif
-		.if ~((overlay_erase_scr_addr+1 - overlay_erase_wh) == (char_erase_scr_addr+1 - char_erase_wh))
-			.error "actor_erase func fails because !((overlay_erase_scr_addr+1 - overlay_erase_wh) == (char_erase_scr_addr+1 - char_erase_wh))"
+		.if ~((overlay_erase_scr_addr + 1 - overlay_erase_wh) == (char_erase_scr_addr + 1 - char_erase_wh))
+			.error "actor_erase func fails because !((overlay_erase_scr_addr + 1 - overlay_erase_wh) == (char_erase_scr_addr + 1 - char_erase_wh))"
 		.endif
 
 			; if an actor is destroyed mark its data as empty
 			cpi ACTOR_RUNTIME_DATA_DESTR
 			jz @set_empty
 
-			; hl - ptr to actor_update_ptr+1
-			; de - LXI_D_TO_DIFF(actor_update_ptr+1, actor_status)
+			; hl - ptr to actor_update_ptr + 1
+			; de - LXI_D_TO_DIFF(actor_update_ptr + 1, actor_status)
 			; advance to actor_status
 			dad d
 
@@ -251,7 +251,7 @@ actor_erase:
 			inx h
 			mov d, m
 
-			HL_ADVANCE(overlay_erase_scr_addr+1, overlay_erase_wh)
+			HL_ADVANCE(overlay_erase_scr_addr + 1, overlay_erase_wh)
 			mov a, m
 			inx h
 			mov h, m
@@ -270,7 +270,7 @@ actor_erase:
 			CALL_RAM_DISK_FUNC(sprite_erase, RAM_DISK_S_BACKBUFF | RAM_DISK_M_8F)
 			ret
 @set_empty:
-			; hl - ptr to actor_update_ptr+1
+			; hl - ptr to actor_update_ptr + 1
 			ACTOR_EMPTY()
 			ret
 
@@ -303,7 +303,7 @@ actor_copy_to_scr:
 			mov d, m
 			; store char_erase_scr_addr temp
 			xchg
-			shld @old_top_right_corner+1
+			shld @old_top_right_corner + 1
 			xchg
 			; store char_erase_scr_addr to char_erase_scr_addr_old
 			mov m, b
@@ -378,22 +378,22 @@ actor_copy_to_scr:
 
 ; check a hero-to-actor distance
 ; in:
-; hl - ptr to actor_pos_x+1
+; hl - ptr to actor_pos_x + 1
 ; c - distance
 ; out:
-; hl - ptr to actor_pos_x+1
+; hl - ptr to actor_pos_x + 1
 ; c flag is 0 if it's too far
 actor_to_hero_distance:
-			lda hero_pos_x+1
+			lda hero_pos_x + 1
 			sub m
 			jnc @check_pos_x_diff
 			cma
 @check_pos_x_diff:
 			cmp c
 			rnc ; return if a pos_x diff too big
-			; advance hl to char_pos_y+1
+			; advance hl to char_pos_y + 1
 			INX_H(2)
-			lda hero_pos_y+1
+			lda hero_pos_y + 1
 			sub m
 			jnc @check_pos_y_diff
 			cma

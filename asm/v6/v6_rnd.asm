@@ -2,7 +2,7 @@
 ; 16-bit xorshift pseudorandom number generator
 ; http://www.retroprogramming.com/2017/07/xorshift-pseudorandom-numbers-in-z80.html?m=1
 
-; out:   
+; out:
 ; hl - 16-bit pseudo-random number
 ; a = h
 ; cc - 116
@@ -23,7 +23,7 @@ random:
 			mov l, a
 			xra h
 			mov h, a
-			shld random+1
+			shld random + 1
 			ret
 
 /*
@@ -42,8 +42,8 @@ random:
 			xra m
 			inr l
 			sbb m
-			shld @mainCodeAddr+1
-			sta @rnd+1
+			shld @mainCodeAddr + 1
+			sta @rnd + 1
 			ret
 */
 
@@ -69,7 +69,7 @@ random:
 			ret
 */
 /*
-; Highway Encounter game 8-bit pseudo random number. 
+; Highway Encounter game 8-bit pseudo random number.
 ; 256 period: X[1] = X[0] * 5 + 7
 ; I: -
 ; O: A=RND
@@ -84,5 +84,5 @@ random:
 			add	m
 			adi	7
 			mov	m, a
-			ret            
+			ret
 */

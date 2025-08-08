@@ -2,7 +2,7 @@
 ; in:
 ; hl ptr to actor_status_timer
 ; out:
-; if no collision: CY=0, hl points to actor pos_y+1
+; if no collision: CY=0, hl points to actor pos_y + 1
 ; if a collision: CY=1, hl points to actor pos_x
 ; uses: all
 ; rev 1 380cc
@@ -27,7 +27,7 @@
 
 ; marks the actor's runtime data as it's going to be destroyed
 ; in:
-; hl - update_ptr+1 ptr
+; hl - update_ptr + 1 ptr
 ; TODO: optimize. fill up lastRemovedOverlayRuntimeDataPtr
 .macro ACTOR_DESTROY()
 			mvi m, ACTOR_RUNTIME_DATA_DESTR
@@ -36,7 +36,7 @@
 
 ; marks the actor runtime data as empty
 ; in:
-; hl - update_ptr+1 ptr
+; hl - update_ptr + 1 ptr
 ; TODO: optimize. fiil up lastRemovedOverlayRuntimeDataPtr
 .macro ACTOR_EMPTY()
 			mvi m, ACTOR_RUNTIME_DATA_EMPTY

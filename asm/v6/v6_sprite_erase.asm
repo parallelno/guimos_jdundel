@@ -34,7 +34,7 @@ sprite_erase:
 			; hl - scr addr
 
 			lxi b, 0				; filler
-			lxi d, $2000 			; to move the next scr buff
+			lxi d, SCR_BUFF_LEN		; to move the next scr buff
 
 			rrc
 			jc @width16or32
@@ -67,7 +67,7 @@ erase_sprite_end:
 	; think of a better solution.
 	col .var 0
 	.loop 3
-			col = col+1
+			col = col + 1
 			sphl
 			PUSH_B(8)
 		.if next_column == true || col < 3
@@ -76,7 +76,7 @@ erase_sprite_end:
 	.endloop
 		.if next_column == true
 			; advance to the next column of the first scr buff
-			mvi a, $20*5+1
+			mvi a, (>SCR_BUFF_LEN) * 5 + 1
 			add h
 			mov h, a
 		.endif
@@ -84,7 +84,7 @@ erase_sprite_end:
 /*
 	col .var 0
 	.loop 3
-			col = col+1
+			col = col + 1
 			sphl
 			PUSH_B(7)
 		.if next_column == true || col < 3
@@ -98,7 +98,7 @@ erase_sprite_end:
 			lxi h, (<(-$20*3))<<8 | <(-1)
 			dad sp
 			; hl points to the second sprite line from below in the first scr buff
-			; a = $20*5+1 to advance to the next buffer
+			; a = (>SCR_BUFF_LEN) * 5 + 1 to advance to the next buffer
 			; bc = 0
 			; de = $2000
 			mvi m, 0

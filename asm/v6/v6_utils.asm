@@ -147,7 +147,7 @@ MEM_COPY_WORD_LEN = 5
 ; de - source
 ; hl - source
 
-; prep: (53+10+7)*4=280cc
+; prep: (53 + 10+7) * 4 = 280cc
 ; loop 32 bytes: 784 + 32= 816 cc
 ; copy 32 bytes: 280 + 784*1 + 32 = 1096 cc
 ; copy 128 bytes: 280 + 784*4 + 32 = 3448 cc
@@ -251,7 +251,7 @@ jmp_tbl:
 ; then start it depending on the remined:
 
 .function mem_copy_from_ram_disk()
-			shld @source+1
+			shld @source + 1
 
 			RAM_DISK_ON_BANK()
 			lxi h, 0x0000

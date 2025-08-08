@@ -20,12 +20,12 @@ actor_draw:
 			call TEMP_ADDR ; sprite_get_scr_addr1 or sprite_get_scr_addr4 or sprite_get_scr_addr8
 			; de - sprite screen addr
 			; c - preshifted sprite idx*2 offset based on pos_x then +2
-			; hl - ptr to pos_y+1
+			; hl - ptr to pos_y + 1
 			; advance to char_anim_ptr
 
-			HL_ADVANCE(char_pos_y+1, char_anim_ptr, BY_A)
+			HL_ADVANCE(char_pos_y + 1, char_anim_ptr, BY_A)
 			mov b, m
-			HL_ADVANCE(char_anim_ptr, char_anim_ptr+1)
+			HL_ADVANCE(char_anim_ptr, char_anim_ptr + 1)
 			mov h, m
 			mov l, b
 			; hl - anim_ptr

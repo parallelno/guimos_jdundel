@@ -22,7 +22,7 @@ CPM_EXIT		= 0x0000 ; exit to the system
 
 ; CP/M system constants
 CPM_FCB				= 0x005C
-FILE_NAME_ADDR		= CPM_FCB+1
+FILE_NAME_ADDR		= CPM_FCB + 1
 CMP_DMA_BUFFER		= 0x0080
 CMP_DMA_BUFFER_LEN	= 128
 CPM_FCB_LEN			= CMP_DMA_BUFFER - CPM_FCB
@@ -61,17 +61,17 @@ V6_OS_LOAD_STORE_META = 0
 ; File Control Block (CPM_FCB)
 ;=======================================================
 
-A 36-byte structure used by CP/M as an input and output 
-parameter for file and disk operations. It is located at 
+A 36-byte structure used by CP/M as an input and output
+parameter for file and disk operations. It is located at
 0x005C in system memory but can be modified by the user.
 
 CPM_FCB:
 			.byte 0				; Drive (0 = default, 1 = A:, 2 = B:, etc.)
 			.byte "FILENAME"	; 8-character file name. Upper case only.
 			.byte "EXT"			; 3-character file type Upper case only.
-@EX:		.byte 0				; Current extent. Set this to 0 before opening a file. 
+@EX:		.byte 0				; Current extent. Set this to 0 before opening a file.
 @S1:		.byte 0				; Reserved.
-@S2:		.byte 0				; Reserved. Extent high byte. RDS increments it by 1 
+@S2:		.byte 0				; Reserved. Extent high byte. RDS increments it by 1
 								; after loading next 16k bytes (RECORD_COUNT * DMA_BUFFER_LEN = 128*128=16384).
 								; I assume RECORD_COUNT * DMA_BUFFER_LEN is an extent size. Not sure.
 @RC:		.byte 0				; FILE'S RECORD COUNT (0 TO 128). Set this to 0 when opening a file.

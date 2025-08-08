@@ -131,12 +131,12 @@ sprite_copy_to_back_buff_v:
 			; set SP to STACK_TEMP_ADDR to be able to use BC not only for "POP B"
 			lxi sp, STACK_TEMP_ADDR
 			; advance Y down and to the next scr buff
-			lxi b, $2000-height+2
+			lxi b, SCR_BUFF_LEN - height + 2
 			dad b
 
 			jnc @next_column
 			; advance Y to the next column
-			mvi a, -$20*3+1
+			mvi a, -(>SCR_BUFF_LEN) * 3 + 1
 			add h
 			mov h, a
 			dcr d

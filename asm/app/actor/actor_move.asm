@@ -4,7 +4,7 @@
 ; in:
 ; hl - ptr to actor_status_timer
 ; out:
-; hl - ptr to actor_pos_x+1
+; hl - ptr to actor_pos_x + 1
 ; rev 1 268cc
 ; rev 2 212cc (26.4% faster!)
 ; 27 bytes
@@ -16,19 +16,19 @@ actor_move:
 			dcx h
 			; d - speed_y_h
 			; a - speed_y_l
-			; hl - ptr to speed_x+1
+			; hl - ptr to speed_x + 1
 			mov b, m
 			dcx h
 			mov c, m
 			dcx h
 			; bc - speed_x
-			; hl - ptr to pos_y+1
+			; hl - ptr to pos_y + 1
 			dcx h
 			; hl - ptr to pos_y
 			add m
 			mov m, a
 			inx h
-			; hl = ptr to pos_y+1
+			; hl = ptr to pos_y + 1
 			mov a, m
 			adc d
 			mov m, a
@@ -38,7 +38,7 @@ actor_move:
 			add c
 			mov m, a
 			inx h
-			; hl - ptr to pos_x+1
+			; hl - ptr to pos_x + 1
 			mov a, m
 			adc b
 			mov m, a
@@ -111,13 +111,13 @@ actor_check_tile_collision:
 			mov e, m
 			dcx h
 			; de - speed_y
-			; hl - ptr to speed_x+1
+			; hl - ptr to speed_x + 1
 			mov b, m
 			dcx h
 			mov c, m
 			dcx h
 			; bc - speed_x
-			; hl - ptr to pos_y+1
+			; hl - ptr to pos_y + 1
 			push h
 			dcx h
 			; hl - ptr to pos_y
@@ -126,7 +126,7 @@ actor_check_tile_collision:
 			add e
 			mov m, a
 			inx h
-			; hl = ptr to pos_y+1
+			; hl = ptr to pos_y + 1
 			mov a, m
 			sta @old_pos_y_h + 1
 			adc d
@@ -139,14 +139,14 @@ actor_check_tile_collision:
 			add c
 			mov m, a
 			inx h
-			; hl - ptr to pos_x+1
+			; hl - ptr to pos_x + 1
 			mov a, m
 			sta @old_pos_x_h + 1
 			adc b
 			mov m, a
 			mov d, a
 			; cc = 312
-			; cc = 312+12=324 with pop h
+			; cc = 312 + 12=324 with pop h
 			; 17.3% faster!
 
 /*
@@ -172,13 +172,13 @@ actor_check_tile_collision:
 			mov a, m
 			dcx h
 			add m
-			sta @new_pos_y_l+1
+			sta @new_pos_y_l + 1
 			dcx h
 			; cy flag
 			mov a, m
 			dcx h
 			adc m
-			sta @new_pos_y_h+1
+			sta @new_pos_y_h + 1
 			mov e, a ; new_pos_y_h
 
 			HL_ADVANCE(actor_speed_y_h, actor_speed_x_l, BY_BC)
@@ -186,13 +186,13 @@ actor_check_tile_collision:
 			mov a, m
 			inx h
 			add m
-			sta @new_pos_x_l+1
+			sta @new_pos_x_l + 1
 			inx h
 			; cy flag
 			mov a, m
 			inx h
 			adc m
-			sta @new_pos_x_h+1
+			sta @new_pos_x_h + 1
 			mov d, a
 			push h
 			; de - new pos_xy
@@ -239,13 +239,13 @@ actor_check_tile_collision:
 			call room_get_collision_tiledata
 			ani TILEDATA_COLLIDABLE ; set CY=0, didn't collide
 			pop h
-			rz ; no_collision, hl points to pos_y+1
+			rz ; no_collision, hl points to pos_y + 1
 			jmp @skip_pop_h
 
 @collided:
 			pop h
 @skip_pop_h:
-			; hl points to pos_y+1
+			; hl points to pos_y + 1
 			; store a old pos_x
 @old_pos_y_h:
 			mvi m, TEMP_BYTE
