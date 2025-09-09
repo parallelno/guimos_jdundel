@@ -1,6 +1,6 @@
 @memusage_trap
 
-;=============================================================================
+;===============================================================================
 ; This is a quest trap.
 ; It looks like a metal can propped up by a small wooden stick.
 ; If a caterpillar touches it, the trap is triggered and captures the caterpillar.

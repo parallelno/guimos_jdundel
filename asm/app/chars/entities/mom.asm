@@ -1,13 +1,13 @@
 @memusage_mom
 
 mom_init:
-			CHAR_INIT(npc_update, npc_draw, @impacted, NPC_HEALTH, ACTOR_STATUS_INIT, npc_mom_idle_anim, False, CHAR_TYPE_ALLY)
+			CHAR_INIT(npc_update, npc_draw, @mom_impacted, NPC_HEALTH, ACTOR_STATUS_INIT, npc_mom_idle_anim, False, CHAR_TYPE_ALLY)
 
 ; the hero interracts with it
 ; in:
 ; de - ptr to char_impacted_ptr + 1
 ; c - hero_weapon_id
-@impacted:
+@mom_impacted:
 			; check the weapon_id
 			mvi a, HERO_WEAPON_ID_SNOWFLAKE
 			cmp c

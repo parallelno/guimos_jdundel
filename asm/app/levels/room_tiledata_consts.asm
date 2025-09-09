@@ -1,6 +1,6 @@
-;=============================================================================
+;===============================================================================
 ; TILEDATA Definitions
-;=============================================================================
+;===============================================================================
 ; Tiledata is an 8-bit value that describes a tile game-behaviour and how it
 ; interacts with the game entities.
 ; NOTE:
@@ -16,9 +16,9 @@
 ; - tiledata = 0 means no graphics is drawn on the tile, it's monotonic and
 ;     do not require restoring.
 ;
-;-----------------------------------------------------------------------------
+;-------------------------------------------------------------------------------
 ; Tiledata Format:
-;-----------------------------------------------------------------------------
+;-------------------------------------------------------------------------------
 ; Tiledata bits - %ffffdddd.
 ;   ffff - func_id: a function called when a tile is triggered.
 ;   dddd - func_arg: argument passed to the function (typically entity ID)
@@ -49,18 +49,18 @@ TILEDATA_FUNC_ID_BREAKABLES	= 13
 TILEDATA_FUNC_ID_DECALS		= 14
 TILEDATA_FUNC_ID_COLLISION	= 15
 
-;-----------------------------------------------------------------------------
+;-------------------------------------------------------------------------------
 ; func_id = 0 → Walkable Tiles & Decals
-;-----------------------------------------------------------------------------
+;-------------------------------------------------------------------------------
 TILEDATA_NO_COLLISION = 0 ; Walkable, no decal or back restore
 TILEDATA_RESTORE_TILE = 1 ; Walkable, no decal, back tile restoration
 ; If dddd >= 2, tile is walkable, back tile restoration, and decal overlay
 ;     decal_walkable_id == 2 - a bones (tiledata = 1)
 ;     decal_walkable_id == 3 - a skull (tiledata = 2)
 
-;-----------------------------------------------------------------------------
+;-------------------------------------------------------------------------------
 ; func_id = 1 → Spawn chars
-;-----------------------------------------------------------------------------
+;-------------------------------------------------------------------------------
 SKELETON_ID 	= 0	;
 VAMPIRE_ID		= 1	;
 BURNER_ID		= 2	;
@@ -72,16 +72,16 @@ KNIGHT_QUEST_ID	= 7 ; knight quest horizontal walk
 FIREPOOL_ID		= 8 ; firepool
 SKELETON_QUEST_ID	= 9 ; skeleton spawned after opening a container with a spoon
 
-;-----------------------------------------------------------------------------
+;-------------------------------------------------------------------------------
 ; func_id = 2 → Teleports
-;-----------------------------------------------------------------------------
+;-------------------------------------------------------------------------------
 ; - teleport_id = dddd
 ; - Teleport_ids is in a range of 0 to 15.
 ; - Converts to room_id using room_teleports_data[teleport_id]
 
-;-----------------------------------------------------------------------------
+;-------------------------------------------------------------------------------
 ; func_id = 3 → NPCs
-;-----------------------------------------------------------------------------
+;-------------------------------------------------------------------------------
 ; - An NPC is spawned when a hero enters a room.
 NPC_ID_FRIENDS_MOM	= 0
 NPC_ID_FRIENDS_SIS	= 1
@@ -99,9 +99,9 @@ NPC_ID_VILLAGER4	= 11
 ; ffff = 4, not used
 ; ffff = 5, not used
 
-;-----------------------------------------------------------------------------
+;-------------------------------------------------------------------------------
 ; func_id = 6 → Global Items
-;-----------------------------------------------------------------------------
+;-------------------------------------------------------------------------------
 ; - A hero interacts with it when he steps on
 ;   it.
 ; - Item_id = d. See runtime_data.asm->global_items for details.
@@ -115,9 +115,9 @@ ITEM_ID_KEY_2	= 3 ; uncle bob gives it
 ; item_id 		= 6 ;
 ITEM_ID_UI_MAX	= 8	; Items >= this ID don't appear in UI panel
 
-;-----------------------------------------------------------------------------
+;-------------------------------------------------------------------------------
 ; func_id = 7 → Resources
-;-----------------------------------------------------------------------------
+;-------------------------------------------------------------------------------
 ; - Collectable items that the hero can pick up by stepping on them.
 ; - Some resources are usabler (cabbage), some are not visible in UI (coins).
 ; - Some are renewable (e.g., cabbage), others not (e.g., coin).
@@ -145,9 +145,9 @@ TILEDATA_COLLIDABLE		= 8 * TILEDATA_ARG_MAX
 
 ; ffff == 8, not used
 
-;-----------------------------------------------------------------------------
+;-------------------------------------------------------------------------------
 ; func_id = 9 → Switches (2-state visuals)
-;-----------------------------------------------------------------------------
+;-------------------------------------------------------------------------------
 ; - Switches have two visual states: active and inactive.
 ; - Switch can become active when a hero hits it.
 ; - When a switch is active, an associated decal is drawn.
@@ -159,9 +159,9 @@ SWITCH_BONGO_CAT	= 0
 SWITCH_POP_CAT		= 1
 SWITCH_NYAN_CAT		= 2
 
-;-----------------------------------------------------------------------------
+;-------------------------------------------------------------------------------
 ; func_id = 10 → Triggers
-;-----------------------------------------------------------------------------
+;-------------------------------------------------------------------------------
 ; - Triggers funcs are called when a hero hits a trigger tile.
 ; - Used for extra game logic like ending the game, loading the level 2, etc.
 ; - trigger_id = d
@@ -172,9 +172,9 @@ TRIGGER_ID_LV0 = 8       ; ... level0
 TRIGGER_ID_LV1 = 9       ; ... level1
 TRIGGER_ID_LV2 = 10      ; ... level2
 
-;-----------------------------------------------------------------------------
+;-------------------------------------------------------------------------------
 ; func_id = 11 → Containers
-;-----------------------------------------------------------------------------
+;-------------------------------------------------------------------------------
 ; - Containers drop items or any other reward when a hero hits it.
 ; - Usually used for getting special weapons or keys, but can spawn chars.
 ; - When a hero pick up a container, the container tiledata is replaced with
@@ -189,9 +189,9 @@ TRIGGER_ID_LV2 = 10      ; ... level2
 ; container_id = 5 - a char spawner chest. it spawns a chest char when opened
 ; container_id = 6 - a crate with a teleport under it to a unique location
 
-;-----------------------------------------------------------------------------
+;-------------------------------------------------------------------------------
 ; func_id = 12 → Doors (interact via weapon hit)
-;-----------------------------------------------------------------------------
+;-------------------------------------------------------------------------------
 ; - Doors have a collission.
 ; - Doors are interacted with via a weapon hit.
 ; - If a hero has a key for a door, the door is unlocked, and the tile is replaced
@@ -209,9 +209,9 @@ TRIGGER_ID_LV2 = 10      ; ... level2
 ; door_id = 6 - a door 4 left
 ; door_id = 7 - a door 4 right
 
-;-----------------------------------------------------------------------------
+;-------------------------------------------------------------------------------
 ; func_id = 13 → Breakables (destroyable for rewards)
-;-----------------------------------------------------------------------------
+;-------------------------------------------------------------------------------
 ; - Breakables are interacted with via a weapon hit.
 ; - Mostly used for getting a small random reward and improve interactivity.
 ; - The game remembers if a breakable was destroyed and do not respawn it when
@@ -223,17 +223,17 @@ TILEDATA_BREAKABLES = TILEDATA_FUNC_ID_BREAKABLES * TILEDATA_ARG_MAX
 ; breakable_id 		= 1  ; Crate
 BREAKABLE_ID_CABBAGE = 2 ; Cabbage
 
-;-----------------------------------------------------------------------------
+;-------------------------------------------------------------------------------
 ; func_id = 14 → Collidable Decals
-;-----------------------------------------------------------------------------
+;-------------------------------------------------------------------------------
 ; - It's drawn on top of graphics tiles to increase background variety.
 ; - decal_collidable_id = d
 
 ; decal_collidable_id == 0 - a spider web.
 
-;-----------------------------------------------------------------------------
+;-------------------------------------------------------------------------------
 ; func_id = 15 → Animated Backgrounds
-;-----------------------------------------------------------------------------
+;-------------------------------------------------------------------------------
 ; - Animated background tiles. Each tile starts from a random frame.
 ; - All background animations share the same playback speed.
 ; - These tiles are drawn directly to the screen (not copied from the back buffer)

@@ -377,7 +377,7 @@ BY_A			= 5
 		ora a
 .endmacro
 
-;================================================================================
+;===============================================================================
 ; Ram Mapping
 ; ALL RAM_DISK_* macros has to be placed BEFORE lxi sp, *, and sphl!
 
@@ -432,7 +432,7 @@ BY_A			= 5
 			out ram_disk_port
 .endmacro
 
-;================================================================================
+;===============================================================================
 ; Functions that access the RAM Disk data
 .macro CALL_RAM_DISK_FUNC(func_addr, _command, disable_int = false, useXRA = true)
 		.if disable_int
@@ -471,7 +471,7 @@ BY_A			= 5
 		.endif
 .endmacro
 
-;================================================================================
+;===============================================================================
 
 .macro DEBUG_BORDER_LINE(_borderColorIdx = 1)
 		.if SHOW_CPU_HIGHLOAD_ON_BORDER
@@ -548,9 +548,9 @@ BY_A			= 5
 
  ; ints_per_update = 2 means the update happens every second interruption (25 updates per second)
 
-;=============================================================================
+;===============================================================================
 ; Game Update Counter Check
-;=============================================================================
+;===============================================================================
 ; Waits for the required number of interrupts before allowing a game update.
 ; Note:
 ; - Throttls the update loop (e.g. from 50Hz down to 25Hz).

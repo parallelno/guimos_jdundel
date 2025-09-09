@@ -38,7 +38,7 @@ scarecrow_init:
 			pop psw
 			mvi a, TILEDATA_RESTORE_TILE
 			ret
-;=============================================================================
+;===============================================================================
 ; anim and a gameplay logic update
 ; in:
 ; de - ptr to char_update_ptr
@@ -51,7 +51,7 @@ scarecrow_update:
 			call actor_anim_update
 			ret
 
-;=============================================================================
+;===============================================================================
 ; in:
 ; de - ptr to char_impacted_ptr + 1
 ; c - hero_weapon_id

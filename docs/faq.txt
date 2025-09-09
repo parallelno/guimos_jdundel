@@ -1,8 +1,8 @@
 FAQ:
 
-;===========================================================================
+;===============================================================================
 ; Why do we reserve two bytes before each data block in the RAM Disk?
-;===========================================================================
+;===============================================================================
 
 To retrieve the data from the RAM Disk we use the stack operation:
 ...
@@ -10,61 +10,60 @@ LXI SP, RAM_DISK_DATA ; the actual RAM Disk data we want to read
 POP BC ; read the first pair of bytes
 ...
 
-If the interruption call happen right after "LXI SP", it stores the return 
-addr into the stack. But the SP points to the RAM Disk data now, so it 
-rewrites the data with the return addr. We can't prevent that because it's a
-hardware specific behavior. To avoid this issue we keep two empty bytes before 
-every RAM Disk data block.
+If the interruption call happen right after "LXI SP", it stores the return addr
+into the stack. But the SP points to the RAM Disk data now, so it rewrites the
+data with the return addr. We can't prevent that because it's a hardware specific
+behavior. To avoid this issue we keep two empty bytes before every RAM Disk data
+block.
 
-;===========================================================================
+;===============================================================================
 ; Why the stack buffers are in the RAM and the working RAM-disk?
-;===========================================================================
+;===============================================================================
 
 - What is a working RAM Disk?
 The one the engine uses. It's defined by RAM_DISK_PORT const.
 
 - What we need to keep the stack in the RAM Disk?
 Retrieving the data from the RAM Disk via the stack operations consists of two
-major operations: 
+major operations:
 * mounting the RAM Disk (out ram_disk_port)
 * setting up the SP pointer (LXI SP, RAM_DISK_DATA)
 
-The catch here is in between these two operations. If interruption call 
-happens before the SP points to the data it will corrupt the RAM Disk data 
-at the address where SP pointed. Also the main code can make several calls 
-before reaching out LXI SP, RAM_DISK_DATA. That means we have to make sure 
-the stack is present in every bank of the RAM Disk.
+The catch here is in between these two operations. If interruption call happens
+before the SP points to the data it will corrupt the RAM Disk data at the
+address where SP pointed. Also the main code can make several calls before
+reaching out LXI SP, RAM_DISK_DATA. That means we have to make sure the stack
+is present in every bank of the RAM Disk.
 
-;===========================================================================
+;===============================================================================
 ; Accessing different RAM Disk data segments in one bank
-;===========================================================================
+;===============================================================================
 
-If you implement the routin where you need temporal access to BC or jump 
-between RAM Disk banks, use lxi sp, STACK_TEMP_ADDR safe addr before doing 
-it. Check the draw_text_ex func or TILED_IMG_DRAW_TILE for implementation
-details.
+If you implement the routin where you need temporal access to BC or jump
+between RAM Disk banks, use lxi sp, STACK_TEMP_ADDR safe addr before doing it.
+Check the draw_text_ex func or TILED_IMG_DRAW_TILE for implementation details.
 
-;===========================================================================
+;===============================================================================
 ; Why some subroutines are .function, and others not?
-;===========================================================================
+;===============================================================================
 
-Retroassembler provides a handy functionality with a function tag. If a 
-function isn't used in the code, it is not included in assembly.
-But functions have disadvantages. Firstly, it adds RET instruction at the end,
-no matter if it's required. Secondly, you can't call a label somewhere inside
-the function, only a function name. Lastly, you can't conditionally call a 
-function. With all of it being said, I decided to only use .functions in the 
-utils assembly where not all subroutines are required for the particular game. 
-If you do not need the functionality, let's say, tiled images, it's more 
-meaningful to exclude the whole ASM module.
+Retroassembler provides a handy functionality with a function tag. If a function
+isn't used in the code, it is not included in assembly. But functions have
+disadvantages. Firstly, it adds RET instruction at the end, no matter if it's
+required. Secondly, you can't call a label somewhere inside the function, only
+a function name. Lastly, you can't conditionally call a function. With all of
+it being said, I decided to only use .functions in the utils assembly where not
+all subroutines are required for the particular game. If you do not need the
+functionality, let's say, tiled images, it's more meaningful to exclude the
+whole ASM module.
 
-;===========================================================================
+;===============================================================================
 ; How to extract breakpoints from the code into debug data?
-;===========================================================================
+;===============================================================================
 
-If you type '.breakpoint "<OPERAND> <OPERATOR> <VALUE> <COMMENT>"' in the 
-code, the build system adds a breakpoint at this address into the debug data. 
-Where: 
+If you type '.breakpoint "<OPERAND> <OPERATOR> <VALUE> <COMMENT>"' in the
+code, the build system adds a breakpoint at this address into the debug data.
+Where:
 <OPERAND> - is a REG, REG PAIR, PC, SP, CC, or any valid operand.
 <OPERATOR> - =ANY, =, !=, >, <, >=, <=, etc.
 <VALUE> - hex value.
@@ -81,12 +80,12 @@ Breakpoint: = 09
 BREAKPOINT1: = $09
 @breakpoint2: = 0x10
 
-;===========================================================================
+;===============================================================================
 ; How to extract watchpoints from the code into a debug data?
-;===========================================================================
+;===============================================================================
 
-If you type "<prefix>watchpointStart<RW/R/W><On/Off>_<label_name>: = address" 
-in the code, the build system adds a watchpoint to your debug data at that 
+If you type "<prefix>watchpointStart<RW/R/W><On/Off>_<label_name>: = address"
+in the code, the build system adds a watchpoint to your debug data at that
 address. Where:
 <prefix> can be '@' or any other valid label string.
 
@@ -96,17 +95,17 @@ Examples:
 ; adds the watchpoint to the debug data
 @watchpointEnd_hero_runtime_data: = hero_runtime_data_end
 
-;===========================================================================
+;===============================================================================
 ; How to mark the code that needs a code performance check?
-;===========================================================================
+;===============================================================================
 
 If you add "codePerfStart_<label_name>" and "codePerfEnd_<label_name>" markers
 to your code, the build system adds a code perf block enity with those addresses
 to our debug data. You can use @ or any other prefixes.
 
-;===========================================================================
+;===============================================================================
 ; Can the build add a script?
-;===========================================================================
+;===============================================================================
 
 Scripts can be exported from a build config. To make it, add the following
 structure below:
@@ -119,11 +118,11 @@ structure below:
 	}
 ],
 
-;===========================================================================
+;===============================================================================
 ; Memory usage report
-;===========================================================================
+;===============================================================================
 
-If you add a label memusage_<something>, the build system adds it into the 
+If you add a label memusage_<something>, the build system adds it into the
 memory usage report mem_usage.md and stores it into the ROM file folder.
 Please, use Open Preview on this file in the VS Code to see it properly
 formated.

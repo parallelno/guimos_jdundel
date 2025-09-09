@@ -1,12 +1,12 @@
-;=============================================================================
+;===============================================================================
 ; The RAM Disk
-;=============================================================================
-; The RAM Disk is an external 256-byte RAM space. It is split into four 64k 
+;===============================================================================
+; The RAM Disk is an external 256-byte RAM space. It is split into four 64k
 ; memory pages. It operates in two modes:
-; 
+;
 ;   • Stack Mode:
 ;       - Accessed using stack-related instructions
-; 
+;
 ;   • Memory-Mapped Mode:
 ;       - The RAM Disk is mapped into the 0xA000–0xFFFF address space
 ;       - The RAM Disk memory space operates as a regular RAM

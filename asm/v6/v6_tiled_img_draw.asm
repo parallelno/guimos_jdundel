@@ -28,9 +28,9 @@ tiled_img_init_gfx:
 			shld tiled_img_draw_gfx_addr + 1
 			ret
 
-;=============================================================================
+;===============================================================================
 ; Draws a tiled image.
-;=============================================================================
+;===============================================================================
 ; NOTE:
 ; - The tiled image consists of one-byte tile idxs corresponding to the gfx tiles.
 ; - Each gfx tile is 8x8 pixels rendered in 4 scr buffers.
@@ -43,13 +43,13 @@ tiled_img_init_gfx:
 ; - The maximum number of gfx tiles is 254, because 0 and $FF idxs are reserved.
 ; - Multiple tiled images can use the same gfx tiles.
 
-;-----------------------------------------------------------------------------
+;-------------------------------------------------------------------------------
 ; Data format:
 ; 2 bytes - idxs data len to copy from the RAM Disk to a temp buffer
 ; 2 bytes - scr addr (left-bottom corner)
 ; 2 bytes - scr addr end (right-top corner)
 ; n bytes - tile idxs data
-;-----------------------------------------------------------------------------
+;-------------------------------------------------------------------------------
 
 ; in:
 ; de - local idx_data addr

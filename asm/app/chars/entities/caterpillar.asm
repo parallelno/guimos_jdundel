@@ -1,6 +1,6 @@
 @memusage_caterpillar
 
-;=============================================================================
+;===============================================================================
 ; A caterpillar runs out of the hero.
 ; If the hero approaches, the caterpillar burrows into the ground.
 ; When a new caterpillar spawns at a random location far from the hero.

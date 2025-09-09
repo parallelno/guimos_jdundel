@@ -1,5 +1,5 @@
 ## Main Ram memory usage:
-> Free Space: `4134`
+> Free Space: `4137`
 
 |Assembly| Usage|
 |-|-|

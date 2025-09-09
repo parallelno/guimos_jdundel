@@ -73,9 +73,9 @@ def ramdisk_data_to_asm(asset_j_path, asset_j, localization_id):
 
 	for comment in asset_j["text"]:
 		labels_text = asset_j["text"][comment]
-		asm += f";===================================================================================\n"
+		asm += f";===============================================================================\n"
 		asm += f"; {comment}\n"
-		asm += f";===================================================================================\n"
+		asm += f";===============================================================================\n"
 
 		for label_postfix  in labels_text:
 
@@ -130,11 +130,18 @@ def ramdisk_data_to_asm(asset_j_path, asset_j, localization_id):
 
 			# check if the length of the text fits the requirements
 			if copy_text_block_len > TEXT_LEN_MAX:
-				build.exit_error(f'export_text ERROR: text: \n"{text_block}"\n is "{copy_text_block_len}" symbols long. Which is longer than TEXT_LEN_MAX="{TEXT_LEN_MAX} symbols", path: {asset_j_path}')
+				build.exit_error(
+					f"export_text ERROR: text: \n"
+					f'"{text_block}"\n '
+					f"is {copy_text_block_len} symbols long. "
+					f"Which is longer than TEXT_LEN_MAX={TEXT_LEN_MAX} symbols,"
+					f" path: {asset_j_path}"
+				)
 
 			# the len of bytes copied from the RAM Disk
 			# rounded to the nearest (biggest) even number
-			copy_text_block_rounded_len = (copy_text_block_len // 2 + copy_text_block_len % 2) * 2
+			copy_text_block_rounded_len = \
+				(copy_text_block_len // 2 + copy_text_block_len % 2) * 2
 
 			asm += "\n			.word 0 ; safety pair of bytes for reading by POP B\n"
 			asm += f"{label}:\n"
@@ -188,7 +195,9 @@ def rus_text_to_data(text, asset_j_path):
 	result = []
 	for char_ in text:
 		if char_ not in rus_charset:
-			build.exit_error(f'export_text ERROR: unsupported char: "{char_}" в тексте: "{text}", path: {asset_j_path}')
+			build.exit_error(
+				f'export_text ERROR: unsupported char: '
+				f'{char_}" в тексте: "{text}", path: {asset_j_path}')
 
 		result.append(rus_charset[char_])
 

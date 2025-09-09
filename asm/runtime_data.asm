@@ -1,14 +1,14 @@
 	; This line is for proper formatting in VSCode
 ; TODO: write a script that generates this file
 
-;=============================================================================
+;===============================================================================
 ; For RAM memory usage check
-;=============================================================================
+;===============================================================================
 RUNTIME_DATA	= $730D
 
-;=============================================================================
+;===============================================================================
 ; Hero Resources
-;=============================================================================
+;===============================================================================
 ; Defines the runtime values of all hero-owned resources.
 ; NOTE:
 ; - A maximum of 15 resources is supported.
@@ -48,9 +48,9 @@ RES_SELECTABLE_MAX		= hero_res_end - RES_SELECTABLE_FIRST
 .endif
 
 
-;=============================================================================
+;===============================================================================
 ; OS I/O Data
-;=============================================================================
+;===============================================================================
 ;
 ; These variables are used to manage file operations and I/O interactions
 ; with the OS, including disk tracking and filename storage.
@@ -81,17 +81,17 @@ os_io_data_end:		= os_file_data_ptr + WORD_LEN
 OS_IO_DATA_LEN 		= os_io_data_end - os_io_data
 
 
-;=============================================================================
+;===============================================================================
 ; Switch Statuses:
-;=============================================================================
+;===============================================================================
 ; All statuses are stored in two bytes. Each bit represents the status of a
 ; specific switch. When the hero enters a room, any active switches trigger
 ; rendering of their associated decals.
-;-----------------------------------------------------------------------------
+;-------------------------------------------------------------------------------
 ; Data format:
 ;	.word	%UUUU_UNPB
 ;			where: N - NYAN CAT, P - POP CAT, B - BONGO CAT, U - unused
-;-----------------------------------------------------------------------------
+;-------------------------------------------------------------------------------
 SWITCH_MASK_BONGO_CAT	= 0b0000_0001
 SWITCH_MASK_POP_CAT		= 0b0000_0010
 SWITCH_MASK_NYAN_CAT	= 0b0000_0100
@@ -100,9 +100,9 @@ switch_statuses:		= $732F
 switch_statuses_end:	= switch_statuses + WORD_LEN
 SWITCH_STATUSES_LEN = switch_statuses_end - switch_statuses
 
-;=============================================================================
+;===============================================================================
 ; Global Runtime States
-;=============================================================================
+;===============================================================================
 
 global_states:			= $7331
 ; The current room idx within the current level
@@ -130,9 +130,9 @@ char_temp_y:			= global_states + 8 ; .word
 global_states_end:		= global_states + 10
 GLOBAL_STATES_LEN = global_states_end - global_states
 
-;=============================================================================
+;===============================================================================
 ; Characters Runtime Data
-;=============================================================================
+;===============================================================================
 ; Defines the per-instance runtime data for chars.
 ; NOTE:
 ; - A list of structs, one per char instance.
@@ -181,9 +181,9 @@ CHARS_RUNTIME_DATA_LEN			= chars_runtime_data_end - chars_runtime_data
 	.error "ERROR: CHAR_RUNTIME_DATA_LEN (" CHAR_RUNTIME_DATA_LEN ") > $100"
 .endif
 
-;=============================================================================
+;===============================================================================
 ; Overlays Runtime Data
-;=============================================================================
+;===============================================================================
 ; Defines the per-instance runtime data for projectiles and VFX. Overlays are
 ; similar to chars but cannot receive impacts. However, they can impact chars.
 ; Overlays are not sorted by Y position and are rendered in an arbitrary order,
@@ -230,9 +230,9 @@ OVERLAYS_RUNTIME_DATA_LEN			= overlays_runtime_data_end - overlays_runtime_data
 	.error "ERROR: overlays_runtime_data must fit inside $100 block"
 .endif
 
-;=============================================================================
+;===============================================================================
 ; Actor Runtime Data List
-;=============================================================================
+;===============================================================================
 ; - The list links the hero and non-dead chars runtime data together.
 ; - It's a singly-linked list with the head pointer actor_data_head_ptr.
 ; - The head points to the first actor runtime data (`hero_data_next_ptr` or
@@ -243,9 +243,9 @@ OVERLAYS_RUNTIME_DATA_LEN			= overlays_runtime_data_end - overlays_runtime_data
 
 actor_data_head_ptr:	= $7600 ; .word
 
-;=============================================================================
+;===============================================================================
 ; Pointers to Current Level Data & Graphics
-;=============================================================================
+;===============================================================================
 ; This section holds data pointers to level-specific data such as rooms
 ; tiledata, resources, containers, the hero initial pose in the first room of
 ; the level, level, tile gparhics, and RAM-disk commands to access that data.
@@ -273,9 +273,9 @@ lv_tiles_pptr:					= lv_gfx_init_tbl + 2	; .word Pointer to tile graphics data
 @data_end:						= lv_gfx_init_tbl + 4
 LEVEL_INIT_TBL_LEN = @data_end - lv_data_init_tbl
 
-;=============================================================================
+;===============================================================================
 ; Room Tiledata Backup
-;=============================================================================
+;===============================================================================
 ; A copy of the room tiledata. Used to restore the original tiledata after
 ; dialogs are displayed. Also used to preserve the state of breakable objects
 ; and restore the state of doors and containers.
@@ -284,9 +284,9 @@ ROOM_TILEDATA_BACKUP_LEN	= ROOM_WIDTH * ROOM_HEIGHT
 room_tiledata_backup:		= $7610
 room_tiledata_backup_end:	= room_tiledata_backup + ROOM_TILEDATA_BACKUP_LEN
 
-;=============================================================================
+;===============================================================================
 ; Temporary Buffer
-;=============================================================================
+;===============================================================================
 ; Usage:
 ; - unpacking tiled image index data
 ; - unpacking text data
@@ -294,9 +294,9 @@ room_tiledata_backup_end:	= room_tiledata_backup + ROOM_TILEDATA_BACKUP_LEN
 TEMP_BUFF_LEN	= $200
 temp_buff: 		= $7700
 
-;=============================================================================
+;===============================================================================
 ; Teleport Room IDs
-;=============================================================================
+;===============================================================================
 ; A table to convert teleport IDs to room IDs for the current room.
 ; NOTE:
 ; - When the hero steps on a teleport tile, the tiledata provides a teleport ID.
@@ -304,9 +304,9 @@ temp_buff: 		= $7700
 ; - When a hero enters a room, the room's teleport data is copied from
 ;     the RAM-disk into this buffer.
 ;
-;-----------------------------------------------------------------------------
+;-------------------------------------------------------------------------------
 ; Data Layout:
-;-----------------------------------------------------------------------------
+;-------------------------------------------------------------------------------
 ; .byte - room_id for teleport_id = 0
 ; .byte - room_id for teleport_id = 1
 ; ...
@@ -322,9 +322,9 @@ ROOM_TELEPORTS_DATA_LEN = room_teleports_data_end - room_teleports_data
 
 
 
-;=============================================================================
+;===============================================================================
 ; Game Statuses
-;=============================================================================
+;===============================================================================
 ; A collection of game state variables used to track progression, item usage,
 ; and trigger one-time events or dialogs.
 
@@ -364,9 +364,9 @@ game_status_reserved7:			= game_status + 15
 game_status_end:				= game_status + 16
 GAME_STATUS_LEN = game_status_end - game_status
 
-;=============================================================================
+;===============================================================================
 ; Room Tile Graphics Pointer Table
-;=============================================================================
+;===============================================================================
 ; Stores pointers to tile graphics used in the current room.
 ; NOTE:
 ; - When a hero enters a room, the room's data including tiledata and tile
@@ -376,9 +376,9 @@ GAME_STATUS_LEN = game_status_end - game_status
 ;     tiledata elements and tile graphics idx.
 ; - Tile graphics idx is used to render the tile.
 ;
-;-----------------------------------------------------------------------------
+;-------------------------------------------------------------------------------
 ; Data Layout:
-;-----------------------------------------------------------------------------
+;-------------------------------------------------------------------------------
 ; .loop ROOM_HEIGHT
 ;	.loop ROOM_WIDTH
 ;		.word - tile_gfx_addr
@@ -390,9 +390,9 @@ room_tiles_gfx_ptrs:		= $7920
 room_tiles_gfx_ptrs_end:	= room_tiles_gfx_ptrs + ROOM_TILES_GFX_PTRS_LEN
 
 
-;=============================================================================
+;===============================================================================
 ; Room TileData Buffer
-;=============================================================================
+;===============================================================================
 ; Stores the tiledata for the current room.
 ; NOTE:
 ; - When a hero enters a room, the room's data including tiledata and tile
@@ -408,9 +408,9 @@ room_tiles_gfx_ptrs_end:	= room_tiles_gfx_ptrs + ROOM_TILES_GFX_PTRS_LEN
 ; - Tiledata is restored from the room_tiledata_backup buffer when dialogs
 ;     are displayed.
 ; - Data is $100-aligned and must fit inside $100 block.
-;-----------------------------------------------------------------------------
+;-------------------------------------------------------------------------------
 ; Data Layout:
-;-----------------------------------------------------------------------------
+;-------------------------------------------------------------------------------
 
 ; Data Layout:
 ; .loop ROOM_HEIGHT
@@ -427,17 +427,17 @@ room_tiledata_end:	= room_tiledata + ROOM_TILEDATA_LEN
 	.error "ERROR: room_tiledata must fit inside $100 block"
 .endif
 
-;=============================================================================
+;===============================================================================
 ; Palette Data
-;=============================================================================
+;===============================================================================
 ; Holds the current color palette used by the game.
 ; Each color is one byte.
 ; Total length: 16 bytes.
 palette: = $7BF0
 
-;=============================================================================
+;===============================================================================
 ; Container Instance Status Data
-;=============================================================================
+;===============================================================================
 ; Stores the status of all container instances in the current level.
 ;
 ; NOTE:
@@ -458,9 +458,9 @@ palette: = $7BF0
 ;
 ; - Data is $100-aligned and must fit inside $100 block.
 
-;-----------------------------------------------------------------------------
+;-------------------------------------------------------------------------------
 ; Data format:
-;-----------------------------------------------------------------------------
+;-------------------------------------------------------------------------------
 ; containers_inst_data_ptrs:
 ;   .byte [ptr to the instance data for first container_id used in the level]
 ;   .byte [... second container_id ...]
@@ -484,7 +484,7 @@ palette: = $7BF0
 ;       .byte [first tile_idx]
 ;       .byte [first room_id]
 ;       ...
-;-----------------------------------------------------------------------------
+;-------------------------------------------------------------------------------
 
 CONTAINERS_UNIQUE_MAX			= 16
 CONTAINERS_INST_DATA_PTRS_LEN	= $100
@@ -498,9 +498,9 @@ containers_inst_data_ptrs_end: = containers_inst_data_ptrs + CONTAINERS_INST_DAT
 	.error "ERROR: containers_inst_data_ptrs must fit inside $100 block"
 .endif
 
-;=============================================================================
+;===============================================================================
 ; Resource Instance Status Data
-;=============================================================================
+;===============================================================================
 ; Status data for resource instances in the level.
 ; NOTE:
 ; - It uses the Container Instance Status Data format.
@@ -518,9 +518,9 @@ resources_inst_data_ptrs_end: = resources_inst_data_ptrs + RESOURCES_INST_DATA_P
 	.error "ERROR: resources_inst_data_ptrs must fit inside $100 block"
 .endif
 
-;=============================================================================
+;===============================================================================
 ; Breakables
-;=============================================================================
+;===============================================================================
 ; This section manages the statuses of breakable objects (crates, barrels, etc.)
 ; NOTE:
 ; - Supports up to 1016 breakables, 127 rooms, and two levels max.
@@ -532,9 +532,9 @@ resources_inst_data_ptrs_end: = resources_inst_data_ptrs + RESOURCES_INST_DATA_P
 ;     the updated breakables' statuses.
 ; - Data is $100-aligned and must fit inside $100 block.
 ;
-;-----------------------------------------------------------------------------
+;-------------------------------------------------------------------------------
 ; Data Layout:
-;-----------------------------------------------------------------------------
+;-------------------------------------------------------------------------------
 ; breakables_status_buf_free_ptr:
 ;   - Points to the next available byte in breakables_status_bufs.
 ; breakables_status_buf_ptrs:
@@ -579,9 +579,9 @@ breakables_status_buffs_end:	= breakables_status_buf_free_ptr + BREAKABLES_STATU
 .endif
 
 
-;=============================================================================
+;===============================================================================
 ; Back Runtime Data
-;=============================================================================
+;===============================================================================
 ; Stores per-instance runtime data for animated background tiles ("backs").
 ; NOTE:
 ; - A list of structs, one per back instance.
@@ -608,9 +608,9 @@ BACKS_RUNTIME_DATA_LEN = backs_runtime_data_end - backs_runtime_data
 	.error "ERROR: backs_runtime_data must fit inside $100 block"
 .endif
 
-;=============================================================================
+;===============================================================================
 ; Hero Runtime Data
-;=============================================================================
+;===============================================================================
 ; Contains all runtime state for the hero actor.
 ; NOTE:
 ; - Accessed by the custom update and actor draw routines.
@@ -648,9 +648,9 @@ hero_runtime_data_end:		= hero_runtime_data + 31
 HERO_RUNTIME_DATA_LEN = hero_runtime_data_end - hero_runtime_data
 
 
-;=============================================================================
+;===============================================================================
 ; Room Spawn Rates
-;=============================================================================
+;===============================================================================
 ; Defines char spawn rates for each room in the level.
 ; NOTE:
 ; - Each byte represents the spawn rate for one room (indexed by room_id).
@@ -659,15 +659,15 @@ HERO_RUNTIME_DATA_LEN = hero_runtime_data_end - hero_runtime_data
 ;     255 → 0% spawn chance (never spawn)
 ; - Data must fit inside $100 block.
 ;
-;-----------------------------------------------------------------------------
+;-------------------------------------------------------------------------------
 ; Data format:
-;-----------------------------------------------------------------------------
+;-------------------------------------------------------------------------------
 ; rooms_spawn_rate:
 ;   .byte [spawn rate room_id = 0]
 ;   .byte [... room_id = 1]
 ;   ...
 ;   .byte [... room_id = ROOMS_MAX-1]
-;-----------------------------------------------------------------------------
+;-------------------------------------------------------------------------------
 
 rooms_spawn_rate:		= $7F5D
 rooms_spawn_rate_end:	= rooms_spawn_rate + ROOMS_MAX
@@ -677,9 +677,9 @@ ROOMS_SPAWN_RATE_LEN = rooms_spawn_rate_end - rooms_spawn_rate
 	.error "ERROR: rooms_spawn_rate must fit inside $100 block"
 .endif
 
-;=============================================================================
+;===============================================================================
 ; Global Item Statuses
-;=============================================================================
+;===============================================================================
 ; Tracks the acquisition and usage status of each global items in the game.
 ; NOTE:
 ; - A maximum of 15 unique items is supported.
@@ -691,9 +691,9 @@ ITEM_STATUS_ACQUIRED     = 1  ; Item is acquired but not yet used
 ITEM_STATUS_USED         = 2  ; Item has been used
 
 ITEMS_MAX				= 15
-;-----------------------------------------------------------------------------
+;-------------------------------------------------------------------------------
 ; Data Layout:
-;-----------------------------------------------------------------------------
+;-------------------------------------------------------------------------------
 ; .byte - status of item_id = 0 (reserved for dialog-related tiledata)
 ; .byte - status of item_id = 1
 ; .byte - status of item_id = 2
@@ -704,16 +704,16 @@ global_items:		= $7F9D
 global_items_end:	= global_items + ITEMS_MAX
 GLOBAL_ITEMS_END = global_items_end - global_items
 
-;=============================================================================
+;===============================================================================
 ; RAM Disk Mode
-;=============================================================================
+;===============================================================================
 ; Stores the current RAM-disk mode.
 ; Used by the interrupt routine to restore the mode after execution.
 ram_disk_mode:              = $7FAC ; BYTE_LEN
 
-;=============================================================================
+;===============================================================================
 RUNTIME_DATA_END = $7FAC
-;=============================================================================
+;===============================================================================
 
 ; validation
 .if RUNTIME_DATA_END > STACK_MIN_ADDR

@@ -1,7 +1,7 @@
 	; This line is for proper formatting in VSCode
-;=============================================================================
+;===============================================================================
 ; Actor Runtime States
-;=============================================================================
+;===============================================================================
 ; Note:
 ; - These values define how the actor system handles each runtime data entry.
 ; - The states is stored in the second byte of the hero_update_ptr,
@@ -21,9 +21,9 @@ ACTOR_RUNTIME_DATA_EMPTY  = $fd ; Available for reuse by a new actor.
 ACTOR_RUNTIME_DATA_LAST	  = $fe ; Last active actor in the list (end marker).
 ACTOR_RUNTIME_DATA_END	  = $ff ; End of the entire actor runtime data pool.
 
-;=============================================================================
+;===============================================================================
 ; Actor Status & Status Bits
-;=============================================================================
+;===============================================================================
 ; Statuses describe what set of animations and behavior is active.
 ; Note:
 ; - Statuses are stored in the `*_status` field (e.g., hero_status,
@@ -57,9 +57,9 @@ ACTOR_STATUS_CUSTOM      = ~ACTOR_STATUS_BITS - 3
 ; Freeze duration constant
 ACTOR_STATUS_FREEZE_TIME = BUFF_FREEZE_TIME
 
-;=============================================================================
+;===============================================================================
 ; Actor Runtime Data Structure
-;=============================================================================
+;===============================================================================
 ; The hero, chars, and overlays are actors and must replicate actor structure.
 ; The can include extra fields that are specific to them.
 actor_update_ptr:			= 0  ;.word function pointer for updating hero logic
