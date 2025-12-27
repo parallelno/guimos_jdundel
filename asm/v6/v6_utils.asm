@@ -250,7 +250,7 @@ jmp_tbl:
 ; TODO: optimization: unroll the loop 4 or more times,
 ; then start it depending on the remined:
 
-.function mem_copy_from_ram_disk()
+mem_copy_from_ram_disk:
 			shld @source + 1
 
 			RAM_DISK_ON_BANK()
@@ -284,7 +284,6 @@ jmp_tbl:
 			jnz @loop2
 
 			jmp restore_sp
-.endf
 
 
 ; Read a word from the RAM Disk w/o blocking interruptions
@@ -299,7 +298,7 @@ jmp_tbl:
 ; de - data addr in the RAM Disk
 ; used: hl
 ; 116 cc
-.function get_word_from_ram_disk()
+get_word_from_ram_disk:
 			RAM_DISK_ON_BANK()
 			; store sp
 			lxi h, $0000
@@ -314,23 +313,21 @@ jmp_tbl:
 			xchg
 			sphl
 			RAM_DISK_OFF()
-			;ret
-.endf
+			ret
 
 ; a special version of a func above for accessing addr $8000 and higher
 ; out:
 ; bc - data
 ; hl - data addr + 1 in the RAM Disk
 ; 100 cc
-.function get_word_from_scr_ram_disk()
+get_word_from_scr_ram_disk:
 			RAM_DISK_ON_BANK()
 			xchg
 			mov c, m
 			inx h
 			mov b, m
 			RAM_DISK_OFF()
-			;ret
-.endf
+			ret
 
 
 ; Converts local labels to absolute by adding the absolute address
@@ -426,7 +423,7 @@ set_palette_int:			; call it from an interruption routine
 copy_palette_request_update:
 			lxi d, palette
 			lxi b, PALETTE_LEN
-			mem_copy_from_ram_disk()
+			call mem_copy_from_ram_disk
 
 			lxi h, palette_update_request
 			mvi m, PALETTE_UPD_REQ_YES
@@ -471,7 +468,7 @@ pallete_fade_init:
 
 			; de - data addr in the RAM Disk
 			; a - RAM Disk activation command
-			get_word_from_ram_disk()
+			call get_word_from_ram_disk
 			; c - fade_iterations - 2
 			; de - data addr in the RAM Disk
 

@@ -31,5 +31,6 @@ if (args.config_path):
 	print("\n")
 
 	abs_fdd_path = os.path.abspath(fdd_path)
-	common.run_command(f"{build.emulator_path.replace('/', '\\')} -path {abs_fdd_path}", "", abs_fdd_path)
-
+	sanitized_emu_path = build.emulator_path.replace('/', '\\')
+	emu_path_and_args = f"{sanitized_emu_path} -path {abs_fdd_path}"
+	common.run_command(emu_path_and_args, "", abs_fdd_path)

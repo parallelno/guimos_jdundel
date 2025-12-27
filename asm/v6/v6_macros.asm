@@ -559,12 +559,12 @@ BY_A			= 5
 ; - The default number of interrupts per game update is 2.
 ;
 ; Parameters:
-; @game_updates_required - pts to pending game updates counter
+; game_updates_required - pts to pending game updates counter
 ; ints_per_update        - Number of interrupts per game update
 ;
-.macro CHECK_GAME_UPDATE_COUNTER(@game_updates_required, ints_per_update = 2)
+.macro CHECK_GAME_UPDATE_COUNTER(game_updates_required, ints_per_update = 2)
 			; check if an interruption happened
-			lxi h, @game_updates_required
+			lxi h, game_updates_required
 			mov a, m
 			ora a
 			rm

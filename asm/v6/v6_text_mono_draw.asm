@@ -8,7 +8,7 @@
 ; A - fps
 ; uses:
 ; BC, DE, HL
-.function draw_fps()
+draw_fps:
 			lhld text_mono_draw_restore_sp + 1
 			shld @tmp_restore_sp
 			;lxi h, @fps_text
@@ -28,7 +28,6 @@
 			.byte $30, $30, $30, 0
 @tmp_restore_sp:
 			.word TEMP_ADDR
-.endf
 
 ;===============================================================================
 ; ascii text temp buffer with a null terminator

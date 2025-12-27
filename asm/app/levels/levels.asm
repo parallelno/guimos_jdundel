@@ -55,14 +55,14 @@ level_init:
 			lxi d, resources_inst_data_ptrs
 			lxi b, RESOURCES_INST_DATA_PTRS_LEN
 			lda lv_ram_disk_s_data
-			mem_copy_from_ram_disk()
+			call mem_copy_from_ram_disk
 
 			; setup containers
 			lhld lv_containers_inst_data_pptr
 			lxi d, containers_inst_data_ptrs
 			lxi b, CONTAINERS_INST_DATA_PTRS_LEN
 			lda lv_ram_disk_s_data
-			mem_copy_from_ram_disk()
+			call mem_copy_from_ram_disk
 
 			; reset room_id
 			lhld room_id

@@ -110,7 +110,7 @@ text_ex_draw_ramdisk_access_data:
 			push psw
 			; a - idx data RAM Disk activation command
 			; de - points to the idx data len
-			get_word_from_ram_disk()
+			call get_word_from_ram_disk
 			; bc = idxs_data_len
 			lxi d, temp_buff
 			pop psw
@@ -123,7 +123,7 @@ text_ex_draw_ramdisk_access_data:
 			; bc - length
 			; a - RAM Disk activation command
 			; copy text data into a temp buffer
-			mem_copy_from_ram_disk()
+			call mem_copy_from_ram_disk
 
 text_ex_draw_ramdisk_access_gfx:
 			mvi a, TEMP_BYTE

@@ -84,7 +84,7 @@ tiled_img_draw_ramdisk_access_idxs:
 			; bc - length
 			; a - RAM Disk activation command
 			; copy an image indices into a temp buffer
-			mem_copy_from_ram_disk()
+			call mem_copy_from_ram_disk
 
 tiled_img_draw_ramdisk_access_gfx:
 			mvi a, TEMP_BYTE

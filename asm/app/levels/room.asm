@@ -95,7 +95,7 @@ room_unpack:
 			; get the compressed room data len
 			lda lv_ram_disk_m_data
 			ori RAM_DISK_M_8F
-			get_word_from_scr_ram_disk()
+			call get_word_from_scr_ram_disk
 			; hl - ptr to the room data + 1
 			; bc - compressed room data len
 			; get the addr of room_teleports_data in a RAM Disk
@@ -110,7 +110,7 @@ room_unpack:
 			lxi b, TELEPORT_IDS_MAX
 			lda lv_ram_disk_m_data
 			ori RAM_DISK_M_8F
-			mem_copy_from_ram_disk()
+			call mem_copy_from_ram_disk
 			ret
 
 
