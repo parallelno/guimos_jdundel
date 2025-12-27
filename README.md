@@ -47,6 +47,7 @@ The journey’s gonna be wild!😊
 
 ## 🔨 Build
 * 🛠️ Install `Retroassembler` from https://enginedesigns.net/
+* 🛠️ Install `Python 3.12.0` from
 * ▶️ `F5` or `Ctrl+F5` to build & Run
 
 ## 📄 Documentation
