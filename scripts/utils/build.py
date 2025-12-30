@@ -501,6 +501,10 @@ def export_fdd_file(asm_meta_path, asm_data_path, bin_path, asm_meta_body = ""):
 	file_len = os.path.getsize(bin_path)
 
 	# make the len even
+	# the even len is required for the procedure of loading files from the FDD
+	# it operates with words (pop/push asm instructions) and it is aligned with
+	# the 0x0000 starts offset, so if the len on any file is odd, the alignment
+	# will be broken.
 	if file_len & 1 == 1:
 		file_len += 1
 		# store one byte to the end of the file
