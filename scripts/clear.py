@@ -12,6 +12,7 @@ Generate the asset projects and dependent asm files for every asset in the confi
 
 # args parsing
 parser = argparse.ArgumentParser(description="Process arguments.")
+parser.add_argument("-build_name", help="Defines the name of the build subfolder", default="release")
 parser.add_argument("-clear", action="store_true", help="Deletes the build subfolder provided by -build_subfolder_name", default=False)
 parser.add_argument("-clear_all", action="store_true", help="Deletes the build folder", default=False)
 args = parser.parse_args()

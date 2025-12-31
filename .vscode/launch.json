@@ -23,7 +23,7 @@
             "request": "launch",
             "program": "${workspaceFolder}/gj.project.json",
             "run": false,
-            "compile": true,
+            "compile": false,
             "compileDependencies": true
         },
         {
@@ -58,7 +58,7 @@
             "justMyCode": true
         },
         {
-            "name": "Build, Compile and Run",
+            "name": "Full build and Run",
             "type": "node-terminal",
             "request": "launch",
             "command": "exit",

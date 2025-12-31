@@ -10,7 +10,6 @@
                 "compile-deps",
                 "generate-consts-incs-loads",
                 "compile",
-                "consts-incs-loads",
                 "run"
             ]
         },
@@ -18,7 +17,10 @@
             "label": "clear",
             "type": "process",
             "command": "python",
-            "args": ["scripts/clear.py", "-clear_all"],
+            "args": [
+                "scripts/clear.py",
+                "-clear_all",
+                "-build_name", "debug"],
             "problemMatcher": []
         },
         {
@@ -66,13 +68,6 @@
                 "-build_name", "debug",
                 "-script_debug"
             ],
-            "problemMatcher": []
-        },
-        {
-            "label": "consts-incs-loads",
-            "type": "shell",
-            "command": "echo",
-            "args": ["${command:devector.compileConstsIncsLoads}"],
             "problemMatcher": []
         }
     ]

@@ -1,13 +1,15 @@
+# build artifacts
 release/
 rom/
 generated/
 __pycache__/
+build/
+*.debug.json
+*.ram_disk.bin
+*.log
 
 # v06c
 .saved.fdd
-
-# retroassembler
-retroassembler
 
 # Devector
 imgui.ini
