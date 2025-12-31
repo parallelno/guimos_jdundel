@@ -1,4 +1,4 @@
-@memusage_screen_utils
+@memusage_screen_utils:
 ;=======================================================
 
 screen_space_checking:

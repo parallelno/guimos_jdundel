@@ -1,4 +1,4 @@
-@memusage_sword
+@memusage_sword:
 ;=================================================
 
 .include "app/overlays/entities/sword_tile_funcs.asm"

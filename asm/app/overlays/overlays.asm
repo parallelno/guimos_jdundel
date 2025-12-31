@@ -10,7 +10,7 @@
 .include "app/overlays/entities/cursor.asm"
 .include "app/overlays/entities/trap.asm"
 
-@memusage_overlays
+@memusage_overlays:
 
 overlays_init:
 			; set the last marker byte of runtime_data

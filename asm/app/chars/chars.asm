@@ -20,7 +20,7 @@
 .include "asm/app/chars/entities/scarecrow.asm"
 .include "asm/app/chars/entities/crow.asm"
 
-@memusage_chars
+@memusage_chars:
 
 chars_init:
 			; actor_data_head_ptr got inited in level_init with NULL

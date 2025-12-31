@@ -1,4 +1,4 @@
-@memusage_scarecrow
+@memusage_scarecrow:
 
 SCARECROW_ANIM_SPEED_IDLE = 30
 SCARECROW_HEALTH = 10

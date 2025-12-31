@@ -162,20 +162,23 @@ def compress(source_path, path_compressed):
 	delete_file(path_compressed)
 	run_command(f"{build.packer_path} {source_path} {path_compressed}")
 
-def asm_compress_to_asm(asm, path_tmp = "temp/", delete_tmp_asm = True, delete_tmp_bin = True, delete_tmp_packed = True):
+def asm_compress_to_asm(asm, temp_dir = None, delete_tmp_asm = True, delete_tmp_bin = True, delete_tmp_packed = True):
 	asm = ".org 0 \n" + asm
 
+	if temp_dir is None:
+		temp_dir = build.TEMP_DIR
+
+	os.makedirs(temp_dir, exist_ok=True)
 	# save room data to a temp file
-	path_asm = path_tmp + "tmp" + build.EXT_ASM
-	path_bin = path_tmp + "tmp" + build.EXT_BIN
-	path_packed = path_tmp + "tmp" + build.packer_ext
+	path_asm = temp_dir + "tmp" + build.EXT_ASM
+	path_bin = temp_dir + "tmp" + build.EXT_BIN
+	path_packed = temp_dir + "tmp" + build.packer_ext
 
 	with open(path_asm, "w") as file:
 		file.write(asm)
 
 	# asm to temp bin
-	cmd = f"{build.assembler_path.replace('/', '\\')} {path_asm} {path_bin}"
-	run_command(cmd)
+	compile_data_asm(path_asm, path_bin)
 
 	# pack a room data
 	run_command(f"{build.packer_path.replace('/', '\\')} {path_bin} {path_packed}")
@@ -194,3 +197,62 @@ def asm_compress_to_asm(asm, path_tmp = "temp/", delete_tmp_asm = True, delete_t
 		delete_file(path_packed)
 
 	return bytes_to_asm(asm_packed), len(asm_packed)
+
+
+directives = [".byte", ".word", ".dword"]
+def compile_data_asm(path_asm, path_bin):
+	""" Rudimentary compiler of ASM files with data directives (.byte, .word, .dword)."""
+	# check if a path exists
+	if not os.path.isfile(path_asm):
+		build.exit_error(f"compile_data_asm ERROR: asm file not found: {path_asm}")
+		return
+	# load asm file line by line, stripping from non data lines
+	with open(path_asm, "rb") as file:
+		lines = file.readlines()
+
+	asset_data = []
+	for line_a in lines:
+		line = line_a.decode('ascii').strip()
+		line_data = line_to_bytes(line)
+		asset_data.extend(line_data)
+	# save bin file
+	with open(path_bin, "wb") as file:
+		file.write(bytearray(asset_data))
+
+
+def line_to_bytes(line):
+	""" Extracts data values from a line containing .byte, .word, or .dword directives."""
+	for directive in directives:
+		if directive in line:
+			# get only data part
+			data_part = line.split(directive)[1]
+			# delete spaces
+			data_part = data_part.replace(" ", "")
+			# delete comments after ;
+			data_part = data_part.split(";")[0]
+			# delete comments after //
+			data_part = data_part.split("//")[0]
+			# split by ,
+			data_entries = data_part.split(",")
+			# delete empty values
+			data_entries = [value for value in data_entries if value != '']
+			bytes = []
+			for value in data_entries:
+				bytes.extend(to_bytes(value, directive))
+			return bytes
+	return []
+
+
+def to_bytes(s: str, directive: str) -> list:
+	s = s.strip().replace("$", "0x")
+	if s == "NULL":
+		s = "0"
+
+	int_value = int(s, 0)
+	if directive == ".word":
+		return [int_value & 0xFF, (int_value >> 8) & 0xFF]
+	elif directive == ".dword":
+		return [int_value & 0xFF, (int_value >> 8) & 0xFF,
+				(int_value >> 16) & 0xFF, (int_value >> 24) & 0xFF]
+
+	return [int_value & 0xFF] # for .byte

@@ -1,4 +1,4 @@
-@memusage_chars_data
+@memusage_chars_data:
 
 ; a newly inited room uses this list to call a char Init func
 ; it's ordered by char_id (see tiledata format in levels_data_consts.asm)

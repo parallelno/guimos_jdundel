@@ -1,4 +1,4 @@
-@memusage_hero_tile_funcs
+@memusage_hero_tile_funcs:
 
 ; handler func for items
 ; in:

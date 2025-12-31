@@ -58,14 +58,16 @@ CMP_DMA_BUFFER_LEN	= 128
 
 # global consts
 BUILD_PATH = "build/"
+ASSET_PROJECTS_DIR = BUILD_PATH + "projects/"
+BIN_DIR = BUILD_PATH + "bin/"
+TEMP_DIR = BUILD_PATH + "temp/"
 
 # global vars
 build_db_path = "./build/build.db"
-assembler_path = "../retroassembler/retroassembler.exe -C=8080 -c"
-emulator_path = "../devector/bin/devector.exe"
 debug_mode = False
 build_name = "release"
 build_subfolder = BUILD_PATH + build_name + "/"
+BUILD_ASSETS_INFO_PATH = BUILD_PATH + "assets_info" + EXT_JSON
 
 assembler_labels_cmd = " -x"
 
@@ -134,11 +136,13 @@ def exit_error(text, comment = ""):
 	printc("Stop export", TextColor.RED)
 	if comment != "":
 		printc(f"additional details: {comment}", TextColor.GRAY)
-	exit(0)
+	exit(1)
+
 
 def set_debug(debug):
 	global debug_mode
 	debug_mode = debug
+
 
 def set_build_subfolder(name):
 	global build_name
@@ -146,13 +150,11 @@ def set_build_subfolder(name):
 	global build_subfolder
 	build_subfolder = BUILD_PATH + build_name + "/"
 
-def set_assembler_path(path):
-	global assembler_path
-	assembler_path = path
 
 def set_assembler_labels_cmd(cmd):
 	global assembler_labels_cmd
 	assembler_labels_cmd = cmd
+
 
 def set_packer(_packer, _packer_path):
 	global packer_path
@@ -409,20 +411,16 @@ def export_debug_data(out_path, labels_path, scriptsJ):
 
 	return debug_data
 
-def get_segment_size_max(segment_addr):
-	if segment_addr == SEGMENT_0000_7F00_ADDR:
-		return SEGMENT_0000_7F00_SIZE_MAX
-	else:
-		return SEGMENT_8000_0000_SIZE_MAX
 
 def get_segment_name(bank_id, addr_s_wo_hex_sym):
 	return f'segment_bank{bank_id}_addr{addr_s_wo_hex_sym}'
 
+
 def get_chunk_name(bank_id, addr_s_wo_hex_sym, chunk_id):
 	return f'chunk_bank{bank_id}_addr{addr_s_wo_hex_sym}' + "_" + str(chunk_id)
 
-def find_backbuffers_bank_ids(source_j, source_j_path):
 
+def find_backbuffers_bank_ids(source_j, source_j_path):
 	# find bank_id_backbuffer and bank_id_backbuffer2
 	bank_id_backbuffer = -1
 	bank_id_backbuffer2 = -1
@@ -451,76 +449,15 @@ def find_backbuffers_bank_ids(source_j, source_j_path):
 	return bank_id_backbuffer, bank_id_backbuffer2
 
 
-def compile_asm(source_path, bin_path, labels_path = ""):
-	print(f"\n;===========================================================================")
-	print(TextColor.YELLOW)
-	print(f"build: Compilation {source_path} to {bin_path}")
-
-	if len(labels_path) > 0:
-		cmd = f"{assembler_path} {assembler_labels_cmd} {source_path} {bin_path} >{labels_path}"
-		common.run_command(cmd)
-		print(TextColor.RESET)
-
-		if not os.path.exists(bin_path):
-			with open(labels_path, "r") as file:
-				labels = file.read()
-			exit_error(f'ERROR: compilation error, path: {source_path}', labels)
-
-		else:
-			size = os.path.getsize(bin_path)
-			printc(f"Success. Size: {size} bytes (${size:X})", TextColor.GREEN)
-			print("\n")
-
-	else:
-		cmd = f"{assembler_path.replace('/', '\\')} {source_path} {bin_path}"
-		common.run_command(cmd)
-
-		if not assembler_path:
-			exit_error(f'ERROR: the compiler path was not provided')
-
-		assembler_path_parts = assembler_path.split(" ")
-		assembler_path_wo_params = assembler_path_parts[0]
-
-		if not os.path.exists(assembler_path_wo_params):
-			exit_error(f"ERROR: the compiler path is invalid: {assembler_path_wo_params}")
-		elif not os.path.exists(source_path):
-			exit_error(f"ERROR: the source path is invalid, path: {source_path}")
-		elif not os.path.exists(bin_path):
-			exit_error(f"ERROR: compilation error, path: {bin_path}")
-
-CPM_FILENAME_LEN = 8
-def get_cpm_filename(filename, ext = EXT_BIN):
-	return (filename[:CPM_FILENAME_LEN] + ext).upper()
-
-def export_fdd_file(asm_meta_path, asm_data_path, bin_path, asm_meta_body = ""):
-	source_name = common.path_to_basename(bin_path)
-
-	# compile the RAM Disk asm
-	compile_asm(asm_data_path, bin_path)
-
-	file_len = os.path.getsize(bin_path)
-
-	# make the len even
-	# the even len is required for the procedure of loading files from the FDD
-	# it operates with words (pop/push asm instructions) and it is aligned with
-	# the 0x0000 starts offset, so if the len on any file is odd, the alignment
-	# will be broken.
-	if file_len & 1 == 1:
-		file_len += 1
-		# store one byte to the end of the file
-		with open(bin_path, "ab") as file:
-			file.write(b'\x00')
-
-
-	last_record_len = file_len & 0x7f
-
+def generate_asm_meta_file(asm_meta_path, asm_data_path, bin_path, asm_meta_body = ""):
 	# add the last record len to the meta data
+	source_name = common.path_to_basename(bin_path)
 	asm_meta = "; fdd bin file metadata\n"
 	asm_meta += "; asm data file: " + asm_data_path + "\n"
 	asm_meta += "; bin file: " + bin_path + "\n"
 	asm_meta += "\n"
-	asm_meta += f"{source_name.upper()}_FILE_LEN = {file_len}\n"
-	asm_meta += f"{source_name.upper()}_LAST_RECORD_LEN = {last_record_len}\n"
+	asm_meta += f'{source_name.upper()}_FILE_LEN .filesize \"{bin_path}\"\n'
+	asm_meta += f"{source_name.upper()}_LAST_RECORD_LEN = {source_name.upper()}_FILE_LEN & 0x7f\n"
 	asm_meta += "\n"
 	# add the filename to the meta data
 	cmp_filename = os.path.basename(bin_path).split(".")
@@ -541,3 +478,8 @@ def export_fdd_file(asm_meta_path, asm_data_path, bin_path, asm_meta_body = ""):
 		os.mkdir(asm_meta_dir)
 	with open(asm_meta_path, "w") as file:
 		file.write(asm_meta)
+
+
+CPM_FILENAME_LEN = 8
+def get_cpm_filename(filename, ext = EXT_BIN):
+	return (filename[:CPM_FILENAME_LEN] + ext).upper()

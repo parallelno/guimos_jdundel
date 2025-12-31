@@ -1,4 +1,4 @@
-@memusage_sparker
+@memusage_sparker:
 
 ;=========================================================
 ; This is a non-gameplay overlay

@@ -1,4 +1,4 @@
-@memusage_snowflake
+@memusage_snowflake:
 ;=================================================
 ; statuses.
 ; a status describes what set of animations and behavior is active

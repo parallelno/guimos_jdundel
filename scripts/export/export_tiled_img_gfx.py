@@ -38,7 +38,7 @@ def export_asm(asset_j_path, asm_meta_path, asm_data_path, bin_path):
 		file.write(asm_ram_disk_data)
 
 	# compile and save the gfx bin files
-	build.export_fdd_file(asm_meta_path, asm_data_path, bin_path, "")
+	build.generate_asm_meta_file(asm_meta_path, asm_data_path, bin_path, "")
 
 	return True
 
@@ -53,9 +53,9 @@ def data_to_asm(tiled_img_j_path):
 	image = Image.open(path_png)
 
 	source_name = common.path_to_basename(tiled_img_j_path)
-	
+
 	asm = ""
-	
+
 	_, colors, _, _ = \
 		common_gfx.palette_file_to_asm(source_dir + source_j["palette_path"], path_png, "_" + source_name)
 
@@ -73,7 +73,7 @@ def data_to_asm(tiled_img_j_path):
 
 	# list of tiles addreses
 	png_name = common.path_to_basename(path_png)
-	
+
 	# tile gfx data to asm
 	asm += export_tiled_img_utils.gfx_to_asm("_" + png_name, image, remap_idxs)
 

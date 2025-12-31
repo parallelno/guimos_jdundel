@@ -1,4 +1,4 @@
-@memusage_v6_text_mono_draw
+@memusage_v6_text_mono_draw:
 ; The monospaced text render procedure and the font data
 
 ; draw an FPS counter every second on the screen at FPS_SCR_ADDR addr
@@ -8,6 +8,7 @@
 ; A - fps
 ; uses:
 ; BC, DE, HL
+.optional
 draw_fps:
 			lhld text_mono_draw_restore_sp + 1
 			shld @tmp_restore_sp
@@ -28,6 +29,7 @@ draw_fps:
 			.byte $30, $30, $30, 0
 @tmp_restore_sp:
 			.word TEMP_ADDR
+.endopt
 
 ;===============================================================================
 ; ascii text temp buffer with a null terminator

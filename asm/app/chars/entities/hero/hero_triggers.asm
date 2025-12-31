@@ -1,4 +1,4 @@
-@memusage_hero_triggers
+@memusage_hero_triggers:
 
 ;===========================================================================
 ; when the hero looses all the health

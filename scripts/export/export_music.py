@@ -19,7 +19,7 @@ def export_if_updated(		asset_j_path, asm_meta_path, asm_data_path, bin_path,
 def is_source_updated(asset_j_path):
 	with open(asset_j_path, "rb") as file:
 		asset_j = json.load(file)
-	
+
 	asset_dir = str(Path(asset_j_path).parent) + "/"
 	path_ym = asset_dir + asset_j["path_ym"]
 
@@ -28,7 +28,7 @@ def is_source_updated(asset_j_path):
 	return False
 
 def export_asm(asset_j_path, asm_meta_path, asm_data_path, bin_path, clean_tmp = True):
-	
+
 	with open(asset_j_path, "rb") as file:
 		asset_j = json.load(file)
 
@@ -38,22 +38,22 @@ def export_asm(asset_j_path, asm_meta_path, asm_data_path, bin_path, clean_tmp =
 		ramdisk_data_to_asm(asset_j_path, asset_j, label_prefix, clean_tmp)
 
 	asm_ram_data = meta_data_to_asm(label_prefix, data_relative_ptrs, ay_reg_data_labels)
- 
- 
+
+
 	# save the RAM Disk asm
 	asm_data_dir = str(Path(asm_data_path).parent) + "/"
-	if not os.path.exists(asm_data_dir): 
+	if not os.path.exists(asm_data_dir):
 		os.mkdir(asm_data_dir)
 	with open(asm_data_path, "w") as file:
 		file.write(asm_ram_disk_data)
- 
-	# compile and save the meta and RAM Disk data 
-	build.export_fdd_file(asm_meta_path, asm_data_path, bin_path, asm_ram_data)
+
+	# compile and save the meta and RAM Disk data
+	build.generate_asm_meta_file(asm_meta_path, asm_data_path, bin_path, asm_ram_data)
 
 	return True
 
 def ramdisk_data_to_asm(asset_j_path, asset_j, label_prefix, clean_tmp = True):
-	
+
 	try:
 		with open(asset_j_path, "rb") as file:
 			asset_j = json.load(file)
@@ -72,9 +72,9 @@ def ramdisk_data_to_asm(asset_j_path, asset_j, label_prefix, clean_tmp = True):
 	# task stacks
 	# song's credits
 	asm += f'; {comment1}\n; {comment2}\n; {comment3}\n'
-	
+
 	# org
-	
+
 	data_relative_ptrs = {}
 	addr_relative = 0
 
@@ -93,7 +93,7 @@ def ramdisk_data_to_asm(asset_j_path, asset_j, label_prefix, clean_tmp = True):
 	asm += f'_v6_gc_buffer:\n'
 	asm += f'			.storage GC_BUFFER_SIZE * GC_TASKS, $00	\n\n'
 	asm += f'_v6_gc_task_stack:\n'
-	asm += f'			.storage GC_STACK_SIZE * GC_TASKS, $00	\n\n'	
+	asm += f'			.storage GC_STACK_SIZE * GC_TASKS, $00	\n\n'
 	asm += f'_v6_gc_task_stack_end:\n'
 
 	data_relative_ptrs['_v6_gc_buffer'] = addr_relative
@@ -102,12 +102,15 @@ def ramdisk_data_to_asm(asset_j_path, asset_j, label_prefix, clean_tmp = True):
 	data_relative_ptrs['_v6_gc_task_stack_end'] = addr_relative
 
 	# export reg data and build reg data asm block
+	temp_dir = build.TEMP_DIR
+	os.makedirs(temp_dir, exist_ok=True)
+
 	for i, c in enumerate(reg_data[0:14]):
-		bin_file = f"{label_prefix}{i:02d}{build.EXT_BIN}"
-		zx0File = f"{label_prefix}{i:02d}{build.packer_ext}"
+		bin_file = f"{temp_dir}{label_prefix}{i:02d}{build.EXT_BIN}"
+		zx0File = f"{temp_dir}{label_prefix}{i:02d}{build.packer_ext}"
 		with open(bin_file, "wb") as f:
 			f.write(c)
-		
+
 		common.delete_file(zx0File)
 		common.run_command(f"{build.packer_path.replace('/', '\\')} -w 256 {bin_file} {zx0File}")
 
@@ -154,7 +157,7 @@ def chunker(seq, size):
 	return (seq[pos:pos + size] for pos in range(0, len(seq), size))
 
 def drop_comment(f):
-	
+
 	comment = ''
 	print("export_music: song name/credits: ")
 	while True:
@@ -164,7 +167,7 @@ def drop_comment(f):
 		comment = comment + chr(b[0])
 		print(chr(b[0]), end='')
 	print()
-	return comment 
+	return comment
 
 def readym(filename):
 	try:

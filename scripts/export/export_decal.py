@@ -8,8 +8,8 @@ import utils.build as build
 
 def export_if_updated(
 		asset_j_path, asm_meta_path, asm_data_path, bin_path,
-		force_export): 
-	
+		force_export):
+
 	if force_export or is_asset_updated(asset_j_path):
 		export_asm(asset_j_path, asm_meta_path, asm_data_path, bin_path)
 		print(f"export_decal: {asset_j_path} got exported.")
@@ -18,7 +18,7 @@ def export_if_updated(
 def is_asset_updated(asset_j_path):
 	with open(asset_j_path, "rb") as file:
 		asset_j = json.load(file)
-	
+
 	asset_dir = str(Path(asset_j_path).parent) + "/"
 	path_png = asset_dir + asset_j["path_png"]
 
@@ -28,7 +28,7 @@ def is_asset_updated(asset_j_path):
 
 
 def export_asm(asset_j_path, asm_meta_path, asm_data_path, bin_path):
-	
+
 	with open(asset_j_path, "rb") as file:
 		asset_j = json.load(file)
 
@@ -51,7 +51,7 @@ def export_asm(asset_j_path, asm_meta_path, asm_data_path, bin_path):
 		file.write(asm_ram_disk_data)
 
 	# compile and save the gfx bin files
-	build.export_fdd_file(asm_meta_path, asm_data_path, bin_path, asm_ram_data)
+	build.generate_asm_meta_file(asm_meta_path, asm_data_path, bin_path, asm_ram_data)
 
 	return True
 
@@ -72,11 +72,11 @@ def gfx_to_asm(label_prefix, asset_name, asset_j, image, asset_j_path):
 		width = sprite["width"]
 		height = sprite["height"]
 		offset_x = sprite["offset_x"] if sprite.get("offset_x") is not None else 0
-		offset_y = sprite["offset_y"] if sprite.get("offset_y") is not None else 0		
+		offset_y = sprite["offset_y"] if sprite.get("offset_y") is not None else 0
 		mask_x = sprite.get("mask_x", x)
 		mask_y = sprite.get("mask_y", y)
 		mask_alpha = sprite.get("mask_alpha", 0)
-		mask_color = sprite.get("mask_color", 1)		
+		mask_color = sprite.get("mask_color", 1)
 
 		# get a sprite as a color index 2d array
 		sprite_img = []
@@ -124,7 +124,7 @@ def gfx_to_asm(label_prefix, asset_name, asset_j, image, asset_j_path):
 		asm += "\n"
 
 		# collect a label and its relative addr
-		frame_data_len = len(data) 
+		frame_data_len = len(data)
 		frame_data_len += build.SAFE_WORD_LEN
 		frame_data_len += 2 # offset_y, offset_x
 		frame_data_len += 2 # height, width
@@ -138,7 +138,7 @@ def meta_to_asm(label_prefix, asset_name, asset_j, data_relative_ptrs, asset_j_p
 
 	with open(asset_j_path, "rb") as file:
 		asset_j = json.load(file)
-	
+
 	# add the list of frame labels and their addresses
 	frame_relative_labels_asm = "; relative frame labels\n"
 	for label_name, addr in data_relative_ptrs.items():
@@ -152,7 +152,7 @@ def meta_to_asm(label_prefix, asset_name, asset_j, data_relative_ptrs, asset_j_p
 
 
 def lists_of_sprites_ptrs_to_asm(label_prefix, asset_name, asset_j):
-	
+
 	asm = ""
 
 	asm += f"{asset_name}_gfx_ptrs:\n"
@@ -189,7 +189,7 @@ def sprite_data(bytes0, bytes1, bytes2, bytes3, w, h, mask_bytes):
 				data.append(mask_bytes[i])
 			for x in range(width):
 				i = y*width+x
-				data.append(bytes0[i])		
+				data.append(bytes0[i])
 			for x in range(width):
 				i = y*width+width-x-1
 				data.append(bytes1[i])
@@ -202,7 +202,7 @@ def sprite_data(bytes0, bytes1, bytes2, bytes3, w, h, mask_bytes):
 		else:
 			for x in range(width):
 				i = y*width+x
-				data.append(mask_bytes[i])			
+				data.append(mask_bytes[i])
 			for x in range(width):
 				i = y*width+x
 				data.append(bytes3[i])
@@ -213,9 +213,7 @@ def sprite_data(bytes0, bytes1, bytes2, bytes3, w, h, mask_bytes):
 				i = y*width+width-x-1
 				data.append(bytes1[i])
 			for x in range(width):
-				i = y*width+width-x-1		
+				i = y*width+width-x-1
 				data.append(bytes0[i])
 
 	return data
-
-

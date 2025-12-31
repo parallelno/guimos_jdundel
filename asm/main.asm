@@ -1,6 +1,4 @@
-.setting "ShowLocalLabelsAfterCompiling", true
-.setting "Debug", true
-.setting "OmitUnusedFunctions", true
+.setting optional, true
 .org	0x100
 
 .include "v6/v6.asm" ; This must be included before any other code
@@ -51,7 +49,7 @@
 .include "app/game/game.asm"
 .include "app/app.asm"
 
-_memusage_end
+_memusage_end:
 
 RAM_FREE_SPACE = RUNTIME_DATA - _memusage_end
 

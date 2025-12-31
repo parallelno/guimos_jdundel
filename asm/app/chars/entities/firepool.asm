@@ -1,4 +1,4 @@
-@memusage_firepool
+@memusage_firepool:
 ;========================================================
 ; firepool is a quest char. it can be destroied by snowflake weapon
 

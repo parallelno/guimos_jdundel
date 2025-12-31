@@ -37,7 +37,7 @@ def export_asm(asset_j_path, asm_meta_path, asm_data_path, bin_path):
 		file.write(asm_ram_disk_data)
 
 	# compile and save the gfx bin files
-	build.export_fdd_file(asm_meta_path, asm_data_path, bin_path, asm_ram_data)
+	build.generate_asm_meta_file(asm_meta_path, asm_data_path, bin_path, asm_ram_data)
 
 	return True
 
@@ -128,14 +128,14 @@ def data_to_asm(tiled_img_j_path):
 		tiles_h = tile_last_y - tile_first_y + 1
 
 		tiled_img_asm, tiled_img_len = export_tiled_img_utils.tile_idxs_to_asm(
-				label_name, idxs, pos_x, pos_y, tiles_w, tiles_h) 
+				label_name, idxs, pos_x, pos_y, tiles_w, tiles_h)
 
 		# add the tiled img local ptr
 		img_idxs_ptrs[label_name] = img_idxs_addr_offset
 		img_idxs_addr_offset += tiled_img_len
 		img_idxs_addr_offset += build.SAFE_WORD_LEN
 
-		asm += tiled_img_asm 
+		asm += tiled_img_asm
 
 		# check if the length of the image fits the requirements
 		if tiled_img_len > export_tiled_img_utils.TILED_IMG_IDXS_LEN_MAX:

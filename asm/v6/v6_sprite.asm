@@ -1,4 +1,4 @@
-@memusage_v6_sprite
+@memusage_v6_sprite:
 ; get a sprite data addr
 ; in:
 ; hl - anim_ptr

@@ -1,4 +1,4 @@
-@memusage_main_menu
+@memusage_main_menu:
 ;=======================================================
 
 MAIN_MENU_CURSOR_POS_X		= $5800 ; .word

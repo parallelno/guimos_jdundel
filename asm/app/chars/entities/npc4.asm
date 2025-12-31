@@ -1,4 +1,4 @@
-@memusage_npc4
+@memusage_npc4:
 
 ; draw a sprite into a backbuffer
 ; in:

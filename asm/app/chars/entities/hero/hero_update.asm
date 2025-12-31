@@ -1,4 +1,4 @@
-@memusage_hero_update
+@memusage_hero_update:
 .include "app/chars/entities/hero/hero_attack.asm"
 .include "app/chars/entities/hero/hero_update_dead.asm"
 

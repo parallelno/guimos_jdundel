@@ -1,6 +1,5 @@
 {
 	"game_name" : "guimos_jdundel",
-	"com_filename" : "gj",
 	"asset_type" : "config",
 	"consts" : [
 		"DEBUG = 1",
@@ -53,7 +52,7 @@
 			"assets/config.json",
 			"scripts/export/export_config.py",
 			"scripts/export/export_config_utils.py",
-			"scripts/build_and_run.py",
+			"scripts/generate_asset_projects.py",
 			"scripts/utils/build.py",
 			"scripts/utils/common.py",
 			"scripts/utils/common_gfx.py",
@@ -63,15 +62,10 @@
 	},
 	"export_dir" :
 	{
-		"code" : "code/",
-		"bin" : "bin/"
+		"code" : "code/"
 	},
-	"assembler_path" : "tools/retroassembler/retroassembler.exe -C=8080 -c",
-	"assembler_labels_cmd" : " -x",
-	"emulator_path" : "../devector/bin/devector.exe",
 	"packer_path" : "tools/zx0salvador.exe -v -classic",
 	"build_db_path" : "build/build.db",
-	"main_asm_path" : "asm/main.asm",
 	"basefdd_path" : "assets/basefdd/rds308.fdd",
 	"ram_disk_reserve" :
 	[

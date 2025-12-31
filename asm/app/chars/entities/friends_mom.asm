@@ -1,4 +1,4 @@
-@memusage_friends_mom
+@memusage_friends_mom:
 ;========================================================
 ; npc is a quest char. it can't be destroied.
 ; all all npcs visual and logic is in this assembly.

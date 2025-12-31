@@ -39,7 +39,7 @@ def export_asm(asset_j_path, asm_meta_path, asm_data_path, bin_path):
 		file.write(asm_ram_disk_data)
 
 	# compile and save the gfx bin files
-	build.export_fdd_file(asm_meta_path, asm_data_path, bin_path, asm_ram_data)
+	build.generate_asm_meta_file(asm_meta_path, asm_data_path, bin_path, asm_ram_data)
 
 	return True
 
@@ -79,7 +79,7 @@ def ram_disk_data_to_asm(j_path):
 			name = fade_j["name"]
 
 			fade_to_color = fade_j["color"]
-			# convert Vector06c color cmponents to RGB 
+			# convert Vector06c color cmponents to RGB
 			fade_to_r = (fade_to_color.get('r', 0) << 5) & 0xFF
 			fade_to_g = (fade_to_color.get('g', 0) << 5) & 0xFF
 			fade_to_b = (fade_to_color.get('b', 0) << 6) & 0xFF
@@ -91,8 +91,8 @@ def ram_disk_data_to_asm(j_path):
 			asm += f"{fade_label}:\n"
 			asm += f"			.byte {fade_iterations - 2} ; fade_iterations - 2\n"
 
-			iteration_max = fade_iterations - 1 
-			
+			iteration_max = fade_iterations - 1
+
 			for i in range(fade_iterations):
 				asm += f"			.word 0 ; safety pair of bytes for reading by POP B\n"
 				asm += f"			.byte "
@@ -106,7 +106,7 @@ def ram_disk_data_to_asm(j_path):
 					v6_color = (faded_b & 0b11000000) | ((faded_g & 0b11100000) >> 2) | (faded_r >> 5)
 					asm += f"0x{v6_color:02x}, "
 				asm += f"\n"
-			
+
 			asm += f"\n"
 
 			local_addrs += build.SAFE_WORD_LEN

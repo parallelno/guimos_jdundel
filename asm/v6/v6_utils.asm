@@ -1,4 +1,4 @@
-@memusage_v6_utils
+@memusage_v6_utils:
 .include "asm/v6/v6_rnd.asm"
 .include "asm/v6/v6_dzx0.asm"
 
@@ -250,6 +250,7 @@ jmp_tbl:
 ; TODO: optimization: unroll the loop 4 or more times,
 ; then start it depending on the remined:
 
+.optional
 mem_copy_from_ram_disk:
 			shld @source + 1
 
@@ -284,6 +285,7 @@ mem_copy_from_ram_disk:
 			jnz @loop2
 
 			jmp restore_sp
+.endopt
 
 
 ; Read a word from the RAM Disk w/o blocking interruptions
@@ -298,6 +300,7 @@ mem_copy_from_ram_disk:
 ; de - data addr in the RAM Disk
 ; used: hl
 ; 116 cc
+.optional
 get_word_from_ram_disk:
 			RAM_DISK_ON_BANK()
 			; store sp
@@ -314,12 +317,14 @@ get_word_from_ram_disk:
 			sphl
 			RAM_DISK_OFF()
 			ret
+.endopt
 
 ; a special version of a func above for accessing addr $8000 and higher
 ; out:
 ; bc - data
 ; hl - data addr + 1 in the RAM Disk
 ; 100 cc
+.optional
 get_word_from_scr_ram_disk:
 			RAM_DISK_ON_BANK()
 			xchg
@@ -328,6 +333,7 @@ get_word_from_scr_ram_disk:
 			mov b, m
 			RAM_DISK_OFF()
 			ret
+.endopt
 
 
 ; Converts local labels to absolute by adding the absolute address

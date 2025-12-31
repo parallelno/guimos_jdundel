@@ -1,4 +1,4 @@
-@memusage_v6_back_draw
+@memusage_v6_back_draw:
 ;----------------------------------------------------------------
 ; draw a background sprite without an alpha channel (16xN pixels)
 ; input:

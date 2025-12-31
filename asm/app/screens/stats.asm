@@ -1,4 +1,4 @@
-@memusage_stats
+@memusage_stats:
 ;=======================================================
 
 END_GAME_LINE_SPACING	= 12

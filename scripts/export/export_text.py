@@ -43,7 +43,7 @@ def export_asm(
 		file.write(asm_ram_disk_data)
 
 	# compile and save the meta and RAM Disk data
-	build.export_fdd_file(asm_meta_path, asm_data_path, bin_path, asm_ram_data)
+	build.generate_asm_meta_file(asm_meta_path, asm_data_path, bin_path, asm_ram_data)
 
 	return True
 
@@ -66,7 +66,7 @@ def ramdisk_data_to_asm(asset_j_path, asset_j, localization_id):
 	asm += f"_EOD_ = {EOD}\n"
 
 	asm += ".macro TEXT (string, end_code=_EOD_)\n"
-	asm += ".encoding \"screencode\", \"mixed\"\n"
+	asm += ".encoding \"screencodecommodore\", \"mixed\"\n"
 	asm += "    .text string\n"
 	asm += "    .byte end_code\n"
 	asm += ".endmacro\n\n"

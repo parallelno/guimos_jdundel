@@ -9,8 +9,8 @@ import utils.build as build
 
 def export_if_updated(
 		asset_j_path, asm_meta_path, asm_data_path, bin_path,
-		force_export): 
-	
+		force_export):
+
 	if force_export or is_source_updated(asset_j_path):
 		export_asm(asset_j_path, asm_meta_path, asm_data_path, bin_path)
 		print(f"export_back: {asset_j_path} got exported.")
@@ -19,7 +19,7 @@ def export_if_updated(
 def is_source_updated(asset_j_path):
 	with open(asset_j_path, "rb") as file:
 		asset_j = json.load(file)
-	
+
 	asset_dir = str(Path(asset_j_path).parent) + "/"
 	path_png = asset_dir + asset_j["path_png"]
 
@@ -29,7 +29,7 @@ def is_source_updated(asset_j_path):
 
 
 def export_asm(asset_j_path, asm_meta_path, asm_data_path, bin_path):
-	
+
 	with open(asset_j_path, "rb") as file:
 		asset_j = json.load(file)
 
@@ -52,7 +52,7 @@ def export_asm(asset_j_path, asm_meta_path, asm_data_path, bin_path):
 		file.write(asm_ram_disk_data)
 
 	# compile and save the gfx bin files
-	build.export_fdd_file(asm_meta_path, asm_data_path, bin_path, asm_ram_data)
+	build.generate_asm_meta_file(asm_meta_path, asm_data_path, bin_path, asm_ram_data)
 
 	return True
 
@@ -64,7 +64,7 @@ def gfx_to_asm(label_prefix, asset_name, asset_j, image, asset_j_path):
 	sprite_data_relative_addr = 2 # safety pair of bytes for reading by POP B
 	asm = f"{label_prefix}{asset_name}_sprites:"
 
-	
+
 	for sprite in sprites_j:
 		sprite_name = sprite["name"]
 		x = sprite["x"]
@@ -104,11 +104,11 @@ def gfx_to_asm(label_prefix, asset_name, asset_j, image, asset_j_path):
 		offset_x_packed = offset_x//8
 		asm += "			.byte " + str( offset_y ) + ", " +  str( offset_x_packed ) + "; offset_y, offset_x\n"
 		asm += "			.byte " + str( height ) + ", " +  str( width_packed ) + "; height, width\n"
-		asm += common.bytes_to_asm(data) 
+		asm += common.bytes_to_asm(data)
 		asm += "\n"
 
 		# collect a label and its relative addr
-		frame_data_len = len(data) 
+		frame_data_len = len(data)
 		frame_data_len += build.SAFE_WORD_LEN
 		frame_data_len += 2 # offset_y, offset_x
 		frame_data_len += 2 # height, width
@@ -140,7 +140,7 @@ def anims_to_asm(label_prefix, asset_name, asset_j, data_relative_ptrs, asset_j_
 	for anim_name in asset_j["anims"]:
 
 		asm += f"{asset_name}_{anim_name}:\n"
- 
+
 		anims = asset_j["anims"][anim_name]["frames"]
 		loop = asset_j["anims"][anim_name]["loop"]
 		frame_count = len(asset_j["anims"][anim_name]["frames"])
@@ -158,7 +158,7 @@ def anims_to_asm(label_prefix, asset_name, asset_j, data_relative_ptrs, asset_j_
 					offset_addr = 1
 					next_frame_offset_low = 255 - (frame_count - 1) * (preshifted_sprites + offset_addr) * 2 + 1
 					next_frame_offset_low -= 1 # decrease the offset to save one instruction in the game code
-					
+
 				asm += f"			.byte {next_frame_offset_low}, {next_frame_offset_hi_str} ; offset to the first frame\n"
 
 			asm += "			.word "
@@ -189,7 +189,7 @@ def sprite_data(bytes0, bytes1, bytes2, bytes3, w, h):
 		if even_line:
 			for x in range(width):
 				i = y*width+x
-				data.append(bytes0[i])			
+				data.append(bytes0[i])
 			for x in range(width):
 				i = y*width+width-x-1
 				data.append(bytes1[i])
@@ -210,9 +210,7 @@ def sprite_data(bytes0, bytes1, bytes2, bytes3, w, h):
 				i = y*width+width-x-1
 				data.append(bytes1[i])
 			for x in range(width):
-				i = y*width+width-x-1		
+				i = y*width+width-x-1
 				data.append(bytes0[i])
 
 	return data
-
-

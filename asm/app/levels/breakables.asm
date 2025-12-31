@@ -1,5 +1,5 @@
 
-@memusage_breakables
+@memusage_breakables:
 
 breakables_init:
 			lxi h, breakables_status_buf_free_ptr

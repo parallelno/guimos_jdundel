@@ -1,4 +1,4 @@
-@memusage_burner
+@memusage_burner:
 ; mob AI:
 ; init:
 ;	 status = detectHeroInit

@@ -1,4 +1,4 @@
-@memusage_ui
+@memusage_ui:
 ;=======================================================
 
 HEALTH_SCR_ADDR = 0xA3FB

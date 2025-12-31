@@ -1,4 +1,4 @@
-@memusage_goose
+@memusage_goose:
 
 
 ; statuses.

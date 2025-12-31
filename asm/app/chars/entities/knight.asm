@@ -1,4 +1,4 @@
-@memusage_knight
+@memusage_knight:
 ;========================================================
 ; mob AI:
 ; init:

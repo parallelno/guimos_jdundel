@@ -1,4 +1,4 @@
-@memusage_score_data
+@memusage_score_data:
 ; TODO: Check if all entities are listed
 
 ; func_id = 1

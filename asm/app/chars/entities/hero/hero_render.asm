@@ -1,4 +1,4 @@
-@memusage_hero_render
+@memusage_hero_render:
 ; TODO: use actor_draw instead of hero_draw
 hero_draw:
 			lhld hero_get_scr_addr

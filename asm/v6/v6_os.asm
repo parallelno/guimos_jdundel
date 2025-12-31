@@ -1,4 +1,4 @@
-@memusage_v6_os
+@memusage_v6_os:
 
 .include "asm/v6/v6_os_consts.asm"
 .include "asm/v6/v6_os_macros.asm"
@@ -14,27 +14,27 @@
 ;=======================================================
 
 
-v6_os_err_file_open:		.byte "Error opening file: $"
-v6_os_err_hardware:			.byte "Hardware error\n$"
-v6_os_err_invalid_fcb:		.byte "Invalid FCB\n$"
-v6_os_msg_exit:				.byte "Exit the game.\n$"
+v6_os_err_file_open:		.text "Error opening file: $"
+v6_os_err_hardware:			.text "Hardware error\n$"
+v6_os_err_invalid_fcb:		.text "Invalid FCB\n$"
+v6_os_msg_exit:				.text "Exit the game.\n$"
 /*
-errmsg_invalid_read_data:	.byte "Invalid read data\n$"
+errmsg_invalid_read_data:	.text "Invalid read data\n$"
 
-errmsg_file_make:			.byte "NO DIRECTORY SPACE\n$"
-errmsg_invalid_save_data:	.byte "Invalid save data\n$"
+errmsg_file_make:			.text "NO DIRECTORY SPACE\n$"
+errmsg_invalid_save_data:	.text "Invalid save data\n$"
 
-errmsg_delete_file:			.byte "Error deleting file\n$"
-errmsg_search_file:			.byte "Error searching for file\n$"
-errmsg_open_del_file:		.byte "Error open DEL file\n$"
+errmsg_delete_file:			.text "Error deleting file\n$"
+errmsg_search_file:			.text "Error searching for file\n$"
+errmsg_open_del_file:		.text "Error open DEL file\n$"
 
-errmsg_file_open_to_save:	.byte "Error opening file for saving\n$"
-errmsg_file_save:	.byte "Error saving file\n$"
+errmsg_file_open_to_save:	.text "Error opening file for saving\n$"
+errmsg_file_save:	.text "Error saving file\n$"
 
-errmsg:				.byte "Error\n$"
-msg_file_saved:		.byte "File saved\n$"
+errmsg:				.text "Error\n$"
+msg_file_saved:		.text "File saved\n$"
 
-donemsg:			.byte "Done\n$"
+donemsg:			.text "Done\n$"
 */
 LOADING_TEXT_SCR_BUFF = 0xB000
 
@@ -52,7 +52,7 @@ v6_os_init:
 .if DEBUG
 			jmp @print
 @text:
-			.byte "Debug mode is on\n$"
+			.text "Debug mode is on\n$"
 @print:
 			SYS_CALL_D(CPM_SUB_PRINT, @text)
 .endif

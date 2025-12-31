@@ -1,4 +1,4 @@
-@memusage_bob
+@memusage_bob:
 
 bob_init:
 			CHAR_INIT(npc_update, npc_draw, @impacted, NPC_HEALTH, ACTOR_STATUS_INIT, npc_bob_idle_anim, False, CHAR_TYPE_ALLY)

@@ -1,4 +1,4 @@
-@memusage_room_draw
+@memusage_room_draw:
 ;=========================================================
 ; redraws the room after dialog shown
 ; it uses data inited in the room_draw
@@ -129,7 +129,7 @@ room_draw_tiles_ex:
 			mvi e, 0
 			; set a pointer to the first item in the list of addrs of tile graphics
 			lxi h, room_tiles_gfx_ptrs
-@new_line
+@new_line:
 			; reset the x. it's a high byte of the first screen buffer addr
 			mvi d, >SCR_BUFF0_ADDR
 @loop:

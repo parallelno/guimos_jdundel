@@ -1,4 +1,4 @@
-@memusage_mom
+@memusage_mom:
 
 mom_init:
 			CHAR_INIT(npc_update, npc_draw, @mom_impacted, NPC_HEALTH, ACTOR_STATUS_INIT, npc_mom_idle_anim, False, CHAR_TYPE_ALLY)

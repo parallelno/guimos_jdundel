@@ -1,0 +1,79 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "full-build-run",
+            "dependsOrder": "sequence",
+            "dependsOn": [
+                "clear",
+                "generate-asset-asm",
+                "compile-deps",
+                "generate-consts-incs-loads",
+                "compile",
+                "consts-incs-loads",
+                "run"
+            ]
+        },
+        {
+            "label": "clear",
+            "type": "process",
+            "command": "python",
+            "args": ["scripts/clear.py", "-clear_all"],
+            "problemMatcher": []
+        },
+        {
+            "label": "compile-deps",
+            "type": "shell",
+            "command": "echo",
+            "args": ["${command:devector.compileDependencies}"],
+            "problemMatcher": []
+        },
+        {
+            "label": "compile",
+            "type": "shell",
+            "command": "echo",
+            "args": ["${command:devector.compileProject}"],
+            "problemMatcher": []
+        },
+        {
+            "label": "run",
+            "type": "shell",
+            "command": "echo",
+            "args": ["${command:devector.runProject}"],
+            "problemMatcher": []
+        },
+        {
+            "label": "generate-asset-asm",
+            "type": "process",
+            "command": "python",
+            "args": [
+                "scripts/generate_asset_projects.py",
+                "-config_path",
+                "assets/config.json",
+                "-build_name", "debug",
+                "-script_debug"
+            ],
+            "problemMatcher": []
+        },
+        {
+            "label": "generate-consts-incs-loads",
+            "type": "process",
+            "command": "python",
+            "args": [
+                "scripts/generate_const_incs_loads.py",
+                "-config_path",
+                "assets/config.json",
+                "-build_name", "debug",
+                "-script_debug"
+            ],
+            "problemMatcher": []
+        },
+        {
+            "label": "consts-incs-loads",
+            "type": "shell",
+            "command": "echo",
+            "args": ["${command:devector.compileConstsIncsLoads}"],
+            "problemMatcher": []
+        }
+    ]
+}

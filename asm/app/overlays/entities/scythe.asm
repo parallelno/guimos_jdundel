@@ -1,4 +1,4 @@
-@memusage_scythe
+@memusage_scythe:
 ;=================================================
 ; overlay AI:
 ; init:

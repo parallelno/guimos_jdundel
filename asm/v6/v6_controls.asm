@@ -1,4 +1,4 @@
-@memusage_v6_controls
+@memusage_v6_controls:
 
 .include "asm/v6/v6_controls_consts.asm"
 

@@ -1,4 +1,4 @@
-@memusage_npc
+@memusage_npc:
 
 NPC_ANIM_SPEED_IDLE = 2
 

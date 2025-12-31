@@ -1,4 +1,4 @@
-@memusage_cursor
+@memusage_cursor:
 
 ;=========================================================
 ; This is a non-gameplay overlay object

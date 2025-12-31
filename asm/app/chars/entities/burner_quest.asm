@@ -1,4 +1,4 @@
-@memusage_burner_quest
+@memusage_burner_quest:
 ;========================================================
 ; this is a quest mod identical to burner, but with different behavior
 ; it is spawned once for every screen where its spawner

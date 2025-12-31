@@ -1,4 +1,4 @@
-@memusage_settings
+@memusage_settings:
 ;=======================================================
 
 ; text
@@ -89,7 +89,6 @@ settings_screen_text_draw:
 			lxi b, (<SETTINGS_PARAG_SPACING)<<8 | <SETTINGS_LINE_SPACING
 			call text_ex_set_spacing
 
-@text_pos		.var  SETTINGS_POS
 			; SETTINGS TITLE
 			lxi d, _options_screen_settings
 			call text_ex_draw
@@ -126,7 +125,7 @@ settings_val_draw:
 			ret
 
 setting_music_val_draw:
-@text_pos	.var  SETTINGS_POS
+@text_pos:		.var  SETTINGS_POS
 			@text_pos = @text_pos + SETTINGS_LINE_SPACING
 
 			; erase a setting value
@@ -146,7 +145,7 @@ setting_music_val_draw:
 			ret
 
 setting_sfx_val_draw:
-@text_pos	.var  SETTINGS_POS
+@text_pos:		.var  SETTINGS_POS
 			@text_pos = @text_pos + SETTINGS_LINE_SPACING * 2
 
 			; erase a setting value
@@ -190,7 +189,7 @@ erase_screen_block:
 			ret
 
 setting_controls_val_draw:
-@text_pos	.var  SETTINGS_POS
+@text_pos:		.var  SETTINGS_POS
 			@text_pos = @text_pos + SETTINGS_LINE_SPACING * 2 + SETTINGS_PARAG_SPACING
 
 			; erase a CONTROL PRESET settings value

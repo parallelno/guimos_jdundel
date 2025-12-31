@@ -1,0 +1,15 @@
+{
+    "name": "gj",
+    "asmPath": "asm/main.asm",
+    "debugPath": "gj.debug.json",
+    "romPath": "build/bin/APP.COM",
+    "fddPath": "build/fdd/GJ.fdd",
+    "fddTemplatePath": "rds308.fdd",
+    "fddContentPath": "build/bin",
+    "dependentProjectsDir": "build/projects",
+    "settings": {
+        "ramDiskPath": "gj.ram_disk.bin",
+        "speed": "max",
+        "saveRamDiskOnRestart": true
+    }
+}

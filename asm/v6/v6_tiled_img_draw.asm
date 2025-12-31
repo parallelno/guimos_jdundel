@@ -1,9 +1,12 @@
-@memusage_v6_tiled_img_draw
+@memusage_v6_tiled_img_draw:
 TILED_IMG_SCR_BUFFS = 4
 TILED_IMG_TILE_H = 8
 TILE_IMG_TILE_LEN = TILED_IMG_TILE_H * TILED_IMG_SCR_BUFFS + 2 ; 8*4 bytes + a couple of safety bytes
 
 REPEATER_CODE = $FF
+
+TILED_IMG_DRAW_UP = true
+TILED_IMG_DRAW_DOWN = false
 
 
 ; init the tiled image idx data
@@ -273,9 +276,6 @@ tiled_img_draw_repeating_counter:
 ; SCR_BUFF1_ADDR : 8 bytes from top to bottom
 ; SCR_BUFF2_ADDR : 8 bytes from bottom to top
 ; SCR_BUFF3_ADDR : 8 bytes from top to bottom
-
-TILED_IMG_DRAW_UP = true
-TILED_IMG_DRAW_DOWN = false
 
 .macro TILED_IMG_DRAW_TILE()
 			sphl

@@ -4,7 +4,7 @@
 .include "app/chars/entities/hero/hero_tile_funcs.asm"
 .include "app/chars/entities/hero/hero_render.asm"
 
-@memusage_hero
+@memusage_hero:
 
 hero_game_init:
 			; erase hero resources buffs

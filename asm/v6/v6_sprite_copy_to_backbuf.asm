@@ -1,4 +1,4 @@
-@memusage_v6_sprite_copy_to_backbuf
+@memusage_v6_sprite_copy_to_backbuf:
 ; copy a sprite from backbuff1 to backbuff2
 ; in:
 ; de - scr addr

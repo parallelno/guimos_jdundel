@@ -1,4 +1,4 @@
-@memusage_v6_interruption
+@memusage_v6_interruption:
 ;----------------------------------------------------------------
 ; The interruption sub which supports stack manipulations in
 ; the main program without di/ei.

@@ -1,4 +1,4 @@
-@memusage_skeleton_quest
+@memusage_skeleton_quest:
 ; this mob is absolutly the same as a skeleton.asm
 ; but it spawns only if the hero has the res_spoon
 

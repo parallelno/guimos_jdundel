@@ -1,4 +1,4 @@
-@memusage_v6_text_ex_draw
+@memusage_v6_text_ex_draw:
 
 .include "asm/v6/v6_text_ex_consts.asm"
 

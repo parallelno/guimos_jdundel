@@ -1,4 +1,4 @@
-@memusage_caterpillar
+@memusage_caterpillar:
 
 ;===============================================================================
 ; A caterpillar runs out of the hero.

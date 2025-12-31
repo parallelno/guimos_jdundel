@@ -1,4 +1,4 @@
-@memusage_v6_tile_draw
+@memusage_v6_tile_draw:
 ;----------------------------------------------------------------
 ; draw a tile (16x16 pixels)
 ; this graphics is used to render level rooms.

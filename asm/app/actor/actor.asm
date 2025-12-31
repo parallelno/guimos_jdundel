@@ -1,4 +1,4 @@
-@memusage_actor
+@memusage_actor:
 .include "app/actor/actor_move.asm"
 .include "app/actor/actor_move_check_tile_collision.asm"
 
@@ -224,11 +224,11 @@ actors_call_if_alive:
 ; a - ACTOR_RUNTIME_DATA_* status
 actor_erase:
 			; validation
-		.if ~((overlay_status - overlay_erase_scr_addr) == (char_status - char_erase_scr_addr))
-			.error "actor_erase func fails because !((overlay_status - overlay_erase_scr_addr) == (char_status - char_erase_scr_addr))"
+		.if (overlay_status - overlay_erase_scr_addr) != (char_status - char_erase_scr_addr)
+			.error "actor_erase func fails because (overlay_status - overlay_erase_scr_addr) != (char_status - char_erase_scr_addr)"
 		.endif
-		.if ~((overlay_erase_scr_addr + 1 - overlay_erase_wh) == (char_erase_scr_addr + 1 - char_erase_wh))
-			.error "actor_erase func fails because !((overlay_erase_scr_addr + 1 - overlay_erase_wh) == (char_erase_scr_addr + 1 - char_erase_wh))"
+		.if (overlay_erase_scr_addr + 1 - overlay_erase_wh) != (char_erase_scr_addr + 1 - char_erase_wh)
+			.error "actor_erase func fails because (overlay_erase_scr_addr + 1 - overlay_erase_wh) != (char_erase_scr_addr + 1 - char_erase_wh)"
 		.endif
 
 			; if an actor is destroyed mark its data as empty

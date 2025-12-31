@@ -1,4 +1,4 @@
-@memusage_vfx
+@memusage_vfx:
 ;===============================================================================
 
 ; utilizes overlay runtime data for preshifted VFX (x coord aligned to 2 pxls)

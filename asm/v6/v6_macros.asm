@@ -1,4 +1,4 @@
-@memusage_v6_macros
+@memusage_v6_macros:
 .macro HLT_(i)
 		.loop i
 			hlt
@@ -215,7 +215,7 @@ BY_A			= 5
 			.endif
 			; validation
 			.if diff_addr < -3 || diff_addr > 3
-				.error "HL_ADVANCE(" addr_from ", " addr_to") with diff (" diff_addr ") is outside of the required range of [-3, 3]. Use BY_BC, BY_DE, BY_HL_FROM_BC or BY_HL_FROM_DE as the third argument."
+				.error "HL_ADVANCE(", addr_from, ", ", addr_to, ") with diff (", diff_addr, ") is outside of the required range of [-3, 3]. Use BY_BC, BY_DE, BY_HL_FROM_BC or BY_HL_FROM_DE as the third argument."
 			.endif
 		.endif
 
@@ -572,7 +572,7 @@ BY_A			= 5
 .endmacro
 
 .macro TEXT(string, end_code = _EOD_)
-.encoding "screencode", "mixed"
+.encoding "screencodecommodore", "mixed"
 			.text string
 			.byte end_code
 .endmacro

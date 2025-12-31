@@ -1,4 +1,4 @@
-@memusage_knight_heavy
+@memusage_knight_heavy:
 ;========================================================
 ; this is a quest mod identical to knight, but with different behavior
 ; it spawns only if the quest was not complite

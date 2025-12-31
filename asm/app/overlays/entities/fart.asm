@@ -1,4 +1,4 @@
-@memusage_fart
+@memusage_fart:
 
 ;=========================================================
 ; This is a quest overlay
