@@ -6,7 +6,7 @@
 room_backup_tiledata:
 			lxi h, room_tiledata
 			lxi d, room_tiledata_backup
-			lxi b, room_tiledata_end
+			lxi b, ROOM_TILEDATA_LEN
 			jmp mem_copy
 
 

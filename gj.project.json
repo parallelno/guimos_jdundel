@@ -7,9 +7,10 @@
     "fddTemplatePath": "rds308.fdd",
     "fddContentPath": "build/bin",
     "dependentProjectsDir": "build/projects",
+    "cpu": "i8080",
     "settings": {
+        "speed": 8,
         "ramDiskPath": "gj.ram_disk.bin",
-        "speed": "max",
         "saveRamDiskOnRestart": true
     }
 }

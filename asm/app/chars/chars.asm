@@ -230,7 +230,7 @@ char_init:
 ; l - pos_y
 ; a - collider width
 ; c - collider height
-; b - char type to look up
+; b - char type mask to look up. (CHAR_TYPE_ALLY | CHAR_TYPE_ENEMY) will check for both types
 ; out:
 ; no collision 	- (hl) >= ACTOR_RUNTIME_DATA_DESTR
 ; collision 	- hl points to a collided char_update_ptr + 1, (hl) < ACTOR_RUNTIME_DATA_DESTR

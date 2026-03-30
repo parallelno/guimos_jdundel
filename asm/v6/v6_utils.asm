@@ -101,20 +101,22 @@ mem_fill_sp:
 ; 	hl - source
 ; 	de - destination
 ;	bc - len
-; prep: 40cc
-mem_copy_len:
-			BC_TO_BC_PLUS_HL()
-; in:
-; 	hl - source
-; 	de - destination
-;	bc - source + len
-; prep: 0cc
-; loop: 56-76cc
-; copy 32 bytes: 56 * 32 = 1792 cc
+; prep: 28cc
+; loop: 52-72cc
+; copy 32 bytes: 28 + 1664 + 20 + 12 = 1712 cc
+; copy 128 bytes: 28 + 52*128 + 20 + 12 = 6716 cc
+; copy 256 bytes: 28 + 20 + 52*256 + 20*1 + 12 = 13,392 cc
+; copy 1024*24 bytes: 28 + 20 + 52*1024*24 + 20*4*24 = 1,279,920 cc
 mem_copy:
 			; hl - source
 			; de - destination
-			; bc - source + len
+			; bc - len
+			; for correct ending the outer loop with dcr b
+			inr b
+			; enter the outer loop if C=0
+			xra a
+			ora c
+			jz @outer_loop
 @loop:
 			; copy a byte
 			mov a, m
@@ -122,12 +124,10 @@ mem_copy:
 			inx h
 			inx d
 			; check the end
-			mov a, c
-			sub l
+			dcr c
 			jnz @loop
-			; a = 0
-			add b
-			cmp h
+@outer_loop:
+			dcr b
 			jnz @loop
 			ret
 
