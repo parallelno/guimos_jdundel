@@ -145,4 +145,5 @@ controls_flip_preset:
 			shld controls_check_func_ptr
 			xchg
 			shld controls_check_func_ptr_flipped
-			rnz
+			; rnz <--- TODO: investigate why it is here
+			ret   ; TODO: added a fix, but still requires checking the history
